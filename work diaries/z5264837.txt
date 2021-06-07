@@ -1,0 +1,34 @@
+Week 1
+    - What was planned for the period since the last work diary entry
+        - The goal was to find group members and to make a start on the project
+    - What was finished
+        - Group
+            - We were able to create a group and make a successful beginning to the project
+            - We were able to settle as a team
+        - Jira
+            - We were able to join Jira
+        - Story Boarding
+            - Added a variety of core functionalities to the story board
+            - Ensured that all functionalities were considered from the specification
+            - Advised team mates on how to better the storyboards such as considering different screen sizes
+        - Breaking Down Requirements
+            - Read the document
+            - Wrote notes based on the documents
+        - Proposal
+            - Set up document structure
+            - Added to the background
+        - GitHub
+            - Joined repository
+    - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
+        - Story Boarding
+            - Understanding how to storyboard
+            - Learning from peers and emulating what they were able to do
+            - Drew upon knowledge based on my usage of the web
+    - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
+        - No issues
+    - What is planned for the next period (e.g., next week)
+        - User Stories
+            - Turn story board into a set of user stories
+            - Create acceptance criteria and reasonings for the user stories
+        - Refinements
+            - Change story board depending on further discussions
