@@ -1,0 +1,16 @@
+Week 1
+ - Formed our group, set up our team JIRA, google doc and github repository with the team.
+ - Writing up an initial draft for the background of our project, identifying the problems our app is 
+   aiming to resolve as well as conducting market research into the flaws that other competitors in the 
+   same industry with their applications so we can be ensuring people want to make use of our software over competitors.
+ - Furthermore, I helped with finalising the storyboards, changing the UI elements in a few places to make the 
+   application flow, feel intuitive and adhere to standard UI/UX principles. Specifically, made the deletion of 
+   eatery discounts more intuitive and informed that the user confirms upon clicking the button which performs the action, as it is an important action. Also added the screen which shows the user their code after they have booked in a discount code. The screen includes both the discount code and the amount of time that they have left to use it.
+ - Met up with the group on Sunday night to finalise the story boards and check in on everyone’s progress, 
+   as well as discussing the plans for the upcoming week.
+
+Week 2
+ - 
+
+Week 3
+ - 
