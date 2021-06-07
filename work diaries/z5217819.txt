@@ -1,0 +1,6 @@
+Week 1
+- In week 1, we formed our groups and set-up our JIRA and GitHub accounts.
+- We have also created a Google Docs where we have written up the background of our project proposal.
+- We have made significant progress on the storyboards using Balsamiq, mapping out what we'd like the user interface to look like, taking in consideration of design principles for better user experience.
+- We had a team meeting on Sunday night to talk about our current progress, and also improved on our existing work together.
+- We plan to polish up the storyboards next week as well as start on the following sections of the proposal.
