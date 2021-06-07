@@ -1,0 +1,14 @@
+Week1:
+- We have formed group, setted up the github repository and Jira.
+- We had a meeting in the tutorial, we discussed the project and 
+  started writing the proposal and creating the user interface demo.
+- We have set the proposal in the google document, we are going to finish table of contents,
+  background, user stories and sprints, Technical Depth, Scale, Reporting Format.
+- I helped finalize the background and added the basic structure for the user interface.
+- We are planning to add more details to the user stories.
+- We had a second meeting on Sunday night, we discussed about our process and improved the proposal background.
+  We also improved the design of the user interface demo in the Balsamiq.
+
+Week2:
+
+Week3:
