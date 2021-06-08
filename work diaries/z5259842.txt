@@ -1,0 +1,10 @@
+Week 1
+- The group was formed + JIRA, google doc and github repo were set up 
+- Contributed to the background research in the drawbacks of existing work that our application will aim to offer on the google doc
+- I did the initial storyboarding for the user (diner) side of the interface e.g. User Profile, Eatery Profile, SignUp/Login
+- One of the issues we ran into was that initially our storyboard wireframes were set in a 1:1 aspect ratio. We changed the size of a lot of wireframes to closely represent a 16:9 aspect ratio and adjusted the UI elements to fit in order to have a more realistic indication of our UI on a browser. 
+- Assisted in making changes to the storyboard to make UI fixes on Sunday night with the rest of the group 
+
+Future:
+- I plan to put together the storyboard to show the flow of the wireframes in the coming weeks. 
+- As a team, we plan to have user stories completed by next week Saturday and discuss it on the same day at 5pm.
