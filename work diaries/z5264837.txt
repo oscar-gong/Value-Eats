@@ -25,10 +25,46 @@ Week 1
             - Learning from peers and emulating what they were able to do
             - Drew upon knowledge based on my usage of the web
     - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
-        - No issues
+        - No issues as we achieved more than expected
     - What is planned for the next period (e.g., next week)
         - User Stories
             - Turn story board into a set of user stories
             - Create acceptance criteria and reasonings for the user stories
         - Refinements
             - Change story board depending on further discussions
+
+Week 2
+    - What was planned for the period since the last work diary entry
+        - User Stories
+            - Turn story board into a set of user stories
+            - Create acceptance criteria and reasonings for the user stories
+        - Refinements
+            - Change story board depending on further discussions
+    - What was finished
+        - User Stories
+            - Turn story board into a set of user stories
+            - Created acceptance criteria and reasonings for the user stories
+            - Further discussed about user stories and ensured that it encompassed the entire feature set
+        - Jira
+            - Placed user stories into Jira with appropriate title, description and story points
+            - Prepared the first sprint which focuses on authentication
+        - Proposal: Technical Depth, Scale, Reporting Format
+            - Discussed about what were planning to use
+            - We are planning to leverage Java's SpringBoot, React and SQLite
+    - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
+        - SQLite vs AWS RDS
+            - Discussed about the advantages and disadvantages of both
+            - SQLite could provide faster iterations by its ease of use such as deleting the database or updating the schema
+            - Postgres could allow a centralised data pool so we could replicate test data
+            - In the end, we chose SQLite as it was simpler to develop with, and we did not have to overengineer with AWS' potentially billable service
+    - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
+        - No issues as we achieved more than expected
+    - What is planned for the next period (e.g., next week)
+        - Proposal
+            - Finialise draft proposal before this week's lab
+                - Finish writing out technical depth, scale, reporting format
+            - Finalise proposal
+            - Submit the proposal as the scrum master
+        - Sprint #1
+            - Potential to start on the authentication sprint
+            - However, focus should still be on the proposal
