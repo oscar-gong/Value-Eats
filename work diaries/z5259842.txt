@@ -8,3 +8,14 @@ Week 1
 Future:
 - I plan to put together the storyboard to show the flow of the wireframes in the coming weeks. 
 - As a team, we plan to have user stories completed by next week Saturday and discuss it on the same day at 5pm.
+
+Week 2
+- I set up draw.io for our storyboard and did an initial draft of connecting the wireframes. As a team, we reviewed the wireframes and noted that we were missing some critical components such as an email address login for eateries. We continued to make minor fixes and changes to the storyboard.
+- After completing our user stories, we decided to move it into JIRA. We added user stories, their corresponding acceptance criteria and story points under epics. We made some adjustments to our user stories as we realised that some stories were more suited to belong under other epics. We were also able to become more familiar with the interface. 
+- We also decided what user stories we wanted to accomplish by our upcoming Wednesday lab so we can make progress on the technical side of the project
+- Discussed system architecture and what technologies/languages we are planning to use in more depth
+- We chose SQLite due to its simplicity over PostgreSQL
+
+Future:
+- I plan to finalise the storyboard and the proposal before this week's upcoming lab
+- If there is additional time, I plan to start on the frontend
