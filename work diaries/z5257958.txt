@@ -10,7 +10,22 @@ Week 1
    as well as discussing the plans for the upcoming week.
 
 Week 2
- - 
+ - This week our groups focus was primarily on user stories 
+ - I set up the initial drafts for our epics and confirmed that everyone was okay with them in the tutorial. From there, we could then categorize the user stories that other people had made
+ into the correct epic category
+ - I helped add in some additional user stories for some of the elements in our application that were initially missed, such as the stories for users personal voucher viewing
+ - As I wrote user stories, in some cases, it required a minor reshift of the way our storyboards were structured. If this was the case, the changes were also reflected.
+ - Also wrote up acceptance criteria for all of our user stories so the specific details of what needs to be accomplished from each particular story is clear.
+ - After this, we met on Sunday at 5pm as a group in order to transfer our user stories to JIRA and work out which of those stories would be completed in the first sprint.
+ We discussed this as a team as we will be using JIRA extensively throughout the rest of the project, so it is important for everyone to know where everything is.
+ - I also made sure that we put some protocols in place for dealing with code, for example, when implementing a feature, we will write it on it's own feature branch, which will be
+ merged back into the master branch once it has been finished with a pull request, which will have to be reviewed by a certain number of people on the team (probably only 1), before it is approved to 
+ go back into master.
+ - The other main item that I worked on this week was the initial construction of the system architecture diagram. On the meeting on Sunday that went from 5pm - 8pm, 
+ I created a draft for our system architecture diagram, adding in images and connections between the components. For our frontend and backend, we will be using 
+ Java SpringBoot and React as these are the technologies that we as a team are most familiar with.
+ - Next week, I plan to finalise the proposal and format it nicely so it is ready for submission. We will meet on Wednesday and potentially more throughout the week to ensure that 
+ everything is done to the highest standard.
 
 Week 3
  - 
