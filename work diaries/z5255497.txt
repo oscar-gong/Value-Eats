@@ -26,14 +26,14 @@ Week2:
   - We should finalise the proposal and the user stories.
 
   What was finished:
-  - We discussed the system architecture and created the initial system architecture diagram.
-  - We will use Spring Boot, React, SQLite for frontend and backend.
-  - We choose SQLite because it is simple to use and we are familar with it.
-  - We finialised the user stories and added them to the epics on Jira, we also assigned story points to each user story
-    and 1 story point is 2 hours of work.
-  - I created some new user stories in the proposal added details to them, I also added them to the epics on Jira.
+    - We discussed the system architecture and created the initial system architecture diagram.
+    - We will use Spring Boot, React, SQLite for frontend and backend.
+    - We choose SQLite because it is simple to use and we are familar with it.
+    - I helped finalising the user stories and added them to the epics on Jira, I also assigned story points to each user story
+      and 1 story point is 2 hours of work.
+    - I created some new user stories in the proposal added details to them, I also added them to the epics on Jira.
   
-    What were the main technical and non-technical obstacles and how they were
+  What were the main technical and non-technical obstacles and how they were
   overcome:
     - We need to construct the system archtecture diagram, we use draw.io to create the dirgram and share it throught google drive.
   
@@ -44,7 +44,29 @@ Week2:
     - No issue and we finished most of the stuff.
     
   What is planned for the next period:
-  - I will finalise the proposal before this week's lab.
-  - I will work on backend and implement an entity if there is additional time.
+    - I will finalise the proposal before this week's lab.
+    - I will work on backend and implement an entity if there is additional time.
 
 Week3:
+  What was planned for the period since the last work diary entry:
+    - Finalise the proposal before this week's lab, work on backend and implement an entity if there is additional time.
+
+  What was finished:
+    - Some user stories and epics are not correctly related to the storyboards diagram, I helped fixing them up and rewriting the description for them,
+      I also checked their storyboard ID are correctly attached to the correct user stories.
+    - We created a table for Project Feature Objectives and their corresponding User Stories
+    - I helped creating the table for referencing storyboard Id and corresponding user stories in Jira.
+    - I helped creating the system architecture diagram, I added the descriptions for the technologies we are using.
+  
+    What were the main technical and non-technical obstacles and how they were
+  overcome:
+    - We need to construct the storyboard diagrams and the system archtecture diagram, we use draw.io to create the dirgram and added to the proposal
+  
+    What was not finished, why this happened, how this affects the overall project
+    progress and what adjustments (if any) are needed so the success of the project is
+    not endangered:
+    
+    - No issue and we finished most of the stuff.
+    
+  What is planned for the next period:
+    - We will work on the 1st sprint next week, I will work on the backend and implement the functions for user stories.
