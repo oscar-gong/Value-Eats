@@ -28,4 +28,9 @@ Week 2
  everything is done to the highest standard.
 
 Week 3
- - 
+ - This week, we mainly were polishing all aspects of our report so get it ready for submitting on Sunday night.
+ - Throughout the week, I finished refining the user stories to ensure the epics were general enough to classify all the user stories attached correctly. I also added a second system architecture diagram which is more
+ focused on the specific entities that will need to be implemented for our solution, not just the technologies. Furthermore, I also assisted with cleaning up the proposal document to make
+ remove some of the unnecessary paragraphs as well as refining some of the wording used throughout.
+ - Next week, we will begin work on the first sprint, were we will aim to set up authentication. We will have a team meeting to work out how to divide the work amongst our group so we
+ can work as efficiently as possible.
