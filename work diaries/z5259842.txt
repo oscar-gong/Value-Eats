@@ -19,3 +19,21 @@ Week 2
 Future:
 - I plan to finalise the storyboard and the proposal before this week's upcoming lab
 - If there is additional time, I plan to start on the frontend
+
+Week 3
+- Our goal was to finish the entire proposal and finalise it for submission.
+- We were able to successfully complete our goal and submit our proposal
+- Over the past week, I worked on various components of our proposal such as finalising the storyboard, writing a description for the presentation layer of the system architecture, mapping etc. 
+- As a team, we all ensured that our proposal looked presentable and checked through it to ensure that we met the marking criteria 
+- Obstacles that we faced:
+    - Splitting our user stories up into epics
+        - We initially had a mix of "As a eatery owner" and "As a diner" within the user management epic
+        - After discussion, we were able to come to a final decision of splitting the eatery side of the interface into an epic and diner side into another epic
+        - User stories for both were written as "As a user" such as login/logout and remained in the user management epic
+- What was not finished:
+    - Everything was finished within the proposal and we were all satisfied with it
+    - However, We have not made a start on our first sprint. We intend to this beginning on Monday. 
+- What is planned for the next period:
+    - I plan to focus more on the frontend of our authentication features
+    - We plan to implement the user stories we have placed in our first sprint which are mainly authentication features
+    - If there is additional time, we will implement more features
