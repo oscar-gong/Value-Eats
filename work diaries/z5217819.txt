@@ -3,14 +3,24 @@ Week 1
 - We have also created a Google Docs where we have written up the background of our project proposal.
 - We have made significant progress on the storyboards using Balsamiq, mapping out what we'd like the user interface to look like, taking in consideration of design principles for better user experience.
 - We had a team meeting on Sunday night to talk about our current progress, and also improved on our existing work together.
-- We plan to polish up the storyboards next week as well as start on the following sections of the proposal.
+- We plan to polish up the storyboards next week as well as start on the following sections of the proposal (user stories, etc.).
 
 Week 2
 - This week, we mostly finished with our user stories.
 - During our lab in week 2, we've made significant progress, writing up acceptance criterias for each user stories.
-- Initially, I had written up some user stories, which we then later categorised into epics in our week 2 lab, and also added them into our JIRA. We added story points to each user story in JIRA.
+- Initially, I had written up some user stories, which we then later categorised into epics in our week 2 lab, and have also added them into our JIRA. We added story points to each user story in JIRA.
 - We have also decided on using Spring Boot, React and SQLite3 for this project.
 - We have finalised our storyboard, made some minor touches on areas where we have missed as we were writing user stories.
 - We made a start to the system architecture diagram which we would finish by the end of week 3.
 - Overall, there weren't many issues - all issues were able to be resolved easily.
 - In week 3, I plan to polish up our entire proposal and have it ready before our next meeting.
+
+Week 3
+- This week we have got every section required into our proposal.
+- I added a table which demonstrated how our user stories had covered each project objective.
+- We have written up the novel functionalities our system will provide.
+- As determining if each user story is covered in our storyboards may be quite challenging, we have decided to create a table that states the relevant user stories in each storyboard frame.
+- We have finalised the system architecture diagrams and storyboards that we worked on last week.
+- We have also decided to write up the system architecture descriptions as we believed that it would make things clearer.
+- I have assisted in finalising the proposal ensuring that every section meets the criteria.
+- In week 4, we plan to begin our first sprint for our project. We plan to implement the authentication features of our system.
