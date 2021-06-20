@@ -19,6 +19,7 @@ Week 1
             - Added to the background
         - GitHub
             - Joined repository
+            - Set up Spring Boot for the back end and React for front end
     - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
         - Story Boarding
             - Understanding how to storyboard
@@ -68,3 +69,41 @@ Week 2
         - Sprint #1
             - Potential to start on the authentication sprint
             - However, focus should still be on the proposal
+
+Week 3
+    - What was planned for the period since the last work diary entry
+        - Proposal
+            - Finialise draft proposal before this week's lab
+                - Finish writing out technical depth, scale, reporting format
+            - Finalise proposal
+            - Submit the proposal as the scrum master
+        - Sprint #1
+            - Potential to start on the authentication sprint
+            - However, focus should still be on the proposal
+    - What was finished
+        - Proposal
+            - Finished improving the proposal
+                - Restructured proposal from a draft into a completed version
+                - Improved content
+                - Added more information where appropriate
+            - Finished the proposal
+            - Submitted the proposal
+        - Jira
+            - Made acceptance criteria more clear
+    - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
+        - Ensuring that the feature set is all contained within the user stories
+            - Required thorough abstract thinking in order to imagine what was required
+            - Required drawing out potential issues within the given scope
+    - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
+        - Starting sprint 1
+            - We planned to commence work on the project in advance to help us further understand the specifications and hence the proposal
+            - We were unable to commence work as we were focused on improving the quality of the proposal directly rather than indirectly through development
+            - This will not impact our overall project progress as this was an extension goal which we would have liked to achieve in order to reduce future workload
+    - What is planned for the next period (e.g., next week)
+        - As it is the start of a project, there will be a lot of setting up of both environments and machines
+        - Sprint 1
+            - Based on the sprint on Jira, we are focusing on working on authentication as this will create the users which need to be managed and used
+                - Registering eatery
+                - Registering diner
+                - Login as eatery or diner
+                - Logout as eatery or diner
