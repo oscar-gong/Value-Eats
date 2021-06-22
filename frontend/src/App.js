@@ -6,6 +6,8 @@ import {
 } from 'react-router-dom';
 import { Main } from './styles/Main';
 import Login from './pages/Login';
+import RegisterDiner from './pages/RegisterDiner';
+import RegisterEatery from './pages/RegisterEatery';
 
 function App() {
   return (
@@ -13,8 +15,14 @@ function App() {
       <Main>
         <Router>
           <Switch>
-            <Route path="/">
+            <Route exact path="/">
               <Login/>
+            </Route>
+            <Route exact path="/RegisterDiner">
+              <RegisterDiner/>
+            </Route>
+            <Route exact path="/RegisterEatery">
+              <RegisterEatery/>
             </Route>
           </Switch>
         </Router>
