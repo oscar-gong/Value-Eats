@@ -4,9 +4,8 @@ import { Subtitle } from '../styles/Subtitle';
 import { AlignCenter } from '../styles/AlignCenter';
 import { Box, TextField, Button } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-import { Link } from 'react-router-dom';
 
-export default function Register() {
+export default function RegisterDiner() {
     return (
         <AlignCenter>
             <FloatBox display="flex" flexDirection="column" alignItems="center">
