@@ -15,11 +15,11 @@ export default function Login () {
                     <Title>Value Eats</Title>
                 </Box>
                 {/* <p>Disrupting the intersection between discount and advertising through centralisation</p> */}
-                <Box pt={1}>
-                    <TextField id="outlined-basic" label="Username" variant="outlined" />
+                <Box pt={1} width="60%">
+                    <TextField id="outlined-basic" label="Username" variant="outlined" fullWidth/>
                 </Box>
-                <Box pt={2}>
-                    <TextField id="outlined-basic" label="Password" variant="outlined" />
+                <Box pt={2} width="60%">
+                    <TextField id="outlined-basic" label="Password" variant="outlined" fullWidth/>
                 </Box>
                 <Box pt={4} pb={4}>
                     <Button variant="contained"
