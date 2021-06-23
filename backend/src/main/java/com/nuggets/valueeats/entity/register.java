@@ -12,7 +12,7 @@ public class register {
         name = "register_sequence",
         sequenceName = "register_sequence",
         allocationSize = 1;
-    }
+    )
     @GeneratedValue
     private Long id;
     private String username;
