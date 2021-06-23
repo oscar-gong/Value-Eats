@@ -1,5 +1,6 @@
 package com.nuggets.valueeats;
 
+import com.nuggets.valueeats.controllers.database.DatabaseConnector;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,5 +18,13 @@ public class ValueeatsApplication {
 	@GetMapping("/hello")
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return String.format("Hello %s!", name);
+	}
+
+	@GetMapping("/test")
+	public String test() throws Exception {
+		DatabaseConnector.createDatabase();
+		DatabaseConnector.connect();
+
+		return "Test successful";
 	}
 }
