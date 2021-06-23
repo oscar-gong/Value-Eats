@@ -11,7 +11,7 @@ public class register {
     @SequenceGenerator(
         name = "register_sequence",
         sequenceName = "register_sequence",
-        allocationSize = 1;
+        allocationSize = 1
     )
     @GeneratedValue
     private Long id;
