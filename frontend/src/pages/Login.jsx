@@ -4,6 +4,8 @@ import { Title } from '../styles/Title';
 import { AlignCenter } from '../styles/AlignCenter';
 import { Box, TextField, Button } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import { Link } from 'react-router-dom';
+
 
 export default function Login () {
     const [username, setUsername] = useState("");
@@ -49,9 +51,13 @@ export default function Login () {
                 </Box>
                 <Box height="30px" width="100%" display="flex" justifyContent="space-evenly" alignItems="center">
                     <h3>New to ValueEats?</h3>
-                    <a href="#!">Sign up here</a>
+                    <Link to="/RegisterDiner">
+                        Sign up here
+                    </Link>
                 </Box>
-                <a href="#!">Register as an eatery</a>
+                <Link to="/RegisterEatery">
+                    Register as an eatery
+                </Link>
             </FloatBox>
         </AlignCenter>
     )
