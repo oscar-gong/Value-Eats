@@ -1,12 +1,12 @@
-package com.nuggets.valueeates.entity;
+package com.nuggets.valueeats.entity;
 
 import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
 
-@entity (name = "register")
-public class register {
+@Entity(name = "register")
+public class Register {
     @Id
     @SequenceGenerator(
         name = "register_sequence",
@@ -18,6 +18,6 @@ public class register {
     private String username;
     private String email;
     private String password;
-    
+
     //Add methods to them.
 }
