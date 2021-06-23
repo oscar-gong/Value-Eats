@@ -25,16 +25,18 @@ public final class DatabaseConnector {
             log.info("Successfully connected to database");
         } catch (SQLException e) {
             log.error("Could not connect to database", e);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                log.error("Failed to close opened database connection", e);
-            }
         }
 
         return connection;
+    }
+
+    public static void createNewTable() throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS warehousesfs (\n"
+                + "	id integer PRIMARY KEY,\n"
+                + "	name text NOT NULL,\n"
+                + "	capacity real\n"
+                + ");";
+
+        DatabaseManager.processWriteRequest(sql);
     }
 }
