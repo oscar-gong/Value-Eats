@@ -2,16 +2,36 @@ package com.nuggets.valueeats.controllers.database;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
-public final class DatabaseManager {
+public final class DatabaseController {
+    public final static String databaseName = "jdbc:sqlite:src/valueeats.db";
     private static final ReentrantLock lock = new ReentrantLock();
-    private static final Connection writeConnection = DatabaseConnector.connect(); // Sqlite3 does not allow concurrent writes
+    private static final Connection writeConnection = connect(); // Sqlite3 does not allow concurrent writes
+
+    public static void createDatabase() throws SQLException {
+        try {
+            DriverManager.getConnection(databaseName);
+            log.info("Successfully created database");
+        } catch (SQLException e) {
+            log.error("Could not create database", e);
+            throw e;
+        }
+    }
+
+    private static Connection connect() {
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(databaseName);
+            log.info("Successfully connected to database");
+        } catch (SQLException e) {
+            log.error("Could not connect to database", e);
+        }
+
+        return connection;
+    }
 
     public static void processWriteRequest(String sql) throws SQLException {
         Statement statement;
