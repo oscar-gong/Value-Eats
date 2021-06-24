@@ -11,7 +11,7 @@ public class DatabaseAuthenticationTableService {
                 "          username text NOT NULL, " +
                 "          email text NOT NULL, " + // TODO: Might be better to use an email type if it exists
                 "          password text NOT NULL, " +
-                "          PRIMARY KEY (username, email) " +
+                "          PRIMARY KEY (username, email) " + // TODO: Make user and email primary keys, not together.
                 "     );";
 
         DatabaseController.processWriteRequest(sql);
