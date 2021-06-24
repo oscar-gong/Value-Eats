@@ -1,4 +1,5 @@
 package com.nuggets.valueeats.service;
 
-public class AuthenticationService {
+public class DinerService {
+    
 }
