@@ -1,10 +1,8 @@
 package com.nuggets.valueeats;
 
 import com.nuggets.valueeats.controllers.DinerController;
-import com.nuggets.valueeats.controllers.database.DatabaseController;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
-import com.nuggets.valueeats.service.database.DatabaseAuthenticationTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,24 +28,11 @@ public class ValueEatsApplication {
 
 		SpringApplication.run(ValueEatsApplication.class, args);
 	}
-
-	/*@GetMapping("/diner")
-	public boolean diner(@RequestParam(value = "username", defaultValue = "") String username) throws SQLException {
-		String password = "todo";
-		String email = "todo@todo.com";
-
-		return dinerController.dinerDiner(new Diner(username, email, password));
-	}
-
-	@GetMapping("/health")
-	public String health(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return "Hello " + name;
-	}
-
-	@GetMapping("/database_connection")
-	public String database_connection() throws SQLException {
-		ResultSet resultSet = DatabaseController.processReadRequest("SELECT 1");
-
-		return "Test successful with true and 1: " + resultSet.next() + " " + resultSet.getRow();
-	}*/
+	// 	Install postgres version 42.2.14 or others.
+	// 	Then run those commands:
+	// 	sudo su postgres
+	// 	psql
+	//	create database demoau;
+	// 	create user valueeats with encrypted password 'valueeats';
+	//	ALTER USER valueeats WITH SUPERUSER;
 }
