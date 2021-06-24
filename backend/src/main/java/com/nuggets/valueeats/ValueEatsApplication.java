@@ -1,8 +1,9 @@
 package com.nuggets.valueeats;
 
-import com.nuggets.valueeats.controllers.RegisterController;
+import com.nuggets.valueeats.controllers.DinerController;
 import com.nuggets.valueeats.controllers.database.DatabaseController;
-import com.nuggets.valueeats.entity.User.Diner;
+import com.nuggets.valueeats.entity.Diner;
+import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.service.database.DatabaseAuthenticationTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -11,28 +12,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @SpringBootApplication
 @RestController
 public class ValueEatsApplication {
-	@Autowired
-	private RegisterController registerController;
+	//@Autowired
+	//private final JdbcTemplate jdbcTemplate;
 
-	public static void main(String[] args) throws SQLException {
-		DatabaseController.createDatabase();
-		DatabaseAuthenticationTableService.createNewTable();
+	//@Autowired
+	//private DinerController dinerController;
+
+	public static void main(String[] args) {
 
 		SpringApplication.run(ValueEatsApplication.class, args);
 	}
 
-	@GetMapping("/register")
-	public boolean register(@RequestParam(value = "username", defaultValue = "") String username) throws SQLException {
+	/*@GetMapping("/diner")
+	public boolean diner(@RequestParam(value = "username", defaultValue = "") String username) throws SQLException {
 		String password = "todo";
 		String email = "todo@todo.com";
 
-		return registerController.registerDiner(new Diner(username, email, password));
+		return dinerController.dinerDiner(new Diner(username, email, password));
 	}
 
 	@GetMapping("/health")
@@ -45,5 +49,5 @@ public class ValueEatsApplication {
 		ResultSet resultSet = DatabaseController.processReadRequest("SELECT 1");
 
 		return "Test successful with true and 1: " + resultSet.next() + " " + resultSet.getRow();
-	}
+	}*/
 }
