@@ -14,7 +14,7 @@ public interface DinerRepository extends JpaRepository<Diner, Integer>{
 
     public List<Diner> findByEmail(String email);
 
-    @Query("select max(s.id) from Diner s")
+    @Query("select max(d.id) from Diner d")
     public Integer findMaxId();
     
 }

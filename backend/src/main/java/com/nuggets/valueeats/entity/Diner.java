@@ -10,8 +10,10 @@ public class Diner {
     @Id
     private int id;
 
-    private String name;
+    private String username;
     private String email;
+    private String address;
+    private String password;
     
     public Diner() {
 
@@ -25,12 +27,12 @@ public class Diner {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -41,12 +43,29 @@ public class Diner {
         this.email = email;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "Diner{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + username + '\'' +
                 ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 }

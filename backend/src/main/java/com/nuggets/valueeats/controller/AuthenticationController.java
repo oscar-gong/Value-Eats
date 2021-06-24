@@ -23,4 +23,8 @@ public class AuthenticationController {
         return dinerService.registerDiner(diner);
     }
 
+    @RequestMapping(value = "listdiners", method = RequestMethod.GET)
+    public List<Diner> listDiner(){
+        return dinerService.listDiner();
+    }
 }
