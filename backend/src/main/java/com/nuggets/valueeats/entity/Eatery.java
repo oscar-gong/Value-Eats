@@ -43,7 +43,7 @@ public class Eatery {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Eatery{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +

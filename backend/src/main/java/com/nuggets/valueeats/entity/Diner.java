@@ -43,7 +43,7 @@ public class Diner {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Diner{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
