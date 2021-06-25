@@ -1,20 +1,14 @@
 package com.nuggets.valueeats.repository;
 
 import com.nuggets.valueeats.entity.Diner;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 
 @Repository
-public interface DinerRepository extends JpaRepository<Diner, Integer>{
-    public boolean existsByEmail(String email);
+public interface DinerRepository extends UserBaseRepository<Diner>{
 
-    public List<Diner> findByEmail(String email);
-
-    @Query("select max(d.id) from Diner d")
-    public Integer findMaxId();
-    
 }

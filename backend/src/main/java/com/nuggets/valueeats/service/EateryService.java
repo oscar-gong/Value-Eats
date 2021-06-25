@@ -1,9 +1,7 @@
 package com.nuggets.valueeats.service;
 
-import com.nuggets.valueeats.entity.Diner;
-import com.nuggets.valueeats.repository.DinerRepository;
-import com.nuggets.valueeats.repository.UserBaseRepository;
-
+import com.nuggets.valueeats.entity.Eatery;
+import com.nuggets.valueeats.repository.EateryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,36 +10,36 @@ import java.util.List;
 import java.util.regex.*;
 
 @Service
-public class DinerService {
+public class EateryService {
     
     @Autowired
-    private DinerRepository dinerRepository;
+    private EateryRepository eateryRepository;
 
     @Transactional
-    public String registerDiner(Diner diner){
+    public String registerEatery(Eatery eatery){
         try {
             // Checks if email exists in the database
-            if (dinerRepository.existsByEmail(diner.getEmail())){
-                return "Diner already exists in the database.";
-            }else if(!isValidInput(diner)){
+            if (eateryRepository.existsByEmail(eatery.getEmail())){
+                return "Eatery already exists in the database.";
+            }else if(!isValidInput(eatery)){
                 return "Please fill in all required fields.";
-            }else if(!isValidEmail(diner.getEmail())){
+            }else if(!isValidEmail(eatery.getEmail())){
                 return "Invalid Email Format.";
-            }else if(!isValidPassword(diner.getPassword())){
+            }else if(!isValidPassword(eatery.getPassword())){
                 return "Password must be between 8 to 32 characters long, and contain a lower and uppercase character.";
             }else {
-                diner.setId(null == dinerRepository.findMaxId()? 0 : dinerRepository.findMaxId() + 1);
-                // Saves diner in database
-                dinerRepository.save(diner);
-                return "Diner record created successfully.";
+                eatery.setId(null == eateryRepository.findMaxId()? 0 : eateryRepository.findMaxId() + 1);
+                // Saves eatery in database
+                eateryRepository.save(eatery);
+                return "Eatery record created successfully.";
             }
         }catch (Exception e){
             throw e;
         }
     }
 
-    private static boolean isValidInput(Diner diner){
-        return (diner.getAddress() != null && diner.getPassword() != null && diner.getUsername() != null && diner.getEmail() != null);
+    private static boolean isValidInput(Eatery eatery){
+        return (eatery.getAddress() != null && eatery.getPassword() != null && eatery.getName() != null && eatery.getEmail() != null);
     }
 
     // Checks if email is valid (can probs use something other than regex)
@@ -56,7 +54,7 @@ public class DinerService {
         return Pattern.matches(regex, password);
     }
 
-    public List<Diner> listDiner(){
-        return dinerRepository.findAll();
+    public List<Eatery> listEatery(){
+        return eateryRepository.findAll();
     }
 }
