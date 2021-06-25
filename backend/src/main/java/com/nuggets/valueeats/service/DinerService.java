@@ -2,7 +2,6 @@ package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.repository.DinerRepository;
-import com.nuggets.valueeats.repository.UserBaseRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
