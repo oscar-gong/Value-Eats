@@ -59,23 +59,33 @@ export default function RegisterDiner() {
         )
             return;
         console.log("registered");
-        console.log(username, email, password, address);
-        /*
+        console.log(username.value, email.value, password.value, address.value);
+
         const response = await fetch("http://localhost:8080/register/diner", {
             method: "POST",
             headers: {
-                Accept: "application/json",
                 "Content-Type": "application/json",
+                Accept: "application/json",
             },
             body: JSON.stringify({
-                username: username,
-                email: email,
-                address: address,
-                password: password,
+                username: username.value,
+                email: email.value,
+                address: address.value,
+                password: password.value,
             }),
         });
-		console.log(response);
-		*/
+
+        if (response.status !== 200) {
+            alert(`${response.statusText} Unsuccesful Register`);
+        } else if (response.status === 200) {
+            const res = await response.text();
+            if (res === "Diner record created successfully.") {
+                // landing page
+                console.log("successful, go to landing page");
+            } else {
+                alert(`${res} Unsuccesful Register`);
+            }
+        }
     };
 
     const handleKeyPress = (e) => {
