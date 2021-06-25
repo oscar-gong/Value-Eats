@@ -1,9 +1,7 @@
 package com.nuggets.valueeats.entity;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.*;  
 
 
@@ -53,10 +51,6 @@ public class Eatery extends User{
 
     @Override
     public String toString() {
-        return "Eatery{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "";
     }
 }
