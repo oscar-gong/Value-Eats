@@ -8,6 +8,7 @@ import { Main } from './styles/Main';
 import Login from './pages/Login';
 import RegisterDiner from './pages/RegisterDiner';
 import RegisterEatery from './pages/RegisterEatery';
+import DinerLanding from './pages/DinerLanding';
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
       <Main>
         <Router>
           <Switch>
+          <Route exact path="/dinerLanding">
+              <DinerLanding/>
+            </Route>
             <Route exact path="/">
               <Login/>
             </Route>

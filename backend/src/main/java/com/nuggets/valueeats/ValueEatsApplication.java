@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class ValueeatsApplication {
+public class ValueEatsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ValueeatsApplication.class, args);
+		SpringApplication.run(ValueEatsApplication.class, args);
 	}
 
 	@GetMapping("/hello")

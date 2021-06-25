@@ -5,14 +5,16 @@ import { AlignCenter } from '../styles/AlignCenter';
 import { Box, TextField, Button } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 
 
 export default function Login () {
-    const [username, setUsername] = useState("");
+    const history = useHistory();
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleLogin = async () => {
-        console.log("hello, " + username + " " + password);
+        console.log("hello, " + email + " " + password);
         const loginResult = await fetch("http://localhost:8080/login", {
             method: "POST",
             headers: {
@@ -20,12 +22,18 @@ export default function Login () {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                "username": username,
+                "email": email,
                 "password": password
             })
         })
         // const ans = await loginResult.json();
         console.log(loginResult);
+        alert(loginResult);
+        if (loginResult.status === 200) {
+            history.push("/dinerLanding");
+        } else {
+            alert("Login failed - username and password are incorrect");
+        }
     }
 
     return (
@@ -35,11 +43,11 @@ export default function Login () {
                     <Title>Value Eats</Title>
                 </Box>
                 {/* <p>Disrupting the intersection between discount and advertising through centralisation</p> */}
-                <Box pt={1}>
-                    <TextField id="outlined-basic" label="Username" variant="outlined" onChange={e => setUsername(e.target.value)} value={username}/>
+                <Box pt={1} width="60%">
+                    <TextField id="outlined-basic" label="Email address" variant="outlined" onChange={e => setEmail(e.target.value)} value={email} fullWidth/>
                 </Box>
-                <Box pt={2}>
-                    <TextField type="password" id="outlined-basic" label="Password" variant="outlined" onChange={e => setPassword(e.target.value)} value={password}/>
+                <Box pt={2}  width="60%">
+                    <TextField type="password" id="outlined-basic" label="Password" variant="outlined" onChange={e => setPassword(e.target.value)} value={password} fullWidth/>
                 </Box>
                 <Box pt={4} pb={4}>
                     <Button variant="contained"

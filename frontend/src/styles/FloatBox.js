@@ -9,6 +9,5 @@ export const FloatBox = styled(Box)`
     min-width: 30%;
     max-width: 40vw !important;
     min-height: 70%;
-    max-height: 60vh;
     align-items: center;
 `
