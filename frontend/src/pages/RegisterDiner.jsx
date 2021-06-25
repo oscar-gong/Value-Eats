@@ -4,7 +4,7 @@ import { Subtitle } from "../styles/Subtitle";
 import { AlignCenter } from "../styles/AlignCenter";
 import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
-import { usePlacesWidget } from "react-google-autocomplete";
+import AutoComplete, { usePlacesWidget } from "react-google-autocomplete";
 
 export default function RegisterDiner() {
     const defaultState = { value: "", valid: true };
@@ -60,20 +60,22 @@ export default function RegisterDiner() {
             return;
         console.log("registered");
         console.log(username, email, password, address);
-
         /*
-        const response = await fetch("http://localhost:8080/register", {
+        const response = await fetch("http://localhost:8080/register/diner", {
             method: "POST",
             headers: {
-                "Content-Type" : 'application/json',    
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                "username": username,
-                "email": email,
-                "address": address,
-                "password": password,
+                username: username,
+                email: email,
+                address: address,
+                password: password,
             }),
-        });*/
+        });
+		console.log(response);
+		*/
     };
 
     const handleKeyPress = (e) => {
@@ -84,7 +86,8 @@ export default function RegisterDiner() {
 
     const { ref } = usePlacesWidget({
         apiKey: "AIzaSyCG80LxbPTd4MNoZuPdzbF-aQA_DcCAGVQ",
-        onPlaceSelected: (place) => setAddress({ value: place, valid: true }),
+        onPlaceSelected: (place) =>
+            setAddress({ value: place.formatted_address, valid: true }),
         options: {
             types: ["address"],
             componentRestrictions: { country: "au" },
