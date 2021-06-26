@@ -21,7 +21,7 @@ public final class Eatery extends User {
 
     public void setCuisines(String cuisines) {
         this.cuisines = Arrays.stream(cuisines.split(","))
-                .map(a -> TextUtils.toTitle(a))
+                .map(TextUtils::toTitle)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 

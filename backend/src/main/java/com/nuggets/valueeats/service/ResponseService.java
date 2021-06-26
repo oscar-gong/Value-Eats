@@ -3,20 +3,20 @@ package com.nuggets.valueeats.service;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
-public class ResponseService {
+public final class ResponseService {
     public JSONObject createResponse(final String message) {
-        HashMap<String, String> response = new HashMap<>();
+        Map<String, String> response = new HashMap<>();
         response.put("message", message);
 
         return new JSONObject(response);
     }
 
     public JSONObject createResponse(final String message, final JSONObject result) {
-        HashMap<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         response.put("message", message);
         response.put("data", result);
 

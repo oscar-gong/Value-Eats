@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 @Primary
-public interface UserBaseRepository<T extends User> extends JpaRepository<T, Integer> {
+public interface UserRepository<T extends User> extends JpaRepository<T, Integer> {
     boolean existsByEmail(String email);
 
     List<T> findByEmail(String email);

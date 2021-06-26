@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LoginService {
+public final class LoginService {
     @Autowired
     private DinerRepository dinerRepository;
     @Autowired
@@ -48,8 +48,7 @@ public class LoginService {
     private ResponseEntity<JSONObject> loginPasswordCheck(final String loginPassword, final String actualPassword, final String successMessage) {
         if (loginPassword.equals(actualPassword)) {
             return ResponseEntity.status(HttpStatus.OK).body(responseService.createResponse(successMessage));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Invalid password, please try again"));
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Invalid password, please try again"));
     }
 }
