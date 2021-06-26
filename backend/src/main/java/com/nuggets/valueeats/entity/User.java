@@ -3,19 +3,18 @@ package com.nuggets.valueeats.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @Data
-public class User {
+public class User extends LoginCredentials {
     @Id
-    private int id;
-    private String password;
+    private long id;
     private String address;
-    private String email;
+    @OneToMany
+    private Set<Token> tokens = new HashSet<>();
 }

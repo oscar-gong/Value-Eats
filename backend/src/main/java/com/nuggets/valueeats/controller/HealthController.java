@@ -3,11 +3,9 @@ package com.nuggets.valueeats.controller;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.service.HealthService;
+import com.nuggets.valueeats.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,14 +14,29 @@ import java.util.List;
 public final class HealthController {
     @Autowired
     private HealthService healthService;
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test() {
+        return "Test";
+    }
+
+    @RequestMapping(value = "/encode/{string}", method = RequestMethod.GET)
+    public String encode(@PathVariable final String string) {
+        String a = jwtUtils.encode(string);
+        String b = jwtUtils.decode(a);
+
+        return "String: " + string + "\nEncode: " + a + "\nDecode: " + b;
+    }
 
     @RequestMapping(value = "list/diners", method = RequestMethod.GET)
-    public List<Diner> listDiner(){
+    public List<Diner> listDiner() {
         return healthService.listDiner();
     }
 
     @RequestMapping(value = "list/eateries", method = RequestMethod.GET)
-    public List<Eatery> listEatery(){
+    public List<Eatery> listEatery() {
         return healthService.listEatery();
     }
 }
