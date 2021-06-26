@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class User {
+public class User {
     
     @Id
     private int id;
@@ -19,7 +19,8 @@ public abstract class User {
     private String address;
     private String email;
 
-
+    public User() {
+    }
     
     public int getId() {
         return id;

@@ -2,13 +2,14 @@ package com.nuggets.valueeats.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nuggets.valueeats.entity.LoginInfo;
+import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.service.DinerService;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.service.EateryService;
 import com.nuggets.valueeats.service.LoginService;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,13 +33,13 @@ public class AuthenticationController {
     private LoginService loginService;
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public ResponseEntity<String> login(@RequestBody LoginInfo usernamePassword) {
-        System.out.println(usernamePassword.getEmail() + " " + usernamePassword.getPassword() + "!!!!!!!");
-        return loginService.login(usernamePassword);
+    public ResponseEntity<JSONObject> login(@RequestBody User user) {
+        System.out.println(user.getEmail() + " " + user.getPassword() + "!!!!!!!");
+        return loginService.login(user);
     }
 
     @RequestMapping(value = "register/diner", method = RequestMethod.POST)
-    public ResponseEntity<String> registerDiner(@RequestBody Diner diner){
+    public ResponseEntity<JSONObject> registerDiner(@RequestBody Diner diner){
         return dinerService.registerDiner(diner);
     }
 
