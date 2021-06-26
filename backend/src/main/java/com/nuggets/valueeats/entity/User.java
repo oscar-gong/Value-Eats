@@ -11,12 +11,10 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @Data
-public class User {
+public class User extends LoginCredentials {
     @Id
     private long id;
-    private String password;
     private String address;
-    private String email;
     @OneToMany
     private Set<Token> tokens = new HashSet<>();
 }

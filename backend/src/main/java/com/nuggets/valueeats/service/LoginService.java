@@ -2,11 +2,10 @@ package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
-import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.entity.LoginCredentials;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.utils.EncryptionUtils;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,7 @@ public final class LoginService {
     @Autowired
     private ResponseService responseService;
 
-    public ResponseEntity<JSONObject> login(final User user) {
+    public ResponseEntity<JSONObject> login(final LoginCredentials user) {
         List<Diner> diners;
         List<Eatery> eateries;
         try {
