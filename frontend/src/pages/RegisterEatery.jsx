@@ -10,6 +10,7 @@ import SendIcon from "@material-ui/icons/Send";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import { checkValidEmail, checkValidPassword, fileToDataUrl } from "./helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
+import { useHistory } from "react-router";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 export default function RegisterEatery() {
@@ -24,6 +25,7 @@ export default function RegisterEatery() {
     const [eateryName, setEateryName] = React.useState(defaultState);
     const [address, setAddress] = React.useState(defaultState);
     const [cuisines, setCuisines] = React.useState({ value: [], valid: true });
+    const history = useHistory();
 
     // set to true for real demos
     const useGoogleAPI = false;
@@ -115,7 +117,8 @@ export default function RegisterEatery() {
         if (confirmPassword.value === "")
             setConfirmPassword({ value: "", valid: false });
         if (eateryName.value === "") setEateryName({ value: "", valid: false });
-        if (!cuisines.value.length) setCuisines({ value: [], valid: false });
+        if (Array.isArray(cuisines.value) && !cuisines.value.length)
+            setCuisines({ value: [], valid: false });
 
         if (useGoogleAPI && address.value === "")
             setAddress({ value: "", valid: false });
@@ -131,7 +134,7 @@ export default function RegisterEatery() {
             password.value === "" ||
             confirmPassword.value === "" ||
             eateryName.value === "" ||
-            !cuisines.value.length
+            (Array.isArray(cuisines.value) && !cuisines.value.length)
         )
             return;
         if ((!address.valid || address.value === "") && useGoogleAPI) {
@@ -156,7 +159,7 @@ export default function RegisterEatery() {
         });
         console.log(response);
         if (response.status === 200) {
-            history.push("/eateryLanding");
+            history.push("/EateryLanding");
         } else if (response.status === 409) {
             alert("Email already exists - please try another one");
         } else {
