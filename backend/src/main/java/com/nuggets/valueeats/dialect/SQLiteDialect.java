@@ -9,7 +9,6 @@ import org.hibernate.type.StringType;
 import java.sql.Types;
 
 public class SQLiteDialect extends Dialect {
-
     public SQLiteDialect() {
         registerColumnType(Types.BIT, "integer");
         registerColumnType(Types.TINYINT, "tinyint");
@@ -118,7 +117,7 @@ public class SQLiteDialect extends Dialect {
     }
 
     public String getAddForeignKeyConstraintString(String constraintName, String[] foreignKey, String referencedTable,
-                                                   String[] primaryKey, boolean referencesPrimaryKey) {
+            String[] primaryKey, boolean referencesPrimaryKey) {
         throw new UnsupportedOperationException("No add foreign key syntax supported by SQLiteDialect");
     }
 
