@@ -5,8 +5,6 @@ import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
-
-import org.apache.catalina.connector.Response;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +12,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
-// import java.util.regex.*;
+
+import javax.transaction.Transactional;
 
 @Service
 public class LoginService {
-    
     @Autowired
     private DinerRepository dinerRepository;
-
     @Autowired
     private EateryRepository eateryRepository;
-
     @Autowired
     private ResponseService responseService;
 
     @Transactional
-    public ResponseEntity<JSONObject> login(User user){
+    public ResponseEntity<JSONObject> login(final User user){
         List<Diner> diners;
         List<Eatery> eateries;
         try {
@@ -41,25 +36,23 @@ public class LoginService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse(e.toString()));
         }
-        if (diners.size() == 1){
+        if (diners.size() == 1) {
             Diner diner = diners.get(0);
-            // There exists a diner with this email in the database
-            if (DigestUtils.sha256Hex(user.getPassword()).equals(diner.getPassword())) {
-                // We have logged in
-                return ResponseEntity.status(HttpStatus.OK).body(responseService.createResponse("Welcome back, " + user.getEmail()));
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Invalid password, please try again"));
-            }
-        } else if (eateries.size() == 1) {
+            return loginPasswordCheck(DigestUtils.sha256Hex(user.getPassword()), diner.getPassword(), "Welcome back, " + diner.getEmail());
+        }
+        if (eateries.size() == 1) {
             Eatery eatery = eateries.get(0);
-            if (user.getPassword().equals(eatery.getPassword())) {
-                // We have logged in
-                return ResponseEntity.status(HttpStatus.OK).body(responseService.createResponse("EATERY - " + user.getEmail() + " has been logged in"));
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Invalid password, please try again"));
-            }
+            return loginPasswordCheck(user.getPassword(), eatery.getPassword(), "EATERY - " + user.getEmail() + " has been logged in");
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Failed to login, please try again"));
+    }
+
+    private ResponseEntity<JSONObject> loginPasswordCheck(final String loginPassword, final String actualPassword, final String successMessage) {
+        if (loginPassword.equals(actualPassword)) {
+            return ResponseEntity.status(HttpStatus.OK).body(responseService.createResponse(successMessage));
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Email not found, please try again"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Invalid password, please try again"));
         }
     }
 }
