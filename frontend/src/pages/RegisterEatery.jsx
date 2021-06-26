@@ -53,10 +53,10 @@ export default function RegisterEatery() {
                     <TextField id="outlined-basic" label="Email Address" onChange={e => setEmail(e.target.value)} variant="outlined" fullWidth />
                 </Box>
                 <Box pt={2} width="60%">
-                    <TextField id="outlined-basic" label="Password" onChange={e => setPassword(e.target.value)} variant="outlined" fullWidth />
+                    <TextField id="outlined-basic" type="password" label="Password" onChange={e => setPassword(e.target.value)} variant="outlined" fullWidth />
                 </Box>
                 <Box pt={2} width="60%">
-                    <TextField id="outlined-basic" label="Confirm Password" onChange={e => setConfirmPassword(e.target.value)} variant="outlined" fullWidth />
+                    <TextField id="outlined-basic" type="password" label="Confirm Password" onChange={e => setConfirmPassword(e.target.value)} variant="outlined" fullWidth />
                 </Box>
                 <Box pt={2} width="60%">
                     <TextField id="outlined-basic" label="Eatery Name" onChange={e => setEateryName(e.target.value)} variant="outlined" fullWidth />

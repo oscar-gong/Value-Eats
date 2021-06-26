@@ -48,10 +48,10 @@ export default function Login () {
                 <Box pt={1} width="60%">
                     <TextField id="outlined-basic" label="Email address" variant="outlined" onChange={e => setEmail(e.target.value)} value={email} fullWidth/>
                 </Box>
-                <Box pt={2}  width="60%">
+                <Box pt={2} width="60%">
                     <TextField type="password" id="outlined-basic" label="Password" variant="outlined" onChange={e => setPassword(e.target.value)} value={password} fullWidth/>
                 </Box>
-                <Box pt={4} pb={4}>
+                <Box pt={4} pb="8%">
                     <Button variant="contained"
                         color="primary"
                         endIcon={<SendIcon/>}

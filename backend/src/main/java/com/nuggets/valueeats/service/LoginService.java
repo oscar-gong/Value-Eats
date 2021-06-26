@@ -32,32 +32,34 @@ public class LoginService {
 
     @Transactional
     public ResponseEntity<JSONObject> login(User user){
+        List<Diner> diners;
+        List<Eatery> eateries;
         try {
             // Handle login for diners
-            List<Diner> diners = dinerRepository.findByEmail(user.getEmail());
-            List<Eatery> eateries = eateryRepository.findByEmail(user.getPassword());
-            if (diners.size() == 1){
-                Diner diner = diners.get(0);
-                // There exists a diner with this email in the database
-                if (DigestUtils.sha256Hex(user.getPassword()).equals(diner.getPassword())) {
-                    // We have logged in
-                    return ResponseEntity.status(HttpStatus.OK).body(responseService.createResponse("Welcome back, " + user.getEmail()));
-                } else {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Invalid password, please try again"));
-                }
-            } else if (eateries.size() == 1) {
-                Eatery eatery = eateries.get(0);
-                if (user.getPassword().equals(eatery.getPassword())) {
-                    // We have logged in
-                    return ResponseEntity.status(HttpStatus.OK).body(responseService.createResponse("EATERY - " + user.getEmail() + " has been logged in"));
-                } else {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Invalid password, please try again"));
-                }
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Username username, please try again"));
-            }
+            diners = dinerRepository.findByEmail(user.getEmail());
+            eateries = eateryRepository.findByEmail(user.getPassword());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse(e.toString()));
+        }
+        if (diners.size() == 1){
+            Diner diner = diners.get(0);
+            // There exists a diner with this email in the database
+            if (DigestUtils.sha256Hex(user.getPassword()).equals(diner.getPassword())) {
+                // We have logged in
+                return ResponseEntity.status(HttpStatus.OK).body(responseService.createResponse("Welcome back, " + user.getEmail()));
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Invalid password, please try again"));
+            }
+        } else if (eateries.size() == 1) {
+            Eatery eatery = eateries.get(0);
+            if (user.getPassword().equals(eatery.getPassword())) {
+                // We have logged in
+                return ResponseEntity.status(HttpStatus.OK).body(responseService.createResponse("EATERY - " + user.getEmail() + " has been logged in"));
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Invalid password, please try again"));
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Email not found, please try again"));
         }
     }
 }
