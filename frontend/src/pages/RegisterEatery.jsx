@@ -155,13 +155,13 @@ export default function RegisterEatery() {
             }),
         });
         console.log(response);
-        // if (response.status === 200) {
-        //     history.push("/eateryLanding");
-        // } else if (response.status === 409) {
-        //     alert("Email already exists - please try another one");
-        // } else {
-        //     alert("Something went wrong");
-        // }
+        if (response.status === 200) {
+            history.push("/eateryLanding");
+        } else if (response.status === 409) {
+            alert("Email already exists - please try another one");
+        } else {
+            alert("Something went wrong");
+        }
     };
 
     return (
