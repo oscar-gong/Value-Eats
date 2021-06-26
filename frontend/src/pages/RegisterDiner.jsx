@@ -6,9 +6,10 @@ import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import AutoComplete, { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
+import { checkValidEmail } from "./helpers";
 
 // set to true for real demos
-const useGoogleAPI = false;
+const useGoogleAPI = true;
 
 export default function RegisterDiner() {
     const defaultState = { value: "", valid: true };
@@ -21,6 +22,7 @@ export default function RegisterDiner() {
 
     const validUsername = () => {
         if (username.value === "") {
+            console.log("not a valid username!");
             setUsername({ value: "", valid: false });
         }
     };
@@ -33,7 +35,10 @@ export default function RegisterDiner() {
     };
 
     const validConfirmPassword = () => {
-        if (password.value !== confirmPassword.value) {
+        if (
+            password.value !== confirmPassword.value ||
+            confirmPassword.value === ""
+        ) {
             setConfirmPassword({ values: "", valid: false });
         }
     };
@@ -54,36 +59,50 @@ export default function RegisterDiner() {
 
     const registerDiner = async () => {
         console.log(username, email, password, address);
-        // check that all fields are valid before registering
+
+        // if sign up button is clicked with empty fields, show textfield error
+        if (username.value === "") setUsername({ value: "", valid: false });
+        if (email.value === "") setEmail({ value: "", valid: false });
+        if (password.value === "") setPassword({ value: "", valid: false });
+        if (confirmPassword.value === "")
+            setConfirmPassword({ value: "", valid: false });
+        if (useGoogleAPI && address.value === "")
+            setAddress({ value: "", valid: false });
+
+        // check that all fields are valid and not empty before registering
         if (
             !username.valid ||
             !email.valid ||
             !password.valid ||
-            !confirmPassword.valid
+            !confirmPassword.valid ||
+            username.value === "" ||
+            email.value === "" ||
+            password.value === "" ||
+            confirmPassword.value === ""
         )
             return;
-        if (!address.valid && useGoogleAPI) {
+        if ((!address.valid || address.value === "") && useGoogleAPI) {
             return;
         }
-        
+
         console.log("registered");
         console.log(username, email, password, address);
         const response = await fetch("http://localhost:8080/register/diner", {
             method: "POST",
             headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 username: username.value,
                 email: email.value,
-                address: (useGoogleAPI ? address.value : "Sydney"),
-                password: password.value
+                address: useGoogleAPI ? address.value : "Sydney",
+                password: password.value,
             }),
         });
-		console.log(response);
+        console.log(response);
         if (response.status === 200) {
-            history.push('/dinerLanding');
+            history.push("/dinerLanding");
         } else if (response.status === 409) {
             alert("Email already exists - please try another one");
         } else {
