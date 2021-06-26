@@ -4,7 +4,7 @@ import { Subtitle } from "../styles/Subtitle";
 import { AlignCenter } from "../styles/AlignCenter";
 import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
-import AutoComplete, { usePlacesWidget } from "react-google-autocomplete";
+import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
 import { checkValidEmail, checkValidPassword } from "./helpers";
 
