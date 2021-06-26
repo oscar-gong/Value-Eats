@@ -3,6 +3,7 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Token;
 import com.nuggets.valueeats.repository.DinerRepository;
+import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.utils.EncryptionUtils;
 import com.nuggets.valueeats.utils.JwtUtils;
 import org.json.simple.JSONObject;
@@ -20,6 +21,8 @@ public class DinerService {
     @Autowired
     private DinerRepository dinerRepository;
     @Autowired
+    private EateryRepository eateryRepository;
+    @Autowired
     private ResponseService responseService;
     @Autowired
     private UserService userService;
@@ -32,7 +35,8 @@ public class DinerService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Please fill in all required fields."));
         }
 
-        if (dinerRepository.existsByEmail(diner.getEmail())) {
+        // want the email to be unique across diners and eateries
+        if (dinerRepository.existsByEmail(diner.getEmail()) || eateryRepository.existsByEmail(diner.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(responseService.createResponse("Email is taken, try another"));
         }
 
@@ -54,9 +58,9 @@ public class DinerService {
     }
 
     private boolean isValidInput(final Diner diner) {
-        return (diner.getAddress() != null &&
-                        diner.getPassword() != null &&
-                        diner.getUsername() != null &&
-                        diner.getEmail() != null);
+        return (diner.getAddress() != null && !diner.getAddress().equals("") &&
+                        diner.getPassword() != null && !diner.getPassword().equals("") &&
+                        diner.getUsername() != null && !diner.getUsername().equals("") &&
+                        diner.getEmail() != null && !diner.getEmail().equals(""));
     }
 }

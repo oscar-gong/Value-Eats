@@ -25,16 +25,17 @@ public class EateryService {
     @Transactional
     public String registerEatery(Eatery eatery) {
         if (!isValidInput(eatery)) {
-            return "Please fill in all required fields.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Please fill in all required fields."));
         }
 
-        if (eateryRepository.existsByEmail(eatery.getEmail())) {
-            return "Eatery already exists in the database.";
+        // want the email to be unique across diners and eateries
+        if (dinerRepository.existsByEmail(diner.getEmail()) || eateryRepository.existsByEmail(diner.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("This Eatery already exists, please try again"));
         }
 
-        String result = userService.validInputChecker(eatery);
-        if (result != null) {
-            return result;
+        String isValidResult = userService.validInputChecker(eatery);
+        if (isValidResult != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse(isValidResult));
         }
 
         Token token = new Token(jwtUtils.encode(String.valueOf(eatery.getId())));
@@ -46,7 +47,7 @@ public class EateryService {
         dataMedium.put("token", token.getToken());
         JSONObject data = new JSONObject(dataMedium);
 
-        return "Eatery record created successfully.";
+        return ResponseEntity.status(HttpStatus.OK).body(responseService.createResponse("Eatery Registered! Welcome to ValueEats, " + eatery.getName(), data));
     }
 
     private boolean isValidInput(final Eatery eatery) {
