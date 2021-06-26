@@ -6,10 +6,10 @@ import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import AutoComplete, { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
-import { checkValidEmail } from "./helpers";
+import { checkValidEmail, checkValidPassword } from "./helpers";
 
 // set to true for real demos
-const useGoogleAPI = true;
+const useGoogleAPI = false;
 
 export default function RegisterDiner() {
     const defaultState = { value: "", valid: true };
@@ -28,10 +28,8 @@ export default function RegisterDiner() {
     };
 
     const validPassword = () => {
-        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
-        if (!regex.test(password.value)) {
+        if (!checkValidPassword(password.value))
             setPassword({ values: "", valid: false });
-        }
     };
 
     const validConfirmPassword = () => {
@@ -44,11 +42,8 @@ export default function RegisterDiner() {
     };
 
     const validEmail = () => {
-        // temp regex
-        const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!regex.test(email.value)) {
+        if (!checkValidEmail(email.value))
             setEmail({ values: "", valid: false });
-        }
     };
 
     const validAddress = () => {
