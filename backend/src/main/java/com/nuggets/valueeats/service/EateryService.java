@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public final class EateryService {
+public class EateryService {
     @Autowired
     private EateryRepository eateryRepository;
     @Autowired
