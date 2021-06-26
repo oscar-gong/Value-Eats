@@ -36,11 +36,11 @@ public final class LoginService {
 
         if (!diners.isEmpty()) {
             Diner diner = diners.get(0);
-            return loginPasswordCheck(diner.getPassword(), String.valueOf(diner.getId()), diner.getPassword(), "Welcome back, " + diner.getEmail());
+            return loginPasswordCheck(user.getPassword(), String.valueOf(diner.getId()), diner.getPassword(), "Welcome back, " + diner.getEmail());
         }
         if (!eateries.isEmpty()) {
             Eatery eatery = eateries.get(0);
-            return loginPasswordCheck(eatery.getPassword(), String.valueOf(eatery.getId()), eatery.getPassword(), "EATERY - " + user.getEmail() + " has been logged in");
+            return loginPasswordCheck(user.getPassword(), String.valueOf(eatery.getId()), eatery.getPassword(), "EATERY - " + eatery.getEmail() + " has been logged in");
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Failed to login, please try again"));
