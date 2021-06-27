@@ -79,7 +79,7 @@ export default function RegisterDiner() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                username: username.value,
+                alias: username.value,
                 email: email.value,
                 address: (useGoogleAPI ? address.value : "Sydney"),
                 password: password.value
