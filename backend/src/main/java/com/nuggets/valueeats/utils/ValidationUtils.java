@@ -9,8 +9,9 @@ public class ValidationUtils {
     }
 
     public static boolean isValidPassword(final String password) {
-        // Checks password is: between 8 to 32 char long, contains one uppercase and lowercase
-        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d\\w\\W]{8,32}$";
-        return Pattern.matches(regex, password);
+        return password.length() >= 8 &&
+                password.length() <= 32 &&
+                !password.toLowerCase().equals(password) &&
+                !password.toUpperCase().equals(password);
     }
 }

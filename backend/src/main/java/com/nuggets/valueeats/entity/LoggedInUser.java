@@ -13,7 +13,11 @@ import java.util.Set;
 @Data
 public abstract class LoggedInUser extends User {
     @Id
-    private long id;
-    @OneToMany
+    private Long id;
+    @OneToMany(cascade = {CascadeType.ALL})
     private Set<Token> tokens = new HashSet<>();
+
+    public void addToken(Token token) {
+        tokens.add(token);
+    }
 }
