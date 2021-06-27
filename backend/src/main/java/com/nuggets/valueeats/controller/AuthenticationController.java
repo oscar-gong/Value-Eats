@@ -3,6 +3,7 @@ package com.nuggets.valueeats.controller;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.LoginCredentials;
+import com.nuggets.valueeats.entity.Token;
 import com.nuggets.valueeats.service.DinerService;
 import com.nuggets.valueeats.service.EateryService;
 import com.nuggets.valueeats.service.LoginCredentialsService;
@@ -15,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-// Allow any requests from anywhere to hit our controller - if we only want localhost hitting our controller - use the commented line underneath
-@CrossOrigin(origins = "*", allowedHeaders = "*")
-// @CrossOrigin(origins = ControllerConstants.URL)
+@CrossOrigin(origins = ControllerConstants.URL)
 @RestController
 public final class AuthenticationController {
     @Autowired
@@ -40,5 +39,10 @@ public final class AuthenticationController {
     @RequestMapping(value = "register/eatery", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> registerEatery(@RequestBody final Eatery eatery) {
         return eateryService.registerEatery(eatery);
+    }
+
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    public ResponseEntity<JSONObject> logout(@RequestBody final Token token) {
+        return loginCredentialsService.logout(token);
     }
 }

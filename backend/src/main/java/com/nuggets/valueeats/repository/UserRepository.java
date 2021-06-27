@@ -10,11 +10,11 @@ import java.util.List;
 
 @Repository
 @Primary
-public interface UserRepository<T extends User> extends JpaRepository<T, Integer> {
+public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
     boolean existsByEmail(String email);
 
     T findByEmail(String email);
 
     @Query("select max(id) from User")
-    Integer findMaxId();
+    Long findMaxId();
 }

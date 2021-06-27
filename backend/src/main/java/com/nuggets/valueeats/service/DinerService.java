@@ -3,8 +3,8 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
+import com.nuggets.valueeats.repository.UserTokenRepository;
 import com.nuggets.valueeats.repository.UserRepository;
-import com.nuggets.valueeats.utils.AuthenticationUtils;
 import com.nuggets.valueeats.utils.JwtUtils;
 import com.nuggets.valueeats.utils.ResponseUtils;
 import org.json.simple.JSONObject;
@@ -13,12 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
-public class DinerService extends UserService {
+public class DinerService extends LoggedInUserService {
     @Autowired
     private DinerRepository dinerRepository;
     @Autowired
@@ -26,9 +24,11 @@ public class DinerService extends UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserService userService;
+    private LoggedInUserService loggedInUserService;
     @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    private UserTokenRepository userTokenRepository;
 
     @Transactional
     public ResponseEntity<JSONObject> register(Diner diner) {

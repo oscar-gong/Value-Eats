@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class LoginCredentials {
     @Id
-    private long id;
+    private Long id;
     @Column(unique=true)
     private String email;
     private String password;
