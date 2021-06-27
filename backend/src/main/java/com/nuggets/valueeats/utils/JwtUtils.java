@@ -30,7 +30,8 @@ public final class JwtUtils {
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 600000))
-                .signWith(SignatureAlgorithm.HS512, SECRET.getBytes()).compact();
+                .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
+                .compact();
     }
 
     public String decode(String jwtToken) {

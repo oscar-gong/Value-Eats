@@ -1,66 +1,51 @@
 package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.Diner;
-import com.nuggets.valueeats.entity.Token;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
-import com.nuggets.valueeats.utils.EncryptionUtils;
+import com.nuggets.valueeats.repository.UserRepository;
+import com.nuggets.valueeats.utils.AuthenticationUtils;
 import com.nuggets.valueeats.utils.JwtUtils;
+import com.nuggets.valueeats.utils.ResponseUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Service
-public class DinerService {
+public class DinerService extends UserService {
     @Autowired
     private DinerRepository dinerRepository;
     @Autowired
     private EateryRepository eateryRepository;
     @Autowired
-    private ResponseService responseService;
+    private UserRepository userRepository;
     @Autowired
     private UserService userService;
     @Autowired
     private JwtUtils jwtUtils;
 
     @Transactional
-    public ResponseEntity<JSONObject> registerDiner(Diner diner) {
-        if (!isValidInput(diner)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse("Please fill in all required fields."));
+    public ResponseEntity<JSONObject> register(Diner diner) {
+        if (!isValidDiner(diner)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Please fill in all required fields."));
         }
 
-        // want the email to be unique across diners and eateries
-        if (dinerRepository.existsByEmail(diner.getEmail()) || eateryRepository.existsByEmail(diner.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(responseService.createResponse("Email is taken, try another"));
+        ResponseEntity<JSONObject> result = super.register(diner);
+        if (result.getStatusCode().is2xxSuccessful()) {
+            dinerRepository.save(diner);
         }
 
-        String result = userService.validInputChecker(diner);
-        if (result != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseService.createResponse(result));
-        }
-
-        Token token = new Token(jwtUtils.encode(String.valueOf(diner.getId())));
-        diner.setId(null == dinerRepository.findMaxId() ? 0 : dinerRepository.findMaxId() + 1);
-        diner.setPassword(EncryptionUtils.encrypt(diner.getPassword(), String.valueOf(diner.getId())));
-        dinerRepository.save(diner);
-
-        Map<String, String> dataMedium = new HashMap<>();
-        dataMedium.put("token", token.getToken());
-        JSONObject data = new JSONObject(dataMedium);
-
-        return ResponseEntity.status(HttpStatus.OK).body(responseService.createResponse("Welcome to ValueEats, " + diner.getUsername(), data));
+        return result;
     }
 
-    private boolean isValidInput(final Diner diner) {
-        return (diner.getAddress() != null && !diner.getAddress().equals("") &&
-                        diner.getPassword() != null && !diner.getPassword().equals("") &&
-                        diner.getUsername() != null && !diner.getUsername().equals("") &&
-                        diner.getEmail() != null && !diner.getEmail().equals(""));
+    private boolean isValidDiner(final Diner diner) {
+        // No variables in diner which need to be checked, they are checked at user level
+        return true;
     }
 }

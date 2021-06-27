@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserRepository<T extends User> extends JpaRepository<T, Integer> {
     boolean existsByEmail(String email);
 
-    List<T> findByEmail(String email);
+    T findByEmail(String email);
 
     @Query("select max(id) from User")
     Integer findMaxId();

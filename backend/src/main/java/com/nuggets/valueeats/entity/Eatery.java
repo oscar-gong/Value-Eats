@@ -11,11 +11,9 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Entity
-@DiscriminatorValue(value = "Eatery")
 @Data
 @NoArgsConstructor
 public final class Eatery extends User {
-    private String name;
     private ArrayList<String> cuisines;
     private ArrayList<String> menuPhotos;
 

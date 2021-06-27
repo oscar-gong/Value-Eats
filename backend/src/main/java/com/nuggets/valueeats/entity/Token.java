@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Entity
 @NoArgsConstructor
 @Data
-public class Token {
+public final class Token {
     @Id
     private long id;
     private String token;

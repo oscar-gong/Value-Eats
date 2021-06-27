@@ -3,10 +3,7 @@ package com.nuggets.valueeats.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -15,6 +12,7 @@ import javax.persistence.InheritanceType;
 public class LoginCredentials {
     @Id
     private long id;
+    @Column(unique=true)
     private String email;
     private String password;
 }
