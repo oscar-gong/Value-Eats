@@ -1,16 +1,15 @@
 package com.nuggets.valueeats.repository;
 
-import com.nuggets.valueeats.entity.Token;
+import com.nuggets.valueeats.entity.UserToken;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TokenRepository extends JpaRepository<Token, Long> {
+public interface UserTokenRepository extends JpaRepository<UserToken, Long> {
     void deleteByToken(String token);
     boolean existsByToken(String token);
 
-    @Query("select max(id) from Token")
+    @Query("select max(id) from UserToken")
     Long findMaxId();
 }

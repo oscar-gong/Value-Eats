@@ -3,6 +3,7 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
+import com.nuggets.valueeats.repository.UserTokenRepository;
 import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.utils.JwtUtils;
 import com.nuggets.valueeats.utils.ResponseUtils;
@@ -26,6 +27,8 @@ public class DinerService extends LoggedInUserService {
     private LoggedInUserService loggedInUserService;
     @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    private UserTokenRepository userTokenRepository;
 
     @Transactional
     public ResponseEntity<JSONObject> register(Diner diner) {

@@ -3,6 +3,7 @@ package com.nuggets.valueeats.controller;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.LoginCredentials;
+import com.nuggets.valueeats.entity.Token;
 import com.nuggets.valueeats.service.DinerService;
 import com.nuggets.valueeats.service.EateryService;
 import com.nuggets.valueeats.service.LoginCredentialsService;
@@ -41,7 +42,7 @@ public final class AuthenticationController {
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> logout(@RequestBody final String token) {
+    public ResponseEntity<JSONObject> logout(@RequestBody final Token token) {
         return loginCredentialsService.logout(token);
     }
 }
