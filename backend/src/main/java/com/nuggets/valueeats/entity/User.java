@@ -17,5 +17,4 @@ public abstract class User extends LoginCredentials {
     @Column(unique=true)
     private String alias;
     private String address;
-    private String token;
 }
