@@ -34,3 +34,15 @@ Week 3
  remove some of the unnecessary paragraphs as well as refining some of the wording used throughout.
  - Next week, we will begin work on the first sprint, were we will aim to set up authentication. We will have a team meeting to work out how to divide the work amongst our group so we
  can work as efficiently as possible.
+
+Week 4
+ - Focused on completing our first sprint - which ends Sunday 27/6/2021 11:30. 
+ - I made the initial frontend draft of what our login page was going to look like and this allowed for other team members to follow along using the same visual style
+ - Furthermore, I connected the backend that was written to register and log in diners to the frontend
+ - I had some issues with getting CORS to work, but it turned out to be a simple one-line command that was annotated on the authentication controller
+ - Set up the method in which our backend will return information with a response backend service, which will ensure that responses are returned with a HTTP response code along
+ with a message describing what happened and optionally some corresponding data.
+ - Also set up the method in which our frontend will display information to users. It uses material UI components called snack bars, which are brief closable messages that appear
+ at the bottom of the screen and will automatically disappear after a set amount of time.
+ - Furthermore, I constructued the frontend for our landing pages making use of a component for a nav bar that Oscar had previously made. Then I connected the frontend to the backend logic
+ to finish the logout feature, after making some backend changes to parts that were not working.
