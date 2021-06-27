@@ -67,7 +67,8 @@ public class LoginCredentialsService {
         JSONObject data = new JSONObject(dataMedium);
 
         return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()), 
-        userDb.getPassword(), "Welcome back, " + userDb.getEmail(), data);
+                                                      userDb.getPassword(), "Welcome back, " + userDb.getEmail(), 
+                                                      dinerRepository.existsByEmail(userDb.getEmail()), data);
     }
 
     public ResponseEntity<JSONObject> logout(final Token token) {

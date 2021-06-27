@@ -41,7 +41,7 @@ function App() {
               <RegisterEatery setToken={setToken}/>
             </Route>
             <Route exact path="/EateryLanding">
-              <EateryLanding />
+              <EateryLanding token={token}/>
             </Route>
           </Switch>
         </Router>
