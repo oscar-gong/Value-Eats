@@ -3,6 +3,7 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.entity.*;
 import com.nuggets.valueeats.repository.LoggedInUserRepository;
 import com.nuggets.valueeats.repository.UserTokenRepository;
+import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.utils.AuthenticationUtils;
 import com.nuggets.valueeats.utils.JwtUtils;
