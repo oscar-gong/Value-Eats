@@ -8,3 +8,8 @@ Instructions on how to run the frontend locally:
  - This will install the frontend dependencies
  - Then finally, to run the frontend, use `yarn start`
  - NOTE: When committing, DO NOT commit the node_modules folder that will be created locally for our dependencies, as they are very large files and will cause issues if uploaded to our repo
+ 
+ # Backend
+ ## Run
+* ./mvnw spring-boot:run
+ 
