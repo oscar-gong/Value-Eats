@@ -13,7 +13,15 @@ import java.util.Set;
 @Data
 public abstract class LoggedInUser extends User {
     @Id
-    private long id;
-    @OneToMany
-    private Set<Token> tokens = new HashSet<>();
+    private Long id;
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private Set<UserToken> userTokens = new HashSet<>();
+
+    public void addToken(final UserToken userToken) {
+        userTokens.add(userToken);
+    }
+
+    public void removeToken(final String token) {
+        userTokens.removeIf(a -> a.getToken().equals(token));
+    }
 }

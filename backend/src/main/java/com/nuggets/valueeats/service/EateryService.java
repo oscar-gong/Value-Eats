@@ -1,6 +1,5 @@
 package com.nuggets.valueeats.service;
 
-import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.utils.*;
@@ -8,7 +7,6 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 import com.nuggets.valueeats.repository.DinerRepository;
@@ -17,14 +15,12 @@ import com.nuggets.valueeats.utils.JwtUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
 @Service
-public class EateryService extends UserService {
+public class EateryService extends LoggedInUserService {
     @Autowired
     private EateryRepository eateryRepository;
     @Autowired
-    private UserService userService;
+    private LoggedInUserService loggedInUserService;
     @Autowired
     private DinerRepository dinerRepository;
     @Autowired

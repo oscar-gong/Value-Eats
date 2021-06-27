@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 public abstract class User extends LoginCredentials {
     @Id
-    private long id;
+    private Long id;
     @Column(unique=true)
     private String alias;
     private String address;

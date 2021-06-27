@@ -3,21 +3,20 @@ package com.nuggets.valueeats.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.sql.Timestamp;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @Data
-public final class Token {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Token {
     @Id
-    private long id;
+    private Long id;
+    @Column(unique = true)
     private String token;
-    private Timestamp dateCreated;
 
-    public Token(String token) {
+    public Token(final Long id, final String token) {
+        this.id = id;
         this.token = token;
-        this.dateCreated = new Timestamp(System.currentTimeMillis());
     }
 }
