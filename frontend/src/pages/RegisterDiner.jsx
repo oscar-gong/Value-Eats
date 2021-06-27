@@ -11,7 +11,7 @@ import { StoreContext } from "../utils/store";
 // set to true for real demos
 const useGoogleAPI = false;
 
-export default function RegisterDiner() {
+export default function RegisterDiner({ setToken }) {
     const defaultState = { value: "", valid: true };
     const [username, setUsername] = useState(defaultState);
     const [email, setEmail] = useState(defaultState);
@@ -89,6 +89,7 @@ export default function RegisterDiner() {
 		console.log(registerResult);
         if (registerResponse.status === 200) {
             setAlertOptions({ showAlert: true, variant: 'success', message: registerResult.message });
+            setToken(registerResult.data.token);
             history.push('/dinerLanding');
         } else {
             setAlertOptions({ showAlert: true, variant: 'error', message: registerResult.message });

@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { StoreContext } from '../utils/store';
 
-export default function Login () {
+export default function Login ({ setToken }) {
     const history = useHistory();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -32,6 +32,7 @@ export default function Login () {
         const loginData = await loginResponse.json();
         if (loginResponse.status === 200) {
             setAlertOptions({ showAlert: true, variant: 'success', message: loginData.message });
+            setToken(loginData.data.token);
             history.push("/dinerLanding");
         } else {
             setAlertOptions({ showAlert: true, variant: 'error', message: loginData.message });

@@ -9,7 +9,7 @@ import { Box, TextField, Button } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 
-export default function RegisterEatery() {
+export default function RegisterEatery({ setToken }) {
     const [images, setImages] = React.useState([]);
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
