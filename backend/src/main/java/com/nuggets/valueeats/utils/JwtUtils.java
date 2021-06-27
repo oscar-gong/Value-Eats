@@ -1,5 +1,7 @@
 package com.nuggets.valueeats.utils;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,16 +31,22 @@ public final class JwtUtils {
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
     }
 
     public String decode(String jwtToken) {
-        return Jwts.parser()
-                .setSigningKey(SECRET.getBytes())
-                .parseClaimsJws(jwtToken)
-                .getBody()
-                .getSubject();
+        try {
+            return Jwts.parser()
+                    .setSigningKey(SECRET.getBytes())
+                    .parseClaimsJws(jwtToken)
+                    .getBody()
+                    .getSubject();
+        } catch (JwtException ignored) {
+
+        }
+
+        return null;
     }
 }
