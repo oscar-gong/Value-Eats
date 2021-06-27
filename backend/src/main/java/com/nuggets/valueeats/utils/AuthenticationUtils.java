@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 
 public class AuthenticationUtils {
     public static ResponseEntity<JSONObject> loginPasswordCheck(final String loginPassword, final String secret,
-     final String actualPassword, final String successMessage) {
+     final String actualPassword, final String successMessage, JSONObject data) {
         if (EncryptionUtils.encrypt(loginPassword, secret).equals(actualPassword)) {
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(successMessage));
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(successMessage, data));
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid password, please try again"));

@@ -51,6 +51,6 @@ public class LoginCredentialsService {
         JSONObject data = new JSONObject(dataMedium);
 
         return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()), 
-        userDb.getPassword(), "Welcome back, " + userDb.getEmail() + "\nToken: " + data);
+        userDb.getPassword(), "Welcome back, " + userDb.getEmail(), data);
     }
 }
