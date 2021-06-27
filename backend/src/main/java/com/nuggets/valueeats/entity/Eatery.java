@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Entity
 @Data
 @NoArgsConstructor
-public final class Eatery extends User {
+public final class Eatery extends LoggedInUser {
     private ArrayList<String> cuisines;
     private ArrayList<String> menuPhotos;
 

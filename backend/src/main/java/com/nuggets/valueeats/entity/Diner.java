@@ -8,5 +8,5 @@ import javax.persistence.Entity;
 @Entity
 @NoArgsConstructor
 @Data
-public final class Diner extends User {
+public final class Diner extends LoggedInUser {
 }

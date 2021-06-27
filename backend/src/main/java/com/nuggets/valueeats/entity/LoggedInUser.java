@@ -11,7 +11,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @Data
-public class LoggedInUser extends User {
+public abstract class LoggedInUser extends User {
     @Id
     private long id;
     @OneToMany

@@ -11,7 +11,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @Data
-public class User extends LoginCredentials {
+public abstract class User extends LoginCredentials {
     @Id
     private long id;
     @Column(unique=true)
