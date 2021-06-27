@@ -9,9 +9,15 @@ import com.nuggets.valueeats.service.LoginCredentialsService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import java.util.List;
 
-@CrossOrigin(origins = ControllerConstants.URL)
+// Allow any requests from anywhere to hit our controller - if we only want localhost hitting our controller - use the commented line underneath
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+// @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
 public final class AuthenticationController {
     @Autowired
