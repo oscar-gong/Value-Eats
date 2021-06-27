@@ -14,7 +14,7 @@ import { useHistory } from "react-router";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { StoreContext } from "../utils/store";
 
-export default function RegisterEatery() {
+export default function RegisterEatery({ setToken }) {
     const defaultState = { value: "", valid: true };
     const [previewImages, setPreviewImages] = useState([]);
     const [images, setImages] = useState([]);
@@ -165,6 +165,7 @@ export default function RegisterEatery() {
         const responseData = await response.json();
         if (response.status === 200) {
             setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+            setToken(responseData.data.token);
             history.push("/EateryLanding");
         } else {
             setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
