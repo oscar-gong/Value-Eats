@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class AuthenticationUtils {
-    public static ResponseEntity<JSONObject> loginPasswordCheck(final String loginPassword, final String secret, final String actualPassword, final String successMessage) {
+    public static ResponseEntity<JSONObject> loginPasswordCheck(final String loginPassword, final String secret,
+     final String actualPassword, final String successMessage) {
         if (EncryptionUtils.encrypt(loginPassword, secret).equals(actualPassword)) {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(successMessage));
         }
