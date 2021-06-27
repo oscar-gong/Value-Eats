@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
 import { AlignCenter } from "../styles/AlignCenter";
@@ -7,18 +7,22 @@ import SendIcon from "@material-ui/icons/Send";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
 import { checkValidEmail, checkValidPassword } from "./helpers";
+import { StoreContext } from "../utils/store";
 
 // set to true for real demos
 const useGoogleAPI = false;
 
 export default function RegisterDiner() {
     const defaultState = { value: "", valid: true };
-    const [username, setUsername] = React.useState(defaultState);
-    const [email, setEmail] = React.useState(defaultState);
-    const [password, setPassword] = React.useState(defaultState);
-    const [confirmPassword, setConfirmPassword] = React.useState(defaultState);
-    const [address, setAddress] = React.useState(defaultState);
+    const [username, setUsername] = useState(defaultState);
+    const [email, setEmail] = useState(defaultState);
+    const [password, setPassword] = useState(defaultState);
+    const [confirmPassword, setConfirmPassword] = useState(defaultState);
+    const [address, setAddress] = useState(defaultState);
     const history = useHistory();
+
+    const context = useContext(StoreContext);
+    const setAlertOptions = context.alert[1];
 
     const validUsername = () => {
         if (username.value === "") {
@@ -82,26 +86,25 @@ export default function RegisterDiner() {
 
         console.log("registered");
         console.log(username, email, password, address);
-        const response = await fetch("http://localhost:8080/register/diner", {
+        const registerResponse = await fetch("http://localhost:8080/register/diner", {
             method: "POST",
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                username: username.value,
+                alias: username.value,
                 email: email.value,
                 address: useGoogleAPI ? address.value : "Sydney",
                 password: password.value,
             }),
         });
-        console.log(response);
-        if (response.status === 200) {
-            history.push("/dinerLanding");
-        } else if (response.status === 409) {
-            alert("Email already exists - please try another one");
+        const registerResult = await registerResponse.json();
+        if (registerResponse.status === 200) {
+            setAlertOptions({ showAlert: true, variant: 'success', message: registerResult.message });
+            history.push('/dinerLanding');
         } else {
-            alert("Something went wrong");
+            setAlertOptions({ showAlert: true, variant: 'error', message: registerResult.message });
         }
     };
 

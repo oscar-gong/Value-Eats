@@ -1,34 +1,21 @@
 package com.nuggets.valueeats.entity;
 
+import com.nuggets.valueeats.utils.TextUtils;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import java.util.*;  
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Entity
-@DiscriminatorValue(value = "Eatery")
-public class Eatery extends User{
-
-    private String name;
-
+@Data
+@NoArgsConstructor
+public final class Eatery extends LoggedInUser {
     private ArrayList<String> cuisines;
     private ArrayList<String> menuPhotos;
-    
-    public Eatery() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-
-    public ArrayList<String> getCuisines() {
-        return cuisines;
-    }
 
     public void setCuisines(ArrayList<String> cuisines) {
         // String[] splitCuisines = cuisines.split(",");

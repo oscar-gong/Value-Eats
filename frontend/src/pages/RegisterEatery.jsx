@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useContext} from "react";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
 import { FileUpload } from "../styles/FileUpload";
@@ -12,20 +12,24 @@ import { checkValidEmail, checkValidPassword, fileToDataUrl } from "./helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import { StoreContext } from "../utils/store";
 
 export default function RegisterEatery() {
     const defaultState = { value: "", valid: true };
-    const [previewImages, setPreviewImages] = React.useState([]);
-    const [images, setImages] = React.useState([]);
+    const [previewImages, setPreviewImages] = useState([]);
+    const [images, setImages] = useState([]);
 
-    const [email, setEmail] = React.useState(defaultState);
+    const [email, setEmail] = useState(defaultState);
 
-    const [password, setPassword] = React.useState(defaultState);
-    const [confirmPassword, setConfirmPassword] = React.useState(defaultState);
-    const [eateryName, setEateryName] = React.useState(defaultState);
-    const [address, setAddress] = React.useState(defaultState);
-    const [cuisines, setCuisines] = React.useState({ value: [], valid: true });
+    const [password, setPassword] = useState(defaultState);
+    const [confirmPassword, setConfirmPassword] = useState(defaultState);
+    const [eateryName, setEateryName] = useState(defaultState);
+    const [address, setAddress] = useState(defaultState);
+    const [cuisines, setCuisines] = useState({ value: [], valid: true });
     const history = useHistory();
+
+    const context = useContext(StoreContext);
+    const setAlertOptions = context.alert[1];
 
     // set to true for real demos
     const useGoogleAPI = false;
@@ -149,21 +153,21 @@ export default function RegisterEatery() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: eateryName.value,
+                alias: eateryName.value,
                 email: email.value,
                 address: useGoogleAPI ? address.value : "Sydney",
                 password: password.value,
                 cuisines: cuisines.value,
-                menuPhotos: images, // array of data urls
+                menuPhotos: images // array of data urls
             }),
         });
         console.log(response);
+        const responseData = await response.json();
         if (response.status === 200) {
+            setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
             history.push("/EateryLanding");
-        } else if (response.status === 409) {
-            alert("Email already exists - please try another one");
         } else {
-            alert("Something went wrong");
+            setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
         }
     };
 

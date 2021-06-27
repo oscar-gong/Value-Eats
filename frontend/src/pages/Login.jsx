@@ -6,16 +6,18 @@ import { Box, TextField, Button } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-
+import { StoreContext } from '../utils/store';
 
 export default function Login () {
     const history = useHistory();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const context = React.useContext(StoreContext);
+    const setAlertOptions = context.alert[1];
 
     const handleLogin = async () => {
         console.log("hello, " + email + " " + password);
-        const loginResult = await fetch("http://localhost:8080/login", {
+        const loginResponse = await fetch("http://localhost:8080/login", {
             method: "POST",
             headers: {
                 "Accept": "application/json", 
@@ -27,12 +29,12 @@ export default function Login () {
             })
         })
         // const ans = await loginResult.json();
-        console.log(loginResult);
-        alert(loginResult);
-        if (loginResult.status === 200) {
+        const loginData = await loginResponse.json();
+        if (loginResponse.status === 200) {
+            setAlertOptions({ showAlert: true, variant: 'success', message: loginData.message });
             history.push("/dinerLanding");
         } else {
-            alert("Login failed - username and password are incorrect");
+            setAlertOptions({ showAlert: true, variant: 'error', message: loginData.message });
         }
     }
 
@@ -46,10 +48,10 @@ export default function Login () {
                 <Box pt={1} width="60%">
                     <TextField id="outlined-basic" label="Email address" variant="outlined" onChange={e => setEmail(e.target.value)} value={email} fullWidth/>
                 </Box>
-                <Box pt={2}  width="60%">
+                <Box pt={2} width="60%">
                     <TextField type="password" id="outlined-basic" label="Password" variant="outlined" onChange={e => setPassword(e.target.value)} value={password} fullWidth/>
                 </Box>
-                <Box pt={4} pb={4}>
+                <Box pt={4} pb="8%">
                     <Button variant="contained"
                         color="primary"
                         endIcon={<SendIcon/>}
