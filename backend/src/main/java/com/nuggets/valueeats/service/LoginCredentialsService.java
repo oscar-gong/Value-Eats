@@ -1,6 +1,12 @@
 package com.nuggets.valueeats.service;
 
-import com.nuggets.valueeats.entity.*;
+import com.nuggets.valueeats.entity.Diner;
+import com.nuggets.valueeats.entity.Eatery;
+import com.nuggets.valueeats.entity.Token;
+import com.nuggets.valueeats.entity.LoginCredentials;
+import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.repository.DinerRepository;
+import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.LoggedInUserRepository;
 import com.nuggets.valueeats.repository.UserTokenRepository;
 import com.nuggets.valueeats.repository.UserRepository;
@@ -13,6 +19,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import com.nuggets.valueeats.utils.EncryptionUtils;
+import com.nuggets.valueeats.utils.JwtUtils;
+import com.nuggets.valueeats.utils.ValidationUtils;
 import javax.persistence.PersistenceException;
 import java.util.Optional;
 
@@ -27,6 +39,9 @@ public class LoginCredentialsService {
     @Autowired
     private LoggedInUserRepository loggedInUserRepository;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     public ResponseEntity<JSONObject> login(final LoginCredentials user) {
         User userDb;
         try {
@@ -39,7 +54,13 @@ public class LoginCredentialsService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to login, please try again"));
         }
 
-        return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()), userDb.getPassword(), "Welcome back, " + userDb.getEmail());
+        Token token = new Token(jwtUtils.encode(String.valueOf(user.getId())));
+        Map<String, String> dataMedium = new HashMap<>();
+        dataMedium.put("token", token.getToken());
+        JSONObject data = new JSONObject(dataMedium);
+
+        return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()), 
+        userDb.getPassword(), "Welcome back, " + userDb.getEmail(), data);
     }
 
     public ResponseEntity<JSONObject> logout(final Token token) {
