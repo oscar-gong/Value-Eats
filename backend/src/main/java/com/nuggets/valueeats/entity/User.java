@@ -20,18 +20,44 @@ public class User {
     @Column(unique=true)
     private String email;
     private String password;
-
     private String alias;
     private String address;
+    private String token;
 
-    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private Set<UserToken> userTokens = new HashSet<>();
-
-    public void addToken(final UserToken userToken) {
-        userTokens.add(userToken);
+    public Long getId() {
+        return id;
     }
-
-    public void removeToken(final String token) {
-        userTokens.removeIf(a -> a.getToken().equals(token));
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getAlias() {
+        return alias;
+    }
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public String getToken() {
+        return token;
+    }
+    public void setToken(String token) {
+        this.token = token;
     }
 }
