@@ -33,7 +33,11 @@ export default function Login ({ setToken }) {
         if (loginResponse.status === 200) {
             setAlertOptions({ showAlert: true, variant: 'success', message: loginData.message });
             setToken(loginData.data.token);
-            history.push("/dinerLanding");
+            if (loginData.data.type === "diner") {
+                history.push("/dinerLanding");
+            } else {
+                history.push("/EateryLanding");
+            }
         } else {
             setAlertOptions({ showAlert: true, variant: 'error', message: loginData.message });
         }

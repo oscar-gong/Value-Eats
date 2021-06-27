@@ -11,6 +11,7 @@ import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.LoggedInUserRepository;
 import com.nuggets.valueeats.repository.UserTokenRepository;
+import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.utils.AuthenticationUtils;
 import com.nuggets.valueeats.utils.JwtUtils;
@@ -41,7 +42,10 @@ public class LoginCredentialsService {
     @Autowired
     private LoggedInUserRepository loggedInUserRepository;
 
-    public ResponseEntity<JSONObject> login(final User user) {
+    @Autowired
+    private DinerRepository dinerRepository;
+
+    public ResponseEntity<JSONObject> login(final LoginCredentials user) {
         User userDb;
         try {
             userDb = userRepository.findByEmail(user.getEmail());
@@ -56,7 +60,7 @@ public class LoginCredentialsService {
         // Token token = new Token(jwtUtils.encode(String.valueOf(user.getId())));
         Long tokenId = userTokenRepository.findMaxId() == null ? 0 : userTokenRepository.findMaxId() + 1;
         UserToken token = new UserToken(tokenId, jwtUtils.encode(String.valueOf(user.getId())));
-        user.addToken(token);
+        // user.addToken(token);
 
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", token.getToken());

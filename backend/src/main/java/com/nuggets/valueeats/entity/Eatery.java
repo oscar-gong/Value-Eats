@@ -17,15 +17,29 @@ public final class Eatery extends LoggedInUser {
     private ArrayList<String> cuisines;
     private ArrayList<String> menuPhotos;
 
-    public void setCuisines(String cuisines) {
-        this.cuisines = Arrays.stream(cuisines.split(","))
-                .map(TextUtils::toTitle)
-                .collect(Collectors.toCollection(ArrayList::new));
+    public void setCuisines(ArrayList<String> cuisines) {
+        // String[] splitCuisines = cuisines.split(",");
+        // for(int i = 0; i < splitCuisines.length; i++){
+        //     splitCuisines[i] = splitCuisines[i].trim();
+        //     splitCuisines[i] = splitCuisines[i].substring(0, 1).toUpperCase() + splitCuisines[i].substring(1).toLowerCase();
+        // }
+        // this.cuisines = new ArrayList<String>(Arrays.asList(splitCuisines));
+        this.cuisines = cuisines;
     }
 
-    public void setMenuPhotos(String menuPhotos) {
-        this.menuPhotos = Arrays.stream(menuPhotos.split(","))
-                .map(String::trim)
-                .collect(Collectors.toCollection(ArrayList::new));
+    public ArrayList<String> getMenuPhotos() {
+        return menuPhotos;
+    }
+
+    public void setMenuPhotos(ArrayList<String> menuPhotos) {
+        // String[] splitMenuPhotos = menuPhotos.split(",");
+        // String[] removeSpaces = Arrays.stream(splitMenuPhotos).map(String::trim).toArray(String[]::new);
+        // this.menuPhotos = new ArrayList<String>(Arrays.asList(removeSpaces));
+        this.menuPhotos = menuPhotos;
+    }
+
+    @Override
+    public String toString() {
+        return "";
     }
 }
