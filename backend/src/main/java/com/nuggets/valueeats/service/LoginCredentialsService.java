@@ -23,6 +23,9 @@ public class LoginCredentialsService {
     @Autowired
     private UserRepository<User> userRepository;
 
+    @Autowired
+    private DinerRepository dinerRepository;
+
     public ResponseEntity<JSONObject> login(final LoginCredentials user) {
         User userDb;
         try {
@@ -35,6 +38,11 @@ public class LoginCredentialsService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to login, please try again"));
         }
 
-        return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()), userDb.getPassword(), "Welcome back, " + userDb.getEmail());
+        // We know the user type by checking whether it exists in the dinerRepository
+        // If it does, it's a diner otherwise since we know the email exists in the user repository at this point, we know it is an eatery
+        return AuthenticationUtils.loginPasswordCheck(user.getPassword(), 
+                                                      String.valueOf(userDb.getId()), userDb.getPassword(), 
+                                                      "Welcome back, " + userDb.getEmail(), 
+                                                      dinerRepository.existsByEmail(userDb.getEmail()));
     }
 }

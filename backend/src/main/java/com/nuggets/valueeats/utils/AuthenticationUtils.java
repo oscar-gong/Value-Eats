@@ -5,9 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class AuthenticationUtils {
-    public static ResponseEntity<JSONObject> loginPasswordCheck(final String loginPassword, final String secret, final String actualPassword, final String successMessage) {
+    public static ResponseEntity<JSONObject> loginPasswordCheck(final String loginPassword, final String secret, final String actualPassword, final String successMessage, final boolean isDiner) {
         if (EncryptionUtils.encrypt(loginPassword, secret).equals(actualPassword)) {
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(successMessage));
+            JSONObject data = new JSONObject();
+            data.put("type", (isDiner ? "diner" : "eatery"));
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(successMessage, data));
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid password, please try again"));
