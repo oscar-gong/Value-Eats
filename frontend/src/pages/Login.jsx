@@ -32,7 +32,11 @@ export default function Login () {
         const loginData = await loginResponse.json();
         if (loginResponse.status === 200) {
             setAlertOptions({ showAlert: true, variant: 'success', message: loginData.message });
-            history.push("/dinerLanding");
+            if (loginData.data.type === "diner") {
+                history.push("/dinerLanding");
+            } else {
+                history.push("/EateryLanding");
+            }
         } else {
             setAlertOptions({ showAlert: true, variant: 'error', message: loginData.message });
         }
