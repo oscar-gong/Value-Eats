@@ -19,16 +19,6 @@ import javax.transaction.Transactional;
 public class DinerService extends LoggedInUserService {
     @Autowired
     private DinerRepository dinerRepository;
-    @Autowired
-    private EateryRepository eateryRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private LoggedInUserService loggedInUserService;
-    @Autowired
-    private JwtUtils jwtUtils;
-    @Autowired
-    private UserTokenRepository userTokenRepository;
 
     @Transactional
     public ResponseEntity<JSONObject> register(Diner diner) {

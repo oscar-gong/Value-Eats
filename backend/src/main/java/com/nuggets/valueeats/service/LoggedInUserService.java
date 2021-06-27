@@ -1,6 +1,5 @@
 package com.nuggets.valueeats.service;
 
-import com.nuggets.valueeats.entity.LoggedInUser;
 import com.nuggets.valueeats.entity.UserToken;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.repository.UserTokenRepository;
@@ -29,7 +28,7 @@ public abstract class LoggedInUserService {
     @Autowired
     private UserTokenRepository userTokenRepository;
 
-    public ResponseEntity<JSONObject> register(LoggedInUser user) {
+    public ResponseEntity<JSONObject> register(User user) {
         if (!isValidInput(user)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Please fill in all required fields."));
         }
@@ -46,9 +45,10 @@ public abstract class LoggedInUserService {
         user.setId(userRepository.findMaxId() == null ? 0 : userRepository.findMaxId() + 1);
         user.setPassword(EncryptionUtils.encrypt(user.getPassword(), String.valueOf(user.getId())));
 
-        Long tokenId = userTokenRepository.findMaxId() == null ? 0 : userTokenRepository.findMaxId() + 1;
+        Long tokenId = (userTokenRepository.findMaxId() == null ? 0 : userTokenRepository.findMaxId() + 1);
         UserToken userToken = new UserToken(tokenId, jwtUtils.encode(String.valueOf(user.getId())));
         user.addToken(userToken);
+        System.out.println("adding the new token from register");
 
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", userToken.getToken());

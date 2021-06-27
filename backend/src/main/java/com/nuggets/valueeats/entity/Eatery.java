@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -13,7 +15,8 @@ import java.util.stream.Collectors;
 @Entity
 @Data
 @NoArgsConstructor
-public final class Eatery extends LoggedInUser {
+@PrimaryKeyJoinColumn(name = "id")
+public final class Eatery extends User {
     private ArrayList<String> cuisines;
     private ArrayList<String> menuPhotos;
 

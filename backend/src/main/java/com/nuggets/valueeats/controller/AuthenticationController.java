@@ -2,7 +2,6 @@ package com.nuggets.valueeats.controller;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
-import com.nuggets.valueeats.entity.LoginCredentials;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.Token;
 import com.nuggets.valueeats.service.DinerService;
@@ -28,7 +27,7 @@ public final class AuthenticationController {
     private LoginCredentialsService loginCredentialsService;
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> login(@RequestBody final LoginCredentials user) {
+    public ResponseEntity<JSONObject> login(@RequestBody final User user) {
         return loginCredentialsService.login(user);
     }
 

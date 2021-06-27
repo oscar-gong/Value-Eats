@@ -2,14 +2,12 @@ package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
-import com.nuggets.valueeats.entity.LoggedInUser;
 import com.nuggets.valueeats.entity.Token;
-import com.nuggets.valueeats.entity.LoginCredentials;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.UserToken;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
-import com.nuggets.valueeats.repository.LoggedInUserRepository;
+// import com.nuggets.valueeats.repository.LoggedInUserRepository;
 import com.nuggets.valueeats.repository.UserTokenRepository;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.UserRepository;
@@ -33,19 +31,20 @@ import java.util.Optional;
 
 @Service
 public class LoginCredentialsService {
-    @Autowired
-    private UserRepository<User> userRepository;
+    // @Autowired
+    // private UserRepository<User> userRepository;
     @Autowired
     private UserTokenRepository userTokenRepository;
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
-    private LoggedInUserRepository loggedInUserRepository;
+    // private LoggedInUserRepository loggedInUserRepository;
+    private UserRepository<User> userRepository;
 
     @Autowired
     private DinerRepository dinerRepository;
 
-    public ResponseEntity<JSONObject> login(final LoginCredentials user) {
+    public ResponseEntity<JSONObject> login(final User user) {
         User userDb;
         try {
             userDb = userRepository.findByEmail(user.getEmail());
@@ -60,7 +59,8 @@ public class LoginCredentialsService {
         // Token token = new Token(jwtUtils.encode(String.valueOf(user.getId())));
         Long tokenId = userTokenRepository.findMaxId() == null ? 0 : userTokenRepository.findMaxId() + 1;
         UserToken token = new UserToken(tokenId, jwtUtils.encode(String.valueOf(user.getId())));
-        // user.addToken(token);
+        user.addToken(token);
+        System.out.println("adding the new token from login");
 
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", token.getToken());
@@ -82,14 +82,14 @@ public class LoginCredentialsService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't get user associated with token"));
         }
 
-        LoggedInUser loggedInUser = loggedInUserRepository.findById(Long.valueOf(userId)).orElse(null);
-        if (loggedInUser == null) {
+        User user = userRepository.findById(Long.valueOf(userId)).orElse(null);
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid authentication"));
         }
 
-        loggedInUser.removeToken(token.getToken());
+        user.removeToken(token.getToken());
         try {
-            loggedInUserRepository.save(loggedInUser);
+            userRepository.save(user);
         } catch (PersistenceException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Cannot log out"));
         }
