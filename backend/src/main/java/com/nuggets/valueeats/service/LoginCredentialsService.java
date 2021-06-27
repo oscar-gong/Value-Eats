@@ -2,9 +2,11 @@ package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
+import com.nuggets.valueeats.entity.LoggedInUser;
 import com.nuggets.valueeats.entity.Token;
 import com.nuggets.valueeats.entity.LoginCredentials;
 import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.entity.UserToken;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.LoggedInUserRepository;
@@ -39,10 +41,7 @@ public class LoginCredentialsService {
     @Autowired
     private LoggedInUserRepository loggedInUserRepository;
 
-    @Autowired
-    private JwtUtils jwtUtils;
-
-    public ResponseEntity<JSONObject> login(final LoginCredentials user) {
+    public ResponseEntity<JSONObject> login(final User user) {
         User userDb;
         try {
             userDb = userRepository.findByEmail(user.getEmail());
@@ -54,7 +53,11 @@ public class LoginCredentialsService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to login, please try again"));
         }
 
-        Token token = new Token(jwtUtils.encode(String.valueOf(user.getId())));
+        // Token token = new Token(jwtUtils.encode(String.valueOf(user.getId())));
+        Long tokenId = userTokenRepository.findMaxId() == null ? 0 : userTokenRepository.findMaxId() + 1;
+        UserToken token = new UserToken(tokenId, jwtUtils.encode(String.valueOf(user.getId())));
+        user.addToken(token);
+
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", token.getToken());
         JSONObject data = new JSONObject(dataMedium);
@@ -64,13 +67,14 @@ public class LoginCredentialsService {
     }
 
     public ResponseEntity<JSONObject> logout(final Token token) {
+        System.out.println(token.getToken());
         if (!userTokenRepository.existsByToken(token.getToken())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid authentication"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't find the token"));
         }
 
         String userId = jwtUtils.decode(token.getToken());
         if (userId == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid authentication"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't get user associated with token"));
         }
 
         LoggedInUser loggedInUser = loggedInUserRepository.findById(Long.valueOf(userId)).orElse(null);
