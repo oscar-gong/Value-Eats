@@ -4,9 +4,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 @NoArgsConstructor
 @Data
-public final class Diner extends LoggedInUser {
+@PrimaryKeyJoinColumn(name = "id")
+public final class Diner extends User {
 }

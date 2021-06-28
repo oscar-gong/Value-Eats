@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Main } from "./styles/Main";
@@ -16,6 +16,7 @@ function App() {
   const context = useContext(StoreContext);
   console.log(context);
   const [alertOptions, setAlertOptions] = context.alert;
+  const [token, setToken] = useState("");
 
   return (
     <>
@@ -27,20 +28,20 @@ function App() {
       <Main>
         <Router>
           <Switch>
-            <Route exact path="/dinerLanding">
-              <DinerLanding />
+          <Route exact path="/dinerLanding">
+              <DinerLanding token={token}/>
             </Route>
             <Route exact path="/">
-              <Login />
+              <Login setToken={setToken}/>
             </Route>
             <Route exact path="/RegisterDiner">
-              <RegisterDiner />
+              <RegisterDiner setToken={setToken}/>
             </Route>
             <Route exact path="/RegisterEatery">
-              <RegisterEatery />
+              <RegisterEatery setToken={setToken}/>
             </Route>
             <Route exact path="/EateryLanding">
-              <EateryLanding />
+              <EateryLanding token={token}/>
             </Route>
           </Switch>
         </Router>

@@ -1,7 +1,6 @@
 package com.nuggets.valueeats.utils;
 
 import org.json.simple.JSONObject;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,5 +23,12 @@ public final class ResponseUtils {
         response.put("data", result);
 
         return new JSONObject(response);
+    }
+
+    public static JSONObject createResponse(final JSONObject result) {
+        // Map<String, Object> response = new HashMap<>();
+        // response.put("data", result);
+
+        return new JSONObject(result);
     }
 }

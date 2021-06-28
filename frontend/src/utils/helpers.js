@@ -4,8 +4,13 @@ export const checkValidEmail = (email) => {
 };
 
 export const checkValidPassword = (password) => {
-    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,32}$/;
-    return regex.test(password);
+    if (password === "") return false;
+    return (
+        password.length >= 8 &&
+        password.length <= 32 &&
+        !(password.toLowerCase() === password) &&
+        !(password.toUpperCase() === password)
+    );
 };
 
 export const fileToDataUrl = (file) => {

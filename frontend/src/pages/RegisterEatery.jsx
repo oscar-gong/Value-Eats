@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
 import { FileUpload } from "../styles/FileUpload";
@@ -8,13 +8,17 @@ import { AlignCenter } from "../styles/AlignCenter";
 import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
-import { checkValidEmail, checkValidPassword, fileToDataUrl } from "./helpers";
+import {
+    checkValidEmail,
+    checkValidPassword,
+    fileToDataUrl,
+} from "../utils/helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { StoreContext } from "../utils/store";
 
-export default function RegisterEatery() {
+export default function RegisterEatery({ setToken }) {
     const defaultState = { value: "", valid: true };
     const [previewImages, setPreviewImages] = useState([]);
     const [images, setImages] = useState([]);
@@ -26,13 +30,14 @@ export default function RegisterEatery() {
     const [eateryName, setEateryName] = useState(defaultState);
     const [address, setAddress] = useState(defaultState);
     const [cuisines, setCuisines] = useState({ value: [], valid: true });
+    const [cuisineList, setCuisineList] = useState([]);
     const history = useHistory();
 
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
 
     // set to true for real demos
-    const useGoogleAPI = false;
+    const useGoogleAPI = true;
 
     const handleImages = (data) => {
         Array.from(data).forEach((file) => {
@@ -110,7 +115,26 @@ export default function RegisterEatery() {
     });
 
     // temp list
-    const cuisineList = ["italian", "japanese", "american"];
+    useEffect(() => {
+        const listOfCuisines = async () => {
+            const response = await fetch(
+                "http://localhost:8080/list/cuisines",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            const responseData = await response.json();
+            if (response.status === 200) {
+                setCuisineList(responseData.cuisines);
+            }
+        };
+        listOfCuisines();
+    }, []);
 
     const registerUser = async () => {
         // check register details
@@ -158,16 +182,25 @@ export default function RegisterEatery() {
                 address: useGoogleAPI ? address.value : "Sydney",
                 password: password.value,
                 cuisines: cuisines.value,
-                menuPhotos: images // array of data urls
+                menuPhotos: images, // array of data urls
             }),
         });
         console.log(response);
         const responseData = await response.json();
         if (response.status === 200) {
-            setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+            setAlertOptions({
+                showAlert: true,
+                variant: "success",
+                message: responseData.message,
+            });
+            setToken(responseData.data.token);
             history.push("/EateryLanding");
         } else {
-            setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
+            setAlertOptions({
+                showAlert: true,
+                variant: "error",
+                message: responseData.message,
+            });
         }
     };
 

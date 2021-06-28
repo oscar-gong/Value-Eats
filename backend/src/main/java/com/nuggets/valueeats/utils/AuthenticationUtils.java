@@ -5,9 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class AuthenticationUtils {
-    public static ResponseEntity<JSONObject> loginPasswordCheck(final String loginPassword, final String secret, final String actualPassword, final String successMessage, final boolean isDiner) {
+    public static ResponseEntity<JSONObject> loginPasswordCheck(final String loginPassword, final String secret, 
+                                                                final String actualPassword, final String successMessage, 
+                                                                final boolean isDiner, final JSONObject data) {
         if (EncryptionUtils.encrypt(loginPassword, secret).equals(actualPassword)) {
-            JSONObject data = new JSONObject();
             data.put("type", (isDiner ? "diner" : "eatery"));
             return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(successMessage, data));
         }

@@ -1,20 +1,25 @@
 package com.nuggets.valueeats.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @Data
-public abstract class User extends LoginCredentials {
+public class User {
     @Id
     private Long id;
     @Column(unique=true)
+    private String email;
+    private String password;
     private String alias;
     private String address;
+    private String token;
 }

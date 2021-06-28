@@ -6,13 +6,13 @@ import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
-import { checkValidEmail, checkValidPassword } from "./helpers";
+import { checkValidEmail, checkValidPassword } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 
 // set to true for real demos
 const useGoogleAPI = false;
 
-export default function RegisterDiner() {
+export default function RegisterDiner({ setToken }) {
     const defaultState = { value: "", valid: true };
     const [username, setUsername] = useState(defaultState);
     const [email, setEmail] = useState(defaultState);
@@ -86,25 +86,37 @@ export default function RegisterDiner() {
 
         console.log("registered");
         console.log(username, email, password, address);
-        const registerResponse = await fetch("http://localhost:8080/register/diner", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                alias: username.value,
-                email: email.value,
-                address: useGoogleAPI ? address.value : "Sydney",
-                password: password.value,
-            }),
-        });
+        const registerResponse = await fetch(
+            "http://localhost:8080/register/diner",
+            {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    alias: username.value,
+                    email: email.value,
+                    address: useGoogleAPI ? address.value : "Sydney",
+                    password: password.value,
+                }),
+            }
+        );
         const registerResult = await registerResponse.json();
         if (registerResponse.status === 200) {
-            setAlertOptions({ showAlert: true, variant: 'success', message: registerResult.message });
-            history.push('/dinerLanding');
+            setAlertOptions({
+                showAlert: true,
+                variant: "success",
+                message: registerResult.message,
+            });
+            setToken(registerResult.data.token);
+            history.push("/dinerLanding");
         } else {
-            setAlertOptions({ showAlert: true, variant: 'error', message: registerResult.message });
+            setAlertOptions({
+                showAlert: true,
+                variant: "error",
+                message: registerResult.message,
+            });
         }
     };
 
@@ -162,24 +174,29 @@ export default function RegisterDiner() {
                         fullWidth
                     />
                 </Box>
-                <Box pt={2} width="60%">
-                    <TextField
-                        id="outlined-basic"
-                        disabled={!useGoogleAPI}
-                        onBlur={validAddress}
-                        onChange={(e) =>
-                            setAddress({ value: e.target.value, valid: true })
-                        }
-                        error={!address.valid}
-                        helperText={
-                            address.valid ? "" : "Please enter an address"
-                        }
-                        fullWidth
-                        color="secondary"
-                        variant="outlined"
-                        inputRef={ref}
-                    />
-                </Box>
+                {useGoogleAPI && (
+                    <Box pt={2} width="60%">
+                        <TextField
+                            id="outlined-basic"
+                            disabled={!useGoogleAPI}
+                            onBlur={validAddress}
+                            onChange={(e) =>
+                                setAddress({
+                                    value: e.target.value,
+                                    valid: true,
+                                })
+                            }
+                            error={!address.valid}
+                            helperText={
+                                address.valid ? "" : "Please enter an address"
+                            }
+                            fullWidth
+                            color="secondary"
+                            variant="outlined"
+                            inputRef={ref}
+                        />
+                    </Box>
+                )}
 
                 <Box pt={2} width="60%">
                     <TextField
