@@ -122,7 +122,7 @@ public class UserManagementService {
 
         return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()), 
                                                       userDb.getPassword(), "Welcome back, " + userDb.getEmail(), 
-                                                      userRepository.existsByEmail(userDb.getEmail()), data);
+                                                      dinerRepository.existsByEmail(userDb.getEmail()), data);
     }
 
     @Transactional

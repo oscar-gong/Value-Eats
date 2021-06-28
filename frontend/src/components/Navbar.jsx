@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-export default function Navbar ({ token, showSearch }) {
+export default function Navbar ({ token, isDiner }) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const history = useHistory();
@@ -93,7 +93,7 @@ export default function Navbar ({ token, showSearch }) {
                 <Toolbar className={classes.singleLine}>
                     <Typography className={classes.logo}>Value Eats</Typography>
                     {
-                        showSearch &&
+                        isDiner &&
                         <Toolbar className={classes.barSize}>
                             <div className={classes.searchContainer}>
                                 <div style={{marginRight: 10}}>
@@ -120,7 +120,10 @@ export default function Navbar ({ token, showSearch }) {
                         onClose={handleClose}
                     >
                         <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My Vouchers</MenuItem>
+                        {
+                            isDiner &&
+                            <MenuItem onClick={handleClose}>My Vouchers</MenuItem>
+                        }
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                 </Toolbar>
