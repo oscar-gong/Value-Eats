@@ -3,6 +3,7 @@ package com.nuggets.valueeats.controller;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.service.CuisineService;
 import com.nuggets.valueeats.service.UserManagementService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public final class AuthenticationController {
     @Autowired
     private UserManagementService userManagementService;
+    
+    @Autowired
+    private CuisineService cuisineService;
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> login(@RequestBody final User user) {
@@ -37,5 +41,10 @@ public final class AuthenticationController {
     @RequestMapping(value = "logout", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> logout(@RequestBody User user) {
         return userManagementService.logout(user);
+    }
+
+    @RequestMapping(value = "list/cuisines", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> logout() {
+        return cuisineService.listCuisines();
     }
 }

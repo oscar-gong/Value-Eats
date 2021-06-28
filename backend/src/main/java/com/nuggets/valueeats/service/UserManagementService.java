@@ -4,14 +4,12 @@ import com.nuggets.valueeats.entity.User;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
-import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
@@ -31,7 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserManagementService {
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository<User> userRepository;
     
     @Autowired
     private DinerRepository dinerRepository;

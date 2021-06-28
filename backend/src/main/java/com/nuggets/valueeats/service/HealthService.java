@@ -19,7 +19,7 @@ public final class HealthService {
     @Autowired
     private EateryRepository eateryRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository<User> userRepository;
 
     public List<Diner> listDiner() {
         return dinerRepository.findAll();

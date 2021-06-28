@@ -1,16 +1,12 @@
 package com.nuggets.valueeats.entity;
 
-import com.nuggets.valueeats.utils.TextUtils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Entity
 @Data
