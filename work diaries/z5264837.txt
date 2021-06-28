@@ -107,3 +107,56 @@ Week 3
                 - Registering diner
                 - Login as eatery or diner
                 - Logout as eatery or diner
+
+Week 3
+    - What was planned for the period since the last work diary entry
+        - As it is the start of a project, there will be a lot of setting up of both environments and machines
+        - Sprint 1
+            - Based on the sprint on Jira, we are focusing on working on authentication as this will create the users which need to be managed and used
+                - Registering eatery
+                - Registering diner
+                - Login as eatery or diner
+                - Logout as eatery or diner
+    - What was finished
+        - Created Health Service
+            - Allowed testing through apis
+            - Allowed health checking of service
+        - Refactored
+            - Cleaned up code
+            - Changed object oriented design
+            - Fixed code
+        - Logout backend
+            - Developed jwt token functionality
+        - Reviewed Code
+        - Password Encryption
+    - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
+        - Scalability vs Fit For Purpose
+            - Tokens: Many Tokens vs One Token Per User
+                - Chosen Design: One token per user as it was simpler
+                - Does not properly allow multiple sessions per user
+                    - Token is deactivated once a user logouts
+                    - Previous token is deactivated once a user logs in
+            - User Id Generation: Race Condition
+                - Chosen Design: To ignore as we do not have a massive userbase
+                - Does not allow multiple users to safely register at the same time
+        - Lack of specification
+            - Differing ideas on
+                - Database design
+                - Object oriented programming
+                - API design
+            - Caused issues as changes were made half way through which caused other edits to be required
+            - Through discussion and better planning, especially in the future we can avoid this issue
+        - Branching
+            - Base branch become a feature branch
+            - Caused issues as a lot of changes were occuring which created conflicts
+            - We ended up merging core templates into master so we could have the template built
+    - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
+        - Sprint 1 was not finished
+            - A lot of differing ideas of how to do a specific task, especially as it was the start where there was a lot of core development
+            - This is a small set back and we are able to catchup after finalising our core discussions, especially as the workload was purposefully small
+            - We will complete the remaining tickets before the lab to ensure we meet client deadlines
+            - Last sprint's tickets will be done in addition to the next sprint's planned goal
+    - What is planned for the next period (e.g., next week)
+        - Sprint 2
+            - Development of profiles and their associated management
+        - Last week's remaining tasks
