@@ -1,6 +1,7 @@
 package com.nuggets.valueeats.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,126 +18,20 @@ import org.springframework.stereotype.Service;
 public class CuisineService {
 
     public ResponseEntity<JSONObject> listCuisines() {
-        List<String> list = new ArrayList<String>();
-        list.add("Ainu");
-        list.add("Albanian");
-        list.add("Argentine");
-        list.add("Andhra");
-        list.add("American");
-        list.add("Anglo-Indian");
-        list.add("Arab");
-        list.add("Armenian");
-        list.add("Assyrian");
-        list.add("Awadhi");
-        list.add("Azerbaijani");
-        list.add("Balochi");
-        list.add("Bashkir");
-        list.add("Belarusian");
-        list.add("Bangladeshi");
-        list.add("Bengali");
-        list.add("Berber");
-        list.add("Brazilian");
-        list.add("British");
-        list.add("Buddhist");
-        list.add("Bulgarian");
-        list.add("Cajun");
-        list.add("Cantonese");
-        list.add("Caribbean");
-        list.add("Chechen");
-        list.add("Chinese");
-        list.add("Chinese Islamic");
-        list.add("Circassian");
-        list.add("Crimean Tatar");
-        list.add("Cypriot");
-        list.add("Czech");
-        list.add("Danish");
-        list.add("Egyptian");
-        list.add("English");
-        list.add("Ethiopian");
-        list.add("Eritrean");
-        list.add("Estonian");
-        list.add("French");
-        list.add("Filipino");
-        list.add("Georgian");
-        list.add("German");
-        list.add("Goan");
-        list.add("Goan Catholic");
-        list.add("Greek");
-        list.add("Gujarati");
-        list.add("Hyderabad");
-        list.add("Indian");
-        list.add("Indian Chinese");
-        list.add("Indian Singaporean");
-        list.add("Indonesian");
-        list.add("Inuit");
-        list.add("Irish");
-        list.add("Italian-American");
-        list.add("Italian cuisine");
-        list.add("Jamaican");
-        list.add("Japanese");
-        list.add("Jewish - Israeli");
-        list.add("Karnataka");
-        list.add("Kazakh");
-        list.add("Keralite");
-        list.add("Korean");
-        list.add("Kurdish");
-        list.add("Laotian");
-        list.add("Lebanese");
-        list.add("Latvian");
-        list.add("Lithuanian");
-        list.add("Louisiana Creole");
-        list.add("Maharashtrian");
-        list.add("Mangalorean");
-        list.add("Malay");
-        list.add("Malaysian Chinese");
-        list.add("Malaysian Indian");
-        list.add("Mediterranean");
-        list.add("Mennonite");
-        list.add("Mexican");
-        list.add("Mordovian");
-        list.add("Mughal");
-        list.add("Native American");
-        list.add("Nepalese");
-        list.add("New Mexican");
-        list.add("Odia");
-        list.add("Parsi");
-        list.add("Pashtun");
-        list.add("Polish");
-        list.add("Pennsylvania Dutch");
-        list.add("Pakistani");
-        list.add("Peranakan");
-        list.add("Persian");
-        list.add("Peruvian");
-        list.add("Portuguese");
-        list.add("Punjabi");
-        list.add("Québécois");
-        list.add("Rajasthani");
-        list.add("Romani");
-        list.add("Romanian");
-        list.add("Russian");
-        list.add("Sami");
-        list.add("Serbian");
-        list.add("Sindhi");
-        list.add("Slovak");
-        list.add("Slovenian");
-        list.add("Somali");
-        list.add("South Indian");
-        list.add("Soviet");
-        list.add("Spanish");
-        list.add("Sri Lankan");
-        list.add("Taiwanese");
-        list.add("Tatar");
-        list.add("Texan");
-        list.add("Thai");
-        list.add("Turkish");
-        list.add("Tamil");
-        list.add("Udupi");
-        list.add("Ukrainian");
-        list.add("Vietnamese");
-        list.add("Yamal");
-        list.add("Zambian");
-        list.add("Zanzibari");
+        // List<String> list = new ArrayList<String>();
+        String[] cuisines = ("Ainu, Albanian, Argentine, Andhra, American, Anglo-Indian, Arab, Armenian, Assyrian, " +
+        "Awadhi, Azerbaijani, Balochi, Bashkir, Belarusian, Bangladeshi, Bengali, Berber, Brazilian, British, Buddhist, " +
+        "Bulgarian, Cajun, Cantonese, Caribbean, Chechen, Chinese, Chinese Islamic, Circassian, Crimean Tatar, Cypriot, Czech, " +
+        "Danish, Egyptian, English, Ethiopian, Eritrean, Estonian, French, Filipino, Georgian, German, Goan, Goan Catholic, Greek, " +
+        "Gujarati, Hyderabad, Indian, Indian Chinese, Indian Singaporean, Indonesian, Inuit, Irish, Italian-American, Italian cuisine, " +
+        "Jamaican, Japanese, Jewish - Israeli, Karnataka, Kazakh, Keralite, Korean, Kurdish, Laotian, Lebanese, Latvian, Lithuanian, Louisiana " +
+        "Creole, Maharashtrian, Mangalorean, Malay, Malaysian Chinese, Malaysian Indian, Mediterranean, Mennonite, Mexican, Mordovian, Mughal, " +
+        "Native American, Nepalese, New Mexican, Odia, Parsi, Pashtun, Polish, Pennsylvania Dutch, Pakistani, Peranakan, Persian, Peruvian, Portuguese, " +
+        "Punjabi, Québécois, Rajasthani, Romani, Romanian, Russian, Sami, Serbian, Sindhi, Slovak, Slovenian, Somali, South Indian, Soviet, Spanish, " +
+        "Sri Lankan, Taiwanese, Tatar, Texan, Thai, Turkish, Tamil, Udupi, Ukrainian, Vietnamese, Yamal, Zambian, Zanzibari").split(", ");
+        ArrayList<String> cuisinesArray = new ArrayList<String>(Arrays.asList(cuisines));
 
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(list.toString()));
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(cuisinesArray.toString()));
     }
 }
