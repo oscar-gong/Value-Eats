@@ -82,8 +82,6 @@ export default function Navbar ({ token, isDiner }) {
             history.push("/");
         } else {
             setAlertOptions({ showAlert: true, variant: 'error', message: logoutData.message });
-            // TODO: remove when token is actually being passed through here
-            history.push("/");
         }
     }
 
