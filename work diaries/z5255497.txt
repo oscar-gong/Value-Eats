@@ -70,3 +70,28 @@ Week3:
     
   What is planned for the next period:
     - We will work on the 1st sprint next week, I will work on the backend and implement the functions for user stories.
+    
+Week4:
+  What was planned for the period since the last work diary entry:
+    - Work on the 1st sprint next week, set up the backend and implement the functions for user stories.
+
+  What was finished:
+    - We have mostly finished the register and login features in the backend.
+    - We have connected the frontend to the backend, and make rest calls to the backend.
+    - I have set up the configuration files for spring boot in the backend and connected it to the sqlite3 database.
+    - I have implemented the sql tables to store the user data and token.
+    - I have implemented the entity, controller, service, repository for the user to register and login.
+  
+    What were the main technical and non-technical obstacles and how they were
+  overcome:
+    - There were some conflicts in the data structure and data types, lack of ER relationship design in the sql.
+    - There were too many (12) sql tables in the database, I have reduced it to 3 so that it will be easier to maintenance.
+  
+    What was not finished, why this happened, how this affects the overall project
+    progress and what adjustments (if any) are needed so the success of the project is
+    not endangered:
+    
+    - The token is not currently working, we need to store the token into database when a user login.
+    
+  What is planned for the next period:
+    - I will discuss the token feature and sql tables with my teammates, I will also work on the sprint2 in backend.
