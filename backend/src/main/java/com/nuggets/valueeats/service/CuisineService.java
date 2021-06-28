@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.nuggets.valueeats.utils.ResponseUtils;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +32,10 @@ public class CuisineService {
         "Punjabi, Québécois, Rajasthani, Romani, Romanian, Russian, Sami, Serbian, Sindhi, Slovak, Slovenian, Somali, South Indian, Soviet, Spanish, " +
         "Sri Lankan, Taiwanese, Tatar, Texan, Thai, Turkish, Tamil, Udupi, Ukrainian, Vietnamese, Yamal, Zambian, Zanzibari").split(", ");
         ArrayList<String> cuisinesArray = new ArrayList<String>(Arrays.asList(cuisines));
+        JSONArray jsArray = new JSONArray();
+        jsArray.addAll(cuisinesArray); 
 
 
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(""+cuisinesArray));
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(""+jsArray));
     }
 }
