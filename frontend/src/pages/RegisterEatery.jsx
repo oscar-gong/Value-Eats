@@ -127,8 +127,6 @@ export default function RegisterEatery({ setToken }) {
             const responseData = await response.json();
             if (response.status === 200) {
                 setCuisineList(responseData.cuisines);
-            } else {
-                console.log("struggling");
             }
         };
         listOfCuisines();
