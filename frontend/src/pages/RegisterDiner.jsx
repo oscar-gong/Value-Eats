@@ -163,24 +163,27 @@ export default function RegisterDiner({ setToken }) {
                         fullWidth
                     />
                 </Box>
-                <Box pt={2} width="60%">
-                    <TextField
-                        id="outlined-basic"
-                        disabled={!useGoogleAPI}
-                        onBlur={validAddress}
-                        onChange={(e) =>
-                            setAddress({ value: e.target.value, valid: true })
-                        }
-                        error={!address.valid}
-                        helperText={
-                            address.valid ? "" : "Please enter an address"
-                        }
-                        fullWidth
-                        color="secondary"
-                        variant="outlined"
-                        inputRef={ref}
-                    />
-                </Box>
+                {
+                    useGoogleAPI &&
+                    <Box pt={2} width="60%">
+                        <TextField
+                            id="outlined-basic"
+                            disabled={!useGoogleAPI}
+                            onBlur={validAddress}
+                            onChange={(e) =>
+                                setAddress({ value: e.target.value, valid: true })
+                            }
+                            error={!address.valid}
+                            helperText={
+                                address.valid ? "" : "Please enter an address"
+                            }
+                            fullWidth
+                            color="secondary"
+                            variant="outlined"
+                            inputRef={ref}
+                        />
+                    </Box>
+                }
 
                 <Box pt={2} width="60%">
                     <TextField

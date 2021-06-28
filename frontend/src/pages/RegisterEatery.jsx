@@ -32,7 +32,7 @@ export default function RegisterEatery({ setToken }) {
     const setAlertOptions = context.alert[1];
 
     // set to true for real demos
-    const useGoogleAPI = false;
+    const useGoogleAPI = true;
 
     const handleImages = (data) => {
         Array.from(data).forEach((file) => {
