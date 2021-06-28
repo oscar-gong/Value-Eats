@@ -8,7 +8,11 @@ import { AlignCenter } from "../styles/AlignCenter";
 import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
-import { checkValidEmail, checkValidPassword, fileToDataUrl } from "./helpers";
+import {
+    checkValidEmail,
+    checkValidPassword,
+    fileToDataUrl,
+} from "../utils/helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
 import Autocomplete from "@material-ui/lab/Autocomplete";
