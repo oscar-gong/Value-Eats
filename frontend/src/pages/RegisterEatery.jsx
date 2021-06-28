@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
 import { FileUpload } from "../styles/FileUpload";
@@ -26,6 +26,7 @@ export default function RegisterEatery({ setToken }) {
     const [eateryName, setEateryName] = useState(defaultState);
     const [address, setAddress] = useState(defaultState);
     const [cuisines, setCuisines] = useState({ value: [], valid: true });
+    const [cuisineList, setCuisineList] = useState([]);
     const history = useHistory();
 
     const context = useContext(StoreContext);
@@ -110,7 +111,28 @@ export default function RegisterEatery({ setToken }) {
     });
 
     // temp list
-    const cuisineList = ["italian", "japanese", "american"];
+    useEffect(() => {
+        const listOfCuisines = async () => {
+            const response = await fetch(
+                "http://localhost:8080/list/cuisines",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            const responseData = await response.json();
+            if (response.status === 200) {
+                setCuisineList(responseData.cuisines);
+            } else {
+                console.log("struggling");
+            }
+        };
+        listOfCuisines();
+    }, []);
 
     const registerUser = async () => {
         // check register details
@@ -158,17 +180,25 @@ export default function RegisterEatery({ setToken }) {
                 address: useGoogleAPI ? address.value : "Sydney",
                 password: password.value,
                 cuisines: cuisines.value,
-                menuPhotos: images // array of data urls
+                menuPhotos: images, // array of data urls
             }),
         });
         console.log(response);
         const responseData = await response.json();
         if (response.status === 200) {
-            setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+            setAlertOptions({
+                showAlert: true,
+                variant: "success",
+                message: responseData.message,
+            });
             setToken(responseData.data.token);
             history.push("/EateryLanding");
         } else {
-            setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
+            setAlertOptions({
+                showAlert: true,
+                variant: "error",
+                message: responseData.message,
+            });
         }
     };
 
