@@ -32,6 +32,6 @@ public class CuisineService {
         ArrayList<String> cuisinesArray = new ArrayList<String>(Arrays.asList(cuisines));
 
 
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(cuisinesArray.toString()));
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(""+cuisinesArray));
     }
 }
