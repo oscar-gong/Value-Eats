@@ -114,7 +114,6 @@ export default function RegisterEatery({ setToken }) {
         },
     });
 
-    // temp list
     useEffect(() => {
         const listOfCuisines = async () => {
             const response = await fetch(
@@ -334,7 +333,7 @@ export default function RegisterEatery({ setToken }) {
                         )}
                     />
                 </Box>
-                <Box pt={1}>
+                <Box pt={2}>
                     <Label>
                         <FileUpload
                             type="file"
@@ -347,7 +346,7 @@ export default function RegisterEatery({ setToken }) {
                 <Box flex-wrap="wrap" flexDirection="row" width="60%">
                     {getPreviewImages(previewImages)}
                 </Box>
-                <Box pt={4} pb={4}>
+                <Box pt={3} pb={3}>
                     <Button
                         variant="contained"
                         color="primary"
