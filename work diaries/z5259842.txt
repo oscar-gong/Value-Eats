@@ -37,3 +37,27 @@ Week 3
     - I plan to focus more on the frontend of our authentication features
     - We plan to implement the user stories we have placed in our first sprint which are mainly authentication features
     - If there is additional time, we will implement more features
+
+Week 4
+- What was planned for the period since the last work diary entry:
+    - setup the frontend, backend and database
+    - complete Sprint 1 (authentication) by the end of this week which included login, register and logout 
+
+- What we finished:
+    - database created, login/registerDiner/registerEatery/logout completed
+    - I worked mainly on the frontend pages such as registerDiner and registerEatery - general form, checking that fields are valid + error messages, routing
+    - I also made a helpers file to reduce code repetition + made some styled components 
+    - We were able to successfully connect the frontend to the backend, make requests and pass data into the database
+
+- Obstacles that we faced:
+    - In terms of backend, there were some disparities in opinions on system design due to a lack of consistency. 
+    - Creating branches too early on when the backend was not completely set up properly caused issues with merging
+    - There was also some confusion in terms of the type of data the frontend was passing to the backend, which was resolved by discussion and could be avoided in the future through communication. 
+    - Branching became slightly chaotic and we had different versions on different branches, which we could work to improve on in the next few sprints
+
+- What was not finished:
+    - localstorage of token at the frontend, adding the feature of eateries being allowed to upload photos at registration of their food (plan to finish it off on Monday)
+
+- What is planned for the next period:
+    - make a start on sprint 2 which includes creating the eatery profile, diner profile and reviews 
+    - refactor code if necessary

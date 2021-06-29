@@ -24,3 +24,16 @@ Week 3
 - We have also decided to write up the system architecture descriptions as we believed that it would make things clearer.
 - I have assisted in finalising the proposal ensuring that every section meets the criteria.
 - In week 4, we plan to begin our first sprint for our project. We plan to implement the authentication features of our system.
+
+Week 4
+- This week, we have mostly implemented the authentication features of our system.
+- Initially, I experimented working with frontend, creating the design for our navigation bar.
+- Later, I then set-up our backend and had it connected to an SQLite3 database so that my team can begin working on implementing features.
+- I have implemented the initial structure of our system including setting up the classes for our entity, controllers, repositories and services.
+- I then worked on getting register diner and eatery functional so that my team can have an idea how things would be implemented.
+- Some of the obstacles we've faced included:
+    - Lack of consistency in design when implementing a feature.
+    - Conflicting views when deciding on the structure.
+    - Branches were made before backend was properly set up leading to a lot of issues in terms of git management.
+- We plan to improve the design of our code by Monday to ensure that future features can be implemented with ease.
+- We also plan to begin our next sprint which includes working on profile related features.
