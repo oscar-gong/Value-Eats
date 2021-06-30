@@ -1,5 +1,7 @@
 package com.nuggets.valueeats.entity;
 
+import java.util.ArrayList;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,4 +26,8 @@ public class Review {
     private String message;
 
     private Integer rating;
+
+    private ArrayList<String> reviewPhotos;
+
+    private String token;
 }
