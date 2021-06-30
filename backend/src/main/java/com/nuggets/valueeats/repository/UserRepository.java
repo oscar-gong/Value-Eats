@@ -17,6 +17,9 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
     
     T findById(int id);
 
+    boolean existsById(Long id);
+
+
     T findByToken(String token);
 
     boolean existsByToken(String token);
