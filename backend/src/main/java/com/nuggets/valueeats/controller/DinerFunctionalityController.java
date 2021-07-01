@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
-public final class ReviewController {
+public final class DinerFunctionalityController {
     @Autowired
     private UserManagementService userManagementService;
     

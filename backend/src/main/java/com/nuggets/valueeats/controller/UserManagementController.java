@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
-public final class AuthenticationController {
+public final class UserManagementController {
     @Autowired
     private UserManagementService userManagementService;
     
