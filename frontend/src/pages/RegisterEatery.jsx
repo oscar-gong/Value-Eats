@@ -9,14 +9,16 @@ import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import {
-    checkValidEmail,
-    checkValidPassword,
+    validEmail,
+    validPassword,
     fileToDataUrl,
+    validConfirmPassword
 } from "../utils/helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { StoreContext } from "../utils/store";
+import { validRequired } from "../utils/helpers";
 
 export default function RegisterEatery({ setToken }) {
     const defaultState = { value: "", valid: true };
@@ -63,31 +65,6 @@ export default function RegisterEatery({ setToken }) {
     const handleKeyPress = (e) => {
         if (e.key === "Enter") {
             registerUser();
-        }
-    };
-
-    const validEmail = () => {
-        if (!checkValidEmail(email.value))
-            setEmail({ values: "", valid: false });
-    };
-
-    const validPassword = () => {
-        if (!checkValidPassword(password.value))
-            setPassword({ values: "", valid: false });
-    };
-
-    const validConfirmPassword = () => {
-        if (
-            password.value !== confirmPassword.value ||
-            confirmPassword.value === ""
-        ) {
-            setConfirmPassword({ values: "", valid: false });
-        }
-    };
-
-    const validEateryName = () => {
-        if (eateryName.value === "") {
-            setEateryName({ value: "", valid: false });
         }
     };
 
@@ -216,7 +193,7 @@ export default function RegisterEatery({ setToken }) {
                         onChange={(e) =>
                             setEmail({ value: e.target.value, valid: true })
                         }
-                        onBlur={validEmail}
+                        onBlur={() => validEmail(email.value, setEmail)}
                         error={!email.valid}
                         helperText={
                             email.valid ? "" : "Please enter a valid email"
@@ -233,7 +210,7 @@ export default function RegisterEatery({ setToken }) {
                         onChange={(e) =>
                             setPassword({ value: e.target.value, valid: true })
                         }
-                        onBlur={validPassword}
+                        onBlur={() => validPassword(password.value, setPassword)}
                         error={!password.valid}
                         helperText={
                             password.valid
@@ -255,7 +232,7 @@ export default function RegisterEatery({ setToken }) {
                                 valid: true,
                             })
                         }
-                        onBlur={validConfirmPassword}
+                        onBlur={() => validConfirmPassword(password.value, confirmPassword.value, setConfirmPassword)}
                         error={!confirmPassword.valid}
                         helperText={
                             confirmPassword.valid
@@ -276,7 +253,7 @@ export default function RegisterEatery({ setToken }) {
                                 valid: true,
                             })
                         }
-                        onBlur={validEateryName}
+                        onBlur={() => validRequired(eateryName.value, setEateryName)}
                         error={!eateryName.valid}
                         helperText={
                             eateryName.valid
