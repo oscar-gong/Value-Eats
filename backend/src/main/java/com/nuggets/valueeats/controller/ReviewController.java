@@ -35,8 +35,13 @@ public final class ReviewController {
     @Autowired
     private DinerFunctionalityService dinerFunctionalityService;
 
-    @RequestMapping(value = "create/review", method = RequestMethod.POST)
+    @RequestMapping(value = "diner/createreview", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> createReview(@RequestBody String jsonString){
         return dinerFunctionalityService.createReview(jsonString);
+    }
+
+    @RequestMapping(value = "diner/removereview", method = RequestMethod.DELETE)
+    public ResponseEntity<JSONObject> removeReview(@RequestBody String jsonString){
+        return dinerFunctionalityService.removeReview(jsonString);
     }
 }
