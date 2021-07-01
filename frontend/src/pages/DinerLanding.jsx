@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from "../components/Navbar";
 import StarRating from "../components/StarRating";
-import { MainContent } from "../styles/MainContent";
+import { MainContainer } from "../styles/MainContainer";
 import Carousel from "react-material-ui-carousel";
 import {
     Card,
@@ -202,7 +202,7 @@ export default function DinerLanding({ token }) {
     return (
         <>
             <NavBar token={token} isDiner={true} />
-            <MainContent>
+            <MainContainer>
                 <Typography variant="h5">Hi username,</Typography>
                 <Box textAlign="right">
                     <InputLabel id="demo-simple-select-outlined-label">
@@ -225,7 +225,7 @@ export default function DinerLanding({ token }) {
 
                 <Carousel>{getSlides()}</Carousel>
                 {getEateries()}
-            </MainContent>
+            </MainContainer>
         </>
     );
 }
