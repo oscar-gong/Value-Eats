@@ -29,18 +29,10 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
     Long findMaxId();
 
     @Modifying
-    @Query("update User u set u.email = ?1  where u.token = ?2")
-    void updateEmailByToken(String email, String token);
+    @Query("update User u set u.email = ?1, u.password = ?2, u.alias = ?3, u.address = ?4 where u.id = ?5")
+    void updateUserById(String email, String password, String alias, String address, Long userId);
 
     @Modifying
-    @Query("update User u set u.password = ?1  where u.token = ?2")
-    void updatePasswordByToken(String password, String token);
-
-    @Modifying
-    @Query("update User u set u.alias = ?1  where u.token = ?2")
-    void updateAliasByToken(String alias, String token);
-
-    @Modifying
-    @Query("update User u set u.email = ?1  where u.token = ?2")
-    void updateAddressByToken(String address, String token);
+    @Query("update User u set u.email = ?1, u.password = ?2, u.alias = ?3, u.address = ?4 where u.id = ?5")
+    void updateUserByToken(String email, String password, String alias, String address, String token);
 }

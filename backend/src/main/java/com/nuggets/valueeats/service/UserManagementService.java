@@ -178,33 +178,15 @@ public class UserManagementService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to verify, please try again"));
         }
 
-        if (user.getEmail() != null) {
-            if (!ValidationUtils.isValidEmail(user.getEmail())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid Email Format."));
-            }
-        userRepository.updateEmailByToken(user.getEmail(), token);
+        String result = processNewProfile(user, userDb);
+
+        if (result != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(result));
         }
 
-        if (user.getPassword() != null) {
-            if (!ValidationUtils.isValidEmail(user.getEmail())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(
-                    "Password must be between 8 to 32 characters long, and contain a lower and uppercase character."));
-            }
-        userRepository.updatePasswordByToken(user.getPassword(), token);
-        }
-
-        if (user.getAlias() != null) {
-        userRepository.updateAliasByToken(user.getAlias(), token);
-        }
-
-        if (user.getAddress() != null) {
-        userRepository.updateAddressByToken(user.getAddress(), token);
-        }
-
-        user.setId(userDb.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Update profile successfully, "
-         + user.getAlias() == null ? userDb.getAlias() : user.getAlias()));
+         + user.getAlias()));
     }
 
     private boolean isValidInput(User user) {
@@ -219,6 +201,52 @@ public class UserManagementService {
         }
         if (!ValidationUtils.isValidPassword(user.getPassword())) {
             return "Password must be between 8 to 32 characters long, and contain a lower and uppercase character.";
+        }
+        return null;
+    }
+    
+    public String processNewProfile (User newProfile, User oldProfile) {
+
+        newProfile.setId(oldProfile.getId());
+
+        if (newProfile.getEmail() != null) {
+            if (oldProfile.getEmail().equals(newProfile.getEmail())) {
+                return "Email must be different from old email.";
+            }
+            if (!ValidationUtils.isValidEmail(newProfile.getEmail())) {
+                return "Invalid Email Format.";
+            }
+        } else {
+            newProfile.setEmail(oldProfile.getEmail());
+        }
+        
+        if (newProfile.getPassword() != null) {
+            String newPassword = EncryptionUtils.encrypt(newProfile.getPassword(), String.valueOf(newProfile.getId()));
+            if (oldProfile.getPassword().equals(newPassword)) {
+                return "Password must be different from old password.";
+            }
+            if (!ValidationUtils.isValidPassword(newProfile.getPassword())) {
+                return "Password must be between 8 to 32 characters long, and contain a lower and uppercase character.";
+            }
+            newProfile.setPassword(newPassword);
+        }else {
+            newProfile.setPassword(oldProfile.getPassword());
+        }
+
+        if (newProfile.getAlias() != null) {
+            if (oldProfile.getAlias().equals(newProfile.getAlias())) {
+                return "User name must be different from old user name.";
+            }
+        } else {
+            newProfile.setAlias(oldProfile.getAlias());
+        }
+
+        if (newProfile.getAddress() != null) {
+            if (oldProfile.getAddress().equals(newProfile.getAddress())) {
+                return "Address must be different from old Address.";
+            }
+        } else {
+            newProfile.setAddress(oldProfile.getAddress());
         }
         return null;
     }
