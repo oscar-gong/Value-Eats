@@ -39,4 +39,9 @@ public final class ReviewController {
     public ResponseEntity<JSONObject> createReview(@RequestBody String jsonString){
         return dinerFunctionalityService.createReview(jsonString);
     }
+
+    @RequestMapping(value = "remove/review", method = RequestMethod.DELETE)
+    public ResponseEntity<JSONObject> removeReview(@RequestBody String jsonString){
+        return dinerFunctionalityService.removeReview(jsonString);
+    }
 }

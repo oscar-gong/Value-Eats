@@ -90,6 +90,46 @@ public class DinerFunctionalityService {
         }
     }
 
+    public ResponseEntity<JSONObject> removeReview(String jsonString) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            Review review = objectMapper.readValue(jsonString, Review.class);
+            Diner diner = objectMapper.readValue(jsonString, Diner.class);
+
+            // Check for required inputs
+            if(!(StringUtils.isNotBlank(String.valueOf(diner.getToken())) &&
+                StringUtils.isNotBlank(String.valueOf(review.getEateryId())) &&
+                StringUtils.isNotBlank(String.valueOf(review.getId())))
+                ){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
+            }
+
+            // Check if eatery id exists
+            if(!eateryRepository.existsById(review.getEateryId())){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid Eatery ID"));
+            }
+
+            // Check if token is valid
+            if(!dinerRepository.existsByToken(diner.getToken())){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
+            }
+
+
+            Long dinerId = dinerRepository.findByToken(diner.getToken()).getId();
+
+            // Check if diner has a review and delete it
+            if(reviewRepository.existsByDinerIdAndEateryIdAndReviewId(dinerId, review.getEateryId(), review.getId()) == 1){
+                reviewRepository.deleteById(review.getId());
+                return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Review was deleted successfully"));
+            }else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Review does not exist."));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
+        }
+    }
+
     private static boolean isValidRating(Float rating){
         return rating % 0.5 == 0 && rating >= 1 && rating <= 5;
     }
