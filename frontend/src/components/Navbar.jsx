@@ -63,6 +63,14 @@ export default function Navbar ({ token, isDiner }) {
       setAnchorEl(null);
     };
 
+    const handleProfile = () => {
+        if (isDiner) {
+            history.push("/dinerProfile");
+        } else{
+            history.push("/eateryProfile");
+        }
+    }
+
     const handleLogout = async () => {
         console.log("You are getting logged out");
         const logoutResponse = await fetch("http://localhost:8080/logout", {
@@ -117,7 +125,7 @@ export default function Navbar ({ token, isDiner }) {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                        <MenuItem onClick={() => handleProfile()}>Profile</MenuItem>
                         {
                             isDiner &&
                             <MenuItem onClick={handleClose}>My Vouchers</MenuItem>
