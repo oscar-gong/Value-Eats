@@ -143,6 +143,60 @@ public class UserManagementService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Logout was successful"));
     }
 
+    @Transactional
+    public ResponseEntity<JSONObject> updateDiner(Diner diner) {
+        ResponseEntity<JSONObject> result = update(diner);
+        if (result.getStatusCode().is2xxSuccessful()) {
+            dinerRepository.save(diner);
+        }
+
+        return result;
+    }
+
+    @Transactional
+    public ResponseEntity<JSONObject> updateEatery(Eatery eatery) {
+        ResponseEntity<JSONObject> result = update(eatery);
+        if (result.getStatusCode().is2xxSuccessful()) {
+            eateryRepository.save(eatery);
+        }
+
+        return result;
+    }
+
+    @Transactional
+    public ResponseEntity<JSONObject> update(User user){
+        User userDb;
+        try {
+            userDb = userRepository.findByToken(user.getToken());
+        } catch (PersistenceException e) {
+            System.out.println("error");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
+        }
+
+        if (userDb == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to verify, please try again"));
+        }
+
+        if (!isValidInput(user)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Please fill in all required fields."));
+        }
+
+        if (userRepository.existsByEmail(user.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ResponseUtils.createResponse("Email is taken, try another"));
+        }
+
+        String result = validInputChecker(user);
+
+        if (result != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(result));
+        }
+
+        userRepository.updateUserById(user.getEmail(), user.getPassword(), user.getAlias(), user.getAddress(), user.getId());
+
+        user.setId(userDb.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Update profile successfully, " + user.getAlias()));
+    }
+
     private boolean isValidInput(User user) {
         return StringUtils.isNotBlank(String.valueOf(user.getId())) &&
                 StringUtils.isNotBlank(user.getAddress()) &&
