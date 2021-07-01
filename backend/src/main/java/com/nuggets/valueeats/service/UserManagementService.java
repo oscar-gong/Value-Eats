@@ -166,8 +166,9 @@ public class UserManagementService {
     @Transactional
     public ResponseEntity<JSONObject> update(User user){
         User userDb;
+        String token = user.getToken();
         try {
-            userDb = userRepository.findByToken(user.getToken());
+            userDb = userRepository.findByToken(token);
         } catch (PersistenceException e) {
             System.out.println("error");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
@@ -177,24 +178,33 @@ public class UserManagementService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to verify, please try again"));
         }
 
-        if (!isValidInput(user)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Please fill in all required fields."));
+        if (user.getEmail() != null) {
+            if (!ValidationUtils.isValidEmail(user.getEmail())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid Email Format."));
+            }
+        userRepository.updateEmailByToken(user.getEmail(), token);
         }
 
-        if (userRepository.existsByEmail(user.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(ResponseUtils.createResponse("Email is taken, try another"));
+        if (user.getPassword() != null) {
+            if (!ValidationUtils.isValidEmail(user.getEmail())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(
+                    "Password must be between 8 to 32 characters long, and contain a lower and uppercase character."));
+            }
+        userRepository.updatePasswordByToken(user.getPassword(), token);
         }
 
-        String result = validInputChecker(user);
-
-        if (result != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(result));
+        if (user.getAlias() != null) {
+        userRepository.updateAliasByToken(user.getAlias(), token);
         }
 
-        userRepository.updateUserById(user.getEmail(), user.getPassword(), user.getAlias(), user.getAddress(), user.getId());
+        if (user.getAddress() != null) {
+        userRepository.updateAddressByToken(user.getAddress(), token);
+        }
 
         user.setId(userDb.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Update profile successfully, " + user.getAlias()));
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Update profile successfully, "
+         + user.getAlias() == null ? userDb.getAlias() : user.getAlias()));
     }
 
     private boolean isValidInput(User user) {
