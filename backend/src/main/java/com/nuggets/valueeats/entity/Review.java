@@ -25,9 +25,7 @@ public class Review {
 
     private String message;
 
-    private Integer rating;
+    private Float rating;
 
     private ArrayList<String> reviewPhotos;
-
-    private String token;
 }

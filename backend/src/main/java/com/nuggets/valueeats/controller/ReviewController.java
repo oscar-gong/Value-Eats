@@ -2,14 +2,15 @@ package com.nuggets.valueeats.controller;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.service.CuisineService;
-import com.nuggets.valueeats.service.ReviewService;
 import com.nuggets.valueeats.service.UserManagementService;
-import com.nuggets.valueeats.tokenTransfer.ReviewToken;
+import com.nuggets.valueeats.service.DinerFunctionalityService;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,10 @@ public final class ReviewController {
     private CuisineService cuisineService;
 
     @Autowired
-    private ReviewService reviewService;
+    private DinerFunctionalityService dinerFunctionalityService;
 
     @RequestMapping(value = "create/review", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> login(@RequestHeader final Map<String,String> map) throws Exception {
-        return reviewService.createReview(map);
+    public ResponseEntity<JSONObject> createReview(@RequestBody String jsonString){
+        return dinerFunctionalityService.createReview(jsonString);
     }
 }
