@@ -2,7 +2,6 @@ package com.nuggets.valueeats.entity;
 
 import java.util.ArrayList;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;

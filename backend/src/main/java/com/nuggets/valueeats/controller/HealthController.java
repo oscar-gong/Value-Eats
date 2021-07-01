@@ -51,4 +51,9 @@ public final class HealthController {
     public List<Review> listReviews() {
         return healthService.listReview();
     }
+
+    @RequestMapping(value = "list/cuisine", method = RequestMethod.GET)
+    public List listCuisines() {
+        return healthService.listCuisines();
+    }
 }
