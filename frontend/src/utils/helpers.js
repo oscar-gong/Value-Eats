@@ -1,5 +1,6 @@
 export const checkValidEmail = (email) => {
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    console.log(email);
     return regex.test(email);
 };
 
@@ -27,7 +28,6 @@ export const validConfirmPassword = (password, confirmPassword, setConfirmPasswo
         setConfirmPassword({ values: "", valid: false });
     }
 };
-
 
 export const checkValidPassword = (password) => {
     if (!password) return false;

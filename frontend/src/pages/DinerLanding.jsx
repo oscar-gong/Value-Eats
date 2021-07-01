@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import StarRating from "../components/StarRating";
 import { MainContainer } from "../styles/MainContainer";
@@ -32,46 +32,27 @@ const useStyles = makeStyles({
 });
 
 export default function DinerLanding({ token }) {
+    const [eateryList, setEateryList] = useState([]);
     const classes = useStyles();
 
-    // TEMP
-    const eateryList = [
-        {
-            name: "OSKIE EATERY",
-            discount: "40%",
-            rating: "3.5",
-        },
-        {
-            name: "BEN EATERY",
-            discount: "20%",
-            rating: "4",
-        },
-        {
-            name: "KEV EATERY",
-            discount: "60%",
-            rating: "2.5",
-        },
-        {
-            name: "WILIAM EATERY",
-            discount: "10%",
-            rating: "3.5",
-        },
-        {
-            name: "ASH EATERY",
-            discount: "50%",
-            rating: "2.5",
-        },
-        {
-            name: "HOHOHO EATERY",
-            discount: "50%",
-            rating: "5",
-        },
-        {
-            name: "HOHOHO EATERY",
-            discount: "50%",
-            rating: "5",
-        },
-    ];
+    useEffect(() => {
+        const getEateryList = async () => {
+            const response = await fetch("http://localhost:8080/list/eatery", {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const responseData = await response.json();
+            if (response.status === 200) {
+                console.log(responseData.eateryList);
+                setEateryList(responseData.eateryList);
+            }
+        };
+        getEateryList();
+    }, []);
 
     const getSlides = () => {
         if (!eateryList) return;
