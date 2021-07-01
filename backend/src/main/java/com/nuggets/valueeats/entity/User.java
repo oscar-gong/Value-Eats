@@ -22,4 +22,5 @@ public class User {
     private String alias;
     private String address;
     private String token;
+    private String profilePic;
 }
