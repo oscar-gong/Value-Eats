@@ -1,6 +1,7 @@
 package com.nuggets.valueeats.entity;
 
-import javax.persistence.Column;
+import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -13,14 +14,17 @@ import lombok.NoArgsConstructor;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @Data
-public class User {
+public class Review {
     @Id
     private Long id;
-    @Column(unique=true)
-    private String email;
-    private String password;
-    private String alias;
-    private String address;
-    private String token;
-    private String profilePic;
+
+    private Long dinerId;
+
+    private Long eateryId;
+
+    private String message;
+
+    private Float rating;
+
+    private ArrayList<String> reviewPhotos;
 }

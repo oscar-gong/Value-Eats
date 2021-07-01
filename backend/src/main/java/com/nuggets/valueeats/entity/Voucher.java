@@ -1,6 +1,5 @@
 package com.nuggets.valueeats.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -13,14 +12,15 @@ import lombok.NoArgsConstructor;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @Data
-public class User {
+public class Voucher {
     @Id
     private Long id;
-    @Column(unique=true)
-    private String email;
-    private String password;
-    private String alias;
-    private String address;
-    private String token;
-    private String profilePic;
+
+    private Long ownerId;
+
+    private Long eateryId;
+
+    private Float discount;
+
+    // NEEDS EXPIRY TIME
 }
