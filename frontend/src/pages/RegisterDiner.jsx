@@ -6,7 +6,7 @@ import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
-import { validRequired, validEmail, checkValidPassword, validConfirmPassword, validPassword } from "../utils/helpers";
+import { validRequired, validEmail, validConfirmPassword, validPassword } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 // set to true for real demos
 const useGoogleAPI = false;
