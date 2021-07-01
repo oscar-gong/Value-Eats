@@ -2,6 +2,7 @@ package com.nuggets.valueeats.controller;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
+import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.service.HealthService;
 import com.nuggets.valueeats.utils.JwtUtils;
@@ -44,5 +45,10 @@ public final class HealthController {
     @RequestMapping(value = "list/users", method = RequestMethod.GET)
     public List<User> listUsers() {
         return healthService.listUser();
+    }
+
+    @RequestMapping(value = "list/reviews", method = RequestMethod.GET)
+    public List<Review> listReviews() {
+        return healthService.listReview();
     }
 }
