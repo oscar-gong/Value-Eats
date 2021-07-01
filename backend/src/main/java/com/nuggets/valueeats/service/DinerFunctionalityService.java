@@ -63,6 +63,12 @@ public class DinerFunctionalityService {
             }
 
             Long dinerId = dinerRepository.findByToken(diner.getToken()).getId();
+
+            // Check if user already made a review
+            if(reviewRepository.existsByDinerIdAndEateryId(dinerId, review.getEateryId()) == 1){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("User already has an existing review for this eatery."));
+            }
+
             review.setDinerId(dinerId);
             review.setId(reviewRepository.findMaxId() == null ? 0 : reviewRepository.findMaxId() + 1);
 

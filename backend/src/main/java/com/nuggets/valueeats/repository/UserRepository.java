@@ -26,8 +26,4 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
 
     @Query("select max(id) from User")
     Long findMaxId();
-
-    @Modifying
-    @Query("update User u set u.token = ?1 where u.token = ?2")
-    void setTokenByEmail(String token, String email);
 }
