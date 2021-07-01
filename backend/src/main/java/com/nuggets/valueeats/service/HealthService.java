@@ -40,4 +40,8 @@ public final class HealthService {
     public List<Review> listReview() {
         return reviewRepository.findAll();
     }
+
+    public List listCuisines() {
+        return eateryRepository.findAllCuisines();
+    }
 }
