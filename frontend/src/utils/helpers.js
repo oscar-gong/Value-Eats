@@ -3,6 +3,32 @@ export const checkValidEmail = (email) => {
     return regex.test(email);
 };
 
+export const validRequired = (state, setState) => {
+    if (state.value === "") {
+        setState({ value: "", valid: false });
+    }
+};
+
+export const validEmail = (email, setEmail) => {
+    if (!checkValidEmail(email))
+        setEmail({ values: "", valid: false });
+};
+
+export const validPassword = (password, setPassword) => {
+    if (!checkValidPassword(password))
+        setPassword({ values: "", valid: false });
+};
+
+export const validConfirmPassword = (password, confirmPassword, setConfirmPassword) => {
+    if (
+        password !== confirmPassword ||
+        confirmPassword === ""
+    ) {
+        setConfirmPassword({ values: "", valid: false });
+    }
+};
+
+
 export const checkValidPassword = (password) => {
     if (!password) return false;
     return (

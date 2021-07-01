@@ -6,9 +6,8 @@ import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
-import { checkValidEmail, checkValidPassword } from "../utils/helpers";
+import { validRequired, validEmail, checkValidPassword, validConfirmPassword, validPassword } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
-
 // set to true for real demos
 const useGoogleAPI = false;
 
@@ -23,32 +22,6 @@ export default function RegisterDiner({ setToken }) {
 
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
-
-    const validUsername = () => {
-        if (username.value === "") {
-            console.log("not a valid username!");
-            setUsername({ value: "", valid: false });
-        }
-    };
-
-    const validPassword = () => {
-        if (!checkValidPassword(password.value))
-            setPassword({ values: "", valid: false });
-    };
-
-    const validConfirmPassword = () => {
-        if (
-            password.value !== confirmPassword.value ||
-            confirmPassword.value === ""
-        ) {
-            setConfirmPassword({ values: "", valid: false });
-        }
-    };
-
-    const validEmail = () => {
-        if (!checkValidEmail(email.value))
-            setEmail({ values: "", valid: false });
-    };
 
     const validAddress = () => {
         if (address.value === "") {
@@ -149,7 +122,7 @@ export default function RegisterDiner({ setToken }) {
                         onChange={(e) =>
                             setUsername({ value: e.target.value, valid: true })
                         }
-                        onBlur={validUsername}
+                        onBlur={() => validRequired(username, setUsername)}
                         error={!username.valid}
                         helperText={
                             username.valid ? "" : "Please enter a username"
@@ -165,7 +138,7 @@ export default function RegisterDiner({ setToken }) {
                         onChange={(e) =>
                             setEmail({ value: e.target.value, valid: true })
                         }
-                        onBlur={validEmail}
+                        onBlur={() => validEmail(email, setEmail)}
                         error={!email.valid}
                         helperText={
                             email.valid ? "" : "Please enter a valid email"
@@ -206,7 +179,7 @@ export default function RegisterDiner({ setToken }) {
                         onChange={(e) =>
                             setPassword({ value: e.target.value, valid: true })
                         }
-                        onBlur={validPassword}
+                        onBlur={() => validPassword(password.value, setPassword)}
                         error={!password.valid}
                         helperText={
                             password.valid
@@ -228,7 +201,7 @@ export default function RegisterDiner({ setToken }) {
                                 valid: true,
                             })
                         }
-                        onBlur={validConfirmPassword}
+                        onBlur={() => validConfirmPassword(password.value, confirmPassword.value, setConfirmPassword)}
                         error={!confirmPassword.valid}
                         helperText={
                             confirmPassword.valid
