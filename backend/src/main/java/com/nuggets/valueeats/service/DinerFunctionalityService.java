@@ -54,7 +54,7 @@ public class DinerFunctionalityService {
 
             // Check if rating is between 1 to 5 and is in increments of 0.5
             if(!isValidRating(review.getRating())){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Rating must be between 0.5 and 5 and in 0.5 increments"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Rating must be between 1 and 5 and in 0.5 increments"));
             }
 
             // Check if review character length does not exceed 280 characters.
@@ -81,7 +81,7 @@ public class DinerFunctionalityService {
     }
 
     private static boolean isValidRating(Float rating){
-        return rating % 0.5 == 0 && rating >= 0.5 && rating <= 5;
+        return rating % 0.5 == 0 && rating >= 1 && rating <= 5;
     }
 
     private static boolean isValidMessage(String message){
