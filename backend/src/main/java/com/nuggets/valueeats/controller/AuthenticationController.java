@@ -47,4 +47,5 @@ public final class AuthenticationController {
     public ResponseEntity<JSONObject> logout() {
         return cuisineService.listCuisines();
     }
+
 }
