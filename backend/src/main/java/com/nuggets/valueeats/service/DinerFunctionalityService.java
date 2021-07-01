@@ -67,7 +67,7 @@ public class DinerFunctionalityService {
             review.setId(reviewRepository.findMaxId() == null ? 0 : reviewRepository.findMaxId() + 1);
 
             reviewRepository.save(review);
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Logout was successful"));
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Review was created successfully"));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
