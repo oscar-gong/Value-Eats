@@ -1,5 +1,8 @@
 package com.nuggets.valueeats.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nuggets.valueeats.entity.Diner;
@@ -73,7 +76,14 @@ public class DinerFunctionalityService {
             review.setId(reviewRepository.findMaxId() == null ? 0 : reviewRepository.findMaxId() + 1);
 
             reviewRepository.save(review);
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Review was created successfully"));
+
+            Map<String, Long> dataMedium = new HashMap<>();
+            dataMedium.put("reviewId", review.getId());
+            JSONObject data = new JSONObject(dataMedium);
+            
+            System.out.println(data);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Review was created successfully", data));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
