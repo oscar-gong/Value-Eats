@@ -39,7 +39,7 @@ export default function DinerLanding({ token }) {
 
     useEffect(() => {
         const getEateryList = async () => {
-            const response = await fetch("http://localhost:8080/list/eatery", {
+            const response = await fetch("http://localhost:8080/list/eateries", {
                 method: "GET",
                 headers: {
                     Accept: "application/json",
@@ -88,7 +88,7 @@ export default function DinerLanding({ token }) {
                                         }
                                     >
                                         <CardHeader
-                                            title={item[i].discount + " OFF"}
+                                            title={"UP TO " + item[i].discount + " OFF"}
                                         />
                                         <CardMedia
                                             style={{
@@ -109,8 +109,7 @@ export default function DinerLanding({ token }) {
                                                         {item[i].name}
                                                     </Typography>
                                                     <Typography variant="subtitle2">
-                                                        maybe we can put
-                                                        cuisines here idk
+                                                        {item[i].cuisines.join(', ')}
                                                     </Typography>
                                                 </Grid>
                                                 <Grid item>
@@ -141,7 +140,7 @@ export default function DinerLanding({ token }) {
                     }
                     key={key}
                 >
-                    <CardHeader title={item.discount + " OFF"} />
+                    <CardHeader title={"UP TO "+ item.discount + " OFF"} />
                     <CardMedia
                         style={{
                             height: "150px",
@@ -162,7 +161,7 @@ export default function DinerLanding({ token }) {
                                     {item.name}
                                 </Typography>
                                 <Typography variant="subtitle2">
-                                    maybe we can put cuisines here idk
+                                    {item.cuisines.join(', ')}
                                 </Typography>
                             </Grid>
                             <Grid item>

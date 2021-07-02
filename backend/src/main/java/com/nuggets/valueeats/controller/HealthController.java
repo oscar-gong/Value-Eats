@@ -32,27 +32,27 @@ public final class HealthController {
         return "String: " + string + "\nEncode: " + a + "\nDecode: " + b;
     }
 
-    @RequestMapping(value = "list/diners", method = RequestMethod.GET)
+    @RequestMapping(value = "health/list/diners", method = RequestMethod.GET)
     public List<Diner> listDiner() {
         return healthService.listDiner();
     }
 
-    @RequestMapping(value = "list/eateries", method = RequestMethod.GET)
-    public List<Eatery> listEatery() {
+    @RequestMapping(value = "health/list/eateries", method = RequestMethod.GET)
+    public List<Eatery> listEateries() {
         return healthService.listEatery();
     }
 
-    @RequestMapping(value = "list/users", method = RequestMethod.GET)
+    @RequestMapping(value = "health/list/users", method = RequestMethod.GET)
     public List<User> listUsers() {
         return healthService.listUser();
     }
 
-    @RequestMapping(value = "list/reviews", method = RequestMethod.GET)
+    @RequestMapping(value = "health/list/reviews", method = RequestMethod.GET)
     public List<Review> listReviews() {
         return healthService.listReview();
     }
 
-    @RequestMapping(value = "list/cuisine", method = RequestMethod.GET)
+    @RequestMapping(value = "health/list/cuisine", method = RequestMethod.GET)
     public List listCuisines() {
         return healthService.listCuisines();
     }
