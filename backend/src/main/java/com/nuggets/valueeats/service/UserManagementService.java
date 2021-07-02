@@ -135,18 +135,18 @@ public class UserManagementService {
     }
 
     @Transactional
-    public ResponseEntity<JSONObject> logout(User userToken) {
-        if (!userRepository.existsByToken(userToken.getToken())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't find the token: " + userToken.getToken()));
+    public ResponseEntity<JSONObject> logout(String token) {
+        if (!userRepository.existsByToken(token)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't find the token: " + token));
         }
 
-        String userId = jwtUtils.decode(userToken.getToken());
+        String userId = jwtUtils.decode(token);
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't get user associated with token"));
         }
 
 
-        User user = userRepository.findByToken(userToken.getToken());
+        User user = userRepository.findByToken(token);
         user.setToken("");
         userRepository.save(user);
     
@@ -155,13 +155,9 @@ public class UserManagementService {
     }
 
     @Transactional
-    public ResponseEntity<JSONObject> updateDiner(Diner diner) {
-        ResponseEntity<JSONObject> result = update(diner);
+    public ResponseEntity<JSONObject> updateDiner(Diner diner, String token) {
+        ResponseEntity<JSONObject> result = update(diner, token);
         if (result.getStatusCode().is2xxSuccessful()) {
-            
-            String token = diner.getToken();
-
-            Diner dinerDb = dinerRepository.findByToken(token);
 
             dinerRepository.save(diner);
         }
@@ -170,11 +166,9 @@ public class UserManagementService {
     }
 
     @Transactional
-    public ResponseEntity<JSONObject> updateEatery(Eatery eatery) {
-        ResponseEntity<JSONObject> result = update(eatery);
+    public ResponseEntity<JSONObject> updateEatery(Eatery eatery, String token) {
+        ResponseEntity<JSONObject> result = update(eatery, token);
         if (result.getStatusCode().is2xxSuccessful()) {
-
-            String token = eatery.getToken();
 
             Eatery eateryDb = eateryRepository.findByToken(token);
 
@@ -191,9 +185,8 @@ public class UserManagementService {
     }
 
     @Transactional
-    public ResponseEntity<JSONObject> update(User user){
+    public ResponseEntity<JSONObject> update(User user, String token){
         User userDb;
-        String token = user.getToken();
         try {
             userDb = userRepository.findByToken(token);
         } catch (PersistenceException e) {

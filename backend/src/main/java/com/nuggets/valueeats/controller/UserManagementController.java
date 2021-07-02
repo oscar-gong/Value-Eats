@@ -41,19 +41,19 @@ public final class UserManagementController {
     }
     
     @RequestMapping(value = "update/diner", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> updateDiner(@RequestBody final Diner diner) {
-        return userManagementService.updateDiner(diner);
+    public ResponseEntity<JSONObject> updateDiner(@RequestBody final Diner diner, @RequestHeader (name="Authorization") String token) {
+        return userManagementService.updateDiner(diner, token);
     }
 
     @RequestMapping(value = "update/eatery", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> updateEatery(@RequestBody final Eatery eatery) {
-        return userManagementService.updateEatery(eatery);
+    public ResponseEntity<JSONObject> updateEatery(@RequestBody final Eatery eatery, @RequestHeader (name="Authorization") String token) {
+        return userManagementService.updateEatery(eatery, token);
     }
 
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> logout(@RequestBody User user) {
-        return userManagementService.logout(user);
+    public ResponseEntity<JSONObject> logout(@RequestHeader (name="Authorization") String token) {
+        return userManagementService.logout(token);
     }
 
     @RequestMapping(value = "list/cuisines", method = RequestMethod.GET)
