@@ -2,6 +2,7 @@ package com.nuggets.valueeats.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -125,6 +126,79 @@ public class DinerFunctionalityService {
             }else{
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Review does not exist."));
             }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
+        }
+    }
+
+    public ResponseEntity<JSONObject> editReview(String jsonString) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            Review review = objectMapper.readValue(jsonString, Review.class);
+            Diner diner = objectMapper.readValue(jsonString, Diner.class);
+
+            // Check for required inputs
+            if(!(StringUtils.isNotBlank(String.valueOf(diner.getToken())) &&
+                StringUtils.isNotBlank(String.valueOf(review.getEateryId())) &&
+                StringUtils.isNotBlank(String.valueOf(review.getId())))
+                ){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
+            }
+
+            // Check if eatery id exists
+            if(!eateryRepository.existsById(review.getEateryId())){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid Eatery ID"));
+            }
+
+            // Check if token is valid
+            if(!dinerRepository.existsByToken(diner.getToken())){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
+            }
+
+            Long dinerId = dinerRepository.findByToken(diner.getToken()).getId();
+
+            // Check if review exists and is made by the diner for the specific eatery
+            if(reviewRepository.existsByDinerIdAndEateryIdAndReviewId(dinerId, review.getEateryId(), review.getId()) == 0){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Matching review does not exist"));
+            }
+            
+            Optional<Review> reviewInDb = reviewRepository.findById(review.getId());
+            if(!reviewInDb.isPresent()){
+
+            }
+            Review reviewDb = reviewInDb.get();
+
+            // Check if new review character length does not exceed 280 characters.
+            if(review.getMessage() != ""){
+                if(!isValidMessage(review.getMessage())){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Message must not exceed 280 characters"));
+                }
+                reviewDb.setMessage(review.getMessage());
+            }
+            
+            // Check if new rating is between 1 to 5 and is in increments of 0.5
+            if(review.getRating() != null){
+                if(!isValidRating(review.getRating())){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Rating must be between 1 and 5 and in 0.5 increments"));
+                }
+                reviewDb.setRating(review.getRating());
+            }
+
+            if(review.getReviewPhotos() != null){
+                reviewDb.setReviewPhotos(review.getReviewPhotos());
+            }
+
+            reviewRepository.save(reviewDb);
+
+            Map<String, Long> dataMedium = new HashMap<>();
+            dataMedium.put("reviewId", review.getId());
+            JSONObject data = new JSONObject(dataMedium);
+            
+            System.out.println(data);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Review was edited successfully", data));
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
         }

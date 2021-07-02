@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@NoArgsConstructor
 @Data
 public class Review {
     @Id
@@ -27,4 +26,8 @@ public class Review {
     private Float rating;
 
     private ArrayList<String> reviewPhotos;
+
+    public Review(){
+        this.message="";
+    }
 }
