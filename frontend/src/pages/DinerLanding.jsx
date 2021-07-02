@@ -23,7 +23,8 @@ const useStyles = makeStyles({
         color: "black",
         borderRadius: "0px",
         transition: "transform 0.15s ease-in-out",
-        "&:hover": { transform: "scale3d(1.02, 1.02, 1)" },
+        "&:hover": { transform: "scale3d(1.02, 1.02, 1)", maxHeight: "none" },
+        maxHeight: "300px",
     },
     wideCard: {
         marginTop: "20px",
@@ -34,18 +35,22 @@ const useStyles = makeStyles({
 
 export default function DinerLanding({ token }) {
     const [eateryList, setEateryList] = useState([]);
+    const [hover, setHover] = useState(false);
     const classes = useStyles();
     const history = useHistory();
 
     useEffect(() => {
         const getEateryList = async () => {
-            const response = await fetch("http://localhost:8080/list/eateries", {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-            });
+            const response = await fetch(
+                "http://localhost:8080/list/eateries",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
             const responseData = await response.json();
             if (response.status === 200) {
@@ -55,6 +60,14 @@ export default function DinerLanding({ token }) {
         };
         getEateryList();
     }, []);
+
+    const getCuisineList = (cuisines) => {
+        let cuisineString = cuisines.join(", ");
+        if (cuisineString.length > 25) {
+            cuisineString = cuisineString.substring(0, 24) + "...";
+        }
+        return cuisineString;
+    };
 
     const getSlides = () => {
         if (!eateryList) return;
@@ -86,9 +99,15 @@ export default function DinerLanding({ token }) {
                                                 `/EateryProfile/${item[i].name}/${item[i].id}`
                                             )
                                         }
+                                        onMouseLeave={() => setHover(true)}
+                                        onMouseEnter={() => setHover(false)}
                                     >
                                         <CardHeader
-                                            title={"UP TO " + item[i].discount + " OFF"}
+                                            title={
+                                                "UP TO " +
+                                                item[i].discount +
+                                                " OFF"
+                                            }
                                         />
                                         <CardMedia
                                             style={{
@@ -104,15 +123,24 @@ export default function DinerLanding({ token }) {
                                                 justify="space-between"
                                                 alignItems="flex-end"
                                             >
-                                                <Grid item>
+                                                <Grid item xs={8}>
                                                     <Typography variant="h5">
                                                         {item[i].name}
                                                     </Typography>
                                                     <Typography variant="subtitle2">
-                                                        {item[i].cuisines.join(', ')}
+                                                        {hover
+                                                            ? getCuisineList(
+                                                                  item[i]
+                                                                      .cuisines
+                                                              )
+                                                            : item[
+                                                                  i
+                                                              ].cuisines.join(
+                                                                  ", "
+                                                              )}
                                                     </Typography>
                                                 </Grid>
-                                                <Grid item>
+                                                <Grid item xs={4}>
                                                     <StarRating
                                                         rating={item[i].rating}
                                                     />
@@ -140,7 +168,7 @@ export default function DinerLanding({ token }) {
                     }
                     key={key}
                 >
-                    <CardHeader title={"UP TO "+ item.discount + " OFF"} />
+                    <CardHeader title={"UP TO " + item.discount + " OFF"} />
                     <CardMedia
                         style={{
                             height: "150px",
@@ -154,14 +182,13 @@ export default function DinerLanding({ token }) {
                             container
                             justify="space-between"
                             alignItems="flex-end"
-                            wrap="nowrap"
                         >
-                            <Grid item>
+                            <Grid item xs={8}>
                                 <Typography variant="h5">
                                     {item.name}
                                 </Typography>
                                 <Typography variant="subtitle2">
-                                    {item.cuisines.join(', ')}
+                                    {item.cuisines.join(", ")}
                                 </Typography>
                             </Grid>
                             <Grid item>
