@@ -52,7 +52,6 @@ export default function DinerLanding({ token }) {
                     },
                 }
             );
-
             const responseData = await response.json();
             if (response.status === 200) {
                 console.log(responseData.eateryList);
@@ -60,7 +59,7 @@ export default function DinerLanding({ token }) {
             }
         };
         getEateryList();
-    }, []);
+    }, [token]);
 
     const getCuisineList = (cuisines) => {
         let cuisineString = cuisines.join(", ");
