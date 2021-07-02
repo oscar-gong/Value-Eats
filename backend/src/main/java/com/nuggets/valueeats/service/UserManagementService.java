@@ -2,6 +2,9 @@ package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.User;
 
+import java.util.ArrayList;
+
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 
 
 @Service
@@ -147,6 +151,14 @@ public class UserManagementService {
     public ResponseEntity<JSONObject> updateDiner(Diner diner) {
         ResponseEntity<JSONObject> result = update(diner);
         if (result.getStatusCode().is2xxSuccessful()) {
+            
+            String token = diner.getToken();
+
+            Diner dinerDb = dinerRepository.findByToken(token);
+
+            if (diner.getProfilePic() == null) {
+                diner.setProfilePic(dinerDb.getProfilePic());
+            }
             dinerRepository.save(diner);
         }
 
@@ -157,6 +169,20 @@ public class UserManagementService {
     public ResponseEntity<JSONObject> updateEatery(Eatery eatery) {
         ResponseEntity<JSONObject> result = update(eatery);
         if (result.getStatusCode().is2xxSuccessful()) {
+
+            String token = eatery.getToken();
+
+            Eatery eateryDb = eateryRepository.findByToken(token);
+
+            List<String> empty1 = new ArrayList<String>();
+
+            ArrayList<String> empty2 = new ArrayList<String>();
+            if (eatery.getCuisines() == null || empty1.equals(eatery.getCuisines())) {
+                eatery.setCuisines(eateryDb.getCuisines());
+            }
+            if (eatery.getMenuPhotos() == null || empty2.equals(eatery.getMenuPhotos())) {
+                eatery.setMenuPhotos(eateryDb.getMenuPhotos());
+            }
             eateryRepository.save(eatery);
         }
 
