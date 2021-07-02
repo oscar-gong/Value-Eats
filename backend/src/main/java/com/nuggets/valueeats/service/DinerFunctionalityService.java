@@ -1,12 +1,16 @@
 package com.nuggets.valueeats.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nuggets.valueeats.entity.Diner;
+import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
@@ -131,6 +135,31 @@ public class DinerFunctionalityService {
         }
     }
 
+    // WILL EVENTUALLY REQUIRE TOKEN TO VIEW
+    public ResponseEntity<JSONObject> listEateries() {
+        List<Eatery> eateryList = eateryRepository.findAll();
+
+        ArrayList<Object> list = new ArrayList<Object>();
+
+        for(Eatery e : eateryList){
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("name", e.getAlias());
+            map.put("discount", "50%"); // placeholder
+            List<Float> reviews= reviewRepository.listReviewsOfEatery(e.getId());
+            Double averageRating = reviews.stream().mapToDouble(i -> i).average().orElse(0);
+            map.put("rating", averageRating);
+            map.put("id", e.getId());
+            map.put("cuisines", e.getCuisines());
+            list.add(map);
+        }
+
+        Map<String, ArrayList<Object>> dataMedium = new HashMap<>();
+        dataMedium.put("eateryList", list);
+        JSONObject data = new JSONObject(dataMedium);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
+    }
+    
     public ResponseEntity<JSONObject> editReview(String jsonString) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();

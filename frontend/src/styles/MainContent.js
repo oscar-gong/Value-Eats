@@ -1,7 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const MainContent = styled.div`
-    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
     max-height: 90vh;
-    background-color: #DDAF94;
-`
+    overflow-y: hidden;
+    background-color: #ddaf94;
+`;

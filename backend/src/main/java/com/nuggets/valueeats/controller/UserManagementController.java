@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
-public final class AuthenticationController {
+public final class UserManagementController {
     @Autowired
     private UserManagementService userManagementService;
     
@@ -44,7 +44,7 @@ public final class AuthenticationController {
     }
 
     @RequestMapping(value = "update/eatery", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> updateDiner(@RequestBody final Eatery eatery) {
+    public ResponseEntity<JSONObject> updateEatery(@RequestBody final Eatery eatery) {
         return userManagementService.updateEatery(eatery);
     }
 
@@ -55,7 +55,8 @@ public final class AuthenticationController {
     }
 
     @RequestMapping(value = "list/cuisines", method = RequestMethod.GET)
-    public ResponseEntity<JSONObject> logout() {
+    public ResponseEntity<JSONObject> listCuisines() {
         return cuisineService.listCuisines();
     }
+
 }

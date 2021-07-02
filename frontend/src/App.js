@@ -7,9 +7,11 @@ import RegisterDiner from "./pages/RegisterDiner";
 import RegisterEatery from "./pages/RegisterEatery";
 import DinerLanding from "./pages/DinerLanding";
 import EateryLanding from "./pages/EateryLanding";
+import EateryProfile from "./pages/EateryProfile";
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { StoreContext } from './utils/store';
+import DinerProfile from './pages/DinerProfile';
 
 function App() {
 
@@ -28,8 +30,11 @@ function App() {
       <Main>
         <Router>
           <Switch>
-          <Route exact path="/dinerLanding">
+            <Route exact path="/dinerLanding">
               <DinerLanding token={token}/>
+            </Route>
+            <Route exact path="/dinerProfile">
+              <DinerProfile token={token}/>
             </Route>
             <Route exact path="/">
               <Login setToken={setToken}/>
@@ -39,6 +44,9 @@ function App() {
             </Route>
             <Route exact path="/RegisterEatery">
               <RegisterEatery setToken={setToken}/>
+            </Route>
+            <Route path="/EateryProfile">
+              <EateryProfile token={token}/>
             </Route>
             <Route exact path="/EateryLanding">
               <EateryLanding token={token}/>

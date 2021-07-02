@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
-public final class ReviewController {
+public final class DinerFunctionalityController {
     @Autowired
     private UserManagementService userManagementService;
     
@@ -43,6 +43,11 @@ public final class ReviewController {
     @RequestMapping(value = "diner/removereview", method = RequestMethod.DELETE)
     public ResponseEntity<JSONObject> removeReview(@RequestBody String jsonString){
         return dinerFunctionalityService.removeReview(jsonString);
+    }
+    
+    @RequestMapping(value = "list/eateries", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> listEateries() {
+        return dinerFunctionalityService.listEateries();
     }
 
     @RequestMapping(value = "diner/editreview", method = RequestMethod.POST)
