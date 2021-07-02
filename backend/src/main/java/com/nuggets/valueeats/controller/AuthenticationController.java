@@ -37,6 +37,17 @@ public final class AuthenticationController {
     public ResponseEntity<JSONObject> registerEatery(@RequestBody final Eatery eatery) {
         return userManagementService.registerEatery(eatery);
     }
+    
+    @RequestMapping(value = "update/diner", method = RequestMethod.POST)
+    public ResponseEntity<JSONObject> updateDiner(@RequestBody final Diner diner) {
+        return userManagementService.updateDiner(diner);
+    }
+
+    @RequestMapping(value = "update/eatery", method = RequestMethod.POST)
+    public ResponseEntity<JSONObject> updateDiner(@RequestBody final Eatery eatery) {
+        return userManagementService.updateEatery(eatery);
+    }
+
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> logout(@RequestBody User user) {
