@@ -174,6 +174,10 @@ public class UserManagementService {
 
             Eatery eateryDb = eateryRepository.findByToken(token);
 
+            if (eatery.getProfilePic() == null) {
+                eatery.setProfilePic(eateryDb.getProfilePic());
+            }
+
             if (eatery.getCuisines() == null) {
                 eatery.setCuisines(eateryDb.getCuisines());
             }
