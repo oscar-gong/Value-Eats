@@ -1,6 +1,7 @@
 package com.nuggets.valueeats.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.nuggets.valueeats.entity.Review;
 
@@ -21,6 +22,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     
     @Query(value = "select rating from Review where eatery_id = ?1", nativeQuery = true)
     List<Float> listReviewsOfEatery(Long eateryId);
+
+    Optional<Review> findById(Long reviewId);
 
     void deleteById(Long reviewId);
 }

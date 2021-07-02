@@ -49,4 +49,9 @@ public final class DinerFunctionalityController {
     public ResponseEntity<JSONObject> listEateries() {
         return dinerFunctionalityService.listEateries();
     }
+
+    @RequestMapping(value = "diner/editreview", method = RequestMethod.POST)
+    public ResponseEntity<JSONObject> editReview(@RequestBody String jsonString){
+        return dinerFunctionalityService.editReview(jsonString);
+    }
 }
