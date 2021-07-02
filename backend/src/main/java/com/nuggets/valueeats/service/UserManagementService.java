@@ -136,7 +136,7 @@ public class UserManagementService {
 
     @Transactional
     public ResponseEntity<JSONObject> logout(String token) {
-        if (!userRepository.existsByToken(token)) {
+        if (!userRepository.existsByToken(token) || token.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't find the token: " + token));
         }
 
@@ -287,7 +287,7 @@ public class UserManagementService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid eatery ID"));
         }
         // {name, rating, address, menu photos, reviews, vouchers}
-        if(!dinerRepository.existsByToken(token)){
+        if(!dinerRepository.existsByToken(token) || token.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid"));
         }
 

@@ -128,7 +128,7 @@ public class DinerFunctionalityService {
 
     // WILL EVENTUALLY REQUIRE TOKEN TO VIEW
     public ResponseEntity<JSONObject> listEateries(String token) {
-        if(!dinerRepository.existsByToken(token)){
+        if(!dinerRepository.existsByToken(token) || token.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
         }
         List<Eatery> eateryList = eateryRepository.findAll();

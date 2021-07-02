@@ -48,6 +48,7 @@ export default function DinerLanding({ token }) {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
+                        Authorization: token,
                     },
                 }
             );
