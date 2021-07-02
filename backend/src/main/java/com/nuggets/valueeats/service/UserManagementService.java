@@ -2,6 +2,9 @@ package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.User;
 
+import java.util.ArrayList;
+
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 
 
 @Service
@@ -143,6 +147,68 @@ public class UserManagementService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Logout was successful"));
     }
 
+    @Transactional
+    public ResponseEntity<JSONObject> updateDiner(Diner diner) {
+        ResponseEntity<JSONObject> result = update(diner);
+        if (result.getStatusCode().is2xxSuccessful()) {
+            
+            String token = diner.getToken();
+
+            Diner dinerDb = dinerRepository.findByToken(token);
+
+            dinerRepository.save(diner);
+        }
+
+        return result;
+    }
+
+    @Transactional
+    public ResponseEntity<JSONObject> updateEatery(Eatery eatery) {
+        ResponseEntity<JSONObject> result = update(eatery);
+        if (result.getStatusCode().is2xxSuccessful()) {
+
+            String token = eatery.getToken();
+
+            Eatery eateryDb = eateryRepository.findByToken(token);
+
+            if (eatery.getCuisines() == null) {
+                eatery.setCuisines(eateryDb.getCuisines());
+            }
+            if (eatery.getMenuPhotos() == null) {
+                eatery.setMenuPhotos(eateryDb.getMenuPhotos());
+            }
+            eateryRepository.save(eatery);
+        }
+
+        return result;
+    }
+
+    @Transactional
+    public ResponseEntity<JSONObject> update(User user){
+        User userDb;
+        String token = user.getToken();
+        try {
+            userDb = userRepository.findByToken(token);
+        } catch (PersistenceException e) {
+            System.out.println("error");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
+        }
+
+        if (userDb == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to verify, please try again"));
+        }
+
+        String result = processNewProfile(user, userDb);
+
+        if (result != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(result));
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Update profile successfully, "
+         + user.getAlias()));
+    }
+
     private boolean isValidInput(User user) {
         return StringUtils.isNotBlank(String.valueOf(user.getId())) &&
                 StringUtils.isNotBlank(user.getAddress()) &&
@@ -155,6 +221,60 @@ public class UserManagementService {
         }
         if (!ValidationUtils.isValidPassword(user.getPassword())) {
             return "Password must be between 8 to 32 characters long, and contain a lower and uppercase character.";
+        }
+        return null;
+    }
+    
+    public String processNewProfile (User newProfile, User oldProfile) {
+
+        newProfile.setId(oldProfile.getId());
+
+        if (newProfile.getEmail() != null) {
+            if (oldProfile.getEmail().equals(newProfile.getEmail())) {
+                return "Email must be different from old email.";
+            }
+            if (!ValidationUtils.isValidEmail(newProfile.getEmail())) {
+                return "Invalid Email Format.";
+            }
+        } else {
+            newProfile.setEmail(oldProfile.getEmail());
+        }
+        
+        if (newProfile.getPassword() != null) {
+            String newPassword = EncryptionUtils.encrypt(newProfile.getPassword(), String.valueOf(newProfile.getId()));
+            if (oldProfile.getPassword().equals(newPassword)) {
+                return "Password must be different from old password.";
+            }
+            if (!ValidationUtils.isValidPassword(newProfile.getPassword())) {
+                return "Password must be between 8 to 32 characters long, and contain a lower and uppercase character.";
+            }
+            newProfile.setPassword(newPassword);
+        }else {
+            newProfile.setPassword(oldProfile.getPassword());
+        }
+
+        if (newProfile.getAlias() != null) {
+            if (oldProfile.getAlias().equals(newProfile.getAlias())) {
+                return "User name must be different from old user name.";
+            }
+        } else {
+            newProfile.setAlias(oldProfile.getAlias());
+        }
+
+        if (newProfile.getAddress() != null) {
+            if (oldProfile.getAddress().equals(newProfile.getAddress())) {
+                return "Address must be different from old Address.";
+            }
+        } else {
+            newProfile.setAddress(oldProfile.getAddress());
+        }
+
+        if (newProfile.getProfilePic() != null) {
+            if (oldProfile.getProfilePic().equals(newProfile.getProfilePic())) {
+                return "Profile picture must be different from old profile.";
+            }
+        } else {
+            newProfile.setProfilePic(oldProfile.getProfilePic());
         }
         return null;
     }

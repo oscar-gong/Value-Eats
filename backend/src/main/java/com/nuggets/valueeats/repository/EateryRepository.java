@@ -13,4 +13,5 @@ public interface EateryRepository extends UserRepository<Eatery> {
 
     @Query(value = "select * from Cuisines", nativeQuery = true)
     List findAllCuisines();
+
 }
