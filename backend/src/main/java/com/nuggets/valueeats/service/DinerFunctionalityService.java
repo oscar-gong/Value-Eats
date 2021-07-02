@@ -145,7 +145,7 @@ public class DinerFunctionalityService {
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("name", e.getAlias());
             map.put("discount", "50%"); // placeholder
-            List<Float> reviews= reviewRepository.listReviewsOfEatery(e.getId());
+            List<Float> reviews= reviewRepository.listReviewRatingsOfEatery(e.getId());
             Double averageRating = reviews.stream().mapToDouble(i -> i).average().orElse(0);
             map.put("rating", averageRating);
             map.put("id", e.getId());

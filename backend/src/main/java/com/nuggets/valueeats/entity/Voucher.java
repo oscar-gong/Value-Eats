@@ -22,5 +22,7 @@ public class Voucher {
 
     private Float discount;
 
+    private String type;
+
     // NEEDS EXPIRY TIME
 }
