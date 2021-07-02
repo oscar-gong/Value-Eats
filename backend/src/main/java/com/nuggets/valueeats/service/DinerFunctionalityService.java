@@ -134,9 +134,9 @@ public class DinerFunctionalityService {
         }
     }
 
+    // WILL EVENTUALLY REQUIRE TOKEN TO VIEW
     public ResponseEntity<JSONObject> listEateries() {
         List<Eatery> eateryList = eateryRepository.findAll();
-        // need name, discount, rating
 
         ArrayList<Object> list = new ArrayList<Object>();
 
@@ -147,6 +147,8 @@ public class DinerFunctionalityService {
             List<Float> reviews= reviewRepository.listReviewsOfEatery(e.getId());
             Double averageRating = reviews.stream().mapToDouble(i -> i).average().orElse(0);
             map.put("rating", averageRating);
+            map.put("id", e.getId());
+            map.put("cuisines", e.getCuisines());
             list.add(map);
         }
 

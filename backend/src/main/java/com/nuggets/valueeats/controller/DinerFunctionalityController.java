@@ -45,8 +45,8 @@ public final class DinerFunctionalityController {
         return dinerFunctionalityService.removeReview(jsonString);
     }
     
-    @RequestMapping(value = "list/eatery", method = RequestMethod.GET)
-    public ResponseEntity<JSONObject> listEatery() {
+    @RequestMapping(value = "list/eateries", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> listEateries() {
         return dinerFunctionalityService.listEateries();
     }
 }
