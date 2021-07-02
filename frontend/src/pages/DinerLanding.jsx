@@ -3,6 +3,7 @@ import NavBar from "../components/Navbar";
 import StarRating from "../components/StarRating";
 import { MainContainer } from "../styles/MainContainer";
 import Carousel from "react-material-ui-carousel";
+import { useHistory } from "react-router";
 import {
     Card,
     Grid,
@@ -34,6 +35,7 @@ const useStyles = makeStyles({
 export default function DinerLanding({ token }) {
     const [eateryList, setEateryList] = useState([]);
     const classes = useStyles();
+    const history = useHistory();
 
     useEffect(() => {
         const getEateryList = async () => {
@@ -80,7 +82,9 @@ export default function DinerLanding({ token }) {
                                     <Card
                                         className={classes.card}
                                         onClick={(e) =>
-                                            console.log(item[i].name)
+                                            history.push(
+                                                `/EateryProfile/${item[i].name}/${item[i].id}`
+                                            )
                                         }
                                     >
                                         <CardHeader
@@ -132,7 +136,10 @@ export default function DinerLanding({ token }) {
             return (
                 <Card
                     className={classes.wideCard}
-                    onClick={(e) => console.log(item.name)}
+                    onClick={(e) =>
+                        history.push(`/EateryProfile/${item.name}/${item.id}`)
+                    }
+                    key={key}
                 >
                     <CardHeader title={item.discount + " OFF"} />
                     <CardMedia

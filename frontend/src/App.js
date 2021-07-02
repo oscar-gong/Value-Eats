@@ -7,6 +7,7 @@ import RegisterDiner from "./pages/RegisterDiner";
 import RegisterEatery from "./pages/RegisterEatery";
 import DinerLanding from "./pages/DinerLanding";
 import EateryLanding from "./pages/EateryLanding";
+import EateryProfile from "./pages/EateryProfile";
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { StoreContext } from './utils/store';
@@ -44,8 +45,8 @@ function App() {
             <Route exact path="/RegisterEatery">
               <RegisterEatery setToken={setToken}/>
             </Route>
-            <Route exact path="/eateryProfile">
-              <DinerLanding token={token}/>
+            <Route path="/EateryProfile">
+              <EateryProfile token={token}/>
             </Route>
             <Route exact path="/EateryLanding">
               <EateryLanding token={token}/>
