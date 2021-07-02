@@ -156,9 +156,6 @@ public class UserManagementService {
 
             Diner dinerDb = dinerRepository.findByToken(token);
 
-            if (diner.getProfilePic() == null) {
-                diner.setProfilePic(dinerDb.getProfilePic());
-            }
             dinerRepository.save(diner);
         }
 
@@ -173,10 +170,6 @@ public class UserManagementService {
             String token = eatery.getToken();
 
             Eatery eateryDb = eateryRepository.findByToken(token);
-
-            if (eatery.getProfilePic() == null) {
-                eatery.setProfilePic(eateryDb.getProfilePic());
-            }
 
             if (eatery.getCuisines() == null) {
                 eatery.setCuisines(eateryDb.getCuisines());
@@ -274,6 +267,14 @@ public class UserManagementService {
             }
         } else {
             newProfile.setAddress(oldProfile.getAddress());
+        }
+
+        if (newProfile.getProfilePic() != null) {
+            if (oldProfile.getProfilePic().equals(newProfile.getProfilePic())) {
+                return "Profile picture must be different from old profile.";
+            }
+        } else {
+            newProfile.setProfilePic(oldProfile.getProfilePic());
         }
         return null;
     }
