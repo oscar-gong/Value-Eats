@@ -174,13 +174,10 @@ public class UserManagementService {
 
             Eatery eateryDb = eateryRepository.findByToken(token);
 
-            List<String> empty1 = new ArrayList<String>();
-
-            ArrayList<String> empty2 = new ArrayList<String>();
-            if (eatery.getCuisines() == null || empty1.equals(eatery.getCuisines())) {
+            if (eatery.getCuisines() == null) {
                 eatery.setCuisines(eateryDb.getCuisines());
             }
-            if (eatery.getMenuPhotos() == null || empty2.equals(eatery.getMenuPhotos())) {
+            if (eatery.getMenuPhotos() == null) {
                 eatery.setMenuPhotos(eateryDb.getMenuPhotos());
             }
             eateryRepository.save(eatery);
