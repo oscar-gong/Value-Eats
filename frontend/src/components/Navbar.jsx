@@ -86,6 +86,7 @@ export default function Navbar ({ token, isDiner }) {
         if (logoutResponse.status === 200) {
             setAlertOptions({ showAlert: true, variant: 'success', message: logoutData.message });
             history.push("/");
+            localStorage.removeItem('token');
         } else {
             setAlertOptions({ showAlert: true, variant: 'error', message: logoutData.message });
         }
