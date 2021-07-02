@@ -1,5 +1,7 @@
 package com.nuggets.valueeats.repository;
 
+import java.util.Optional;
+
 import com.nuggets.valueeats.entity.Review;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +18,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(value = "select exists(select * from Review where diner_id = ?1 and eatery_id = ?2 and id = ?3)", nativeQuery = true)
     int existsByDinerIdAndEateryIdAndReviewId(Long dinerId, Long eateryId, Long reviewId);
+
+    Optional<Review> findById(Long reviewId);
 
     void deleteById(Long reviewId);
 }
