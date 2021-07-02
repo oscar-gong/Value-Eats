@@ -37,7 +37,7 @@ export default function DinerLanding({ token }) {
 
     useEffect(() => {
         const getEateryList = async () => {
-            const response = await fetch("http://localhost:8080/list/eatery", {
+            const response = await fetch("http://localhost:8080/list/eateries", {
                 method: "GET",
                 headers: {
                     Accept: "application/json",
