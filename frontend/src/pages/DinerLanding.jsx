@@ -35,7 +35,7 @@ const useStyles = makeStyles({
 
 export default function DinerLanding({ token }) {
     const [eateryList, setEateryList] = useState([]);
-    const [hover, setHover] = useState(false);
+    const [hover, setHover] = useState(true);
     const classes = useStyles();
     const history = useHistory();
 
@@ -95,9 +95,9 @@ export default function DinerLanding({ token }) {
                                     <Card
                                         className={classes.card}
                                         onClick={(e) =>
-                                            history.push(
-                                                `/EateryProfile/${item[i].name}/${item[i].id}`
-                                            )
+                                            history.push({
+                                                pathname: `/EateryProfile/${item[i].name}/${item[i].id}`,
+                                            })
                                         }
                                         onMouseLeave={() => setHover(true)}
                                         onMouseEnter={() => setHover(false)}
@@ -164,7 +164,9 @@ export default function DinerLanding({ token }) {
                 <Card
                     className={classes.wideCard}
                     onClick={(e) =>
-                        history.push(`/EateryProfile/${item.name}/${item.id}`)
+                        history.push({
+                            pathname: `/EateryProfile/${item.name}/${item.id}`,
+                        })
                     }
                     key={key}
                 >

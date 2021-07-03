@@ -7,7 +7,7 @@ import { Box, Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import ConfirmModal from './ConfirmModal';
 
-export default function Review ({token, eateryName, review, rating, images}) {
+export default function Review ({token, eateryName, review, rating, images, onEateryProfile, isOwner}) {
 
   const [openDeleteModal, setDeleteModal] = useState(false);
   const handleCloseModal = () => setDeleteModal(false);
@@ -31,18 +31,19 @@ export default function Review ({token, eateryName, review, rating, images}) {
         </div>
         <Box display="flex" flexDirection="column" justifyContent="center">
           <Box display="flex" justifyContent="center">
-          <Button variant="contained"
+          {onEateryProfile && <Button variant="contained"
             color="primary">
             View Restaurant  
-          </Button>
+          </Button>}
+          {isOwner &&
           <IconButton>
             <EditIcon fontSize="large"/>
           </IconButton>
-          <IconButton>
-            <DeleteIcon fontSize="large"
-            onClick={() => setDeleteModal(true)}
-            />
-          </IconButton>
+          }
+          {isOwner &&
+          <IconButton onClick={() => setDeleteModal(true)}>
+            <DeleteIcon fontSize="large" />
+          </IconButton>}
           </Box>
         </Box>
       </Box>

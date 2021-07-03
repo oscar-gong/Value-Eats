@@ -88,11 +88,11 @@ export default function DinerProfile({ token }) {
         </Box>
         {/* Reviews would be mapped here... */}
         <Box display="flex" flexDirection="column" flexGrow="1" alignItems="center" style={{overflowY: 'scroll', height: "auto"}}>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5}></Review>
+          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
+          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
+          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
+          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
+          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
         </Box>
         <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
           <DialogTitle id="customized-dialog-title" onClose={handleClose}>
