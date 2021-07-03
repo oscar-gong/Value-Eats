@@ -9,10 +9,12 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
@@ -39,24 +41,29 @@ public final class UserManagementController {
     }
     
     @RequestMapping(value = "update/diner", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> updateDiner(@RequestBody final Diner diner) {
-        return userManagementService.updateDiner(diner);
+    public ResponseEntity<JSONObject> updateDiner(@RequestBody final Diner diner, @RequestHeader (name="Authorization") String token) {
+        return userManagementService.updateDiner(diner, token);
     }
 
     @RequestMapping(value = "update/eatery", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> updateEatery(@RequestBody final Eatery eatery) {
-        return userManagementService.updateEatery(eatery);
+    public ResponseEntity<JSONObject> updateEatery(@RequestBody final Eatery eatery, @RequestHeader (name="Authorization") String token) {
+        return userManagementService.updateEatery(eatery, token);
     }
 
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> logout(@RequestBody User user) {
-        return userManagementService.logout(user);
+    public ResponseEntity<JSONObject> logout(@RequestHeader (name="Authorization") String token) {
+        return userManagementService.logout(token);
     }
 
     @RequestMapping(value = "list/cuisines", method = RequestMethod.GET)
     public ResponseEntity<JSONObject> listCuisines() {
         return cuisineService.listCuisines();
+    }
+
+    @RequestMapping(value = "eatery/{id}/details", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> getEateryProfile(@PathVariable String id, @RequestHeader (name="Authorization") String token) {
+        return userManagementService.getEateryProfile(id, token);
     }
 
 }

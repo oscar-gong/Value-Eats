@@ -48,10 +48,10 @@ export default function DinerLanding({ token }) {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
+                        Authorization: token,
                     },
                 }
             );
-
             const responseData = await response.json();
             if (response.status === 200) {
                 console.log(responseData.eateryList);
@@ -59,7 +59,7 @@ export default function DinerLanding({ token }) {
             }
         };
         getEateryList();
-    }, []);
+    }, [token]);
 
     const getCuisineList = (cuisines) => {
         let cuisineString = cuisines.join(", ");

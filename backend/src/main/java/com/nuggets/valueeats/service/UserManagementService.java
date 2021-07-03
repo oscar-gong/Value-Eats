@@ -1,21 +1,25 @@
 package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.entity.Voucher;
 
 import java.util.ArrayList;
 
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
+import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
+import com.nuggets.valueeats.repository.ReviewRepository;
 import com.nuggets.valueeats.utils.AuthenticationUtils;
 import com.nuggets.valueeats.utils.EncryptionUtils;
 import com.nuggets.valueeats.utils.JwtUtils;
@@ -40,6 +44,9 @@ public class UserManagementService {
 
     @Autowired
     private EateryRepository eateryRepository;
+    
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -128,18 +135,18 @@ public class UserManagementService {
     }
 
     @Transactional
-    public ResponseEntity<JSONObject> logout(User userToken) {
-        if (!userRepository.existsByToken(userToken.getToken())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't find the token: " + userToken.getToken()));
+    public ResponseEntity<JSONObject> logout(String token) {
+        if (!userRepository.existsByToken(token) || token.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't find the token: " + token));
         }
 
-        String userId = jwtUtils.decode(userToken.getToken());
+        String userId = jwtUtils.decode(token);
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't get user associated with token"));
         }
 
 
-        User user = userRepository.findByToken(userToken.getToken());
+        User user = userRepository.findByToken(token);
         user.setToken("");
         userRepository.save(user);
     
@@ -148,13 +155,9 @@ public class UserManagementService {
     }
 
     @Transactional
-    public ResponseEntity<JSONObject> updateDiner(Diner diner) {
-        ResponseEntity<JSONObject> result = update(diner);
+    public ResponseEntity<JSONObject> updateDiner(Diner diner, String token) {
+        ResponseEntity<JSONObject> result = update(diner, token);
         if (result.getStatusCode().is2xxSuccessful()) {
-            
-            String token = diner.getToken();
-
-            Diner dinerDb = dinerRepository.findByToken(token);
 
             dinerRepository.save(diner);
         }
@@ -163,11 +166,9 @@ public class UserManagementService {
     }
 
     @Transactional
-    public ResponseEntity<JSONObject> updateEatery(Eatery eatery) {
-        ResponseEntity<JSONObject> result = update(eatery);
+    public ResponseEntity<JSONObject> updateEatery(Eatery eatery, String token) {
+        ResponseEntity<JSONObject> result = update(eatery, token);
         if (result.getStatusCode().is2xxSuccessful()) {
-
-            String token = eatery.getToken();
 
             Eatery eateryDb = eateryRepository.findByToken(token);
 
@@ -184,9 +185,8 @@ public class UserManagementService {
     }
 
     @Transactional
-    public ResponseEntity<JSONObject> update(User user){
+    public ResponseEntity<JSONObject> update(User user, String token){
         User userDb;
-        String token = user.getToken();
         try {
             userDb = userRepository.findByToken(token);
         } catch (PersistenceException e) {
@@ -277,5 +277,58 @@ public class UserManagementService {
             newProfile.setProfilePic(oldProfile.getProfilePic());
         }
         return null;
+    }
+
+    public ResponseEntity<JSONObject> getEateryProfile(String id, String token) {
+        Long eateryId;
+        try{
+            eateryId = Long.parseLong(id);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid eatery ID"));
+        }
+        // {name, rating, address, menu photos, reviews, vouchers}
+        if(!dinerRepository.existsByToken(token) || token.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid"));
+        }
+
+        Optional<Eatery> eateryInDb = eateryRepository.findById(eateryId);
+        if(!eateryInDb.isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
+        }
+        Eatery eateryDb = eateryInDb.get();
+
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("name", eateryDb.getAlias());
+        List<Float> ratings= reviewRepository.listReviewRatingsOfEatery(eateryDb.getId());
+        Double averageRating = ratings.stream().mapToDouble(i -> i).average().orElse(0);
+        map.put("rating", averageRating);
+        map.put("address", eateryDb.getAddress());
+        map.put("menuPhotos", eateryDb.getMenuPhotos());
+        List<Review> reviews= reviewRepository.listReviewsOfEatery(eateryDb.getId());
+        map.put("reviews", reviews);
+        map.put("cuisines", eateryDb.getCuisines());
+        // PLACEHOLDERS FOR VOUCHER
+        List<Voucher> voucherList = new ArrayList<Voucher>();
+        Voucher voucher = new Voucher();
+        voucher.setEateryId(eateryId);
+        voucher.setId((long) 0);
+        voucher.setOwnerId(eateryId);
+        voucher.setDiscount((float) 0.5);
+        voucher.setType("Dine-in");
+        Voucher voucher1 = new Voucher();
+        voucher1.setEateryId(eateryId);
+        voucher1.setId((long) 1);
+        voucher1.setOwnerId(eateryId);
+        voucher1.setDiscount((float) 0.4);
+        voucher1.setType("Takeaway");
+        voucherList.add(voucher);
+        voucherList.add(voucher1);
+        map.put("vouchers", voucherList);
+
+
+        JSONObject data = new JSONObject(map);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 }

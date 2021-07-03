@@ -77,17 +77,16 @@ export default function Navbar ({ token, isDiner }) {
             method: "POST",
             headers: {
                 "Accept": "application/json", 
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: token,
             },
-            body: JSON.stringify({
-                "token": token
-            })
         })
         // const ans = await logoutResult.json();
         const logoutData = await logoutResponse.json();
         if (logoutResponse.status === 200) {
             setAlertOptions({ showAlert: true, variant: 'success', message: logoutData.message });
             history.push("/");
+            localStorage.removeItem('token');
         } else {
             setAlertOptions({ showAlert: true, variant: 'error', message: logoutData.message });
         }

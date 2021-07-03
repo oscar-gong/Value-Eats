@@ -36,22 +36,22 @@ public final class DinerFunctionalityController {
     private DinerFunctionalityService dinerFunctionalityService;
 
     @RequestMapping(value = "diner/createreview", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> createReview(@RequestBody String jsonString){
-        return dinerFunctionalityService.createReview(jsonString);
+    public ResponseEntity<JSONObject> createReview(@RequestBody Review review, @RequestHeader (name="Authorization") String token){
+        return dinerFunctionalityService.createReview(review, token);
     }
 
     @RequestMapping(value = "diner/removereview", method = RequestMethod.DELETE)
-    public ResponseEntity<JSONObject> removeReview(@RequestBody String jsonString){
-        return dinerFunctionalityService.removeReview(jsonString);
+    public ResponseEntity<JSONObject> removeReview(@RequestBody Review review, @RequestHeader (name="Authorization") String token){
+        return dinerFunctionalityService.removeReview(review, token);
     }
     
     @RequestMapping(value = "list/eateries", method = RequestMethod.GET)
-    public ResponseEntity<JSONObject> listEateries() {
-        return dinerFunctionalityService.listEateries();
+    public ResponseEntity<JSONObject> listEateries(@RequestHeader (name="Authorization") String token) {
+        return dinerFunctionalityService.listEateries(token);
     }
 
     @RequestMapping(value = "diner/editreview", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> editReview(@RequestBody String jsonString){
-        return dinerFunctionalityService.editReview(jsonString);
+    public ResponseEntity<JSONObject> editReview(@RequestBody Review review, @RequestHeader (name="Authorization") String token){
+        return dinerFunctionalityService.editReview(review, token);
     }
 }

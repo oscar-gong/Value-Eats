@@ -35,15 +35,11 @@ public class DinerFunctionalityService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public ResponseEntity<JSONObject> createReview(String jsonString) {
+    public ResponseEntity<JSONObject> createReview(Review review, String token) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            Review review = objectMapper.readValue(jsonString, Review.class);
-            Diner diner = objectMapper.readValue(jsonString, Diner.class);
 
             // Check for required inputs
-            if(!(StringUtils.isNotBlank(String.valueOf(diner.getToken())) &&
+            if(!(StringUtils.isNotBlank(token) &&
                 StringUtils.isNotBlank(String.valueOf(review.getEateryId())) &&
                 StringUtils.isNotBlank(String.valueOf(review.getRating())))
                 ){
@@ -56,7 +52,7 @@ public class DinerFunctionalityService {
             }
 
             // Check if token is valid
-            if(!dinerRepository.existsByToken(diner.getToken())){
+            if(!dinerRepository.existsByToken(token)){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
             }
 
@@ -70,7 +66,7 @@ public class DinerFunctionalityService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Message must not exceed 280 characters"));
             }
 
-            Long dinerId = dinerRepository.findByToken(diner.getToken()).getId();
+            Long dinerId = dinerRepository.findByToken(token).getId();
 
             // Check if user already made a review
             if(reviewRepository.existsByDinerIdAndEateryId(dinerId, review.getEateryId()) == 1){
@@ -95,15 +91,10 @@ public class DinerFunctionalityService {
         }
     }
 
-    public ResponseEntity<JSONObject> removeReview(String jsonString) {
+    public ResponseEntity<JSONObject> removeReview(Review review, String token) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            Review review = objectMapper.readValue(jsonString, Review.class);
-            Diner diner = objectMapper.readValue(jsonString, Diner.class);
-
             // Check for required inputs
-            if(!(StringUtils.isNotBlank(String.valueOf(diner.getToken())) &&
+            if(!(StringUtils.isNotBlank(String.valueOf(token)) &&
                 StringUtils.isNotBlank(String.valueOf(review.getEateryId())) &&
                 StringUtils.isNotBlank(String.valueOf(review.getId())))
                 ){
@@ -116,12 +107,12 @@ public class DinerFunctionalityService {
             }
 
             // Check if token is valid
-            if(!dinerRepository.existsByToken(diner.getToken())){
+            if(!dinerRepository.existsByToken(token)){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
             }
 
 
-            Long dinerId = dinerRepository.findByToken(diner.getToken()).getId();
+            Long dinerId = dinerRepository.findByToken(token).getId();
 
             // Check if diner has a review and delete it
             if(reviewRepository.existsByDinerIdAndEateryIdAndReviewId(dinerId, review.getEateryId(), review.getId()) == 1){
@@ -136,7 +127,11 @@ public class DinerFunctionalityService {
     }
 
     // WILL EVENTUALLY REQUIRE TOKEN TO VIEW
-    public ResponseEntity<JSONObject> listEateries() {
+    public ResponseEntity<JSONObject> listEateries(String token) {
+        System.out.println("Token is:"+ token);
+        if(!dinerRepository.existsByToken(token) || token.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
+        }
         List<Eatery> eateryList = eateryRepository.findAll();
 
         ArrayList<Object> list = new ArrayList<Object>();
@@ -145,7 +140,7 @@ public class DinerFunctionalityService {
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("name", e.getAlias());
             map.put("discount", "50%"); // placeholder
-            List<Float> reviews= reviewRepository.listReviewsOfEatery(e.getId());
+            List<Float> reviews= reviewRepository.listReviewRatingsOfEatery(e.getId());
             Double averageRating = reviews.stream().mapToDouble(i -> i).average().orElse(0);
             map.put("rating", averageRating);
             map.put("id", e.getId());
@@ -160,15 +155,10 @@ public class DinerFunctionalityService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
     
-    public ResponseEntity<JSONObject> editReview(String jsonString) {
+    public ResponseEntity<JSONObject> editReview(Review review, String token) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            Review review = objectMapper.readValue(jsonString, Review.class);
-            Diner diner = objectMapper.readValue(jsonString, Diner.class);
-
             // Check for required inputs
-            if(!(StringUtils.isNotBlank(String.valueOf(diner.getToken())) &&
+            if(!(StringUtils.isNotBlank(String.valueOf(token)) &&
                 StringUtils.isNotBlank(String.valueOf(review.getEateryId())) &&
                 StringUtils.isNotBlank(String.valueOf(review.getId())))
                 ){
@@ -181,11 +171,11 @@ public class DinerFunctionalityService {
             }
 
             // Check if token is valid
-            if(!dinerRepository.existsByToken(diner.getToken())){
+            if(!dinerRepository.existsByToken(token)){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
             }
 
-            Long dinerId = dinerRepository.findByToken(diner.getToken()).getId();
+            Long dinerId = dinerRepository.findByToken(token).getId();
 
             // Check if review exists and is made by the diner for the specific eatery
             if(reviewRepository.existsByDinerIdAndEateryIdAndReviewId(dinerId, review.getEateryId(), review.getId()) == 0){
