@@ -3,6 +3,7 @@ package com.nuggets.valueeats.controller.decorator;
 import com.nuggets.valueeats.controller.exception.InvalidTokenException;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.repository.UserRepository;
+import com.nuggets.valueeats.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -28,10 +29,13 @@ class CheckTokenAspect<T extends User> {
     @Autowired
     private UserRepository<T> userRepository;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Before("@annotation(com.nuggets.valueeats.controller.decorator.CheckToken)")
     public void checkSession(JoinPoint joinPoint) {
         if (joinPoint.getArgs().length == 2) {
-            if (StringUtils.isEmpty((String) joinPoint.getArgs()[1]) || !userRepository.existsByToken((String) joinPoint.getArgs()[1])) {
+            if (jwtUtils.decode((String) joinPoint.getArgs()[1]) == null || !userRepository.existsByToken((String) joinPoint.getArgs()[1])) {
                 throw new InvalidTokenException("Token is invalid");
             }
         }
