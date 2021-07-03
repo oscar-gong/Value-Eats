@@ -229,7 +229,8 @@ public class UserManagementService {
                 return "Invalid Email Format.";
             }
             if (userRepository.existsByEmail(newProfile.getEmail())) {
-                return "Email is taken, try another";
+                if (!oldProfile.getEmail().equals(newProfile.getEmail().toLowerCase()))
+                    return "Email is taken, try another";
             }
             newProfile.setEmail(newProfile.getEmail().toLowerCase());
         } else {
