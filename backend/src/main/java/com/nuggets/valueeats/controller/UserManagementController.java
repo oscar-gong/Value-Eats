@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public final class UserManagementController {
     @Autowired
     private UserManagementService userManagementService;
-    
+
     @Autowired
     private CuisineService cuisineService;
 
@@ -39,7 +39,7 @@ public final class UserManagementController {
     public ResponseEntity<JSONObject> registerEatery(@RequestBody final Eatery eatery) {
         return userManagementService.registerEatery(eatery);
     }
-    
+
     @RequestMapping(value = "update/diner", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> updateDiner(@RequestBody final Diner diner, @RequestHeader (name="Authorization") String token) {
         return userManagementService.updateDiner(diner, token);
@@ -66,4 +66,8 @@ public final class UserManagementController {
         return userManagementService.getEateryProfile(id, token);
     }
 
+    @RequestMapping(value = "diner/{id}/details", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> getDinerProfile(@PathVariable Long id, @RequestHeader (name="Authorization") String token) {
+        return userManagementService.getDinerProfile(id, token);
+    }
 }

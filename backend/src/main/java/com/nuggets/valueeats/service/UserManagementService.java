@@ -273,6 +273,25 @@ public class UserManagementService {
         return null;
     }
 
+    public ResponseEntity<JSONObject> getDinerProfile(Long dinerId, String token) {
+        if (!dinerRepository.existsByToken(token) || token.isEmpty()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is invalid"));
+        }
+
+        Diner diner = dinerRepository.findById(dinerId).orElse(null);
+        if (diner == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Diner does not exist"));
+        }
+        List<Review> reviews = reviewRepository.findByDinerId(dinerId);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("name", diner.getAlias());
+        result.put("profile picture", diner.getProfilePic());
+        result.put("reviews", reviews);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new JSONObject(result));
+    }
+
     public ResponseEntity<JSONObject> getEateryProfile(String id, String token) {
         Long eateryId;
         try{
