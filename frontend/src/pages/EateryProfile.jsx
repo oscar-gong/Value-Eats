@@ -4,7 +4,7 @@ import { MainContainer } from "../styles/MainContainer";
 import { Typography, Grid, Box, Card, Button } from "@material-ui/core";
 import StarRating from "../components/StarRating";
 import Review from "../components/Review";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function EateryProfile({ token }) {
     const [eateryDetails, setEateryDetails] = useState([]);
@@ -76,7 +76,7 @@ export default function EateryProfile({ token }) {
         }
         return eateryDetails.vouchers.map((item, key) => {
             return (
-                <Card style={{ height: "80px" }}>
+                <Card style={{ height: "80px" }} key={key}>
                     <Grid container justify="space-between">
                         <Grid item>
                             <Button variant="contained" color="primary">{`${
@@ -93,6 +93,11 @@ export default function EateryProfile({ token }) {
         });
     };
 
+    const getCuisines = () => {
+        if (!eateryDetails.cuisines) return;
+        return eateryDetails.cuisines.join(', ');
+    }
+
     return (
         <>
             <NavBar token={token} isDiner={true} />
@@ -107,7 +112,7 @@ export default function EateryProfile({ token }) {
                             {eateryDetails.address}
                         </Typography>
                         <Typography variant="h5">
-                            {eateryDetails.cuisines.join(', ')}
+                            {getCuisines()}
                         </Typography>
                         <Typography variant="h3">Menu Photos</Typography>
                         <Box flex-wrap="wrap" flexDirection="row">
