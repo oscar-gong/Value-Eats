@@ -14,9 +14,8 @@ export default function EateryProfile() {
     const [auth] = context.auth;
     const [isDiner] = context.isDiner;
 
-
     const eateryId = location.pathname.split("/")[3];
-    
+
     useEffect(() => {
         const getEateryDetails = async () => {
             const response = await fetch(
@@ -43,7 +42,6 @@ export default function EateryProfile() {
         getEateryDetails();
     }, [auth, eateryId]);
     if (auth === null || isDiner === "false") return <Redirect to="/" />;
-   
 
     const getReviews = () => {
         if (!eateryDetails.reviews) return;
@@ -73,7 +71,13 @@ export default function EateryProfile() {
         return eateryDetails.menuPhotos.map((item, key) => {
             return (
                 // TODO make it responsive
-                <img src={item} alt="menu photos" width="200px" key={key} height="auto" />
+                <img
+                    src={item}
+                    alt="menu photos"
+                    width="200px"
+                    key={key}
+                    height="auto"
+                />
             );
         });
     };
@@ -85,8 +89,15 @@ export default function EateryProfile() {
         }
         return eateryDetails.vouchers.map((item, key) => {
             return (
-                <Card style={{ height: "80px" }} key={key}>
-                    <Grid container justify="space-between">
+                <Card
+                    style={{
+                        height: "80px",
+                        borderRadius: "0px",
+                        margin: "10px",
+                    }}
+                    key={key}
+                >
+                    <Grid container justify="space-around" alignItems="center">
                         <Grid item>
                             <Button variant="contained" color="primary">{`${
                                 item.discount * 100
@@ -104,8 +115,8 @@ export default function EateryProfile() {
 
     const getCuisines = () => {
         if (!eateryDetails.cuisines) return;
-        return eateryDetails.cuisines.join(', ');
-    }
+        return eateryDetails.cuisines.join(", ");
+    };
 
     return (
         <>
@@ -113,14 +124,14 @@ export default function EateryProfile() {
             <MainContainer>
                 <Grid container spacing={5}>
                     <Grid item xs={6}>
-                        <Typography variant="h5">
+                        <Typography variant="h3">
                             {eateryDetails.name}
                         </Typography>
                         <StarRating rating={eateryDetails.rating} />
-                        <Typography variant="h5">
+                        <Typography variant="subtitle2">
                             {eateryDetails.address}
                         </Typography>
-                        <Typography variant="h5">
+                        <Typography variant="subtitle2">
                             {getCuisines()}
                         </Typography>
                         <Typography variant="h3">Menu Photos</Typography>
