@@ -141,7 +141,7 @@ export default function EateryProfile() {
                             {getImages()}
                         </Box>
                         <Typography variant="h3">Reviews</Typography>
-
+                        <Button style={{margin: "10px"}}variant="contained" color="primary">Write a Review</Button>
                         <Box>{getReviews()}</Box>
                     </Grid>
 
