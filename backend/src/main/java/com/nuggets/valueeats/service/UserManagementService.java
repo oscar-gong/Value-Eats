@@ -3,13 +3,7 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.Voucher;
 
-import java.util.ArrayList;
-
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
+import java.util.*;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
@@ -38,13 +32,13 @@ import org.springframework.stereotype.Service;
 public class UserManagementService {
     @Autowired
     private UserRepository<User> userRepository;
-    
+
     @Autowired
     private DinerRepository dinerRepository;
 
     @Autowired
     private EateryRepository eateryRepository;
-    
+
     @Autowired
     private ReviewRepository reviewRepository;
 
@@ -94,11 +88,11 @@ public class UserManagementService {
         String userToken = jwtUtils.encode(String.valueOf(user.getId()));
 
         user.setToken(userToken);
-        
+
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", userToken);
         JSONObject data = new JSONObject(dataMedium);
-        
+
         System.out.println(data);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Welcome to ValueEats, " + user.getAlias(), data));
@@ -126,11 +120,11 @@ public class UserManagementService {
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", token);
         JSONObject data = new JSONObject(dataMedium);
-        
+
         System.out.println(data);
 
-        return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()), 
-                                                      userDb.getPassword(), "Welcome back, " + userDb.getEmail(), 
+        return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()),
+                                                      userDb.getPassword(), "Welcome back, " + userDb.getEmail(),
                                                       dinerRepository.existsByEmail(userDb.getEmail()), data);
     }
 
@@ -149,7 +143,7 @@ public class UserManagementService {
         User user = userRepository.findByToken(token);
         user.setToken("");
         userRepository.save(user);
-    
+
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Logout was successful"));
     }
@@ -224,7 +218,7 @@ public class UserManagementService {
         }
         return null;
     }
-    
+
     public String processNewProfile (User newProfile, User oldProfile) {
 
         newProfile.setId(oldProfile.getId());
@@ -239,7 +233,7 @@ public class UserManagementService {
         } else {
             newProfile.setEmail(oldProfile.getEmail());
         }
-        
+
         if (newProfile.getPassword() != null) {
             String newPassword = EncryptionUtils.encrypt(newProfile.getPassword(), String.valueOf(newProfile.getId()));
             if (oldProfile.getPassword().equals(newPassword)) {
@@ -286,8 +280,9 @@ public class UserManagementService {
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid eatery ID"));
         }
+
         // {name, rating, address, menu photos, reviews, vouchers}
-        if(!dinerRepository.existsByToken(token) || token.isEmpty()){
+        if(token.isEmpty() || !(dinerRepository.existsByToken(token) || eateryRepository.existsByIdAndToken(eateryId, token))) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid"));
         }
 
