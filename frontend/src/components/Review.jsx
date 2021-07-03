@@ -6,10 +6,14 @@ import { ProfilePhoto } from '../styles/ProfilePhoto';
 import { Box, Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import ConfirmModal from './ConfirmModal';
+import EditReview from "../components/EditReview";
 
-export default function Review ({token, eateryName, review, rating, images}) {
+export default function Review ({token, user, eateryName, review, rating, images}) {
 
+  const [openEditReview, setOpenEditReview] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
+  const [editReview, setEditReview] = useState(review);
+  const [editRating, setEditRating] = useState(rating);
   const handleCloseModal = () => setDeleteModal(false);
 
   const handleDelete = (token, id) => {
@@ -36,7 +40,8 @@ export default function Review ({token, eateryName, review, rating, images}) {
             View Restaurant  
           </Button>
           <IconButton>
-            <EditIcon fontSize="large"/>
+            <EditIcon fontSize="large"
+            onClick={() => setOpenEditReview(true)}/>
           </IconButton>
           <IconButton>
             <DeleteIcon fontSize="large"
@@ -53,6 +58,7 @@ export default function Review ({token, eateryName, review, rating, images}) {
         handleConfirm={() => handleDelete(token, eateryName)}>
       </ConfirmModal>
       {/* put a carousel here */}
+      <EditReview open={openEditReview} setOpen={setOpenEditReview} user={user} reviewTextInit={editReview} ratingInit={editRating} reviewImages={[]}/>
     </>
   )
 }

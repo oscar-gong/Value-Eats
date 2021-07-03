@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { MainContent } from "../styles/MainContent";
 import { ProfilePhoto } from '../styles/ProfilePhoto'
@@ -13,37 +13,50 @@ import { fileToDataUrl, validRequired, validEmail, validPassword, validConfirmPa
 
 export default function DinerProfile({ token }) {
   
-  const [open, setOpen] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
 
-  const defaultState = { value: "", valid: true };
-  const [username, setUsername] = useState(defaultState);
-  const [email, setEmail] = useState(defaultState);
+  const defaultState = (initialValue = "") => {
+    return { value: initialValue, valid: true }
+  };
+
+  const [username, setUsername] = useState(defaultState("default name"));
+  const [email, setEmail] = useState(defaultState("default@gmail.com"));
   const [password, setPassword] = useState(defaultState);
   const [confirmpassword, setConfirmpassword] = useState(defaultState);
-  const [profilePic, setProfilePic] = useState("https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg");
   const [tmpProfilePic, setTmpProfilePic] = useState("https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg");
+  const [user, setUser] = useState({
+    "username": "default name",
+    "email": "defaultemail@gmail.com",
+    "profilePic": "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+    "reviews": []
+  });
+
+  useEffect(() => {
+    // on page init, load the users details
+
+  })
 
   const handleClose = () => {
-    setOpen(false);
-    setTmpProfilePic(profilePic);
+    setOpenProfile(false);
+    setTmpProfilePic(user.profilePic);
   }
 
   const saveChanges = () => {
     console.log("changes are going");
     // Ideally this form should be validated when a form is submitted
-    if (username.value === "") setUsername({ value: "", valid: false });
-    if (email.value === "") setEmail({ value: "", valid: false });
+    if (user.username.value === "") setUser({...user, username : { value: "", valid: false }});
+    if (user.email.value === "") setUser({...user, email : { value: "", valid: false }});
     if (password.value === "") setPassword({ value: "", valid: false });
     if (confirmpassword.value === "")
         setConfirmpassword({ value: "", valid: false });
     // check that all fields are valid and not empty before registering
     if (
-        !username.valid ||
-        !email.valid ||
+        !user.username.valid ||
+        !user.email.valid ||
         !password.valid ||
         !confirmpassword.valid ||
-        username.value === "" ||
-        email.value === "" ||
+        user.username.value === "" ||
+        user.email.value === "" ||
         password.value === "" ||
         confirmpassword.value === ""
     )
@@ -64,13 +77,13 @@ export default function DinerProfile({ token }) {
       <NavBar token={token} isDiner={true}/>
       <MainContent>
         <Box display="flex" justifyContent="center" alignItems="center" paddingTop="10px">
-          <ProfilePhoto size={150} src={profilePic} />
+          <ProfilePhoto size={150} src={user.profilePic} />
           <Box display="flex" flexDirection="column" alignItems="center" paddingX="20px">
-            <h1>Put ur username here</h1>
+            <h1>{user.username}</h1>
             <Button variant="contained"
               color="primary"
               startIcon={<EditIcon />}
-              onClick={() => setOpen(true)}>
+              onClick={() => setOpenProfile(true)}>
               Edit profile
             </Button>
           </Box>
@@ -88,14 +101,14 @@ export default function DinerProfile({ token }) {
         </Box>
         {/* Reviews would be mapped here... */}
         <Box display="flex" flexDirection="column" flexGrow="1" alignItems="center" style={{overflowY: 'scroll', height: "auto"}}>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5}></Review>
+          <Review token={token} user={user} eateryName="Test Eatery" review={"This is a sample review in the future we will use real reviews from diners"} rating={3.5}></Review>
+          <Review token={token} user={user} eateryName="Test Eatery" review={"This is a sample review in the future we will use real reviews from diners"} rating={3.5}></Review>
+          <Review token={token} user={user} eateryName="Test Eatery" review={"This is a sample review in the future we will use real reviews from diners"} rating={3.5}></Review>
+          <Review token={token} user={user} eateryName="Test Eatery" review={"This is a sample review in the future we will use real reviews from diners"} rating={3.5}></Review>
+          <Review token={token} user={user} eateryName="Test Eatery" review={"This is a sample review in the future we will use real reviews from diners"} rating={3.5}></Review>
         </Box>
-        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-          <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <Dialog aria-labelledby="customized-dialog-title" open={openProfile}>
+          <DialogTitle id="customized-dialog-title">
             Update Profile
           </DialogTitle>
           <DialogContent dividers>
@@ -116,13 +129,14 @@ export default function DinerProfile({ token }) {
                   id="outlined-basic"
                   label="Username"
                   onChange={(e) =>
-                      setUsername({ value: e.target.value, valid: true })
+                    setUsername({ value: e.target.value, valid: true })
                   }
                   onBlur={() => validRequired(username, setUsername)}
                   error={!username.valid}
                   helperText={
                       username.valid ? "" : "Please enter a username"
                   }
+                  value={username.value}
                   variant="outlined"
                   fullWidth
               />
@@ -132,13 +146,14 @@ export default function DinerProfile({ token }) {
                     id="outlined-basic"
                     label="Email Address"
                     onChange={(e) =>
-                        setEmail({ value: e.target.value, valid: true })
+                      setEmail({ value: e.target.value, valid: true })
                     }
                     onBlur={() => validEmail(email.value, setEmail)}
                     error={!email.valid}
                     helperText={
                         email.valid ? "" : "Please enter a valid email"
                     }
+                    value={email.value}
                     variant="outlined"
                     fullWidth
                 />

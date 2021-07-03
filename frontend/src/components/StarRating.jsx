@@ -1,33 +1,25 @@
 import React from 'react';
 
-import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
-import StarHalfRoundedIcon from '@material-ui/icons/StarHalfRounded';
-import StarRoundedIcon from '@material-ui/icons/StarRounded';
+// import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
+// import StarHalfRoundedIcon from '@material-ui/icons/StarHalfRounded';
+// import StarRoundedIcon from '@material-ui/icons/StarRounded';
 
-import { Box } from '@material-ui/core';
+// import { Box, IconButton } from '@material-ui/core';
 
-export default function StarRating({rating}) {
+import { Rating } from '@material-ui/lab';
+
+export default function StarRating({rating, isEditable=false, setRating}) {
+    
     return (
       <>
-        <Box display="flex">
-            {
-                [1, 2, 3, 4, 5].map((num) => {
-                    if (rating < num && rating > num - 1) {
-                        return (
-                            <StarHalfRoundedIcon/>
-                        );
-                    } else if (num <= rating) {
-                        return (
-                            <StarRoundedIcon />
-                        );
-                    } else {
-                        return (
-                            <StarBorderRoundedIcon/>
-                        );
-                    }
-                })
-            }
-        </Box>
+        <Rating value={rating}
+        precision={0.5}
+        onChange={(event, newValue) => {
+            setRating(newValue);
+        }}
+        readOnly={!isEditable}
+        >
+        </Rating>
       </>
     );
   }
