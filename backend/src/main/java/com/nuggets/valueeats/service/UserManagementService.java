@@ -274,12 +274,21 @@ public class UserManagementService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Diner does not exist"));
         }
         List<Review> reviews = reviewRepository.findByDinerId(dinerId);
-
+        ArrayList<Object> reviewsList = new ArrayList<Object>();
         Map<String, Object> result = new HashMap<>();
         result.put("name", diner.getAlias());
         result.put("email", diner.getEmail());
         result.put("profile picture", diner.getProfilePic());
-        result.put("reviews", reviews);
+        for(Review r:reviews){
+            HashMap<String, Object> review = new HashMap<String, Object>();
+            review.put("reviewId", r.getId());
+            review.put("profilePic", diner.getProfilePic());
+            review.put("name", diner.getAlias());
+            review.put("rating", r.getRating());
+            review.put("message", r.getMessage());
+            reviewsList.add(review);
+        }
+        result.put("reviews", reviewsList);
 
         return ResponseEntity.status(HttpStatus.OK).body(new JSONObject(result));
     }
