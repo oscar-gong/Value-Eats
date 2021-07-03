@@ -94,18 +94,19 @@ export default function EateryProfile() {
                         paddingTop: "25px",
                         paddingBottom: "25px",
                         borderRadius: "0px",
+                        background: "rgba(0, 0, 0, 0)"
                     }}
                     key={key}
                 >
-                    <Grid container justify="space-around" alignItems="center">
-                        <Grid item style={{alignItems: "center"}}>
+                    <Grid container justify="space-around" alignItems="center" style={{}}>
+                        <Grid item style={{width:"50%", display:"grid", justifyContent: "center"}}>
                             <Button variant="contained" color="primary" style={{display:"block", width:"15vw"}}>
                                 {`${
                                 item.discount * 100
                                 }% OFF - ${item.type}`}
                             </Button>
                         </Grid>
-                        <Grid item>
+                        <Grid item style={{width:"50%", display:"grid", justifyContent: "center"}}>
                             <Box style={{margin:"10px"}}>5 LEFT PLACEHOLDER</Box>
                             <Box style={{margin:"10px"}}>VALID 1-2PM PLACEHOLDER</Box>
                         </Grid>
