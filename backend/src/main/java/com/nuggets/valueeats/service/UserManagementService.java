@@ -266,16 +266,16 @@ public class UserManagementService {
         return null;
     }
 
-    public ResponseEntity<JSONObject> getDinerProfile(Long dinerId, String token) {
+    public ResponseEntity<JSONObject> getDinerProfile(String token) {
         if (!dinerRepository.existsByToken(token) || token.isEmpty()){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is invalid"));
         }
 
-        Diner diner = dinerRepository.findById(dinerId).orElse(null);
+        Diner diner = dinerRepository.findByToken(token);
         if (diner == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Diner does not exist"));
         }
-        List<Review> reviews = reviewRepository.findByDinerId(dinerId);
+        List<Review> reviews = reviewRepository.findByDinerId(diner.getId());
         ArrayList<Object> reviewsList = new ArrayList<Object>();
         Map<String, Object> result = new HashMap<>();
         result.put("name", diner.getAlias());
