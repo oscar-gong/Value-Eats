@@ -67,6 +67,7 @@ const Default = () => {
   if (auth === null) return <Redirect to="/Login" />;
   if (isDiner === "false") return <Redirect to="/EateryLanding" />;
   if (isDiner === "true") return <Redirect to="/DinerLanding" />;
+  return <Redirect to="/Login" />;
 }
 
 export default App;

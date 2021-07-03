@@ -91,21 +91,23 @@ export default function EateryProfile() {
             return (
                 <Card
                     style={{
-                        height: "80px",
+                        paddingTop: "25px",
+                        paddingBottom: "25px",
                         borderRadius: "0px",
-                        margin: "10px",
                     }}
                     key={key}
                 >
                     <Grid container justify="space-around" alignItems="center">
-                        <Grid item>
-                            <Button variant="contained" color="primary">{`${
+                        <Grid item style={{alignItems: "center"}}>
+                            <Button variant="contained" color="primary" style={{display:"block", width:"15vw"}}>
+                                {`${
                                 item.discount * 100
-                            }% OFF - ${item.type}`}</Button>
+                                }% OFF - ${item.type}`}
+                            </Button>
                         </Grid>
                         <Grid item>
-                            <Box>5 LEFT PLACEHOLDER</Box>
-                            <Box>VALID 1-2PM PLACEHOLDER</Box>
+                            <Box style={{margin:"10px"}}>5 LEFT PLACEHOLDER</Box>
+                            <Box style={{margin:"10px"}}>VALID 1-2PM PLACEHOLDER</Box>
                         </Grid>
                     </Grid>
                 </Card>
