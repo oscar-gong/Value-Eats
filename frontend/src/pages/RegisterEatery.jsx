@@ -10,9 +10,9 @@ import SendIcon from "@material-ui/icons/Send";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import {
     validEmail,
-    validPassword,
     fileToDataUrl,
-    validConfirmPassword
+    validConfirmPassword,
+    checkValidPassword
 } from "../utils/helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
@@ -39,7 +39,7 @@ export default function RegisterEatery({ setToken }) {
     const setAlertOptions = context.alert[1];
 
     // set to true for real demos
-    const useGoogleAPI = true;
+    const useGoogleAPI = false;
 
     const handleImages = (data) => {
         Array.from(data).forEach((file) => {
@@ -159,6 +159,7 @@ export default function RegisterEatery({ setToken }) {
                 password: password.value,
                 cuisines: cuisines.value,
                 menuPhotos: images, // array of data urls
+                profilePic: "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
             }),
         });
         console.log(response);
@@ -193,7 +194,7 @@ export default function RegisterEatery({ setToken }) {
                         onChange={(e) =>
                             setEmail({ value: e.target.value, valid: true })
                         }
-                        onBlur={() => validEmail(email.value, setEmail)}
+                        onBlur={() => validEmail(email, setEmail)}
                         error={!email.valid}
                         helperText={
                             email.valid ? "" : "Please enter a valid email"
@@ -210,7 +211,7 @@ export default function RegisterEatery({ setToken }) {
                         onChange={(e) =>
                             setPassword({ value: e.target.value, valid: true })
                         }
-                        onBlur={() => validPassword(password.value, setPassword)}
+                        onBlur={() => checkValidPassword(password, setPassword)}
                         error={!password.valid}
                         helperText={
                             password.valid
@@ -232,7 +233,7 @@ export default function RegisterEatery({ setToken }) {
                                 valid: true,
                             })
                         }
-                        onBlur={() => validConfirmPassword(password.value, confirmPassword.value, setConfirmPassword)}
+                        onBlur={() => validConfirmPassword(password, confirmPassword, setConfirmPassword)}
                         error={!confirmPassword.valid}
                         helperText={
                             confirmPassword.valid
@@ -253,7 +254,7 @@ export default function RegisterEatery({ setToken }) {
                                 valid: true,
                             })
                         }
-                        onBlur={() => validRequired(eateryName.value, setEateryName)}
+                        onBlur={() => validRequired(eateryName, setEateryName)}
                         error={!eateryName.valid}
                         helperText={
                             eateryName.valid
