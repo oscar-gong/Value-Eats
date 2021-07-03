@@ -1,20 +1,42 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { MainContainer } from "../styles/MainContainer";
-import { Typography, Grid, Box, Card, Button } from "@material-ui/core";
+import { Typography, Grid, Box, Card, Button, Modal, makeStyles } from "@material-ui/core";
 import StarRating from "../components/StarRating";
 import Review from "../components/Review";
 import { useLocation, Redirect } from "react-router-dom";
 import { StoreContext } from "../utils/store";
+import Carousel from "react-material-ui-carousel";
+
+const useStyles = makeStyles({
+    photo: {
+        color: "black",
+        borderRadius: "0px",
+        transition: "transform 0.15s ease-in-out",
+        "&:hover": { transform: "scale3d(1.02, 1.02, 1)", maxHeight: "none" },
+        maxWidth: "200px",
+    },
+});
 
 export default function EateryProfile() {
     const [eateryDetails, setEateryDetails] = useState([]);
     const location = useLocation();
+    const classes = useStyles();
     const context = React.useContext(StoreContext);
     const [auth] = context.auth;
     const [isDiner] = context.isDiner;
 
     const eateryId = location.pathname.split("/")[3];
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     useEffect(() => {
         const getEateryDetails = async () => {
@@ -74,13 +96,29 @@ export default function EateryProfile() {
                 <img
                     src={item}
                     alt="menu photos"
-                    width="200px"
+                    width="400px"
                     key={key}
                     height="auto"
                 />
             );
         });
     };
+
+    const getSingleImage = () => {
+        if (!eateryDetails.menuPhotos) return;
+        if (eateryDetails.menuPhotos.length === 0) {
+            return <div>no images currently</div>;
+        }
+        return <img className={classes.photo} src={eateryDetails.menuPhotos[0]} onClick={handleOpen}/>
+    }
+
+    const getNumberOfImages = () => {
+        if (!eateryDetails.menuPhotos) return;
+        if (eateryDetails.menuPhotos.length === 0) {
+            return <div>0 images</div>
+        }
+        return <div>{`${eateryDetails.menuPhotos.length} images`}</div>
+    }
 
     const getVouchers = () => {
         if (!eateryDetails.vouchers) return;
@@ -94,21 +132,26 @@ export default function EateryProfile() {
                         paddingTop: "25px",
                         paddingBottom: "25px",
                         borderRadius: "0px",
-                        background: "rgba(0, 0, 0, 0)"
                     }}
                     key={key}
                 >
-                    <Grid container justify="space-around" alignItems="center" style={{}}>
-                        <Grid item style={{width:"50%", display:"grid", justifyContent: "center"}}>
-                            <Button variant="contained" color="primary" style={{display:"block", width:"15vw"}}>
-                                {`${
-                                item.discount * 100
-                                }% OFF - ${item.type}`}
+                    <Grid container justify="space-around" alignItems="center">
+                        <Grid item style={{ alignItems: "center" }}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                style={{ display: "block", width: "15vw" }}
+                            >
+                                {`${item.discount * 100}% OFF - ${item.type}`}
                             </Button>
                         </Grid>
-                        <Grid item style={{width:"50%", display:"grid", justifyContent: "center"}}>
-                            <Box style={{margin:"10px"}}>5 LEFT PLACEHOLDER</Box>
-                            <Box style={{margin:"10px"}}>VALID 1-2PM PLACEHOLDER</Box>
+                        <Grid item>
+                            <Box style={{ margin: "10px" }}>
+                                5 LEFT PLACEHOLDER
+                            </Box>
+                            <Box style={{ margin: "10px" }}>
+                                VALID 1-2PM PLACEHOLDER
+                            </Box>
                         </Grid>
                     </Grid>
                 </Card>
@@ -139,16 +182,35 @@ export default function EateryProfile() {
                         </Typography>
                         <Typography variant="h3">Menu Photos</Typography>
                         <Box flex-wrap="wrap" flexDirection="row">
-                            {getImages()}
+                            {getSingleImage()}
                         </Box>
+                        {getNumberOfImages()}
                         <Typography variant="h3">Reviews</Typography>
-                        <Button style={{margin: "10px"}}variant="contained" color="primary">Write a Review</Button>
+                        <Button
+                            style={{ margin: "10px" }}
+                            variant="contained"
+                            color="primary"
+                        >
+                            Write a Review
+                        </Button>
                         <Box>{getReviews()}</Box>
                     </Grid>
 
                     <Grid item xs={6}>
                         <Typography variant="h3">Discounts</Typography>
                         {getVouchers()}
+                        <div style={{ margin: "0 auto" }}>
+                            <Modal style={{}} open={open} onClose={handleClose}>
+                                {
+                                    <Carousel
+                                        navButtonsAlwaysVisible={true}
+                                        autoPlay={false}
+                                    >
+                                        {getImages()}
+                                    </Carousel>
+                                }
+                            </Modal>
+                        </div>
                     </Grid>
                 </Grid>
             </MainContainer>
