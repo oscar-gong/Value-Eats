@@ -70,7 +70,7 @@ public class UserManagementService {
         if (!isValidInput(user)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Please fill in all required fields."));
         }
-
+        user.setEmail(user.getEmail().toLowerCase());
         if (userRepository.existsByEmail(user.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ResponseUtils.createResponse("Email is taken, try another"));
         }
@@ -102,6 +102,7 @@ public class UserManagementService {
     public ResponseEntity<JSONObject> login(User user){
         User userDb;
         try {
+            user.setEmail(user.getEmail().toLowerCase());
             userDb = userRepository.findByEmail(user.getEmail());
         } catch (PersistenceException e) {
             System.out.println("error");
@@ -230,6 +231,7 @@ public class UserManagementService {
             if (userRepository.existsByEmail(newProfile.getEmail())) {
                 return "Email is taken, try another";
             }
+            newProfile.setEmail(newProfile.getEmail().toLowerCase());
         } else {
             newProfile.setEmail(oldProfile.getEmail());
         }
