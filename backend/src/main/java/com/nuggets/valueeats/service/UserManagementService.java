@@ -38,13 +38,13 @@ import org.springframework.stereotype.Service;
 public class UserManagementService {
     @Autowired
     private UserRepository<User> userRepository;
-    
+
     @Autowired
     private DinerRepository dinerRepository;
 
     @Autowired
     private EateryRepository eateryRepository;
-    
+
     @Autowired
     private ReviewRepository reviewRepository;
 
@@ -94,11 +94,11 @@ public class UserManagementService {
         String userToken = jwtUtils.encode(String.valueOf(user.getId()));
 
         user.setToken(userToken);
-        
+
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", userToken);
         JSONObject data = new JSONObject(dataMedium);
-        
+
         System.out.println(data);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Welcome to ValueEats, " + user.getAlias(), data));
@@ -126,11 +126,11 @@ public class UserManagementService {
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", token);
         JSONObject data = new JSONObject(dataMedium);
-        
+
         System.out.println(data);
 
-        return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()), 
-                                                      userDb.getPassword(), "Welcome back, " + userDb.getEmail(), 
+        return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()),
+                                                      userDb.getPassword(), "Welcome back, " + userDb.getEmail(),
                                                       dinerRepository.existsByEmail(userDb.getEmail()), data);
     }
 
@@ -149,7 +149,7 @@ public class UserManagementService {
         User user = userRepository.findByToken(token);
         user.setToken("");
         userRepository.save(user);
-    
+
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Logout was successful"));
     }
@@ -224,7 +224,7 @@ public class UserManagementService {
         }
         return null;
     }
-    
+
     public String processNewProfile (User newProfile, User oldProfile) {
 
         newProfile.setId(oldProfile.getId());
@@ -239,7 +239,7 @@ public class UserManagementService {
         } else {
             newProfile.setEmail(oldProfile.getEmail());
         }
-        
+
         if (newProfile.getPassword() != null) {
             String newPassword = EncryptionUtils.encrypt(newProfile.getPassword(), String.valueOf(newProfile.getId()));
             if (oldProfile.getPassword().equals(newPassword)) {
@@ -277,6 +277,19 @@ public class UserManagementService {
             newProfile.setProfilePic(oldProfile.getProfilePic());
         }
         return null;
+    }
+
+    public ResponseEntity<Object> getDinerProfile(Long dinerId, String token) {
+        if (!dinerRepository.existsByToken(token) || token.isEmpty()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is invalid"));
+        }
+
+        Diner diner = dinerRepository.findById(dinerId).orElse(null);
+        if (diner == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Diner does not exist"));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(diner);
     }
 
     public ResponseEntity<JSONObject> getEateryProfile(String id, String token) {
