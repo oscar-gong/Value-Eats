@@ -279,7 +279,7 @@ public class UserManagementService {
         return null;
     }
 
-    public ResponseEntity<Object> getDinerProfile(Long dinerId, String token) {
+    public ResponseEntity<JSONObject> getDinerProfile(Long dinerId, String token) {
         if (!dinerRepository.existsByToken(token) || token.isEmpty()){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is invalid"));
         }
@@ -288,12 +288,14 @@ public class UserManagementService {
         if (diner == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Diner does not exist"));
         }
-        diner.setEmail(null);
-        diner.setPassword(null);
-        diner.setAddress(null);
-        diner.setToken(null);
+        List<Review> reviews = reviewRepository.findByDinerId(dinerId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(diner);
+        Map<String, Object> result = new HashMap<>();
+        result.put("name", diner.getAlias());
+        result.put("profile picture", diner.getProfilePic());
+        result.put("reviews", reviews);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new JSONObject(result));
     }
 
     public ResponseEntity<JSONObject> getEateryProfile(String id, String token) {

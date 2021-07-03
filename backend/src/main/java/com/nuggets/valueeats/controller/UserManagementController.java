@@ -67,7 +67,7 @@ public final class UserManagementController {
     }
 
     @RequestMapping(value = "diner/{id}/details", method = RequestMethod.GET)
-    public ResponseEntity<Object> getDinerProfile(@PathVariable Long id, @RequestHeader (name="Authorization") String token) {
+    public ResponseEntity<JSONObject> getDinerProfile(@PathVariable Long id, @RequestHeader (name="Authorization") String token) {
         return userManagementService.getDinerProfile(id, token);
     }
 }
