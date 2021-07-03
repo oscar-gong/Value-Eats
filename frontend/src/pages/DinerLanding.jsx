@@ -217,28 +217,30 @@ export default function DinerLanding({ token }) {
         <>
             <NavBar token={token} isDiner={true} />
             <MainContainer>
-                <Typography variant="h5">Hi username,</Typography>
-                <Box textAlign="right">
-                    <InputLabel id="demo-simple-select-outlined-label">
-                        Sort by
-                    </InputLabel>
-                    <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value={10}
-                        onChange={(e) => console.log("changed")}
-                    >
-                        <MenuItem value={10}>Distance</MenuItem>
-                        <MenuItem value={20}>Rating</MenuItem>
-                        <MenuItem value={30}>New</MenuItem>
-                    </Select>
-                </Box>
-                <Typography variant="h6">
-                    Restaurants we think you would like
-                </Typography>
+                <Box py={4}>
+                  <Typography variant="h5">Hi username,</Typography>
+                  <Box textAlign="right">
+                      <InputLabel id="demo-simple-select-outlined-label">
+                          Sort by
+                      </InputLabel>
+                      <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          value={10}
+                          onChange={(e) => console.log("changed")}
+                          >
+                          <MenuItem value={10}>Distance</MenuItem>
+                          <MenuItem value={20}>Rating</MenuItem>
+                          <MenuItem value={30}>New</MenuItem>
+                      </Select>
+                  </Box>
+                  <Typography variant="h6">
+                      Restaurants we think you would like
+                  </Typography>
 
-                <Carousel>{getSlides()}</Carousel>
-                {getEateries()}
+                  <Carousel>{getSlides()}</Carousel>
+                  {getEateries()}
+                </Box>
             </MainContainer>
         </>
     );

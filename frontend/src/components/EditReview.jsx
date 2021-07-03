@@ -48,7 +48,7 @@ export default function EditReview ({ open, setOpen, user, reviewImagesInit, rev
             <Button autoFocus onClick={() => {setOpen(false); setRating(ratingInit); setReviewText(reviewTextInit); setImages(reviewImagesInit)}} color="primary">
               Cancel
             </Button>
-            <Button autoFocus onClick={handleUpdateReview()} color="primary">
+            <Button autoFocus onClick={handleUpdateReview} color="primary">
               Save changes
             </Button>
           </DialogActions>

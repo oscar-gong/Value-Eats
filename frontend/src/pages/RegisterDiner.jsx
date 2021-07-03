@@ -77,6 +77,7 @@ export default function RegisterDiner({ setToken }) {
                     email: email.value,
                     address: useGoogleAPI ? address.value : "Sydney",
                     password: password.value,
+                    profilePic: "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
                 }),
             }
         );
@@ -185,7 +186,7 @@ export default function RegisterDiner({ setToken }) {
                             setPassword({ value: e.target.value, valid: true })
                         }
                         onBlur={() =>
-                            validPassword(password.value, setPassword)
+                            validPassword(password, setPassword)
                         }
                         error={!password.valid}
                         helperText={
@@ -210,8 +211,8 @@ export default function RegisterDiner({ setToken }) {
                         }
                         onBlur={() =>
                             validConfirmPassword(
-                                password.value,
-                                confirmPassword.value,
+                                password,
+                                confirmPassword,
                                 setConfirmPassword
                             )
                         }
