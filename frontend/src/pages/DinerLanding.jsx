@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
 import StarRating from "../components/StarRating";
 import { MainContainer } from "../styles/MainContainer";
 import Carousel from "react-material-ui-carousel";
-import { useHistory } from "react-router";
+import { useHistory, Redirect } from "react-router";
+import { StoreContext } from "../utils/store";
 import {
     Card,
     Grid,
@@ -38,8 +39,12 @@ export default function DinerLanding({ token }) {
     const [hover, setHover] = useState(true);
     const classes = useStyles();
     const history = useHistory();
+    const context = useContext(StoreContext);
+    const [auth] = context.auth;
+    const [isDiner] = context.isDiner;
 
     useEffect(() => {
+        
         const getEateryList = async () => {
             const response = await fetch(
                 "http://localhost:8080/list/eateries",
@@ -48,7 +53,7 @@ export default function DinerLanding({ token }) {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: token,
+                        Authorization: auth,
                     },
                 }
             );
@@ -59,7 +64,11 @@ export default function DinerLanding({ token }) {
             }
         };
         getEateryList();
-    }, [token]);
+    }, [auth]);
+
+    if (auth === null) return <Redirect to="/" />;
+    if (isDiner === "false") return <Redirect to="/EateryLanding" />;
+
 
     const getCuisineList = (cuisines) => {
         let cuisineString = cuisines.join(", ");
@@ -217,7 +226,7 @@ export default function DinerLanding({ token }) {
     };
     return (
         <>
-            <NavBar token={token} isDiner={true} />
+            <NavBar isDiner={isDiner} />
             <MainContainer>
                 <Typography variant="h5">Hi username,</Typography>
                 <Box textAlign="right">

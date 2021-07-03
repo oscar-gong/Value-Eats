@@ -11,7 +11,7 @@ import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import Review from "../components/Review";
 import { fileToDataUrl, validRequired, validEmail, validPassword, validConfirmPassword } from "../utils/helpers";
 
-export default function DinerProfile({ token }) {
+export default function DinerProfile() {
   
   const [open, setOpen] = useState(false);
 
@@ -61,7 +61,7 @@ export default function DinerProfile({ token }) {
 
   return (
     <>
-      <NavBar token={token} isDiner={true}/>
+      <NavBar isDiner={true}/>
       <MainContent>
         <Box display="flex" justifyContent="center" alignItems="center" paddingTop="10px">
           <ProfilePhoto size={150} src={profilePic} />
@@ -88,11 +88,11 @@ export default function DinerProfile({ token }) {
         </Box>
         {/* Reviews would be mapped here... */}
         <Box display="flex" flexDirection="column" flexGrow="1" alignItems="center" style={{overflowY: 'scroll', height: "auto"}}>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
-          <Review token={token} eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
+          <Review eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
+          <Review eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
+          <Review eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
+          <Review eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
+          <Review eateryName="Test Eatery" review={"Ayo, this food was ass lmao kinda like my css XD HAHABHAB"} rating={3.5} isOwner={true}></Review>
         </Box>
         <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
           <DialogTitle id="customized-dialog-title" onClose={handleClose}>

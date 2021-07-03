@@ -4,14 +4,19 @@ import { MainContainer } from "../styles/MainContainer";
 import { Typography, Grid, Box, Card, Button } from "@material-ui/core";
 import StarRating from "../components/StarRating";
 import Review from "../components/Review";
-import { useLocation } from "react-router-dom";
+import { useLocation, Redirect } from "react-router-dom";
+import { StoreContext } from "../utils/store";
 
-export default function EateryProfile({ token }) {
+export default function EateryProfile() {
     const [eateryDetails, setEateryDetails] = useState([]);
     const location = useLocation();
+    const context = React.useContext(StoreContext);
+    const [auth] = context.auth;
+    const [isDiner] = context.isDiner;
+
 
     const eateryId = location.pathname.split("/")[3];
-
+    
     useEffect(() => {
         const getEateryDetails = async () => {
             const response = await fetch(
@@ -21,7 +26,7 @@ export default function EateryProfile({ token }) {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: token,
+                        Authorization: auth,
                     },
                 }
             );
@@ -30,11 +35,15 @@ export default function EateryProfile({ token }) {
             if (response.status === 200) {
                 console.log(responseData);
                 setEateryDetails(responseData);
+            } else {
+                // TODO
+                console.log(responseData);
             }
-            console.log(token);
         };
         getEateryDetails();
-    }, [token, eateryId]);
+    }, [auth, eateryId]);
+    if (auth === null || isDiner === "false") return <Redirect to="/" />;
+   
 
     const getReviews = () => {
         if (!eateryDetails.reviews) return;
@@ -64,7 +73,7 @@ export default function EateryProfile({ token }) {
         return eateryDetails.menuPhotos.map((item, key) => {
             return (
                 // TODO make it responsive
-                <img src={item} width="200px" key={key} height="auto" />
+                <img src={item} alt="menu photos" width="200px" key={key} height="auto" />
             );
         });
     };
@@ -100,7 +109,7 @@ export default function EateryProfile({ token }) {
 
     return (
         <>
-            <NavBar token={token} isDiner={true} />
+            <NavBar isDiner={isDiner} />
             <MainContainer>
                 <Grid container spacing={5}>
                     <Grid item xs={6}>

@@ -5,15 +5,20 @@ import { AlignCenter } from "../styles/AlignCenter";
 import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router";
+import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
 
-export default function Login({ setToken }) {
+export default function Login() {
     const history = useHistory();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const context = React.useContext(StoreContext);
+    const [auth, setAuth] = context.auth;
+    const [isDiner, setIsDiner] = context.isDiner;
     const setAlertOptions = context.alert[1];
+
+    if (isDiner === "true" && auth !== null) return <Redirect to="/DinerLanding" />;
+    if (isDiner === "false" && auth !== null) return <Redirect to="/EateryLanding" />;
 
     const handleLogin = async () => {
         console.log("hello, " + email + " " + password);
@@ -36,10 +41,17 @@ export default function Login({ setToken }) {
                 variant: "success",
                 message: loginData.message,
             });
-            setToken(loginData.data.token);
+            setAuth(loginData.data.token);
+            localStorage.setItem('token', loginData.data.token);
+            
             if (loginData.data.type === "diner") {
-                history.push("/dinerLanding");
+                setIsDiner(true);
+                localStorage.setItem('isDiner', "true");
+                console.log("diner found!");
+                history.push("/DinerLanding");
             } else {
+                setIsDiner(false);
+                localStorage.setItem('isDiner', "false");
                 history.push("/EateryLanding");
             }
         } else {

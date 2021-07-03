@@ -5,7 +5,7 @@ import { AlignCenter } from "../styles/AlignCenter";
 import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { usePlacesWidget } from "react-google-autocomplete";
-import { useHistory } from "react-router";
+import { useHistory, Redirect } from "react-router";
 import {
     validRequired,
     validEmail,
@@ -27,6 +27,8 @@ export default function RegisterDiner({ setToken }) {
 
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
+    const [auth, setAuth] = context.auth;
+    const [isDiner, setIsDiner] = context.isDiner;
 
     const validAddress = () => {
         if (address.value === "") {
@@ -87,8 +89,11 @@ export default function RegisterDiner({ setToken }) {
                 variant: "success",
                 message: registerResult.message,
             });
-            setToken(registerResult.data.token);
-            history.push("/dinerLanding");
+            setAuth(registerResult.data.token);
+            localStorage.setItem('token', registerResult.data.token);
+            setIsDiner(true);
+            localStorage.setItem('isDiner', true);
+            history.push("/DinerLanding");
         } else {
             setAlertOptions({
                 showAlert: true,
@@ -113,6 +118,10 @@ export default function RegisterDiner({ setToken }) {
             componentRestrictions: { country: "au" },
         },
     });
+
+    if (isDiner === "true" && auth !== null) return <Redirect to="/DinerLanding" />;
+    if (isDiner === "false" && auth !== null) return <Redirect to="/EateryLanding" />;
+
 
     return (
         <AlignCenter>

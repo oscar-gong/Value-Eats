@@ -15,12 +15,12 @@ import {
     validConfirmPassword
 } from "../utils/helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
-import { useHistory } from "react-router";
+import { useHistory, Redirect } from "react-router";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { StoreContext } from "../utils/store";
 import { validRequired } from "../utils/helpers";
 
-export default function RegisterEatery({ setToken }) {
+export default function RegisterEatery() {
     const defaultState = { value: "", valid: true };
     const [previewImages, setPreviewImages] = useState([]);
     const [images, setImages] = useState([]);
@@ -37,6 +37,8 @@ export default function RegisterEatery({ setToken }) {
 
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
+    const [auth, setAuth] = context.auth;
+    const [isDiner, setIsDiner] = context.isDiner;
 
     // set to true for real demos
     const useGoogleAPI = true;
@@ -169,7 +171,10 @@ export default function RegisterEatery({ setToken }) {
                 variant: "success",
                 message: responseData.message,
             });
-            setToken(responseData.data.token);
+            setAuth(responseData.data.token);
+            localStorage.setItem('token', responseData.data.token);
+            localStorage.setItem('isDiner', "false");
+            setIsDiner("false");
             history.push("/EateryLanding");
         } else {
             setAlertOptions({
@@ -179,6 +184,12 @@ export default function RegisterEatery({ setToken }) {
             });
         }
     };
+
+
+    if (isDiner === "true" && auth !== null) return <Redirect to="/DinerLanding" />;
+    if (isDiner === "false" && auth !== null) return <Redirect to="/EateryLanding" />;
+
+
 
     return (
         <AlignCenter>

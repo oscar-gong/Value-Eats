@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Redirect, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Main } from "./styles/Main";
 import Login from "./pages/Login";
 import RegisterDiner from "./pages/RegisterDiner";
@@ -18,14 +18,6 @@ function App() {
   console.log(context);
   const [alertOptions, setAlertOptions] = context.alert;
 
-  const [authDetails, setAuthDetails] = useState(
-    localStorage.getItem('token')
-  );
-  function setToken(token) {
-    localStorage.setItem('token', token);
-    setAuthDetails(token);
-  }
-
   return (
     <>
       <Snackbar open={alertOptions.showAlert} autoHideDuration={6000} onClose={() => setAlertOptions({ ...alertOptions, showAlert: false })}>
@@ -36,32 +28,45 @@ function App() {
       <Main>
         <Router>
           <Switch>
-            <Route exact path="/dinerLanding">
-              <DinerLanding token={authDetails}/>
+            <Route exact path="/DinerLanding">
+              <DinerLanding />
             </Route>
             <Route exact path="/dinerProfile">
-              <DinerProfile token={authDetails}/>
+              <DinerProfile />
             </Route>
             <Route exact path="/">
-              <Login setToken={setToken}/>
+              <Default />
+            </Route>
+            <Route exact path="/Login">
+              <Login />
             </Route>
             <Route exact path="/RegisterDiner">
-              <RegisterDiner setToken={setToken}/>
+              <RegisterDiner />
             </Route>
             <Route exact path="/RegisterEatery">
-              <RegisterEatery setToken={setToken}/>
+              <RegisterEatery />
             </Route>
             <Route path="/EateryProfile">
-              <EateryProfile token={authDetails}/>
+              <EateryProfile />
             </Route>
             <Route exact path="/EateryLanding">
-              <EateryLanding token={authDetails}/>
+              <EateryLanding />
             </Route>
           </Switch>
         </Router>
       </Main>
     </>
   );
+}
+
+const Default = () => {
+  const context = useContext(StoreContext);
+  const [auth] = context.auth;
+  const [isDiner] = context.isDiner;
+  console.log(auth);
+  if (auth === null) return <Redirect to="/Login" />;
+  if (isDiner === "false") return <Redirect to="/EateryLanding" />;
+  if (isDiner === "true") return <Redirect to="/DinerLanding" />;
 }
 
 export default App;
