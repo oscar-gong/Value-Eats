@@ -288,6 +288,10 @@ public class UserManagementService {
         if (diner == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Diner does not exist"));
         }
+        diner.setEmail(null);
+        diner.setPassword(null);
+        diner.setAddress(null);
+        diner.setToken(null);
 
         return ResponseEntity.status(HttpStatus.OK).body(diner);
     }
