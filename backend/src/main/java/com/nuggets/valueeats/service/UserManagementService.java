@@ -152,7 +152,7 @@ public class UserManagementService {
     public ResponseEntity<JSONObject> updateDiner(Diner diner, String token) {
         ResponseEntity<JSONObject> result = update(diner, token);
         if (result.getStatusCode().is2xxSuccessful()) {
-
+            diner.setToken(token);
             dinerRepository.save(diner);
         }
 
@@ -172,6 +172,7 @@ public class UserManagementService {
             if (eatery.getMenuPhotos() == null) {
                 eatery.setMenuPhotos(eateryDb.getMenuPhotos());
             }
+            eatery.setToken(token);
             eateryRepository.save(eatery);
         }
 
@@ -191,7 +192,6 @@ public class UserManagementService {
         if (userDb == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to verify, please try again"));
         }
-
         String result = processNewProfile(user, userDb);
 
         if (result != null) {
@@ -224,11 +224,11 @@ public class UserManagementService {
         newProfile.setId(oldProfile.getId());
 
         if (newProfile.getEmail() != null) {
-            if (oldProfile.getEmail().equals(newProfile.getEmail())) {
-                return "Email must be different from old email.";
-            }
             if (!ValidationUtils.isValidEmail(newProfile.getEmail())) {
                 return "Invalid Email Format.";
+            }
+            if (userRepository.existsByEmail(newProfile.getEmail())) {
+                return "Email is taken, try another";
             }
         } else {
             newProfile.setEmail(oldProfile.getEmail());
@@ -236,9 +236,6 @@ public class UserManagementService {
 
         if (newProfile.getPassword() != null) {
             String newPassword = EncryptionUtils.encrypt(newProfile.getPassword(), String.valueOf(newProfile.getId()));
-            if (oldProfile.getPassword().equals(newPassword)) {
-                return "Password must be different from old password.";
-            }
             if (!ValidationUtils.isValidPassword(newProfile.getPassword())) {
                 return "Password must be between 8 to 32 characters long, and contain a lower and uppercase character.";
             }
@@ -248,25 +245,19 @@ public class UserManagementService {
         }
 
         if (newProfile.getAlias() != null) {
-            if (oldProfile.getAlias().equals(newProfile.getAlias())) {
-                return "User name must be different from old user name.";
-            }
+            // Error checking for new alias if needed
         } else {
             newProfile.setAlias(oldProfile.getAlias());
         }
 
         if (newProfile.getAddress() != null) {
-            if (oldProfile.getAddress().equals(newProfile.getAddress())) {
-                return "Address must be different from old Address.";
-            }
+            // Error checking for new address if needed
         } else {
             newProfile.setAddress(oldProfile.getAddress());
         }
 
         if (newProfile.getProfilePic() != null) {
-            if (oldProfile.getProfilePic().equals(newProfile.getProfilePic())) {
-                return "Profile picture must be different from old profile.";
-            }
+            // Error checking for new profile pic if needed.
         } else {
             newProfile.setProfilePic(oldProfile.getProfilePic());
         }
@@ -286,6 +277,7 @@ public class UserManagementService {
 
         Map<String, Object> result = new HashMap<>();
         result.put("name", diner.getAlias());
+        result.put("email", diner.getEmail());
         result.put("profile picture", diner.getProfilePic());
         result.put("reviews", reviews);
 
