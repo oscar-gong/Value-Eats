@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
 // import StarHalfRoundedIcon from '@material-ui/icons/StarHalfRounded';
@@ -22,4 +22,4 @@ export default function StarRating({rating, isEditable=false, setRating}) {
         </Rating>
       </>
     );
-  }
+}

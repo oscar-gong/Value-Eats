@@ -7,17 +7,24 @@ import RegisterDiner from "./pages/RegisterDiner";
 import RegisterEatery from "./pages/RegisterEatery";
 import DinerLanding from "./pages/DinerLanding";
 import EateryLanding from "./pages/EateryLanding";
+import EateryProfile from "./pages/EateryProfile";
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { StoreContext } from './utils/store';
 import DinerProfile from './pages/DinerProfile';
 
 function App() {
-
   const context = useContext(StoreContext);
   console.log(context);
   const [alertOptions, setAlertOptions] = context.alert;
-  const [token, setToken] = useState("");
+
+  const [authDetails, setAuthDetails] = useState(
+    localStorage.getItem('token')
+  );
+  function setToken(token) {
+    localStorage.setItem('token', token);
+    setAuthDetails(token);
+  }
 
   return (
     <>
@@ -30,10 +37,10 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/dinerLanding">
-              <DinerLanding token={token}/>
+              <DinerLanding token={authDetails}/>
             </Route>
             <Route exact path="/dinerProfile">
-              <DinerProfile token={token}/>
+              <DinerProfile token={authDetails}/>
             </Route>
             <Route exact path="/">
               <Login setToken={setToken}/>
@@ -44,11 +51,11 @@ function App() {
             <Route exact path="/RegisterEatery">
               <RegisterEatery setToken={setToken}/>
             </Route>
-            <Route exact path="/eateryProfile">
-              <DinerLanding token={token}/>
+            <Route path="/EateryProfile">
+              <EateryProfile token={authDetails}/>
             </Route>
             <Route exact path="/EateryLanding">
-              <EateryLanding token={token}/>
+              <EateryLanding token={authDetails}/>
             </Route>
           </Switch>
         </Router>

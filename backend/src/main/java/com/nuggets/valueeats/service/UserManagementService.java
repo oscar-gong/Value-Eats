@@ -1,18 +1,19 @@
 package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.entity.Voucher;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.*;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
+import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
+import com.nuggets.valueeats.repository.ReviewRepository;
 import com.nuggets.valueeats.utils.AuthenticationUtils;
 import com.nuggets.valueeats.utils.EncryptionUtils;
 import com.nuggets.valueeats.utils.JwtUtils;
@@ -26,16 +27,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
+
 @Service
 public class UserManagementService {
     @Autowired
     private UserRepository<User> userRepository;
-    
+
     @Autowired
     private DinerRepository dinerRepository;
 
     @Autowired
     private EateryRepository eateryRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -83,11 +88,11 @@ public class UserManagementService {
         String userToken = jwtUtils.encode(String.valueOf(user.getId()));
 
         user.setToken(userToken);
-        
+
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", userToken);
         JSONObject data = new JSONObject(dataMedium);
-        
+
         System.out.println(data);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Welcome to ValueEats, " + user.getAlias(), data));
@@ -115,32 +120,87 @@ public class UserManagementService {
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", token);
         JSONObject data = new JSONObject(dataMedium);
-        
+
         System.out.println(data);
 
-        return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()), 
-                                                      userDb.getPassword(), "Welcome back, " + userDb.getEmail(), 
+        return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()),
+                                                      userDb.getPassword(), "Welcome back, " + userDb.getEmail(),
                                                       dinerRepository.existsByEmail(userDb.getEmail()), data);
     }
 
     @Transactional
-    public ResponseEntity<JSONObject> logout(User userToken) {
-        if (!userRepository.existsByToken(userToken.getToken())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't find the token: " + userToken.getToken()));
+    public ResponseEntity<JSONObject> logout(String token) {
+        if (!userRepository.existsByToken(token) || token.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't find the token: " + token));
         }
 
-        String userId = jwtUtils.decode(userToken.getToken());
+        String userId = jwtUtils.decode(token);
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't get user associated with token"));
         }
 
 
-        User user = userRepository.findByToken(userToken.getToken());
+        User user = userRepository.findByToken(token);
         user.setToken("");
         userRepository.save(user);
-    
+
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Logout was successful"));
+    }
+
+    @Transactional
+    public ResponseEntity<JSONObject> updateDiner(Diner diner, String token) {
+        ResponseEntity<JSONObject> result = update(diner, token);
+        if (result.getStatusCode().is2xxSuccessful()) {
+
+            dinerRepository.save(diner);
+        }
+
+        return result;
+    }
+
+    @Transactional
+    public ResponseEntity<JSONObject> updateEatery(Eatery eatery, String token) {
+        ResponseEntity<JSONObject> result = update(eatery, token);
+        if (result.getStatusCode().is2xxSuccessful()) {
+
+            Eatery eateryDb = eateryRepository.findByToken(token);
+
+            if (eatery.getCuisines() == null) {
+                eatery.setCuisines(eateryDb.getCuisines());
+            }
+            if (eatery.getMenuPhotos() == null) {
+                eatery.setMenuPhotos(eateryDb.getMenuPhotos());
+            }
+            eateryRepository.save(eatery);
+        }
+
+        return result;
+    }
+
+    @Transactional
+    public ResponseEntity<JSONObject> update(User user, String token){
+        User userDb;
+        try {
+            userDb = userRepository.findByToken(token);
+        } catch (PersistenceException e) {
+            System.out.println("error");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
+        }
+
+        if (userDb == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to verify, please try again"));
+        }
+
+        String result = processNewProfile(user, userDb);
+
+        if (result != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(result));
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Update profile successfully, "
+         + user.getAlias()));
     }
 
     private boolean isValidInput(User user) {
@@ -157,5 +217,132 @@ public class UserManagementService {
             return "Password must be between 8 to 32 characters long, and contain a lower and uppercase character.";
         }
         return null;
+    }
+
+    public String processNewProfile (User newProfile, User oldProfile) {
+
+        newProfile.setId(oldProfile.getId());
+
+        if (newProfile.getEmail() != null) {
+            if (oldProfile.getEmail().equals(newProfile.getEmail())) {
+                return "Email must be different from old email.";
+            }
+            if (!ValidationUtils.isValidEmail(newProfile.getEmail())) {
+                return "Invalid Email Format.";
+            }
+        } else {
+            newProfile.setEmail(oldProfile.getEmail());
+        }
+
+        if (newProfile.getPassword() != null) {
+            String newPassword = EncryptionUtils.encrypt(newProfile.getPassword(), String.valueOf(newProfile.getId()));
+            if (oldProfile.getPassword().equals(newPassword)) {
+                return "Password must be different from old password.";
+            }
+            if (!ValidationUtils.isValidPassword(newProfile.getPassword())) {
+                return "Password must be between 8 to 32 characters long, and contain a lower and uppercase character.";
+            }
+            newProfile.setPassword(newPassword);
+        }else {
+            newProfile.setPassword(oldProfile.getPassword());
+        }
+
+        if (newProfile.getAlias() != null) {
+            if (oldProfile.getAlias().equals(newProfile.getAlias())) {
+                return "User name must be different from old user name.";
+            }
+        } else {
+            newProfile.setAlias(oldProfile.getAlias());
+        }
+
+        if (newProfile.getAddress() != null) {
+            if (oldProfile.getAddress().equals(newProfile.getAddress())) {
+                return "Address must be different from old Address.";
+            }
+        } else {
+            newProfile.setAddress(oldProfile.getAddress());
+        }
+
+        if (newProfile.getProfilePic() != null) {
+            if (oldProfile.getProfilePic().equals(newProfile.getProfilePic())) {
+                return "Profile picture must be different from old profile.";
+            }
+        } else {
+            newProfile.setProfilePic(oldProfile.getProfilePic());
+        }
+        return null;
+    }
+
+    public ResponseEntity<JSONObject> getDinerProfile(Long dinerId, String token) {
+        if (!dinerRepository.existsByToken(token) || token.isEmpty()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is invalid"));
+        }
+
+        Diner diner = dinerRepository.findById(dinerId).orElse(null);
+        if (diner == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Diner does not exist"));
+        }
+        List<Review> reviews = reviewRepository.findByDinerId(dinerId);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("name", diner.getAlias());
+        result.put("profile picture", diner.getProfilePic());
+        result.put("reviews", reviews);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new JSONObject(result));
+    }
+
+    public ResponseEntity<JSONObject> getEateryProfile(String id, String token) {
+        Long eateryId;
+        try{
+            eateryId = Long.parseLong(id);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid eatery ID"));
+        }
+
+        // {name, rating, address, menu photos, reviews, vouchers}
+        if(token.isEmpty() || !(dinerRepository.existsByToken(token) || eateryRepository.existsByIdAndToken(eateryId, token))) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid"));
+        }
+
+        Optional<Eatery> eateryInDb = eateryRepository.findById(eateryId);
+        if(!eateryInDb.isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
+        }
+        Eatery eateryDb = eateryInDb.get();
+
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("name", eateryDb.getAlias());
+        List<Float> ratings= reviewRepository.listReviewRatingsOfEatery(eateryDb.getId());
+        Double averageRating = ratings.stream().mapToDouble(i -> i).average().orElse(0);
+        map.put("rating", averageRating);
+        map.put("address", eateryDb.getAddress());
+        map.put("menuPhotos", eateryDb.getMenuPhotos());
+        List<Review> reviews= reviewRepository.listReviewsOfEatery(eateryDb.getId());
+        map.put("reviews", reviews);
+        map.put("cuisines", eateryDb.getCuisines());
+        // PLACEHOLDERS FOR VOUCHER
+        List<Voucher> voucherList = new ArrayList<Voucher>();
+        Voucher voucher = new Voucher();
+        voucher.setEateryId(eateryId);
+        voucher.setId((long) 0);
+        voucher.setOwnerId(eateryId);
+        voucher.setDiscount((float) 0.5);
+        voucher.setType("Dine-in");
+        Voucher voucher1 = new Voucher();
+        voucher1.setEateryId(eateryId);
+        voucher1.setId((long) 1);
+        voucher1.setOwnerId(eateryId);
+        voucher1.setDiscount((float) 0.4);
+        voucher1.setType("Takeaway");
+        voucherList.add(voucher);
+        voucherList.add(voucher1);
+        map.put("vouchers", voucherList);
+
+
+        JSONObject data = new JSONObject(map);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 }

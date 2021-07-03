@@ -6,7 +6,12 @@ import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory } from "react-router";
-import { validRequired, validEmail, validConfirmPassword, validPassword } from "../utils/helpers";
+import {
+    validRequired,
+    validEmail,
+    validConfirmPassword,
+    validPassword,
+} from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 // set to true for real demos
 const useGoogleAPI = false;
@@ -138,7 +143,7 @@ export default function RegisterDiner({ setToken }) {
                         onChange={(e) =>
                             setEmail({ value: e.target.value, valid: true })
                         }
-                        onBlur={() => validEmail(email, setEmail)}
+                        onBlur={() => validEmail(email.value, setEmail)}
                         error={!email.valid}
                         helperText={
                             email.valid ? "" : "Please enter a valid email"
@@ -179,7 +184,9 @@ export default function RegisterDiner({ setToken }) {
                         onChange={(e) =>
                             setPassword({ value: e.target.value, valid: true })
                         }
-                        onBlur={() => validPassword(password.value, setPassword)}
+                        onBlur={() =>
+                            validPassword(password.value, setPassword)
+                        }
                         error={!password.valid}
                         helperText={
                             password.valid
@@ -201,7 +208,13 @@ export default function RegisterDiner({ setToken }) {
                                 valid: true,
                             })
                         }
-                        onBlur={() => validConfirmPassword(password.value, confirmPassword.value, setConfirmPassword)}
+                        onBlur={() =>
+                            validConfirmPassword(
+                                password.value,
+                                confirmPassword.value,
+                                setConfirmPassword
+                            )
+                        }
                         error={!confirmPassword.valid}
                         helperText={
                             confirmPassword.valid

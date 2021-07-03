@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const MainContent = styled.div`
     display: flex;
@@ -6,5 +6,5 @@ export const MainContent = styled.div`
     min-height: 100%;
     max-height: 90vh;
     overflow-y: hidden;
-    background-color: #DDAF94;
-`
+    background-color: #ddaf94;
+`;
