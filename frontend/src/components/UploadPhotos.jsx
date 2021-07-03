@@ -5,8 +5,6 @@ import { fileToDataUrl } from '../utils/helpers';
 import { ImagePreview } from '../styles/ImagePreview';
 import { Label } from '../styles/Label';
 import { FileUpload } from '../styles/FileUpload';
-import EditReview from "../components/EditReview";
-
 
 export default function UploadPhotos ({ setImages, previewImages, setPreviewImages }) {
 
