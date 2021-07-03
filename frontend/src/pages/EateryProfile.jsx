@@ -49,7 +49,7 @@ export default function EateryProfile({ token }) {
                     eateryName={item.eateryName}
                     review={item.message}
                     rating={item.rating}
-                    isOwner={true}
+                    isOwner={item.isOwner}
                     key={key}
                 ></Review>
             );
@@ -105,6 +105,9 @@ export default function EateryProfile({ token }) {
                         <StarRating rating={eateryDetails.rating} />
                         <Typography variant="h5">
                             {eateryDetails.address}
+                        </Typography>
+                        <Typography variant="h5">
+                            {eateryDetails.cuisines.join(', ')}
                         </Typography>
                         <Typography variant="h3">Menu Photos</Typography>
                         <Box flex-wrap="wrap" flexDirection="row">
