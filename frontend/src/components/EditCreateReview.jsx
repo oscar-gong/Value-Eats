@@ -5,7 +5,7 @@ import UploadPhotos from './UploadPhotos';
 import StarRating from './StarRating';
 import { StoreContext } from '../utils/store';
 
-export default function EditReview ({ id, eateryId, open, setOpen, username, profilePic, reviewImagesState, reviewTextState, ratingState }) {
+export default function EditCreateReview ({ id, eateryId, open, setOpen, username, profilePic, reviewImagesState, reviewTextState, ratingState, isEdit }) {
 
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
@@ -47,6 +47,31 @@ export default function EditReview ({ id, eateryId, open, setOpen, username, pro
     ratingState[1](rating);
   }
 
+  const handleCreateReview = async () => {
+    const response = await fetch("http://localhost:8080/diner/createreview", 
+      {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": token
+        },
+        body: JSON.stringify({
+          "eateryId": eateryId,
+          "rating": rating,
+          "message": reviewText,
+          "reviewPhotos": images
+        })
+      });
+    const responseData = await response.json();
+    if (response.status === 200) {
+      setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+    } else {
+      setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
+    }
+    setOpen(false);
+  }
+
   return (
     <>
       <Dialog aria-labelledby="customized-dialog-title" open={open}>
@@ -79,8 +104,8 @@ export default function EditReview ({ id, eateryId, open, setOpen, username, pro
             <Button autoFocus onClick={() => {setOpen(false); setRating(ratingState[0]); setReviewText(reviewTextState[0]); setImages(reviewImagesState[0])}} color="primary">
               Cancel
             </Button>
-            <Button autoFocus onClick={handleUpdateReview} color="primary">
-              Save changes
+            <Button autoFocus onClick={isEdit ? handleUpdateReview : handleCreateReview} color="primary">
+              {isEdit ? "Save changes" : "Create review"}
             </Button>
           </DialogActions>
         </Dialog>

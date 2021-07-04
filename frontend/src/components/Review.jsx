@@ -6,7 +6,7 @@ import { ProfilePhoto } from '../styles/ProfilePhoto';
 import { Box, Button, Divider, makeStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import ConfirmModal from './ConfirmModal';
-import EditReview from "../components/EditReview";
+import EditCreateReview from "../components/EditCreateReview";
 import { StoreContext } from "../utils/store";
 import Carousel from 'react-material-ui-carousel';
 
@@ -49,11 +49,11 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
   const token = context.auth[0];
   
   const classes = useStyles();
-  const [openEditReview, setOpenEditReview] = useState(false);
+  const [openEditCreateReview, setOpenEditCreateReview] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
-  const [editReview, setEditReview] = useState(review);
+  const [editCreateReview, setEditCreateReview] = useState(review);
   const [editRating, setEditRating] = useState(rating);
-  const [editReviewImages, setEditReviewImages] = useState(images);
+  const [editCreateReviewImages, setEditCreateReviewImages] = useState(images);
   const handleCloseModal = () => setDeleteModal(false);
 
   const handleDelete = async (token, id, eateryId) => {
@@ -92,7 +92,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
           </Box>
           <div style={{margin: "0px 5%"}}>
             <h2><b><u>{"Put the eatery name here"}</u></b></h2>
-            <h3>{editReview}</h3>
+            <h3>{editCreateReview}</h3>
           </div>
           <Box display="flex" flexDirection="column" justifyContent="center">
             <Box display="flex" justifyContent="center">
@@ -103,10 +103,14 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
                 View Restaurant  
               </Button>
             }
-            <IconButton>
-              <EditIcon fontSize="large"
-              onClick={() => setOpenEditReview(true)}/>
-            </IconButton>
+            {/* TODO FIX THIS BELOW */}
+            {
+              isOwner &&
+              <IconButton>
+                <EditIcon fontSize="large"
+                onClick={() => setOpenEditCreateReview(true)}/>
+              </IconButton>
+            }
             {
               isOwner &&
               <IconButton onClick={() => setDeleteModal(true)}>
@@ -130,7 +134,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
           autoPlay={false}
         >
           {
-            editReviewImages.map((imgdata, idx) => {
+            editCreateReviewImages.map((imgdata, idx) => {
               return (
                 // Temp REPLACE WITH A CAROUSEL LATER
                 <img key={idx} alt="review photos" src={imgdata} className={classes.photoCarousel}></img>
@@ -148,7 +152,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
         handleConfirm={() => handleDelete(token, id, eateryId)}>
       </ConfirmModal>
       {/* put a carousel here */}
-      <EditReview id={id} eateryId={eateryId} open={openEditReview} setOpen={setOpenEditReview} username={username} profilePic={profilePic} reviewTextState={[editReview, setEditReview]} ratingState={[editRating, setEditRating]} reviewImagesState={[editReviewImages, setEditReviewImages]}/>
+      <EditCreateReview id={id} eateryId={eateryId} open={openEditCreateReview} setOpen={setOpenEditCreateReview} username={username} profilePic={profilePic} reviewTextState={[editCreateReview, setEditCreateReview]} ratingState={[editRating, setEditRating]} reviewImagesState={[editCreateReviewImages, setEditCreateReviewImages]} isEdit={true}/>
     </>
   )
 }
