@@ -165,7 +165,7 @@ export default function DinerProfile() {
                 eateryId={r.eateryId}
                 username={r.username}
                 profilePic={r.profilePic}
-                eateryName={"TMP EATERY - DONT HAVE THE NAME"}
+                eateryName={r.eateryName}
                 review={r.message}
                 rating={r.rating}
                 images={r.reviewPhotos ? r.reviewPhotos : []}
