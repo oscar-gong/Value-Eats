@@ -9,6 +9,7 @@ import ConfirmModal from './ConfirmModal';
 import EditCreateReview from "../components/EditCreateReview";
 import { StoreContext } from "../utils/store";
 import Carousel from 'react-material-ui-carousel';
+import { Redirect, useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
   photo: {
@@ -55,6 +56,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
   const [editRating, setEditRating] = useState(rating);
   const [editCreateReviewImages, setEditCreateReviewImages] = useState(images);
   const handleCloseModal = () => setDeleteModal(false);
+  const history = useHistory();
 
   const handleDelete = async (token, id, eateryId) => {
     console.log("This will be called when a review is deleted");
@@ -82,6 +84,12 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
     setDeleteModal(false);
   }
 
+  const handleEatery = (eateryId) => {
+    history.push({
+      pathname: `/EateryProfile/${eateryName}/${eateryId}`,
+    })
+  }
+
   return (
     <>
       <Box display="flex" flexDirection="column" border="3px solid #4F4846" bgcolor="#E8CEBF" minWidth="50vw" maxWidth="70vw" marginBottom="20px">
@@ -99,7 +107,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
             {
               onEateryProfile && 
               <Button variant="contained"
-                color="primary">
+                color="primary" onClick={()=>handleEatery(eateryId)}>
                 View Restaurant  
               </Button>
             }
