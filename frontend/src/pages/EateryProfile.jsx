@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { MainContainer } from "../styles/MainContainer";
-import { Typography, Grid, Box, Card, Button, Modal, makeStyles } from "@material-ui/core";
+import {
+    Typography,
+    Grid,
+    Box,
+    Card,
+    Button,
+    Modal,
+    makeStyles,
+} from "@material-ui/core";
 import StarRating from "../components/StarRating";
 import Review from "../components/Review";
 import { useLocation, Redirect } from "react-router-dom";
@@ -11,10 +19,21 @@ import Carousel from "react-material-ui-carousel";
 const useStyles = makeStyles({
     photo: {
         color: "black",
-        borderRadius: "0px",
         transition: "transform 0.15s ease-in-out",
         "&:hover": { transform: "scale3d(1.02, 1.02, 1)", maxHeight: "none" },
-        maxWidth: "200px",
+        width: "150px",
+        height: "150px",
+        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
+        objectFit: "contain",
+        backgroundColor: "white",
+    },
+    photoCarousel: {
+        width: "400px",
+        height: "400px",
+        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
+        objectFit: "contain",
+        backgroundColor: "white",
+        padding: "100px",
     },
 });
 
@@ -25,7 +44,7 @@ export default function EateryProfile() {
     const context = React.useContext(StoreContext);
     const [auth] = context.auth;
     const [isDiner] = context.isDiner;
-
+    const [modalStyle] = React.useState(getModalStyle);
     const eateryId = location.pathname.split("/")[3];
 
     const [open, setOpen] = React.useState(false);
@@ -96,9 +115,8 @@ export default function EateryProfile() {
                 <img
                     src={item}
                     alt="menu photos"
-                    width="400px"
                     key={key}
-                    height="auto"
+                    className={classes.photoCarousel}
                 />
             );
         });
@@ -109,16 +127,22 @@ export default function EateryProfile() {
         if (eateryDetails.menuPhotos.length === 0) {
             return <div>no images currently</div>;
         }
-        return <img className={classes.photo} src={eateryDetails.menuPhotos[0]} onClick={handleOpen}/>
-    }
+        return (
+            <img
+                className={classes.photo}
+                src={eateryDetails.menuPhotos[0]}
+                onClick={handleOpen}
+            />
+        );
+    };
 
     const getNumberOfImages = () => {
         if (!eateryDetails.menuPhotos) return;
         if (eateryDetails.menuPhotos.length === 0) {
-            return <div>0 images</div>
+            return <div>0 images</div>;
         }
-        return <div>{`${eateryDetails.menuPhotos.length} images`}</div>
-    }
+        return <div>{`${eateryDetails.menuPhotos.length} images`}</div>;
+    };
 
     const getVouchers = () => {
         if (!eateryDetails.vouchers) return;
@@ -164,6 +188,14 @@ export default function EateryProfile() {
         return eateryDetails.cuisines.join(", ");
     };
 
+    function getModalStyle() {
+        const top = 25;
+        return {
+            top: `${top}%`,
+            margin: "auto",
+        };
+    }
+
     return (
         <>
             <NavBar isDiner={isDiner} />
@@ -199,15 +231,30 @@ export default function EateryProfile() {
                     <Grid item xs={6}>
                         <Typography variant="h3">Discounts</Typography>
                         {getVouchers()}
-                        <div style={{ margin: "0 auto" }}>
-                            <Modal style={{}} open={open} onClose={handleClose}>
+                        <div>
+                            <Modal
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                                open={open}
+                                onClose={handleClose}
+                            >
                                 {
-                                    <Carousel
-                                        navButtonsAlwaysVisible={true}
-                                        autoPlay={false}
-                                    >
-                                        {getImages()}
-                                    </Carousel>
+                                    <div style={{ modalStyle }}>
+                                        <Carousel
+                                            navButtonsProps={{
+                                                style: {
+                                                    opacity: "50%",
+                                                },
+                                            }}
+                                            navButtonsAlwaysVisible={true}
+                                            autoPlay={false}
+                                        >
+                                            {getImages()}
+                                        </Carousel>
+                                    </div>
                                 }
                             </Modal>
                         </div>
