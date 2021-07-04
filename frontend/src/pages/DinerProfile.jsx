@@ -28,7 +28,8 @@ export default function DinerProfile({ token }) {
   const [password, setPassword] = useState(defaultState);
   const [confirmpassword, setConfirmpassword] = useState(defaultState);
   const [tmpProfilePic, setTmpProfilePic] = useState(defaultState);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({});
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     // on page init, load the users details
@@ -51,8 +52,10 @@ export default function DinerProfile({ token }) {
             "username": responseData.name,
             "email": responseData.email,
             "profilePic": responseData["profile picture"],
-            "reviews": responseData.reviews
           })
+          console.log("reviews: ");
+          console.log(responseData.reviews);
+          setReviews(responseData.reviews);
           setUsername(defaultState(responseData.name));
           setEmail(defaultState(responseData.email));
           setTmpProfilePic(responseData["profile picture"]);
@@ -64,6 +67,9 @@ export default function DinerProfile({ token }) {
 
   const handleClose = () => {
     setOpenProfile(false);
+    setEmail(user.email);
+    setUsername({...username, value: user.username});
+    setEmail({...email, value: user.email});
     setTmpProfilePic(user.profilePic);
   }
 
@@ -108,6 +114,8 @@ export default function DinerProfile({ token }) {
         })
         setOpenProfile(false);
         setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+    } else {
+      setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
     }
   }
 
@@ -148,12 +156,15 @@ export default function DinerProfile({ token }) {
           <Divider variant="middle" />
         </Box>
         {/* Reviews would be mapped here... */}
-        <Box display="flex" flexDirection="column" flexGrow="1" alignItems="center" style={{overflowY: 'scroll', height: "auto"}}>
-          <Review token={token} user={user} eateryName="Test Eatery" review={"This is a sample review in the future we will use real reviews from diners"} rating={3.5}></Review>
-          <Review token={token} user={user} eateryName="Test Eatery" review={"This is a sample review in the future we will use real reviews from diners"} rating={3.5}></Review>
-          <Review token={token} user={user} eateryName="Test Eatery" review={"This is a sample review in the future we will use real reviews from diners"} rating={3.5}></Review>
-          <Review token={token} user={user} eateryName="Test Eatery" review={"This is a sample review in the future we will use real reviews from diners"} rating={3.5}></Review>
-          <Review token={token} user={user} eateryName="Test Eatery" review={"This is a sample review in the future we will use real reviews from diners"} rating={3.5}></Review>
+        <Box display="flex" flexDirection="column" flexGrow="1" alignItems="center" style={{overflowY: 'auto', height: "100%"}}>
+          {
+            reviews.map((r) => {
+              console.log(r);
+              return (
+                <Review id={r.reviewId} eateryId={r.eateryId} token={token} username={r.username} profilePic={r.profilePic} eateryName={""} review={r.message} rating={r.rating}></Review>
+              );
+            })
+          }
         </Box>
         <Dialog aria-labelledby="customized-dialog-title" open={openProfile}>
           <DialogTitle id="customized-dialog-title">

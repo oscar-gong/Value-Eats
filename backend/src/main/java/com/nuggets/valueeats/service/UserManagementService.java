@@ -289,6 +289,7 @@ public class UserManagementService {
             review.put("name", diner.getAlias());
             review.put("rating", r.getRating());
             review.put("message", r.getMessage());
+            review.put("eateryId", r.getEateryId());
             reviewsList.add(review);
         }
         result.put("reviews", reviewsList);

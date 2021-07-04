@@ -144,7 +144,7 @@ export default function RegisterDiner({ setToken }) {
                         onChange={(e) =>
                             setEmail({ value: e.target.value, valid: true })
                         }
-                        onBlur={() => validEmail(email.value, setEmail)}
+                        onBlur={() => {console.log(email); validEmail(email, setEmail)}}
                         error={!email.valid}
                         helperText={
                             email.valid ? "" : "Please enter a valid email"

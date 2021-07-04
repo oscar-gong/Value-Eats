@@ -4,7 +4,7 @@ import { ProfilePhoto } from '../styles/ProfilePhoto';
 import UploadPhotos from './UploadPhotos';
 import StarRating from './StarRating';
 
-export default function EditReview ({ open, setOpen, user, reviewImagesInit, reviewTextInit, ratingInit }) {
+export default function EditReview ({ token, open, setOpen, username, profilePic, reviewImagesInit, reviewTextInit, ratingInit }) {
 
   // Will use this images as the array of strings that will be the final images that get saved
   const [ images, setImages ] = useState(reviewImagesInit);
@@ -12,7 +12,7 @@ export default function EditReview ({ open, setOpen, user, reviewImagesInit, rev
   const [ reviewText, setReviewText ] = useState(reviewTextInit);
   const [ rating, setRating ] = useState(ratingInit);
 
-  const handleUpdateReview = () => {
+  const handleUpdateReview = async () => {
     console.log("Make the API call here that will save this particular review for a particular restaurant");
   }
 
@@ -24,8 +24,8 @@ export default function EditReview ({ open, setOpen, user, reviewImagesInit, rev
           </DialogTitle>
           <DialogContent dividers>
             <Box pt={1} display="flex" justifyContent="space-around">
-              <ProfilePhoto size={70} src={user.profilePic}></ProfilePhoto>
-              <h3>{user.username}</h3>
+              <ProfilePhoto size={70} src={profilePic}></ProfilePhoto>
+              <h3>{username}</h3>
             </Box>
             <Box pt={1}>
               <StarRating rating={rating} isEditable={true} setRating={setRating}></StarRating>
