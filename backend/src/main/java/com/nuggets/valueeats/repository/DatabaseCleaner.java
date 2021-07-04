@@ -25,7 +25,7 @@ public class DatabaseCleaner {
     @Autowired
     private VoucherRepository voucherRepository;
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 100000)
     public void updateVoucher() {
         List<RepeatedVoucher> repeatedVouchers = repeatVoucherRepository.findOverdueRepeatVouchers();
         if (repeatedVouchers != null) {
@@ -36,7 +36,7 @@ public class DatabaseCleaner {
                 newVoucher.setEateryId(repeatedVoucher.getEateryId());
                 newVoucher.setEatingStyle(repeatedVoucher.getEatingStyle());
                 newVoucher.setDiscount(repeatedVoucher.getDiscount());
-                newVoucher.setQuantity(repeatedVoucher.getQuantity() - 1);
+                newVoucher.setQuantity(repeatedVoucher.getQuantity());
 
                 try {
                     newVoucher.setStart(new Timestamp(new SimpleDateFormat("mm").parse(String.valueOf(repeatedVoucher.getStart())).getTime() + LocalDateTime.now().with(TemporalAdjusters.next(repeatedVoucher.getDay())).atZone(ZoneId.systemDefault()).toEpochSecond() * 1000));
@@ -45,14 +45,10 @@ public class DatabaseCleaner {
                     System.out.println("You have a data integrity issue with " + repeatedVoucher.getId());
                     continue;
                 }
-
                 voucherRepository.save(newVoucher);
-                if (repeatedVoucher.getQuantity() == 0) {
-                    repeatVoucherRepository.deleteById(repeatedVoucher.getId());
-                } else {
-                    repeatedVoucher.setNextUpdate(Timestamp.valueOf(LocalDateTime.now().with(TemporalAdjusters.next(repeatedVoucher.getDay()))));
-                    repeatVoucherRepository.save(repeatedVoucher);
-                }
+
+                repeatedVoucher.setNextUpdate(Timestamp.valueOf(LocalDateTime.now().with(TemporalAdjusters.next(repeatedVoucher.getDay()))));
+                repeatVoucherRepository.save(repeatedVoucher);
             }
         }
     }

@@ -14,14 +14,12 @@ public class Voucher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private Long eateryId;
 
     private VoucherEatingStyle eatingStyle;
     private Double discount;
     private Integer quantity;
 
-    private DayOfWeek dayOfWeek;
     private Timestamp start;
     private Timestamp end;
 }
