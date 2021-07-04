@@ -42,7 +42,7 @@ public class VoucherService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid dates"));
         }
         if (voucherInput.getStartMinute() < 0 || voucherInput.getStartMinute() >= 1440 || voucherInput.getEndMinute() <= 0 || voucherInput.getEndMinute() > 1440 || voucherInput.getStartMinute() >= voucherInput.getEndMinute()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid dates"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid times"));
         }
 
         if (voucherInput.getIsRecurring()) {
@@ -56,7 +56,7 @@ public class VoucherService {
         repeatedVoucher.setEateryId(eateryId);
         repeatedVoucher.setEatingStyle(voucherInput.getEatingStyle());
         repeatedVoucher.setDiscount(voucherInput.getDiscount());
-        repeatedVoucher.setQuantity(voucherInput.getQuantity() - 1);
+        repeatedVoucher.setQuantity(voucherInput.getQuantity());
         repeatedVoucher.setDay(voucherInput.getDay());
 
         repeatedVoucher.setStart(voucherInput.getStartMinute());
