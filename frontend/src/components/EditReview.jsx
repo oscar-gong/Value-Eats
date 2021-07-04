@@ -5,10 +5,11 @@ import UploadPhotos from './UploadPhotos';
 import StarRating from './StarRating';
 import { StoreContext } from '../utils/store';
 
-export default function EditReview ({ id, eateryId, token, open, setOpen, username, profilePic, reviewImagesState, reviewTextState, ratingState }) {
+export default function EditReview ({ id, eateryId, open, setOpen, username, profilePic, reviewImagesState, reviewTextState, ratingState }) {
 
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
+  const token = context.auth[0];
 
   // Will use this images as the array of strings that will be the final images that get saved
   const [ images, setImages ] = useState(reviewImagesState[0]);
@@ -60,7 +61,7 @@ export default function EditReview ({ id, eateryId, token, open, setOpen, userna
             <Box pt={1}>
               <StarRating rating={rating} isEditable={true} setRating={setRating}></StarRating>
             </Box>
-            <UploadPhotos setImages={setImages} setPreviewImages={setPreviewImages} previewImages={previewImages}/>
+            <UploadPhotos setImages={setImages} setPreviewImages={setPreviewImages} previewImages={previewImages} uploadDescription={"Upload Review Photos"}/>
             <Box pt={2}>
               <TextField multiline
                   id="outlined-basic"

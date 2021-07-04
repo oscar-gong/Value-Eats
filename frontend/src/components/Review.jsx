@@ -14,7 +14,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
   const token = context.auth[0];
-  
+
   const [openEditReview, setOpenEditReview] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
   const [editReview, setEditReview] = useState(review);
@@ -54,7 +54,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
         <Box display="flex">
           <Box display="flex" flexDirection="column">
             <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
-            <StarRating rating={eateryName}></StarRating>
+            <StarRating rating={editRating}></StarRating>
           </Box>
           <div style={{margin: "0px 5%"}}>
             <h2><b><u>{"Put the eatery name here"}</u></b></h2>

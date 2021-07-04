@@ -6,7 +6,7 @@ import { ImagePreview } from '../styles/ImagePreview';
 import { Label } from '../styles/Label';
 import { FileUpload } from '../styles/FileUpload';
 
-export default function UploadPhotos ({ setImages, previewImages, setPreviewImages }) {
+export default function UploadPhotos ({ setImages, previewImages, setPreviewImages, uploadDescription }) {
 
   const handleImages = (data) => {
     Array.from(data).forEach((file) => {
@@ -38,7 +38,7 @@ export default function UploadPhotos ({ setImages, previewImages, setPreviewImag
                 multiple
                 onChange={(e) => handleImages(e.target.files)}
             />
-            {<AddAPhotoIcon />} Upload Menu Photos
+            {<AddAPhotoIcon />} {uploadDescription}
         </Label>
       </Box>
       <Box flex-wrap="wrap" flexDirection="row" width="60%">
