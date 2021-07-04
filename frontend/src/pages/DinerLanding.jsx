@@ -17,6 +17,7 @@ import {
     MenuItem,
     InputLabel,
     Box,
+    FormControl,
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -43,8 +44,9 @@ export default function DinerLanding({ token }) {
     const [auth] = context.auth;
     const [isDiner] = context.isDiner;
 
+    const [sortBy, setSortBy] = useState("");
+
     useEffect(() => {
-        
         const getEateryList = async () => {
             const response = await fetch(
                 "http://localhost:8080/list/eateries",
@@ -68,7 +70,6 @@ export default function DinerLanding({ token }) {
 
     if (auth === null) return <Redirect to="/" />;
     if (isDiner === "false") return <Redirect to="/EateryLanding" />;
-
 
     const getCuisineList = (cuisines) => {
         let cuisineString = cuisines.join(", ");
@@ -230,20 +231,16 @@ export default function DinerLanding({ token }) {
             <MainContainer>
                 <Typography variant="h5">Hi username,</Typography>
                 <Box textAlign="right">
-                    <InputLabel id="demo-simple-select-outlined-label">
-                        Sort by
-                    </InputLabel>
-                    <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value={10}
-                        onChange={(e) => console.log("changed")}
-                    >
-                        <MenuItem value={10}>Distance</MenuItem>
-                        <MenuItem value={20}>Rating</MenuItem>
-                        <MenuItem value={30}>New</MenuItem>
-                    </Select>
+                    <FormControl variant="filled" style={{minWidth: "100px"}}>
+                        <InputLabel>Sort By</InputLabel>
+                        <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                            <MenuItem value={"distance"}>Distance</MenuItem>
+                            <MenuItem value={"rating"}>Rating</MenuItem>
+                            <MenuItem value={"new"}>New</MenuItem>
+                        </Select>
+                    </FormControl>
                 </Box>
+
                 <Typography variant="h6">
                     Restaurants we think you would like
                 </Typography>

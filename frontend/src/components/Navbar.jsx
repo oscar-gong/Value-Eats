@@ -71,6 +71,7 @@ export default function Navbar () {
         } else {
             history.push("/eateryProfile");
         }
+        handleClose();
     }
 
     const handleLogout = async () => {
@@ -141,7 +142,7 @@ export default function Navbar () {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={() => handleProfile(), handleClose}>Profile</MenuItem>
+                        <MenuItem onClick={() => handleProfile()}>Profile</MenuItem>
                         {
                             (isDiner === "true") &&
                             <MenuItem onClick={handleClose}>My Vouchers</MenuItem>
