@@ -15,6 +15,7 @@ import Review from "../components/Review";
 import { useLocation, Redirect } from "react-router-dom";
 import { StoreContext } from "../utils/store";
 import Carousel from "react-material-ui-carousel";
+import EditCreateReview from "../components/EditCreateReview";
 
 const useStyles = makeStyles({
     photo: {
@@ -57,6 +58,8 @@ export default function EateryProfile() {
     const [auth] = context.auth;
     const [isDiner] = context.isDiner;
     const eateryId = location.pathname.split("/")[3] ? location.pathname.split("/")[3] : "";
+    const [ openCreateReview, setOpenCreateReview ] = useState(false);
+    const [ user, setUser ] = useState({});
 
     const [open, setOpen] = React.useState(false);
 
@@ -67,6 +70,34 @@ export default function EateryProfile() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    useEffect(() => {
+        // on page init, load the users details
+        const getUser = async () => {
+          const response = await fetch(
+            "http://localhost:8080/diner/profile/details",
+            {
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: auth,
+              },
+            }
+          );
+          const responseData = await response.json();
+          if (response.status === 200) {
+              console.log(responseData);
+              setUser({
+                "username": responseData.name,
+                "email": responseData.email,
+                "profilePic": responseData["profile picture"],
+              })
+              // setEateryList(responseData.eateryList);
+          }
+        };
+        getUser();
+      }, []);
 
     useEffect(() => {
         const getEateryDetails = async () => {
@@ -104,6 +135,7 @@ export default function EateryProfile() {
         return eateryDetails.reviews.map((item, key) => {
             return (
                 <Review
+                    id={item.reviewId}
                     onEateryProfile={false}
                     profilePic={item.profilePic}
                     eateryName={item.eateryName}
@@ -211,7 +243,6 @@ export default function EateryProfile() {
                     <Grid
                         item
                         xs={6}
-      
                     >
                         <Typography variant="h3">
                             {eateryDetails.name}
@@ -238,6 +269,7 @@ export default function EateryProfile() {
                             style={{ margin: "10px 0px" }}
                             variant="contained"
                             color="primary"
+                            onClick={() => setOpenCreateReview(true)}
                         >
                             Write a Review
                         </Button>
@@ -282,6 +314,8 @@ export default function EateryProfile() {
                         </div>
                     </Grid>
                 </Grid>
+                <EditCreateReview id={-1} eateryId={eateryDetails.eateryId} open={openCreateReview} setOpen={setOpenCreateReview} username={user.username} profilePic={user.profilePic} reviewTextState={["", null]} ratingState={["", null]} reviewImagesState={[[], null]} isEdit={false}/>
+
             </MainContainer>
         </>
     );
