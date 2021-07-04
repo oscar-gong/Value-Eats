@@ -3,18 +3,52 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import StarRating from "../components/StarRating";
 import IconButton from '@material-ui/core/IconButton';
 import { ProfilePhoto } from '../styles/ProfilePhoto';
-import { Box, Button, Divider } from '@material-ui/core';
+import { Box, Button, Divider, makeStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import ConfirmModal from './ConfirmModal';
 import EditReview from "../components/EditReview";
 import { StoreContext } from "../utils/store";
+import Carousel from 'react-material-ui-carousel';
 
+const useStyles = makeStyles({
+  photo: {
+      color: "black",
+      transition: "transform 0.15s ease-in-out",
+      "&:hover": { transform: "scale3d(1.02, 1.02, 1)", maxHeight: "none" },
+      width: "150px",
+      height: "150px",
+      boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
+      objectFit: "contain",
+      backgroundColor: "white",
+  },
+  photoCarousel: {
+      width: "400px",
+      height: "400px",
+      boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
+      objectFit: "contain",
+      backgroundColor: "white",
+      padding: "100px",
+  },
+  gridContainer: {
+      background: "rgba(255, 255, 255, 0.2)",
+      marginTop: "10px",
+      borderRadius: "10px",
+      
+  },
+  subtitle: {
+      background: "rgba(255, 255, 255, 0.5)",
+      borderRadius: "10px",
+      margin: "10px 0px",
+      padding: "5px 0px",
+  }
+});
 // export default function Review ({ token, review }) {
 export default function Review ({id, eateryId, username, profilePic, eateryName, review, rating, images, onEateryProfile, isOwner}) {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
   const token = context.auth[0];
-
+  
+  const classes = useStyles();
   const [openEditReview, setOpenEditReview] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
   const [editReview, setEditReview] = useState(review);
@@ -85,16 +119,26 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
         <Box paddingY="30px">
           <Divider variant="middle" />
         </Box>
-        <Box display="flex" flexWrap="wrap">
+        {/* <Box display="flex" flexWrap="wrap"> */}
+        <Carousel
+          navButtonsProps={{
+              style: {
+                  opacity: "50%",
+              },
+          }}
+          navButtonsAlwaysVisible={true}
+          autoPlay={false}
+        >
           {
-            editReviewImages.map(imgdata => {
+            editReviewImages.map((imgdata, idx) => {
               return (
                 // Temp REPLACE WITH A CAROUSEL LATER
-                <img width="50%" height="50%" style={{margin: "20px"}} alt="what is alt text hahaha" src={imgdata}></img>
+                <img key={idx} alt="review photos" src={imgdata} className={classes.photoCarousel}></img>
               );
             })
-          }
-        </Box>
+          } 
+        </Carousel>
+        {/* </Box> */}
       </Box>
       <ConfirmModal open={openDeleteModal}
         handleClose={handleCloseModal}
