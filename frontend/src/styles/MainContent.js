@@ -5,5 +5,4 @@ export const MainContent = styled.div`
     flex-direction: column;
     min-height: 100%;
     max-height: 90vh;
-    background-color: #ddaf94;
 `;

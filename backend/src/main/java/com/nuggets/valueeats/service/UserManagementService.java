@@ -290,6 +290,7 @@ public class UserManagementService {
             review.put("rating", r.getRating());
             review.put("message", r.getMessage());
             review.put("eateryId", r.getEateryId());
+            review.put("reviewPhotos", r.getReviewPhotos());
             reviewsList.add(review);
         }
         result.put("reviews", reviewsList);

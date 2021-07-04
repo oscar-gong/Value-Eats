@@ -13,7 +13,7 @@ import { fileToDataUrl, validRequired, validEmail, validPassword, validConfirmPa
 import { StoreContext } from "../utils/store";
 
 export default function DinerProfile({ token }) {
-
+  console.log(token);
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
 
@@ -144,11 +144,11 @@ export default function DinerProfile({ token }) {
             </Button>
           </Box>
           <StatBox>
-            <h1>5</h1>
-            <h1>reviews</h1>
+            <h1>{reviews.length}</h1>
+            <h1>review{reviews.length === 1 ? "" : "s"}</h1>
           </StatBox>
           <StatBox>
-            <h1>4</h1>
+            <h1>X</h1>
             <h1>photos</h1>
           </StatBox>
         </Box>
@@ -161,7 +161,7 @@ export default function DinerProfile({ token }) {
             reviews.map((r) => {
               console.log(r);
               return (
-                <Review id={r.reviewId} eateryId={r.eateryId} token={token} username={r.username} profilePic={r.profilePic} eateryName={""} review={r.message} rating={r.rating}></Review>
+                <Review id={r.reviewId} eateryId={r.eateryId} token={token} username={r.username} profilePic={r.profilePic} eateryName={""} review={r.message} rating={r.rating} images={r.reviewPhotos ? r.reviewPhotos : []}></Review>
               );
             })
           }
