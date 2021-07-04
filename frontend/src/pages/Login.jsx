@@ -45,12 +45,12 @@ export default function Login() {
             localStorage.setItem('token', loginData.data.token);
             
             if (loginData.data.type === "diner") {
-                setIsDiner(true);
+                setIsDiner("true");
                 localStorage.setItem('isDiner', "true");
                 console.log("diner found!");
                 history.push("/DinerLanding");
             } else {
-                setIsDiner(false);
+                setIsDiner("false");
                 localStorage.setItem('isDiner', "false");
                 history.push("/EateryLanding");
             }
