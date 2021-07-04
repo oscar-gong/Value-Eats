@@ -12,10 +12,10 @@ import Review from "../components/Review";
 import { fileToDataUrl, validRequired, validEmail, validPassword, validConfirmPassword } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 
-export default function DinerProfile({ token }) {
-  console.log(token);
+export default function DinerProfile() {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
+  const token = context.auth[0];
 
   const [openProfile, setOpenProfile] = useState(false);
 
@@ -130,7 +130,7 @@ export default function DinerProfile({ token }) {
 
   return (
     <>
-      <NavBar token={token} isDiner={true}/>
+      <NavBar isDiner={true}/>
       <MainContent>
         <Box display="flex" justifyContent="center" alignItems="center" paddingTop="10px">
           <ProfilePhoto size={150} src={user.profilePic} />
@@ -161,7 +161,16 @@ export default function DinerProfile({ token }) {
             reviews.map((r) => {
               console.log(r);
               return (
-                <Review id={r.reviewId} eateryId={r.eateryId} token={token} username={r.username} profilePic={r.profilePic} eateryName={""} review={r.message} rating={r.rating} images={r.reviewPhotos ? r.reviewPhotos : []}></Review>
+                <Review id={r.reviewId}
+                eateryId={r.eateryId}
+                username={r.username}
+                profilePic={r.profilePic}
+                eateryName={"TMP EATERY - DONT HAVE THE NAME"}
+                review={r.message}
+                rating={r.rating}
+                images={r.reviewPhotos ? r.reviewPhotos : []}
+                isOwner={true}
+                onEateryProfile={false}></Review>
               );
             })
           }

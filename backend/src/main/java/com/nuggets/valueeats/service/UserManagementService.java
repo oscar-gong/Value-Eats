@@ -3,6 +3,7 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.Voucher;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
@@ -283,14 +284,7 @@ public class UserManagementService {
         result.put("email", diner.getEmail());
         result.put("profile picture", diner.getProfilePic());
         for(Review r:reviews){
-            HashMap<String, Object> review = new HashMap<String, Object>();
-            review.put("reviewId", r.getId());
-            review.put("profilePic", diner.getProfilePic());
-            review.put("name", diner.getAlias());
-            review.put("rating", r.getRating());
-            review.put("message", r.getMessage());
-            review.put("eateryId", r.getEateryId());
-            review.put("reviewPhotos", r.getReviewPhotos());
+            HashMap<String, Object> review = createReview(r.getId(), diner.getProfilePic(), diner.getAlias(), r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos());
             reviewsList.add(review);
         }
         result.put("reviews", reviewsList);
@@ -298,58 +292,52 @@ public class UserManagementService {
         return ResponseEntity.status(HttpStatus.OK).body(new JSONObject(result));
     }
 
-    public ResponseEntity<JSONObject> getEateryProfile(String id, String token) {
-        Long eateryId;
-        try{
-            eateryId = Long.parseLong(id);
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid eatery ID"));
+    public ResponseEntity<JSONObject> getEateryProfile(Long id, String token) {
+        Eatery eateryDb;
+        Diner dinerDb = null;
+        if(eateryRepository.existsByToken(token) && !token.isEmpty()){
+            eateryDb = eateryRepository.findByToken(token);
+        }else{
+            if(token.isEmpty() || !(dinerRepository.existsByToken(token))) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid"));
+            }
+            if(id == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("ID is required"));
+            }
+            Optional<Eatery> eateryInDb = eateryRepository.findById(id);
+            if(!eateryInDb.isPresent()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
+            }
+            eateryDb = eateryInDb.get();
+            dinerDb = dinerRepository.findByToken(token);
         }
 
-        // {name, rating, address, menu photos, reviews, vouchers}
-        if(token.isEmpty() || !(dinerRepository.existsByToken(token) || eateryRepository.existsByIdAndToken(eateryId, token))) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid"));
-        }
-
-        Optional<Eatery> eateryInDb = eateryRepository.findById(eateryId);
-        if(!eateryInDb.isPresent()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
-        }
-        Eatery eateryDb = eateryInDb.get();
-
-        Diner dinerDb = dinerRepository.findByToken(token);
-
-
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("name", eateryDb.getAlias());
         List<Float> ratings= reviewRepository.listReviewRatingsOfEatery(eateryDb.getId());
         Double averageRating = ratings.stream().mapToDouble(i -> i).average().orElse(0);
-        map.put("rating", averageRating);
+        DecimalFormat df = new DecimalFormat("#.0"); 
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("name", eateryDb.getAlias());
+        map.put("rating", df.format(averageRating));
         map.put("address", eateryDb.getAddress());
         map.put("menuPhotos", eateryDb.getMenuPhotos());
         List<Review> reviews= reviewRepository.listReviewsOfEatery(eateryDb.getId());
         ArrayList<Object> reviewsList = new ArrayList<Object>();
         for(Review r:reviews){
-            HashMap<String, Object> review = new HashMap<String, Object>();
-            review.put("reviewId", r.getId());
             Long reviewDinerId = r.getDinerId();
             Optional<Diner> reviewerInDinerDb = dinerRepository.findById(reviewDinerId);
             if(!reviewerInDinerDb.isPresent()){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
             }
             Diner reviewDinerDb = reviewerInDinerDb.get();
-            review.put("profilePic", reviewDinerDb.getProfilePic());
-            
-            review.put("name", reviewDinerDb.getAlias());
-            
-            review.put("rating", r.getRating());
-            
-            review.put("message", r.getMessage());
-            
-            if(dinerDb.getId() == reviewDinerDb.getId()) {
-                review.put("isOwner", true);
-            }else {
-                review.put("isOwner", false);
+
+            HashMap<String, Object> review = createReview(r.getId(), reviewDinerDb.getProfilePic(), reviewDinerDb.getAlias(), r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos());
+            if(dinerDb != null){
+                if(dinerDb.getId() == reviewDinerDb.getId()) {
+                    review.put("isOwner", true);
+                }else {
+                    review.put("isOwner", false);
+                }
             }
             reviewsList.add(review);
         }
@@ -359,15 +347,15 @@ public class UserManagementService {
         // PLACEHOLDERS FOR VOUCHER
         List<Voucher> voucherList = new ArrayList<Voucher>();
         Voucher voucher = new Voucher();
-        voucher.setEateryId(eateryId);
+        voucher.setEateryId(eateryDb.getId());
         voucher.setId((long) 0);
-        voucher.setOwnerId(eateryId);
+        voucher.setOwnerId(eateryDb.getId());
         voucher.setDiscount((float) 0.5);
         voucher.setType("Dine-in");
         Voucher voucher1 = new Voucher();
-        voucher1.setEateryId(eateryId);
+        voucher1.setEateryId(eateryDb.getId());
         voucher1.setId((long) 1);
-        voucher1.setOwnerId(eateryId);
+        voucher1.setOwnerId(eateryDb.getId());
         voucher1.setDiscount((float) 0.4);
         voucher1.setType("Takeaway");
         voucherList.add(voucher);
@@ -378,5 +366,23 @@ public class UserManagementService {
         JSONObject data = new JSONObject(map);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
+    }
+
+    // HashMap<String, Object> createReview(Long id, String pic, String name, String message, float rating, boolean isOwner){
+    //     HashMap<String, Object> review = createReview(id, pic, name, message, rating);
+    //     review.put("isOwner", message);
+    //     return review;
+    // }
+
+    HashMap<String, Object> createReview(Long id, String pic, String name, String message, float rating, Long eateryId, ArrayList<String> reviewPhotos){
+        HashMap<String, Object> review = new HashMap<String, Object>();
+        review.put("reviewId", id);
+        review.put("profilePic", pic);
+        review.put("name", name);
+        review.put("rating", rating);
+        review.put("message", message);
+        review.put("eateryId", eateryId);
+        review.put("reviewPhotos", reviewPhotos);
+        return review;
     }
 }

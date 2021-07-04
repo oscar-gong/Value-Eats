@@ -10,9 +10,11 @@ import EditReview from "../components/EditReview";
 import { StoreContext } from "../utils/store";
 
 // export default function Review ({ token, review }) {
-export default function Review ({id, eateryId, token, username, profilePic, eateryName, review, rating, images}) {
+export default function Review ({id, eateryId, username, profilePic, eateryName, review, rating, images, onEateryProfile, isOwner}) {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
+  const token = context.auth[0];
+  
   const [openEditReview, setOpenEditReview] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
   const [editReview, setEditReview] = useState(review);
@@ -52,7 +54,7 @@ export default function Review ({id, eateryId, token, username, profilePic, eate
         <Box display="flex">
           <Box display="flex" flexDirection="column">
             <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
-            <StarRating rating={editRating}></StarRating>
+            <StarRating rating={eateryName}></StarRating>
           </Box>
           <div style={{margin: "0px 5%"}}>
             <h2><b><u>{"Put the eatery name here"}</u></b></h2>
@@ -60,19 +62,23 @@ export default function Review ({id, eateryId, token, username, profilePic, eate
           </div>
           <Box display="flex" flexDirection="column" justifyContent="center">
             <Box display="flex" justifyContent="center">
-            <Button variant="contained"
-              color="primary">
-              View Restaurant  
-            </Button>
+            {
+              onEateryProfile && 
+              <Button variant="contained"
+                color="primary">
+                View Restaurant  
+              </Button>
+            }
             <IconButton>
               <EditIcon fontSize="large"
               onClick={() => setOpenEditReview(true)}/>
             </IconButton>
-            <IconButton>
-              <DeleteIcon fontSize="large"
-              onClick={() => setDeleteModal(true)}
-              />
-            </IconButton>
+            {
+              isOwner &&
+              <IconButton onClick={() => setDeleteModal(true)}>
+                <DeleteIcon fontSize="large" />
+              </IconButton>
+            }
             </Box>
           </Box>
         </Box>
@@ -98,7 +104,7 @@ export default function Review ({id, eateryId, token, username, profilePic, eate
         handleConfirm={() => handleDelete(token, id, eateryId)}>
       </ConfirmModal>
       {/* put a carousel here */}
-      <EditReview id={id} eateryId={eateryId} token={token} open={openEditReview} setOpen={setOpenEditReview} username={username} profilePic={profilePic} reviewTextState={[editReview, setEditReview]} ratingState={[editRating, setEditRating]} reviewImagesState={[editReviewImages, setEditReviewImages]}/>
+      <EditReview id={id} eateryId={eateryId} open={openEditReview} setOpen={setOpenEditReview} username={username} profilePic={profilePic} reviewTextState={[editReview, setEditReview]} ratingState={[editRating, setEditRating]} reviewImagesState={[editReviewImages, setEditReviewImages]}/>
     </>
   )
 }
