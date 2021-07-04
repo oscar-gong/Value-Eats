@@ -96,7 +96,9 @@ export default function EateryProfile() {
               // setEateryList(responseData.eateryList);
           }
         };
-        getUser();
+        if (isDiner !== "false") {
+            getUser();
+        }
       }, []);
 
     useEffect(() => {
@@ -270,6 +272,8 @@ export default function EateryProfile() {
                             variant="contained"
                             color="primary"
                             onClick={() => setOpenCreateReview(true)}
+                            disabled={isDiner === "true" ? false : true}
+                            // disabled={true}
                         >
                             Write a Review
                         </Button>
