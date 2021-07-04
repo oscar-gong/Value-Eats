@@ -1,5 +1,6 @@
 package com.nuggets.valueeats.service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -140,7 +141,8 @@ public class DinerFunctionalityService {
             map.put("discount", "50%"); // placeholder
             List<Float> reviews= reviewRepository.listReviewRatingsOfEatery(e.getId());
             Double averageRating = reviews.stream().mapToDouble(i -> i).average().orElse(0);
-            map.put("rating", averageRating);
+            DecimalFormat df = new DecimalFormat("#.0"); 
+            map.put("rating", df.format(averageRating));
             map.put("id", e.getId());
             map.put("cuisines", e.getCuisines());
             list.add(map);
