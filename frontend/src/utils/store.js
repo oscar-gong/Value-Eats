@@ -11,10 +11,25 @@ function StoreProvider ({ children }) {
   //  - info
   const [alertOptions, setAlertOptions] = useState({ showAlert: false, variant: 'success', message: 'message' });
 
+  // get stored token
+  const getToken = localStorage.getItem('token');
+  const getIsDiner = localStorage.getItem('isDiner');
+  
+  if (getToken === null) console.log("no token was found from storage");
+  if (getIsDiner === null) console.log("no diner state was stored");
+
+  const [isDiner, setIsDiner] = React.useState(getIsDiner);
+  const [auth, setAuth] = React.useState(getToken);
+
   const store = {
-    alert: [alertOptions, setAlertOptions]
+    alert: [alertOptions, setAlertOptions],
+    isDiner: [isDiner, setIsDiner],
+    auth: [auth, setAuth]
   }
   console.log(typeof children);
+
+
+
 
   return (<StoreContext.Provider value={store}>{children}</StoreContext.Provider>);
 }

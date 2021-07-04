@@ -11,22 +11,17 @@ export const validRequired = (state, setState) => {
 };
 
 export const validEmail = (email, setEmail) => {
-    if (!checkValidEmail(email))
-        setEmail({ values: "", valid: false });
+    if (!checkValidEmail(email.value))
+        setEmail({ ...email, valid: false });
 };
 
 export const validPassword = (password, setPassword) => {
-    if (!checkValidPassword(password))
-        setPassword({ values: "", valid: false });
+    if (!checkValidPassword(password.value))
+        setPassword({ ...password, valid: false });
 };
 
 export const validConfirmPassword = (password, confirmPassword, setConfirmPassword) => {
-    if (
-        password !== confirmPassword ||
-        confirmPassword === ""
-    ) {
-        setConfirmPassword({ values: "", valid: false });
-    }
+    setConfirmPassword({ ...confirmPassword, valid: (password.value === confirmPassword.value) });
 };
 
 export const checkValidPassword = (password) => {
@@ -35,7 +30,8 @@ export const checkValidPassword = (password) => {
         password.length >= 8 &&
         password.length <= 32 &&
         !(password.toLowerCase() === password) &&
-        !(password.toUpperCase() === password)
+        !(password.toUpperCase() === password) &&
+        password.match(/\d+/g)
     );
 };
 

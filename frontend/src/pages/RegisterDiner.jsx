@@ -5,7 +5,7 @@ import { AlignCenter } from "../styles/AlignCenter";
 import { Box, TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { usePlacesWidget } from "react-google-autocomplete";
-import { useHistory } from "react-router";
+import { useHistory, Redirect } from "react-router";
 import {
     validRequired,
     validEmail,
@@ -27,6 +27,8 @@ export default function RegisterDiner({ setToken }) {
 
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
+    const [auth, setAuth] = context.auth;
+    const [isDiner, setIsDiner] = context.isDiner;
 
     const validAddress = () => {
         if (address.value === "") {
@@ -77,6 +79,7 @@ export default function RegisterDiner({ setToken }) {
                     email: email.value,
                     address: useGoogleAPI ? address.value : "Sydney",
                     password: password.value,
+                    profilePic: "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
                 }),
             }
         );
@@ -87,8 +90,11 @@ export default function RegisterDiner({ setToken }) {
                 variant: "success",
                 message: registerResult.message,
             });
-            setToken(registerResult.data.token);
-            history.push("/dinerLanding");
+            setAuth(registerResult.data.token);
+            localStorage.setItem('token', registerResult.data.token);
+            setIsDiner('true');
+            localStorage.setItem('isDiner', 'true');
+            history.push("/DinerLanding");
         } else {
             setAlertOptions({
                 showAlert: true,
@@ -113,6 +119,10 @@ export default function RegisterDiner({ setToken }) {
             componentRestrictions: { country: "au" },
         },
     });
+
+    if (isDiner === "true" && auth !== null) return <Redirect to="/DinerLanding" />;
+    if (isDiner === "false" && auth !== null) return <Redirect to="/EateryLanding" />;
+
 
     return (
         <AlignCenter>
@@ -143,7 +153,7 @@ export default function RegisterDiner({ setToken }) {
                         onChange={(e) =>
                             setEmail({ value: e.target.value, valid: true })
                         }
-                        onBlur={() => validEmail(email.value, setEmail)}
+                        onBlur={() => {console.log(email); validEmail(email, setEmail)}}
                         error={!email.valid}
                         helperText={
                             email.valid ? "" : "Please enter a valid email"
@@ -185,7 +195,7 @@ export default function RegisterDiner({ setToken }) {
                             setPassword({ value: e.target.value, valid: true })
                         }
                         onBlur={() =>
-                            validPassword(password.value, setPassword)
+                            validPassword(password, setPassword)
                         }
                         error={!password.valid}
                         helperText={
@@ -210,8 +220,8 @@ export default function RegisterDiner({ setToken }) {
                         }
                         onBlur={() =>
                             validConfirmPassword(
-                                password.value,
-                                confirmPassword.value,
+                                password,
+                                confirmPassword,
                                 setConfirmPassword
                             )
                         }
