@@ -91,7 +91,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
             <StarRating rating={editRating}></StarRating>
           </Box>
           <div style={{margin: "0px 5%"}}>
-            <h2><b><u>{"Put the eatery name here"}</u></b></h2>
+            <h2><b><u>{eateryName}</u></b></h2>
             <h3>{editCreateReview}</h3>
           </div>
           <Box display="flex" flexDirection="column" justifyContent="center">

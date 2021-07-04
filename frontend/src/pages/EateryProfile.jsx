@@ -314,7 +314,7 @@ export default function EateryProfile() {
                         </div>
                     </Grid>
                 </Grid>
-                <EditCreateReview id={-1} eateryId={eateryDetails.eateryId} open={openCreateReview} setOpen={setOpenCreateReview} username={user.username} profilePic={user.profilePic} reviewTextState={["", null]} ratingState={["", null]} reviewImagesState={[[], null]} isEdit={false}/>
+                <EditCreateReview id={-1} eateryId={parseInt(eateryId)} open={openCreateReview} setOpen={setOpenCreateReview} username={user.username} profilePic={user.profilePic} reviewTextState={["", null]} ratingState={["", null]} reviewImagesState={[[], null]} isEdit={false}/>
 
             </MainContainer>
         </>
