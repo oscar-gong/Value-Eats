@@ -43,7 +43,7 @@ export default function DinerLanding({ token }) {
     const context = useContext(StoreContext);
     const [auth] = context.auth;
     const [isDiner] = context.isDiner;
-
+    const [name, setName] = useState("");
     const [sortBy, setSortBy] = useState("");
 
     useEffect(() => {
@@ -61,7 +61,8 @@ export default function DinerLanding({ token }) {
             );
             const responseData = await response.json();
             if (response.status === 200) {
-                console.log(responseData.eateryList);
+                console.log(responseData);
+                setName(responseData.name);
                 setEateryList(responseData.eateryList);
             }
         };
@@ -229,11 +230,14 @@ export default function DinerLanding({ token }) {
         <>
             <NavBar isDiner={isDiner} />
             <MainContainer>
-                <Typography variant="h5">Hi username,</Typography>
+                <Typography variant="h5">Hi {name},</Typography>
                 <Box textAlign="right">
-                    <FormControl variant="filled" style={{minWidth: "100px"}}>
+                    <FormControl variant="filled" style={{ minWidth: "100px" }}>
                         <InputLabel>Sort By</InputLabel>
-                        <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                        <Select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                        >
                             <MenuItem value={"distance"}>Distance</MenuItem>
                             <MenuItem value={"rating"}>Rating</MenuItem>
                             <MenuItem value={"new"}>New</MenuItem>
