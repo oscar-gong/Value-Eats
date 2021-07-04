@@ -44,7 +44,6 @@ export default function EateryProfile() {
     const context = React.useContext(StoreContext);
     const [auth] = context.auth;
     const [isDiner] = context.isDiner;
-    const [modalStyle] = React.useState(getModalStyle);
     const eateryId = location.pathname.split("/")[3];
 
     const [open, setOpen] = React.useState(false);
@@ -188,14 +187,6 @@ export default function EateryProfile() {
         return eateryDetails.cuisines.join(", ");
     };
 
-    function getModalStyle() {
-        const top = 25;
-        return {
-            top: `${top}%`,
-            margin: "auto",
-        };
-    }
-
     return (
         <>
             <NavBar isDiner={isDiner} />
@@ -242,7 +233,7 @@ export default function EateryProfile() {
                                 onClose={handleClose}
                             >
                                 {
-                                    <div style={{ modalStyle }}>
+                                    <div style={{ top: "25%", margin: "auto", outline: 'none' }}>
                                         <Carousel
                                             navButtonsProps={{
                                                 style: {
