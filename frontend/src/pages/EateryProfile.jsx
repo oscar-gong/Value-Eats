@@ -1,20 +1,72 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { MainContainer } from "../styles/MainContainer";
-import { Typography, Grid, Box, Card, Button } from "@material-ui/core";
+import {
+    Typography,
+    Grid,
+    Box,
+    Card,
+    Button,
+    Modal,
+    makeStyles,
+} from "@material-ui/core";
 import StarRating from "../components/StarRating";
 import Review from "../components/Review";
 import { useLocation, Redirect } from "react-router-dom";
 import { StoreContext } from "../utils/store";
+import Carousel from "react-material-ui-carousel";
+
+const useStyles = makeStyles({
+    photo: {
+        color: "black",
+        transition: "transform 0.15s ease-in-out",
+        "&:hover": { transform: "scale3d(1.02, 1.02, 1)", maxHeight: "none" },
+        width: "150px",
+        height: "150px",
+        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
+        objectFit: "contain",
+        backgroundColor: "white",
+    },
+    photoCarousel: {
+        width: "400px",
+        height: "400px",
+        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
+        objectFit: "contain",
+        backgroundColor: "white",
+        padding: "100px",
+    },
+    gridContainer: {
+        background: "rgba(255, 255, 255, 0.2)",
+        marginTop: "10px",
+        borderRadius: "10px",
+        
+    },
+    subtitle: {
+        background: "rgba(255, 255, 255, 0.5)",
+        borderRadius: "10px",
+        margin: "10px 0px",
+        padding: "5px 0px",
+    }
+});
 
 export default function EateryProfile() {
     const [eateryDetails, setEateryDetails] = useState([]);
     const location = useLocation();
+    const classes = useStyles();
     const context = React.useContext(StoreContext);
     const [auth] = context.auth;
     const [isDiner] = context.isDiner;
-
     const eateryId = location.pathname.split("/")[3];
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     useEffect(() => {
         const getEateryDetails = async () => {
@@ -74,12 +126,34 @@ export default function EateryProfile() {
                 <img
                     src={item}
                     alt="menu photos"
-                    width="200px"
                     key={key}
-                    height="auto"
+                    className={classes.photoCarousel}
                 />
             );
         });
+    };
+
+    const getSingleImage = () => {
+        if (!eateryDetails.menuPhotos) return;
+        if (eateryDetails.menuPhotos.length === 0) {
+            return <div>no images currently</div>;
+        }
+        return (
+            <img
+                className={classes.photo}
+                src={eateryDetails.menuPhotos[0]}
+                alt="eatery menu"
+                onClick={handleOpen}
+            />
+        );
+    };
+
+    const getNumberOfImages = () => {
+        if (!eateryDetails.menuPhotos) return;
+        if (eateryDetails.menuPhotos.length === 0) {
+            return <div>0 images</div>;
+        }
+        return <div>{`${eateryDetails.menuPhotos.length} images`}</div>;
     };
 
     const getVouchers = () => {
@@ -94,21 +168,26 @@ export default function EateryProfile() {
                         paddingTop: "25px",
                         paddingBottom: "25px",
                         borderRadius: "0px",
-                        background: "rgba(0, 0, 0, 0)"
                     }}
                     key={key}
                 >
-                    <Grid container justify="space-around" alignItems="center" style={{}}>
-                        <Grid item style={{width:"50%", display:"grid", justifyContent: "center"}}>
-                            <Button variant="contained" color="primary" style={{display:"block", width:"15vw"}}>
-                                {`${
-                                item.discount * 100
-                                }% OFF - ${item.type}`}
+                    <Grid container justify="space-around" alignItems="center">
+                        <Grid item style={{ alignItems: "center" }}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                style={{ display: "block", width: "15vw" }}
+                            >
+                                {`${item.discount * 100}% OFF - ${item.type}`}
                             </Button>
                         </Grid>
-                        <Grid item style={{width:"50%", display:"grid", justifyContent: "center"}}>
-                            <Box style={{margin:"10px"}}>5 LEFT PLACEHOLDER</Box>
-                            <Box style={{margin:"10px"}}>VALID 1-2PM PLACEHOLDER</Box>
+                        <Grid item>
+                            <Box style={{ margin: "10px" }}>
+                                5 LEFT PLACEHOLDER
+                            </Box>
+                            <Box style={{ margin: "10px" }}>
+                                VALID 1-2PM PLACEHOLDER
+                            </Box>
                         </Grid>
                     </Grid>
                 </Card>
@@ -125,8 +204,12 @@ export default function EateryProfile() {
         <>
             <NavBar isDiner={isDiner} />
             <MainContainer>
-                <Grid container spacing={5}>
-                    <Grid item xs={6}>
+                <Grid container spacing={5} className={classes.gridContainer}>
+                    <Grid
+                        item
+                        xs={6}
+      
+                    >
                         <Typography variant="h3">
                             {eateryDetails.name}
                         </Typography>
@@ -137,18 +220,63 @@ export default function EateryProfile() {
                         <Typography variant="subtitle2">
                             {getCuisines()}
                         </Typography>
-                        <Typography variant="h3">Menu Photos</Typography>
+                        <Typography
+                            variant="h5"
+                            className={classes.subtitle}
+                        >
+                            Menu Photos
+                        </Typography>
                         <Box flex-wrap="wrap" flexDirection="row">
-                            {getImages()}
+                            {getSingleImage()}
                         </Box>
-                        <Typography variant="h3">Reviews</Typography>
-                        <Button style={{margin: "10px"}}variant="contained" color="primary">Write a Review</Button>
+                        {getNumberOfImages()}
+                        <Typography className={classes.subtitle} variant="h5">Reviews</Typography>
+                        <Button
+                            style={{ margin: "10px 0px" }}
+                            variant="contained"
+                            color="primary"
+                        >
+                            Write a Review
+                        </Button>
                         <Box>{getReviews()}</Box>
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={6} >
                         <Typography variant="h3">Discounts</Typography>
                         {getVouchers()}
+                        <div>
+                            <Modal
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                                open={open}
+                                onClose={handleClose}
+                            >
+                                {
+                                    <div
+                                        style={{
+                                            top: "25%",
+                                            margin: "auto",
+                                            outline: "none",
+                                        }}
+                                    >
+                                        <Carousel
+                                            navButtonsProps={{
+                                                style: {
+                                                    opacity: "50%",
+                                                },
+                                            }}
+                                            navButtonsAlwaysVisible={true}
+                                            autoPlay={false}
+                                        >
+                                            {getImages()}
+                                        </Carousel>
+                                    </div>
+                                }
+                            </Modal>
+                        </div>
                     </Grid>
                 </Grid>
             </MainContainer>
