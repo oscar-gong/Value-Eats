@@ -84,13 +84,13 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
 
   return (
     <>
-      <Box display="flex" flexDirection="column" border="3px solid #4F4846" bgcolor="#E8CEBF" maxWidth="70vw" marginBottom="20px">
+      <Box display="flex" flexDirection="column" border="3px solid #4F4846" bgcolor="#E8CEBF" minWidth="50vw" maxWidth="70vw" marginBottom="20px">
         <Box display="flex">
           <Box display="flex" flexDirection="column">
             <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
             <StarRating rating={editRating}></StarRating>
           </Box>
-          <div style={{margin: "0px 5%"}}>
+          <div style={{margin: "0px 5%", flexGrow: 1}}>
             <h2><b><u>{eateryName}</u></b></h2>
             <h3>{editCreateReview}</h3>
           </div>
@@ -120,29 +120,33 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
             </Box>
           </Box>
         </Box>
-        <Box paddingY="30px">
-          <Divider variant="middle" />
-        </Box>
-        {/* <Box display="flex" flexWrap="wrap"> */}
-        <Carousel
-          navButtonsProps={{
-              style: {
-                  opacity: "50%",
-              },
-          }}
-          navButtonsAlwaysVisible={true}
-          autoPlay={false}
-        >
-          {
-            editCreateReviewImages.map((imgdata, idx) => {
-              return (
-                // Temp REPLACE WITH A CAROUSEL LATER
-                <img key={idx} alt="review photos" src={imgdata} className={classes.photoCarousel}></img>
-              );
-            })
-          } 
-        </Carousel>
-        {/* </Box> */}
+        {
+          editCreateReviewImages.length !== 0 &&
+          <Box paddingY="30px">
+            <Divider variant="middle" />
+          </Box>
+        }
+        {
+          editCreateReviewImages.length !== 0 &&
+          <Carousel
+            navButtonsProps={{
+                style: {
+                    opacity: "50%",
+                },
+            }}
+            navButtonsAlwaysVisible={true}
+            autoPlay={false}
+          >
+            {
+              editCreateReviewImages.map((imgdata, idx) => {
+                return (
+                  // Temp REPLACE WITH A CAROUSEL LATER
+                  <img key={idx} alt="review photos" src={imgdata} className={classes.photoCarousel}></img>
+                );
+              })
+            } 
+          </Carousel>
+        }
       </Box>
       <ConfirmModal open={openDeleteModal}
         handleClose={handleCloseModal}
