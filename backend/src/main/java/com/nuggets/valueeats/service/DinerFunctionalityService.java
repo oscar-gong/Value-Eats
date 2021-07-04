@@ -39,11 +39,8 @@ public class DinerFunctionalityService {
         try {
 
             // Check for required inputs
-            if(!(StringUtils.isNotBlank(token) &&
-                StringUtils.isNotBlank(String.valueOf(review.getEateryId())) &&
-                StringUtils.isNotBlank(String.valueOf(review.getRating())))
-                ){
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
+            if(!(StringUtils.isNotBlank(token) && review.getEateryId() != null && review.getRating() != null)){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
             }
 
             // Check if eatery id exists
@@ -132,6 +129,7 @@ public class DinerFunctionalityService {
         if(!dinerRepository.existsByToken(token) || token.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
         }
+        Diner diner = dinerRepository.findByToken(token);
         List<Eatery> eateryList = eateryRepository.findAll();
 
         ArrayList<Object> list = new ArrayList<Object>();
@@ -148,7 +146,8 @@ public class DinerFunctionalityService {
             list.add(map);
         }
 
-        Map<String, ArrayList<Object>> dataMedium = new HashMap<>();
+        Map<String, Object> dataMedium = new HashMap<>();
+        dataMedium.put("name", diner.getAlias());
         dataMedium.put("eateryList", list);
         JSONObject data = new JSONObject(dataMedium);
 

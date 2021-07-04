@@ -3,6 +3,7 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.Voucher;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
@@ -283,12 +284,7 @@ public class UserManagementService {
         result.put("email", diner.getEmail());
         result.put("profile picture", diner.getProfilePic());
         for(Review r:reviews){
-            HashMap<String, Object> review = new HashMap<String, Object>();
-            review.put("reviewId", r.getId());
-            review.put("profilePic", diner.getProfilePic());
-            review.put("name", diner.getAlias());
-            review.put("rating", r.getRating());
-            review.put("message", r.getMessage());
+            HashMap<String, Object> review = createReview(r.getId(), diner.getProfilePic(), diner.getAlias(), r.getMessage(), r.getRating());
             reviewsList.add(review);
         }
         result.put("reviews", reviewsList);
@@ -302,7 +298,7 @@ public class UserManagementService {
         if(eateryRepository.existsByToken(token) && !token.isEmpty()){
             eateryDb = eateryRepository.findByToken(token);
         }else{
-            if(token.isEmpty() || !(dinerRepository.existsByToken(token) || eateryRepository.existsByIdAndToken(id, token))) {
+            if(token.isEmpty() || !(dinerRepository.existsByToken(token))) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid"));
             }
             if(id == null){
@@ -313,35 +309,29 @@ public class UserManagementService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
             }
             eateryDb = eateryInDb.get();
-    
             dinerDb = dinerRepository.findByToken(token);
         }
+
+        List<Float> ratings= reviewRepository.listReviewRatingsOfEatery(eateryDb.getId());
+        Double averageRating = ratings.stream().mapToDouble(i -> i).average().orElse(0);
+        DecimalFormat df = new DecimalFormat("#.0"); 
         
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("name", eateryDb.getAlias());
-        List<Float> ratings= reviewRepository.listReviewRatingsOfEatery(eateryDb.getId());
-        Double averageRating = ratings.stream().mapToDouble(i -> i).average().orElse(0);
-        map.put("rating", averageRating);
+        map.put("rating", df.format(averageRating));
         map.put("address", eateryDb.getAddress());
         map.put("menuPhotos", eateryDb.getMenuPhotos());
         List<Review> reviews= reviewRepository.listReviewsOfEatery(eateryDb.getId());
         ArrayList<Object> reviewsList = new ArrayList<Object>();
         for(Review r:reviews){
-            HashMap<String, Object> review = new HashMap<String, Object>();
-            review.put("reviewId", r.getId());
             Long reviewDinerId = r.getDinerId();
             Optional<Diner> reviewerInDinerDb = dinerRepository.findById(reviewDinerId);
             if(!reviewerInDinerDb.isPresent()){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
             }
             Diner reviewDinerDb = reviewerInDinerDb.get();
-            review.put("profilePic", reviewDinerDb.getProfilePic());
-            
-            review.put("name", reviewDinerDb.getAlias());
-            
-            review.put("rating", r.getRating());
-            
-            review.put("message", r.getMessage());
+
+            HashMap<String, Object> review = createReview(r.getId(), reviewDinerDb.getProfilePic(), reviewDinerDb.getAlias(), r.getMessage(), r.getRating());
             if(dinerDb != null){
                 if(dinerDb.getId() == reviewDinerDb.getId()) {
                     review.put("isOwner", true);
@@ -376,5 +366,21 @@ public class UserManagementService {
         JSONObject data = new JSONObject(map);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
+    }
+
+    // HashMap<String, Object> createReview(Long id, String pic, String name, String message, float rating, boolean isOwner){
+    //     HashMap<String, Object> review = createReview(id, pic, name, message, rating);
+    //     review.put("isOwner", message);
+    //     return review;
+    // }
+
+    HashMap<String, Object> createReview(Long id, String pic, String name, String message, float rating){
+        HashMap<String, Object> review = new HashMap<String, Object>();
+        review.put("reviewId", id);
+        review.put("profilePic", pic);
+        review.put("name", name);
+        review.put("rating", rating);
+        review.put("message", message);
+        return review;
     }
 }
