@@ -13,6 +13,7 @@ export default function EateryLanding() {
 
   if (auth === null) return <Redirect to="/" />;
   if (isDiner === "true") return <Redirect to="/DinerLanding" />;
+  console.log(isDiner);
 
   return (
     <>

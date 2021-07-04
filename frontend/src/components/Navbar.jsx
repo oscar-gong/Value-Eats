@@ -143,7 +143,7 @@ export default function Navbar () {
                     >
                         <MenuItem onClick={() => handleProfile()}>Profile</MenuItem>
                         {
-                            isDiner &&
+                            (isDiner === "true") &&
                             <MenuItem onClick={handleClose}>My Vouchers</MenuItem>
                         }
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>

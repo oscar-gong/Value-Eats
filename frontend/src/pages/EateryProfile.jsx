@@ -35,6 +35,18 @@ const useStyles = makeStyles({
         backgroundColor: "white",
         padding: "100px",
     },
+    gridContainer: {
+        background: "rgba(255, 255, 255, 0.2)",
+        marginTop: "10px",
+        borderRadius: "10px",
+        
+    },
+    subtitle: {
+        background: "rgba(255, 255, 255, 0.5)",
+        borderRadius: "10px",
+        margin: "10px 0px",
+        padding: "5px 0px",
+    }
 });
 
 export default function EateryProfile() {
@@ -130,6 +142,7 @@ export default function EateryProfile() {
             <img
                 className={classes.photo}
                 src={eateryDetails.menuPhotos[0]}
+                alt="eatery menu"
                 onClick={handleOpen}
             />
         );
@@ -191,8 +204,12 @@ export default function EateryProfile() {
         <>
             <NavBar isDiner={isDiner} />
             <MainContainer>
-                <Grid container spacing={5}>
-                    <Grid item xs={6}>
+                <Grid container spacing={5} className={classes.gridContainer}>
+                    <Grid
+                        item
+                        xs={6}
+      
+                    >
                         <Typography variant="h3">
                             {eateryDetails.name}
                         </Typography>
@@ -203,14 +220,19 @@ export default function EateryProfile() {
                         <Typography variant="subtitle2">
                             {getCuisines()}
                         </Typography>
-                        <Typography variant="h3">Menu Photos</Typography>
+                        <Typography
+                            variant="h5"
+                            className={classes.subtitle}
+                        >
+                            Menu Photos
+                        </Typography>
                         <Box flex-wrap="wrap" flexDirection="row">
                             {getSingleImage()}
                         </Box>
                         {getNumberOfImages()}
-                        <Typography variant="h3">Reviews</Typography>
+                        <Typography className={classes.subtitle} variant="h5">Reviews</Typography>
                         <Button
-                            style={{ margin: "10px" }}
+                            style={{ margin: "10px 0px" }}
                             variant="contained"
                             color="primary"
                         >
@@ -219,7 +241,7 @@ export default function EateryProfile() {
                         <Box>{getReviews()}</Box>
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={6} >
                         <Typography variant="h3">Discounts</Typography>
                         {getVouchers()}
                         <div>
@@ -233,7 +255,13 @@ export default function EateryProfile() {
                                 onClose={handleClose}
                             >
                                 {
-                                    <div style={{ top: "25%", margin: "auto", outline: 'none' }}>
+                                    <div
+                                        style={{
+                                            top: "25%",
+                                            margin: "auto",
+                                            outline: "none",
+                                        }}
+                                    >
                                         <Carousel
                                             navButtonsProps={{
                                                 style: {
