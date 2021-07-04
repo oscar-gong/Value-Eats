@@ -35,17 +35,21 @@ public class VoucherService {
         if (voucherInput.getDiscount() == null || voucherInput.getDiscount() <= 0 || voucherInput.getDiscount() > 100) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Discount is invalid"));
         }
-        if (voucherInput.getQuantity() == 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher cannot have a quantity of 0"));
+        if (voucherInput.getQuantity() == null || voucherInput.getQuantity() < 1) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid voucher quantity"));
         }
         if (voucherInput.getDay() == null || voucherInput.getStartMinute() == null || voucherInput.getEndMinute() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid dates"));
         }
+        if (voucherInput.getStartMinute() == null && voucherInput.getEndMinute() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Start and/or end minute missing"));
+        }
+
         if (voucherInput.getStartMinute() < 0 || voucherInput.getStartMinute() >= 1440 || voucherInput.getEndMinute() <= 0 || voucherInput.getEndMinute() > 1440 || voucherInput.getStartMinute() >= voucherInput.getEndMinute()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid times"));
         }
 
-        if (voucherInput.getIsRecurring()) {
+        if (voucherInput.getIsRecurring() != null && voucherInput.getIsRecurring()) {
             return handleRecurringCreateVoucher(voucherInput, eateryId);
         }
         return handleOneOffCreateVoucher(voucherInput, eateryId);
