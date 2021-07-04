@@ -68,7 +68,7 @@ export default function Navbar () {
     const handleProfile = () => {
         if (isDiner === "true") {
             history.push("/dinerProfile");
-        } else{
+        } else {
             history.push("/eateryProfile");
         }
     }
@@ -141,7 +141,7 @@ export default function Navbar () {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={() => handleProfile()}>Profile</MenuItem>
+                        <MenuItem onClick={() => handleProfile(), handleClose}>Profile</MenuItem>
                         {
                             (isDiner === "true") &&
                             <MenuItem onClick={handleClose}>My Vouchers</MenuItem>

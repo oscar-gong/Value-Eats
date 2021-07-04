@@ -56,7 +56,7 @@ export default function EateryProfile() {
     const context = React.useContext(StoreContext);
     const [auth] = context.auth;
     const [isDiner] = context.isDiner;
-    const eateryId = location.pathname.split("/")[3];
+    const eateryId = location.pathname.split("/")[3] ? location.pathname.split("/")[3] : "";
 
     const [open, setOpen] = React.useState(false);
 
@@ -71,7 +71,7 @@ export default function EateryProfile() {
     useEffect(() => {
         const getEateryDetails = async () => {
             const response = await fetch(
-                `http://localhost:8080/eatery/${eateryId}/details`,
+                `http://localhost:8080/eatery/profile/details?id=${eateryId}`,
                 {
                     method: "GET",
                     headers: {
@@ -93,7 +93,7 @@ export default function EateryProfile() {
         };
         getEateryDetails();
     }, [auth, eateryId]);
-    if (auth === null || isDiner === "false") return <Redirect to="/" />;
+    if (auth === null) return <Redirect to="/" />;
 
     const getReviews = () => {
         if (!eateryDetails.reviews) return;
