@@ -92,8 +92,8 @@ export default function RegisterDiner({ setToken }) {
             });
             setAuth(registerResult.data.token);
             localStorage.setItem('token', registerResult.data.token);
-            setIsDiner(true);
-            localStorage.setItem('isDiner', true);
+            setIsDiner('true');
+            localStorage.setItem('isDiner', 'true');
             history.push("/DinerLanding");
         } else {
             setAlertOptions({
