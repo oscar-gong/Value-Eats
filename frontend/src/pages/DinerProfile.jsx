@@ -170,7 +170,7 @@ export default function DinerProfile() {
                 rating={r.rating}
                 images={r.reviewPhotos ? r.reviewPhotos : []}
                 isOwner={true}
-                onEateryProfile={false}></Review>
+                onEateryProfile={true}></Review>
               );
             })
           }
