@@ -25,6 +25,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.metadata.Db2CallMetaDataProvider;
 import org.springframework.stereotype.Service;
 
 
@@ -284,7 +285,12 @@ public class UserManagementService {
         result.put("email", diner.getEmail());
         result.put("profile picture", diner.getProfilePic());
         for(Review r:reviews){
-            HashMap<String, Object> review = createReview(r.getId(), diner.getProfilePic(), diner.getAlias(), r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos());
+            Optional<Eatery> db = eateryRepository.findById(r.getEateryId());
+            if(!db.isPresent()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
+            }
+            Eatery e = db.get();
+            HashMap<String, Object> review = createReview(r.getId(), diner.getProfilePic(), diner.getAlias(), r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos(), e.getAlias());
             reviewsList.add(review);
         }
         result.put("reviews", reviewsList);
@@ -331,7 +337,7 @@ public class UserManagementService {
             }
             Diner reviewDinerDb = reviewerInDinerDb.get();
 
-            HashMap<String, Object> review = createReview(r.getId(), reviewDinerDb.getProfilePic(), reviewDinerDb.getAlias(), r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos());
+            HashMap<String, Object> review = createReview(r.getId(), reviewDinerDb.getProfilePic(), reviewDinerDb.getAlias(), r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos(), eateryDb.getAlias());
             if(dinerDb != null){
                 if(dinerDb.getId() == reviewDinerDb.getId()) {
                     review.put("isOwner", true);
@@ -374,7 +380,7 @@ public class UserManagementService {
     //     return review;
     // }
 
-    HashMap<String, Object> createReview(Long id, String pic, String name, String message, float rating, Long eateryId, ArrayList<String> reviewPhotos){
+    HashMap<String, Object> createReview(Long id, String pic, String name, String message, float rating, Long eateryId, ArrayList<String> reviewPhotos, String eateryName){
         HashMap<String, Object> review = new HashMap<String, Object>();
         review.put("reviewId", id);
         review.put("profilePic", pic);
@@ -383,6 +389,7 @@ public class UserManagementService {
         review.put("message", message);
         review.put("eateryId", eateryId);
         review.put("reviewPhotos", reviewPhotos);
+        review.put("eateryName", eateryName);
         return review;
     }
 }

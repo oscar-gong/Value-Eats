@@ -247,7 +247,7 @@ export default function EateryProfile() {
                         <Typography variant="h3">
                             {eateryDetails.name}
                         </Typography>
-                        <StarRating rating={eateryDetails.rating} />
+                        <StarRating rating={parseFloat(eateryDetails.rating)} /> {eateryDetails.rating}
                         <Typography variant="subtitle2">
                             {eateryDetails.address}
                         </Typography>
