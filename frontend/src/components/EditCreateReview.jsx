@@ -76,7 +76,7 @@ export default function EditCreateReview ({ id, eateryId, open, setOpen, usernam
     <>
       <Dialog aria-labelledby="customized-dialog-title" open={open}>
           <DialogTitle id="customized-dialog-title">
-            Edit Review
+            {isEdit ? "Edit Review" : "Create Review"}
           </DialogTitle>
           <DialogContent dividers>
             <Box pt={1} display="flex" justifyContent="space-around">

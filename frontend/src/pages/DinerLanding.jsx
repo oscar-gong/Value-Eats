@@ -216,7 +216,7 @@ export default function DinerLanding({ token }) {
                                             marginTop: "4px",
                                         }}
                                     >
-                                        {item.rating}
+                                        {item.rating === ".0" ? 0 : item.rating}
                                     </Grid>
                                 </Grid>
                             </Grid>
