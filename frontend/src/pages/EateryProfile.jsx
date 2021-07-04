@@ -105,10 +105,13 @@ export default function EateryProfile() {
             return (
                 <Review
                     onEateryProfile={false}
+                    profilePic={item.profilePic}
                     eateryName={item.eateryName}
                     review={item.message}
                     rating={item.rating}
                     isOwner={item.isOwner}
+                    eateryId={item.eateryId}
+                    images={item.reviewPhotos ? item.reviewPhotos : []}
                     key={key}
                 ></Review>
             );
