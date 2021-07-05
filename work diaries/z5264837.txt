@@ -108,7 +108,7 @@ Week 3
                 - Login as eatery or diner
                 - Logout as eatery or diner
 
-Week 3
+Week 4
     - What was planned for the period since the last work diary entry
         - As it is the start of a project, there will be a lot of setting up of both environments and machines
         - Sprint 1
@@ -160,3 +160,40 @@ Week 3
         - Sprint 2
             - Development of profiles and their associated management
         - Last week's remaining tasks
+        - Demonstration of project
+        - Retrospective
+
+Week 5
+    - What was planned for the period since the last work diary entry
+        - Sprint 2
+            - Development of profiles and their associated management
+        - Last week's remaining tasks
+        - Demonstration of project
+        - Retrospective
+    - What was finished
+        - Finalised sprint 1
+        - Finished sprint 2
+            - Developed endpoints for getting diner details
+            - Fixed bugs and other missing aspects of features
+        - Planning for sprint 3
+            - Mapped sprint 3 tickets into api endpoints
+            - Developed create voucher endpoint for the next iteration
+        - Successful demonstration of project
+            - Discussed and planned for what needed to be presented
+            - Presented our project to the tutor
+        - Successfully finished draft of retrospective
+            - Discussed about our good, bad and neutrals
+            - Agreed to improve on the given to trys along with an owner who will take responsibility such as branch naming and api design documentation
+    - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
+        - This sprint was able to move a lot more smoother after we were able to enforce better workflow such as less overlap and discussions before implementation
+        - We did address some tech debt and some bad design practices which were used in previous iterations by further educating ourselves on what tools are at our disposals and standard methodologies
+    - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
+        - This week was our heaviest workload week in terms of the project's plan
+        - We were able to successfully complete most of the work except the update eatery front end and although we were unable to completely finish it, it was a good that we were able to finish most considering the load
+        - As this is a relatively small feature which was primarily overlooked and forgotten by accident, we are able to come back from this early in the sprint
+    - What is planned for the next period (e.g., next week)
+        - Sprint 3: Voucher management
+        - Further finalise the retrospective
+        - Tech Debt
+            - Although from a feature standpoint we are meeting goals, we are definitely able to improve the code quality of our project
+            - We should try to improve readability and reduce reptitiveness

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
 import StarRating from "../components/StarRating";
 import { MainContainer } from "../styles/MainContainer";
 import Carousel from "react-material-ui-carousel";
-import { useHistory } from "react-router";
+import { useHistory, Redirect } from "react-router";
+import { StoreContext } from "../utils/store";
 import {
     Card,
     Grid,
@@ -16,6 +17,7 @@ import {
     MenuItem,
     InputLabel,
     Box,
+    FormControl,
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -35,9 +37,14 @@ const useStyles = makeStyles({
 
 export default function DinerLanding({ token }) {
     const [eateryList, setEateryList] = useState([]);
-    const [hover, setHover] = useState(false);
+    const [hover, setHover] = useState(true);
     const classes = useStyles();
     const history = useHistory();
+    const context = useContext(StoreContext);
+    const [auth] = context.auth;
+    const [isDiner] = context.isDiner;
+    const [name, setName] = useState("");
+    const [sortBy, setSortBy] = useState("");
 
     useEffect(() => {
         const getEateryList = async () => {
@@ -48,18 +55,22 @@ export default function DinerLanding({ token }) {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: token,
+                        Authorization: auth,
                     },
                 }
             );
             const responseData = await response.json();
             if (response.status === 200) {
-                console.log(responseData.eateryList);
+                console.log(responseData);
+                setName(responseData.name);
                 setEateryList(responseData.eateryList);
             }
         };
         getEateryList();
-    }, [token]);
+    }, [auth]);
+
+    if (auth === null) return <Redirect to="/" />;
+    if (isDiner === "false") return <Redirect to="/EateryLanding" />;
 
     const getCuisineList = (cuisines) => {
         let cuisineString = cuisines.join(", ");
@@ -95,9 +106,9 @@ export default function DinerLanding({ token }) {
                                     <Card
                                         className={classes.card}
                                         onClick={(e) =>
-                                            history.push(
-                                                `/EateryProfile/${item[i].name}/${item[i].id}`
-                                            )
+                                            history.push({
+                                                pathname: `/EateryProfile/${item[i].name}/${item[i].id}`,
+                                            })
                                         }
                                         onMouseLeave={() => setHover(true)}
                                         onMouseEnter={() => setHover(false)}
@@ -164,7 +175,9 @@ export default function DinerLanding({ token }) {
                 <Card
                     className={classes.wideCard}
                     onClick={(e) =>
-                        history.push(`/EateryProfile/${item.name}/${item.id}`)
+                        history.push({
+                            pathname: `/EateryProfile/${item.name}/${item.id}`,
+                        })
                     }
                     key={key}
                 >
@@ -203,7 +216,7 @@ export default function DinerLanding({ token }) {
                                             marginTop: "4px",
                                         }}
                                     >
-                                        {item.rating}
+                                        {item.rating === ".0" ? 0 : item.rating}
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -215,30 +228,31 @@ export default function DinerLanding({ token }) {
     };
     return (
         <>
-            <NavBar token={token} isDiner={true} />
-            <MainContainer>
-                <Typography variant="h5">Hi username,</Typography>
-                <Box textAlign="right">
-                    <InputLabel id="demo-simple-select-outlined-label">
-                        Sort by
-                    </InputLabel>
-                    <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value={10}
-                        onChange={(e) => console.log("changed")}
-                    >
-                        <MenuItem value={10}>Distance</MenuItem>
-                        <MenuItem value={20}>Rating</MenuItem>
-                        <MenuItem value={30}>New</MenuItem>
-                    </Select>
-                </Box>
-                <Typography variant="h6">
-                    Restaurants we think you would like
-                </Typography>
+          <NavBar isDiner={isDiner} />
+          <MainContainer>
+            <Box py={4}>
+              <Typography variant="h5">Hi {name},</Typography>
+              <Box textAlign="right">
+                  <FormControl variant="filled" style={{ minWidth: "100px" }}>
+                      <InputLabel>Sort By</InputLabel>
+                      <Select
+                          value={sortBy}
+                          onChange={(e) => setSortBy(e.target.value)}
+                      >
+                          <MenuItem value={"distance"}>Distance</MenuItem>
+                          <MenuItem value={"rating"}>Rating</MenuItem>
+                          <MenuItem value={"new"}>New</MenuItem>
+                      </Select>
+                  </FormControl>
+              </Box>
+
+              <Typography variant="h6">
+                  Restaurants we think you would like
+              </Typography>
 
                 <Carousel>{getSlides()}</Carousel>
                 {getEateries()}
+              </Box>
             </MainContainer>
         </>
     );

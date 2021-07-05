@@ -95,3 +95,31 @@ Week4:
     
   What is planned for the next period:
     - I will discuss the token feature and sql tables with my teammates, I will also work on the sprint2 in backend.
+    
+Week5:
+  What was planned for the period since the last work diary entry:
+    - Discuss the token feature and sql tables with my teammates, work on the sprint2 in backend.
+
+  What was finished:
+    - We have finished the functionality for reviews and update profiles.
+    - I have set up the entity, controller, service and repository for user reviews and link them to the databases.
+    - I have implemented the create review, list reviews methods and link them to the database.
+    - I have implemented the update diner profile method which take the token and the updated diner information as input.
+    - I have implemented the profile picture methods for diner which allow them to upload a picture and save it in the database.
+    - I have implemented the update eatery profile method which takes the token and the updated eatery information as input.
+    - I have implemented cuisines and menu photos for diners, which allows the eatery to update and store them in the database.
+  
+    What were the main technical and non-technical obstacles and how they were
+  overcome:
+    - We need to pass the user information and token as a JSONobject to the backend, which is challenge for backend to interpret it.
+    - We choose to use JSONString to pass them.
+  
+    What was not finished, why this happened, how this affects the overall project
+    progress and what adjustments (if any) are needed so the success of the project is
+    not endangered:
+    
+    - Everything is finished, I am going to work in sprint3.
+    
+  What is planned for the next period:
+    - I will discuss the voucher feature and data structures with my teammates, I will also work on the sprint3 in backend.
+    - I will work on the voucher create, voucher create and voucher edit.

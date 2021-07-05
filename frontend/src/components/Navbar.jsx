@@ -7,7 +7,7 @@ import InputBase from '@material-ui/core/InputBase';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { NavbarStyled } from '../styles/NavbarStyled';
 import { useHistory } from "react-router";
 import { StoreContext } from "../utils/store";
@@ -47,13 +47,15 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-export default function Navbar ({ token, isDiner }) {
+export default function Navbar () {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const history = useHistory();
 
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
+    const [auth, setAuth] = context.auth;
+    const [isDiner, setIsDiner] = context.isDiner;
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -64,11 +66,12 @@ export default function Navbar ({ token, isDiner }) {
     };
 
     const handleProfile = () => {
-        if (isDiner) {
+        if (isDiner === "true") {
             history.push("/dinerProfile");
-        } else{
+        } else {
             history.push("/eateryProfile");
         }
+        handleClose();
     }
 
     const handleLogout = async () => {
@@ -78,27 +81,42 @@ export default function Navbar ({ token, isDiner }) {
             headers: {
                 "Accept": "application/json", 
                 "Content-Type": "application/json",
-                Authorization: token,
+                Authorization: auth,
             },
         })
         // const ans = await logoutResult.json();
         const logoutData = await logoutResponse.json();
         if (logoutResponse.status === 200) {
             setAlertOptions({ showAlert: true, variant: 'success', message: logoutData.message });
-            history.push("/");
+            setAuth(null);
+            setIsDiner(null);
             localStorage.removeItem('token');
+            localStorage.removeItem('isDiner');
+            history.push("/");
         } else {
             setAlertOptions({ showAlert: true, variant: 'error', message: logoutData.message });
         }
+    }
+
+    const handleLogoClick = () => {
+        console.log(localStorage.getItem('token'));
+        if (auth === null) return history.push('/');
+        // if token is manually deleted from localstorage on browser
+        if (localStorage.getItem('token') === null) {
+            setAuth(null);
+            return history.push('/');
+        }
+        if (isDiner === "true") return history.push('/DinerLanding');
+        if (isDiner === "false") return history.push('/EateryLanding');
     }
 
     return (
         <div>
             <NavbarStyled>
                 <Toolbar className={classes.singleLine}>
-                    <Typography className={classes.logo}>Value Eats</Typography>
+                    <Typography className={classes.logo} onClick={handleLogoClick}>Value Eats</Typography>
                     {
-                        isDiner &&
+                        (isDiner === "true") &&
                         <Toolbar className={classes.barSize}>
                             <div className={classes.searchContainer}>
                                 <div style={{marginRight: 10}}>
@@ -126,7 +144,7 @@ export default function Navbar ({ token, isDiner }) {
                     >
                         <MenuItem onClick={() => handleProfile()}>Profile</MenuItem>
                         {
-                            isDiner &&
+                            (isDiner === "true") &&
                             <MenuItem onClick={handleClose}>My Vouchers</MenuItem>
                         }
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
