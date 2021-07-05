@@ -1,7 +1,6 @@
 package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.User;
-import com.nuggets.valueeats.entity.Voucher;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -350,23 +349,8 @@ public class UserManagementService {
         map.put("reviews", reviewsList);
         map.put("cuisines", eateryDb.getCuisines());
 
-        // PLACEHOLDERS FOR VOUCHER
-        List<Voucher> voucherList = new ArrayList<Voucher>();
-        Voucher voucher = new Voucher();
-        voucher.setEateryId(eateryDb.getId());
-        voucher.setId((long) 0);
-        voucher.setOwnerId(eateryDb.getId());
-        voucher.setDiscount((float) 0.5);
-        voucher.setType("Dine-in");
-        Voucher voucher1 = new Voucher();
-        voucher1.setEateryId(eateryDb.getId());
-        voucher1.setId((long) 1);
-        voucher1.setOwnerId(eateryDb.getId());
-        voucher1.setDiscount((float) 0.4);
-        voucher1.setType("Takeaway");
-        voucherList.add(voucher);
-        voucherList.add(voucher1);
-        map.put("vouchers", voucherList);
+        // TODO: Get Voucher PLACEHOLDERS FOR VOUCHER
+        // map.put("vouchers", voucherList);
 
 
         JSONObject data = new JSONObject(map);

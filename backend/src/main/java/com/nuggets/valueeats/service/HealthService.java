@@ -4,10 +4,14 @@ import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
+import com.nuggets.valueeats.entity.voucher.Voucher;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.ReviewRepository;
 import com.nuggets.valueeats.repository.UserRepository;
+import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
+import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,10 @@ public final class HealthService {
     private UserRepository<User> userRepository;
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private RepeatVoucherRepository repeatVoucherRepository;
+    @Autowired
+    private VoucherRepository voucherRepository;
 
     public List<Diner> listDiner() {
         return dinerRepository.findAll();
@@ -44,4 +52,13 @@ public final class HealthService {
     public List listCuisines() {
         return eateryRepository.findAllCuisines();
     }
+
+    public List<RepeatedVoucher> listRepeatVoucher() {
+        return repeatVoucherRepository.findAll();
+    }
+
+    public List<Voucher> listVoucher() {
+        return voucherRepository.findAll();
+    }
+    
 }
