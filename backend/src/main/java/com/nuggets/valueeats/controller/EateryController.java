@@ -15,6 +15,7 @@ import java.util.Objects;
 public class EateryController {
     @Autowired
     private VoucherService voucherService;
+    
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -27,8 +28,17 @@ public class EateryController {
         return voucherService.createVoucher(voucher, token);
     }
 
-    @RequestMapping(value = "list/vouchers", method = RequestMethod.GET)
-    public ResponseEntity<JSONObject> listEateries(@RequestHeader (name="Authorization") String token, 
+    // An eatery list its own active vouchers
+    // Check if the token is an eatery, then check the eateryId.
+    @RequestMapping(value = "eatery/listVouchers", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> EateryListVouchers (@RequestHeader (name="Authorization") String token, 
+    @RequestHeader (name="eateryId") Long eateryId) {
+        return voucherService.listVouchers(token, eateryId);
+    }
+
+    // A diner view the target resturant for all past or current vouchers
+    @RequestMapping(value = "diner/listVouchers", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> DinerListVouchers(@RequestHeader (name="Authorization") String token, 
     @RequestHeader (name="eateryId") Long eateryId) {
         return voucherService.listVouchers(token, eateryId);
     }
