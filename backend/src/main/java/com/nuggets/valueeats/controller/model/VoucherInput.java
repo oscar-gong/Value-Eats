@@ -7,6 +7,9 @@ import java.time.DayOfWeek;
 
 @Data
 public class VoucherInput {
+    private Long id;
+    private Long eateryId;
+    
     private VoucherEatingStyle eatingStyle;
     private Double discount;
     private Integer quantity;
