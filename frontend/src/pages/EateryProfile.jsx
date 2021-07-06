@@ -99,7 +99,7 @@ export default function EateryProfile() {
         if (isDiner !== "false") {
             getUser();
         }
-      }, []);
+      }, [auth, isDiner]);
 
     useEffect(() => {
         const getEateryDetails = async () => {

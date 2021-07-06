@@ -9,6 +9,7 @@ import { FileUpload } from '../styles/FileUpload';
 export default function UploadPhotos ({ setImages, previewImages, setPreviewImages, uploadDescription }) {
 
   const handleImages = (data) => {
+    setImages([]);
     Array.from(data).forEach((file) => {
         fileToDataUrl(file).then((url) => {
             setImages((prevArray) => [...prevArray, url]);

@@ -9,7 +9,7 @@ import ConfirmModal from './ConfirmModal';
 import EditCreateReview from "../components/EditCreateReview";
 import { StoreContext } from "../utils/store";
 import Carousel from 'react-material-ui-carousel';
-import { Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
   photo: {
