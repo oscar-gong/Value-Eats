@@ -11,5 +11,5 @@ import java.util.ArrayList;
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Long> {
 
-  ArrayList<Object> findByEateryId (Long eateryId);
+  ArrayList<Voucher> findByEateryId (Long eateryId);
 }
