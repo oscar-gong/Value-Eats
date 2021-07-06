@@ -12,7 +12,7 @@ import {
     validEmail,
     fileToDataUrl,
     validConfirmPassword,
-    checkValidPassword
+    validPassword,
 } from "../utils/helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory, Redirect } from "react-router";
@@ -161,7 +161,8 @@ export default function RegisterEatery() {
                 password: password.value,
                 cuisines: cuisines.value,
                 menuPhotos: images, // array of data urls
-                profilePic: "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+                profilePic:
+                    "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
             }),
         });
         console.log(response);
@@ -173,8 +174,8 @@ export default function RegisterEatery() {
                 message: responseData.message,
             });
             setAuth(responseData.data.token);
-            localStorage.setItem('token', responseData.data.token);
-            localStorage.setItem('isDiner', "false");
+            localStorage.setItem("token", responseData.data.token);
+            localStorage.setItem("isDiner", "false");
             setIsDiner("false");
             history.push("/EateryLanding");
         } else {
@@ -186,11 +187,10 @@ export default function RegisterEatery() {
         }
     };
 
-
-    if (isDiner === "true" && auth !== null) return <Redirect to="/DinerLanding" />;
-    if (isDiner === "false" && auth !== null) return <Redirect to="/EateryLanding" />;
-
-
+    if (isDiner === "true" && auth !== null)
+        return <Redirect to="/DinerLanding" />;
+    if (isDiner === "false" && auth !== null)
+        return <Redirect to="/EateryLanding" />;
 
     return (
         <AlignCenter>
@@ -222,7 +222,7 @@ export default function RegisterEatery() {
                         onChange={(e) =>
                             setPassword({ value: e.target.value, valid: true })
                         }
-                        onBlur={() => checkValidPassword(password, setPassword)}
+                        onBlur={() => validPassword(password, setPassword)}
                         error={!password.valid}
                         helperText={
                             password.valid
@@ -244,7 +244,13 @@ export default function RegisterEatery() {
                                 valid: true,
                             })
                         }
-                        onBlur={() => validConfirmPassword(password, confirmPassword, setConfirmPassword)}
+                        onBlur={() =>
+                            validConfirmPassword(
+                                password,
+                                confirmPassword,
+                                setConfirmPassword
+                            )
+                        }
                         error={!confirmPassword.valid}
                         helperText={
                             confirmPassword.valid
