@@ -22,11 +22,14 @@ public class EateryController {
     // TODO: Add eatery security check annotation
     public ResponseEntity<JSONObject> eateryCreateVoucher(
             @RequestBody VoucherInput voucher, @RequestHeader(name = "Authorization") String token) {
-        return voucherService.createVoucher(voucher, Long.valueOf(Objects.requireNonNull(jwtUtils.decode(token))));
+                System.out.println(voucher);
+                System.out.println(token);
+        return voucherService.createVoucher(voucher, token);
     }
 
     @RequestMapping(value = "list/vouchers", method = RequestMethod.GET)
-    public ResponseEntity<JSONObject> listEateries(@RequestHeader (name="Authorization") String token) {
-        return voucherService.listVouchers(Long.valueOf(Objects.requireNonNull(jwtUtils.decode(token))));
+    public ResponseEntity<JSONObject> listEateries(@RequestHeader (name="Authorization") String token, 
+    @RequestHeader (name="eateryId") Long eateryId) {
+        return voucherService.listVouchers(token, eateryId);
     }
 }

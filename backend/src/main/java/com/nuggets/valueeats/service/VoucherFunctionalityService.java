@@ -6,6 +6,7 @@ import com.nuggets.valueeats.entity.voucher.Voucher;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
+import com.nuggets.valueeats.utils.JwtUtils;
 import com.nuggets.valueeats.utils.ResponseUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.Objects;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 
 
 @Service
-public class VoucherService {
+public class VoucherFunctionalityService {
     @Autowired
     private RepeatVoucherRepository repeatVoucherRepository;
     @Autowired
@@ -38,8 +39,22 @@ public class VoucherService {
     @Autowired
     private EateryRepository eateryRepository;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Transactional
-    public ResponseEntity<JSONObject> createVoucher(VoucherInput voucherInput, Long eateryId) {
+    public ResponseEntity<JSONObject> createVoucher(VoucherInput voucherInput, String token) {
+
+        String decodedToken = jwtUtils.decode(token);
+
+        if (decodedToken == null) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+
+        }
+        Long eateryId = Long.valueOf(decodedToken);
+
+
         if (voucherInput.getEatingStyle() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Received a null eating style"));
         }
@@ -103,13 +118,34 @@ public class VoucherService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully created voucher"));
     }
 
-    public ResponseEntity<JSONObject> listVouchers(Long eateryId) {
+
+    public ResponseEntity<JSONObject> listVouchers(String token, Long id) {
+
+        String decodedToken = jwtUtils.decode(token);
+
+        Long eateryId;
+
+        if (decodedToken == null) {
+
+            eateryId = id;
+
+        } else {
+            
+            eateryId = Long.valueOf(decodedToken);
+
+        } 
+
+        if (!eateryRepository.existsById(eateryId)) {
+
+            eateryId = id;
+
+        }
         
         Boolean isEateryExit = eateryRepository.existsById(eateryId);
         
         if (isEateryExit == false) {
 
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Eatery does not exist"));
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Eatery does not exist, check your token and eatery Id"));
 
         }
 
