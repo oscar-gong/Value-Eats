@@ -3,6 +3,7 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.controller.model.VoucherInput;
 import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
+import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
@@ -37,6 +38,9 @@ public class VoucherService {
     private RepeatVoucherRepository repeatVoucherRepository;
     @Autowired
     private VoucherRepository voucherRepository;
+
+    @Autowired
+    private DinerRepository dinerRepository;
 
     @Autowired
     private EateryRepository eateryRepository;
@@ -140,7 +144,7 @@ public class VoucherService {
         Boolean isEateryExit = eateryRepository.existsById(eateryId);
         
         if (isEateryExit == false) {
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Eatery does not exist, check your token and eatery Id"));
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Eatery does not exist, the token or eatery Id must be valid"));
         }
 
         ArrayList<Voucher> vouchersList = voucherRepository.findByEateryId(eateryId);
@@ -168,6 +172,54 @@ public class VoucherService {
         
         JSONObject data = new JSONObject(dataMedium);
 
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(ls.toString()));
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
+    }
+
+    public ResponseEntity<JSONObject> dinerListVouchers(String token, Long eateryId) {
+
+        String decodedToken = jwtUtils.decode(token);
+
+        if (decodedToken == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+        }
+
+        Boolean isDinerExit = dinerRepository.existsByToken(token);
+
+        if (isDinerExit == false) {
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Diner does not exist, check your token please"));
+        }
+        
+        Boolean isEateryExit = eateryRepository.existsById(eateryId);
+        
+        if (isEateryExit == false) {
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Eatery does not exist, check your eatery Id please"));
+        }
+
+        ArrayList<Voucher> vouchersList = voucherRepository.findByEateryId(eateryId);
+
+        if (vouchersList == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Eatery does not have any vouchers"));
+        }
+        
+        List<Map<String,String>> ls = new ArrayList<Map<String,String>>();
+
+        for (Voucher v : vouchersList) {
+            Map<String,String> tmp = new HashMap<>();
+            tmp.put("id", Long.toString(v.getId()));
+            tmp.put("eateryId", Long.toString(v.getEateryId()));
+            tmp.put("eatingStyle", v.getEatingStyle().toString());
+            tmp.put("discount", Double.toString(v.getDiscount()));
+            tmp.put("quantity", Integer.toString(v.getQuantity()));
+            tmp.put("start", v.getQuantity().toString());
+            tmp.put("end", v.getEnd().toString());
+            ls.add(tmp);
+        }
+        Map<String, List<Map<String,String>>> dataMedium = new HashMap<>();
+        
+        dataMedium.put("voucherList", ls);
+        
+        JSONObject data = new JSONObject(dataMedium);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 }

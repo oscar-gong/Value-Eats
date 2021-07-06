@@ -23,23 +23,33 @@ public class EateryController {
     // TODO: Add eatery security check annotation
     public ResponseEntity<JSONObject> eateryCreateVoucher(
             @RequestBody VoucherInput voucher, @RequestHeader(name = "Authorization") String token) {
-                System.out.println(voucher);
-                System.out.println(token);
         return voucherService.createVoucher(voucher, token);
     }
 
     // An eatery list its own active vouchers
     // Check if the token is an eatery, then check the eateryId.
-    @RequestMapping(value = "eatery/listVouchers", method = RequestMethod.GET)
+    @RequestMapping(value = "eatery/list/vouchers", method = RequestMethod.GET)
     public ResponseEntity<JSONObject> EateryListVouchers (@RequestHeader (name="Authorization") String token, 
     @RequestHeader (name="eateryId") Long eateryId) {
-        return voucherService.listVouchers(token, eateryId);
+        return voucherService.eateryListVouchers(token, eateryId);
     }
 
     // A diner view the target resturant for all past or current vouchers
-    @RequestMapping(value = "diner/listVouchers", method = RequestMethod.GET)
+    @RequestMapping(value = "diner/list/vouchers", method = RequestMethod.GET)
     public ResponseEntity<JSONObject> DinerListVouchers(@RequestHeader (name="Authorization") String token, 
     @RequestHeader (name="eateryId") Long eateryId) {
-        return voucherService.listVouchers(token, eateryId);
+        return voucherService.dinerListVouchers(token, eateryId);
     }
 }
+
+/*
+{
+  "eatingStyle":"DineIn",
+  "discount":"0.8",
+  "quantity":"1",
+  "isRecurring":"false",
+  "day":"1",
+  "startMinute":"10",
+  "endMinute":"20"
+}
+*/
