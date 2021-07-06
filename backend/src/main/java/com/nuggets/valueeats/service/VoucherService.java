@@ -30,7 +30,7 @@ import java.util.HashMap;
 
 
 @Service
-public class VoucherFunctionalityService {
+public class VoucherService {
     @Autowired
     private RepeatVoucherRepository repeatVoucherRepository;
     @Autowired
