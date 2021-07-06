@@ -3,6 +3,7 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.controller.model.VoucherInput;
 import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
+import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 import com.nuggets.valueeats.utils.ResponseUtils;
@@ -13,12 +14,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 @Service
 public class VoucherService {
@@ -26,6 +34,9 @@ public class VoucherService {
     private RepeatVoucherRepository repeatVoucherRepository;
     @Autowired
     private VoucherRepository voucherRepository;
+
+    @Autowired
+    private EateryRepository eateryRepository;
 
     @Transactional
     public ResponseEntity<JSONObject> createVoucher(VoucherInput voucherInput, Long eateryId) {
@@ -90,5 +101,31 @@ public class VoucherService {
         voucherRepository.save(newVoucher);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully created voucher"));
+    }
+
+    public ResponseEntity<JSONObject> listVouchers(Long eateryId) {
+        
+        Boolean isEateryExit = eateryRepository.existsById(eateryId);
+        
+        if (isEateryExit == false) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Eatery does not exist"));
+
+        }
+
+        ArrayList<Object> vouchersList = voucherRepository.findByEateryId(eateryId);
+
+        if (vouchersList == null) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Eatery does not have any vouchers"));
+
+        }
+        Map<String, ArrayList<Object>> dataMedium = new HashMap<>();
+
+        dataMedium.put("voucherList", vouchersList);
+        
+        JSONObject data = new JSONObject(dataMedium);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 }

@@ -24,4 +24,9 @@ public class EateryController {
             @RequestBody VoucherInput voucher, @RequestHeader(name = "Authorization") String token) {
         return voucherService.createVoucher(voucher, Long.valueOf(Objects.requireNonNull(jwtUtils.decode(token))));
     }
+
+    @RequestMapping(value = "list/vouchers", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> listEateries(@RequestHeader (name="Authorization") String token) {
+        return voucherService.listVouchers(Long.valueOf(Objects.requireNonNull(jwtUtils.decode(token))));
+    }
 }
