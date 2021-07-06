@@ -114,9 +114,8 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
             {/* TODO FIX THIS BELOW */}
             {
               isOwner &&
-              <IconButton>
-                <EditIcon fontSize="large"
-                onClick={() => setOpenEditCreateReview(true)}/>
+              <IconButton onClick={() => setOpenEditCreateReview(true)}>
+                <EditIcon fontSize="large" />
               </IconButton>
             }
             {
