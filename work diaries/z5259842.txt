@@ -61,3 +61,28 @@ Week 4
 - What is planned for the next period:
     - make a start on sprint 2 which includes creating the eatery profile, diner profile and reviews 
     - refactor code if necessary
+
+Week 5
+- What was planned for the period since the last work diary entry:
+    - complete Sprint 2 by the end of the week which encompassed adding reviews, ratings, editing and deleting reviews, showing reviews on the profile page and an eatery viewing their own profile
+
+- What we finished:
+    - Sprint 2 was finished by the end of the week
+    - This sprint, I worked on frontend per usual. I worked on the diner landing page which displays all eateries and recommended eateries. The recommended eateries have not been implemented yet but currently the placeholders are just a list of eateries, which will be replaced in the future sprints.
+    - I also worked on the profile of the eatery ( from a diners perspective and an eatery owners perspective ) to display its details and reviews + placeholders for vouchers in the next sprint
+    - Creating, deleting, editing reviews + diner profile were completed by Ben on the frontend
+    - Backend was completed by my other teammates
+    - cleaned up branches from sprint 1
+
+- Obstacles that we faced:
+    - There were no major obstacles faced
+    - initally passed token around through props, changed it to useContext + localStorage after considering persistency and ease of use without needing to pass a token prop everytime
+
+- What was not finished:
+    - update eatery profile was not finished so it will be moved to the next sprint 
+    - the UI still looks a bit rough but hoping to improve it in the coming week
+
+- What is planned for the next period:
+    - Start and complete Sprint 3 which mainly focuses upon eatery providing vouchers
+    - Work on the UI, starting from Login screen
+    - refactor code + test 

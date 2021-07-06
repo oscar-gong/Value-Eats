@@ -46,3 +46,31 @@ Week 4
  at the bottom of the screen and will automatically disappear after a set amount of time.
  - Furthermore, I constructued the frontend for our landing pages making use of a component for a nav bar that Oscar had previously made. Then I connected the frontend to the backend logic
  to finish the logout feature, after making some backend changes to parts that were not working.
+
+Week 5
+What was planned for the period since the last work diary
+ - Our plan since the period were to complete the diner functionality portion of the program, allowing diners to 
+interact with restaurants, write reviews for them, edit and delete their own reviews as well as update their profiles.
+
+What was finished
+ - We successfully completed the sprint within the allocated timeframe. This involved completion of both the frontend 
+and backend for all of the features described. This sprint, the frontend was a lot of work than the backend, as opposed 
+to last time where the opposite was true. The fontend creation involved the styling and integration of 3 brand new pages. 
+I focused primarily on the frontend, specifically handling the creation, editing and deletion of reviews as well as allowing 
+the diner to update their profile.
+
+What were the main technical and non technical obstacles and how they were overcome
+ - This sprint went a lot smoother than the previous, and this was as a result of two factors. After the demonstration, we conducted our retrospective where 
+ we discussed what we could do to improve our workflow. Whilst many useful things came from this such as the importance of good branch naming conventions the 
+ most important one that increased the speed of workflow was the separation of tasks such that they did not overlap and working with not against each others code. 
+ As a result, we did a lot less refactoring and consciously tried to search for other peoples components or functions before going ahead or writing our own or 
+ refactoring someone elses. This allowed us to work a lot faster, as there was less disagreements and less merge conflicts. This could also be put down to the 
+ fact that our structure was well set up so these processes were simplified. If we did have questions about each others implementations, we were able to resolve 
+ them quicker than last week.This was likely due to us becoming more familiar with each others code styles and better leveraging JIRA to work out who is currently 
+ working on what task so we know who to ask for when we have issues.
+
+What was not finished
+ - The only thing this sprint we didn’t finish was the update eatery profile. This was primarily due to us kind of forgetting about implementing it frontend. The backend endpoint is complete for it and the structure is created as a component in the frontend. We will ensure this doesn’t affect the success of the project by quickly resolving the issue early in the next sprint
+
+What is planned for next sprint
+ - Next sprint we aim to complete the voucher functionality of our application as well as resolve the story we did not finish in sprint 2.

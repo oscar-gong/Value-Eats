@@ -5,6 +5,8 @@ import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
+import com.nuggets.valueeats.entity.voucher.Voucher;
 import com.nuggets.valueeats.service.HealthService;
 import com.nuggets.valueeats.utils.JwtUtils;
 import org.json.simple.JSONObject;
@@ -64,5 +66,15 @@ public class HealthController {
     @CheckToken
     public String testAuth(@RequestBody final Diner diner, @RequestHeader (name="Authorization") String token) {
         return token;
+    }
+    
+    @RequestMapping(value = "health/list/repeatVoucher", method = RequestMethod.GET)
+    public List<RepeatedVoucher> listRepeatVouchers() {
+        return healthService.listRepeatVoucher();
+    }
+
+    @RequestMapping(value = "health/list/voucher", method = RequestMethod.GET)
+    public List<Voucher> listVouchers() {
+        return healthService.listVoucher();
     }
 }

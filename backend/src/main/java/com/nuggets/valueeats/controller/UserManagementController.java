@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public final class UserManagementController {
     @Autowired
     private UserManagementService userManagementService;
-    
+
     @Autowired
     private CuisineService cuisineService;
 
@@ -39,7 +40,7 @@ public final class UserManagementController {
     public ResponseEntity<JSONObject> registerEatery(@RequestBody final Eatery eatery) {
         return userManagementService.registerEatery(eatery);
     }
-    
+
     @RequestMapping(value = "update/diner", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> updateDiner(@RequestBody final Diner diner, @RequestHeader (name="Authorization") String token) {
         return userManagementService.updateDiner(diner, token);
@@ -61,9 +62,13 @@ public final class UserManagementController {
         return cuisineService.listCuisines();
     }
 
-    @RequestMapping(value = "eatery/{id}/details", method = RequestMethod.GET)
-    public ResponseEntity<JSONObject> getEateryProfile(@PathVariable String id, @RequestHeader (name="Authorization") String token) {
+    @RequestMapping(value = "eatery/profile/details", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> getEateryProfile(@RequestParam(required=false) Long id, @RequestHeader (name="Authorization") String token) {
         return userManagementService.getEateryProfile(id, token);
     }
 
+    @RequestMapping(value = "diner/profile/details", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> getDinerProfile(@RequestHeader (name="Authorization") String token) {
+        return userManagementService.getDinerProfile(token);
+    }
 }
