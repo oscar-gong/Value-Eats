@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
-
+import java.util.Optional;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -221,5 +221,77 @@ public class VoucherService {
         JSONObject data = new JSONObject(dataMedium);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
+    }
+
+    // Take a voucher and an eatery token as input.
+    public ResponseEntity<JSONObject> editVoucher(Voucher voucher, String token) {
+        if (voucher == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Please enter the valid information of a voucher"));
+        }
+
+        String decodedToken = jwtUtils.decode(token);
+
+        if (decodedToken == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+        }
+
+        Long eateryId = Long.valueOf(decodedToken);
+
+        Boolean isEateryExit = eateryRepository.existsById(eateryId);
+        
+        if (isEateryExit == false) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Eatery does not exist, check your token again"));
+        
+        }
+
+        if (voucher.getEateryId() != eateryId) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher and eatery does not match, check again"));
+        
+        }
+        
+        Long voucherId = voucher.getId();
+
+        Optional<Voucher> voucherInDb = voucherRepository.findById(voucherId);
+
+        if (!voucherInDb.isPresent()) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher does not exist, check again"));
+
+        }
+
+        Voucher voucherDb = voucherInDb.get();
+
+        if (voucher.getEatingStyle() != null) {
+            
+            voucherDb.setEatingStyle(voucher.getEatingStyle());
+            
+        }
+
+        if (voucher.getDiscount() != null) {
+            if (voucher.getDiscount() <= 0 || voucher.getDiscount() > 100) {
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Discount is invalid"));
+                
+            }
+            voucherDb.setDiscount(voucher.getDiscount());
+        }
+
+        if (voucher.getQuantity() != null) {
+            if (voucher.getQuantity() < 1) {
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid voucher quantity"));
+            
+            }
+            voucherDb.setQuantity(voucher.getQuantity());
+        }
+
+        if (voucher.get()!= null) {
+            if (voucher.getStartMinute() == null || voucher.getEndMinute() == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid dates"));
+            }
+        }
+
     }
 }

@@ -40,6 +40,12 @@ public class EateryController {
     @RequestHeader (name="eateryId") Long eateryId) {
         return voucherService.dinerListVouchers(token, eateryId);
     }
+
+    @RequestMapping(value = "eatery/edit/voucher", method = RequestMethod.POST)
+    public ResponseEntity<JSONObject> DinerListVouchers(@RequestBody VoucherInput voucher,
+    @RequestHeader (name="eateryId") String token) {
+        return voucherService.editVoucher(voucher, token);
+    }
 }
 
 /*
