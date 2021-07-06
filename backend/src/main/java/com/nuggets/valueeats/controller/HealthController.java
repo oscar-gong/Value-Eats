@@ -1,5 +1,6 @@
 package com.nuggets.valueeats.controller;
 
+import com.nuggets.valueeats.controller.decorator.CheckToken;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.Review;
@@ -8,14 +9,16 @@ import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
 import com.nuggets.valueeats.service.HealthService;
 import com.nuggets.valueeats.utils.JwtUtils;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
-public final class HealthController {
+public class HealthController {
     @Autowired
     private HealthService healthService;
     @Autowired
@@ -59,6 +62,12 @@ public final class HealthController {
         return healthService.listCuisines();
     }
 
+    @RequestMapping(value = "test/checktoken", method = RequestMethod.POST)
+    @CheckToken
+    public String testAuth(@RequestBody final Diner diner, @RequestHeader (name="Authorization") String token) {
+        return token;
+    }
+    
     @RequestMapping(value = "health/list/repeatVoucher", method = RequestMethod.GET)
     public List<RepeatedVoucher> listRepeatVouchers() {
         return healthService.listRepeatVoucher();
