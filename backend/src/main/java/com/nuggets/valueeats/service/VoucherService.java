@@ -427,7 +427,7 @@ public class VoucherService {
 
     private Long getNextVoucherId(){
         Long newId;
-        if (repeatVoucherRepository.findMaxId() != null && voucherRepository != null){
+        if (repeatVoucherRepository.findMaxId() != null && voucherRepository.findMaxId() != null){
             newId = Math.max((repeatVoucherRepository.findMaxId()+1), (voucherRepository.findMaxId()+1));
         } else if (repeatVoucherRepository.findMaxId() != null) {
             newId = repeatVoucherRepository.findMaxId()+1;
