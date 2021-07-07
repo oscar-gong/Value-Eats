@@ -3,7 +3,7 @@ import UploadPhotos from "./UploadPhotos";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
 import { AlignCenter } from "../styles/AlignCenter";
-import { Box, TextField, Button } from "@material-ui/core";
+import { Box, TextField, Button, makeStyles } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import {
     validEmail,
@@ -14,6 +14,15 @@ import { usePlacesWidget } from "react-google-autocomplete";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { StoreContext } from "../utils/store";
 import { validRequired } from "../utils/helpers";
+
+const useStyles = makeStyles({
+    root: {
+        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+    },
+    subtitle: {
+        color: "#ff855b",
+    },
+});
 
 export default function EateryForm({
     email,
@@ -38,7 +47,7 @@ export default function EateryForm({
     const setAlertOptions = context.alert[1];
     const token = context.auth[0];
     const [cuisineList, setCuisineList] = useState([]);
-
+    const classes = useStyles();
     //set true for demos
     const useGoogleAPI = false;
 
@@ -90,7 +99,7 @@ export default function EateryForm({
         <AlignCenter>
             <FloatBox display="flex" flexDirection="column" alignItems="center">
                 <Box pt={2}>
-                    <Subtitle>
+                    <Subtitle className={classes.subtitle}>
                         {isRegister === true
                             ? "Register Eatery"
                             : "Update Eatery"}
@@ -243,6 +252,7 @@ export default function EateryForm({
                         color="primary"
                         endIcon={<SendIcon />}
                         onClick={submitForm}
+                        className={classes.root}
                     >
                         Register
                     </Button>
