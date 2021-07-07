@@ -323,6 +323,7 @@ public class UserManagementService {
         
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("name", eateryDb.getAlias());
+        map.put("email", eateryDb.getEmail());
         map.put("rating", df.format(averageRating));
         map.put("address", eateryDb.getAddress());
         map.put("menuPhotos", eateryDb.getMenuPhotos());
