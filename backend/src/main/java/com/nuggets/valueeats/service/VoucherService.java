@@ -491,11 +491,6 @@ public class VoucherService {
                     
                     repeatVoucherRepository.save(repeatedVoucher);
 
-                    if (repeatedVoucher.getQuantity() < 1) {
-
-                        repeatVoucherRepository.delete(repeatedVoucher);
-                        
-                    }
                 }
 
                 bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);
