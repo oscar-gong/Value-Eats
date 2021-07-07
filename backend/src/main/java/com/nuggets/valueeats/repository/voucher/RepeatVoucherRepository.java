@@ -12,5 +12,8 @@ public interface RepeatVoucherRepository extends JpaRepository<RepeatedVoucher, 
     @Query("select e from RepeatedVoucher e where e.nextUpdate < CURRENT_DATE")
     List<RepeatedVoucher> findOverdueRepeatVouchers();
 
+    @Query("select max(id) from RepeatedVoucher")
+    Long findMaxId();
+
     void deleteById(Long id);
 }

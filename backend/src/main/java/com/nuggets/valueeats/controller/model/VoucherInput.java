@@ -1,9 +1,10 @@
 package com.nuggets.valueeats.controller.model;
 
+import java.util.Date;
+
 import com.nuggets.valueeats.entity.voucher.VoucherEatingStyle;
 import lombok.Data;
 
-import java.time.DayOfWeek;
 
 @Data
 public class VoucherInput {
@@ -15,7 +16,7 @@ public class VoucherInput {
     private Integer quantity;
 
     private Boolean isRecurring;
-    private DayOfWeek day;
+    private Date date;
     private Integer startMinute;
     private Integer endMinute;
 }
