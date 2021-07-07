@@ -481,14 +481,21 @@ public class VoucherService {
                 RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
 
                 if (repeatedVoucher.getQuantity() < 1) {
+                    repeatVoucherRepository.delete(repeatedVoucher);
                     
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enough voucher for booking"));
                 
                 } else {
 
                     repeatedVoucher.setQuantity(repeatedVoucher.getQuantity() - 1);
-
+                    
                     repeatVoucherRepository.save(repeatedVoucher);
+
+                    if (repeatedVoucher.getQuantity() < 1) {
+
+                        repeatVoucherRepository.delete(repeatedVoucher);
+                        
+                    }
                 }
 
                 bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);
@@ -512,6 +519,8 @@ public class VoucherService {
 
             if (voucher.getQuantity() < 1) {
 
+                voucherRepository.delete(voucher);
+                
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enoufh voucher for booking"));
             
             } else {
@@ -519,6 +528,12 @@ public class VoucherService {
                 voucher.setQuantity(voucher.getQuantity() - 1);
                 
                 voucherRepository.save(voucher);
+
+                if (voucher.getQuantity() < 1) {
+
+                    voucherRepository.delete(voucher);
+                    
+                }
             }
 
             bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);

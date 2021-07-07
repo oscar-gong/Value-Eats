@@ -21,4 +21,6 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
 
   @Query("select max(id) from Voucher")
   Long findMaxId();
+
+  void deleteById(Long id);
 }
