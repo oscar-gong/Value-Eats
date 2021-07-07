@@ -1,8 +1,11 @@
 package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.controller.model.VoucherInput;
+import com.nuggets.valueeats.entity.BookingRecord;
+import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
+import com.nuggets.valueeats.repository.BookingRecordRepository;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
@@ -46,6 +49,9 @@ public class VoucherService {
 
     @Autowired
     private EateryRepository eateryRepository;
+
+    @Autowired
+    private BookingRecordRepository bookingRecordRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -437,5 +443,73 @@ public class VoucherService {
             newId = (long) 0;
         }
         return newId;
+    }
+
+    // Input: voucher id && diner token.
+    public ResponseEntity<JSONObject> bookVoucher (Long voucherId, String token) {
+        
+        String decodedToken = jwtUtils.decode(token);
+
+        if (decodedToken == null) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+
+        }
+
+        Diner dinerInDb = dinerRepository.findByToken(token);
+
+        if (dinerInDb == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+        }
+        
+        Long dinerId = dinerInDb.getId();
+
+        boolean isExist = voucherRepository.existsById(voucherId);
+
+
+        BookingRecord bookingRecord = new BookingRecord();
+
+        if (isExist == false) {
+            isExist = repeatVoucherRepository.existsById(voucherId);
+
+            if (isExist == false) {
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher does not exist"));
+            
+            } else {  
+            
+                RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
+                bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);
+                bookingRecord.setDinerId(dinerId);
+                bookingRecord.setEateryId(repeatedVoucher.getEateryId());
+                bookingRecord.setEatingStyle(repeatedVoucher.getEatingStyle());
+
+                String code = jwtUtils.encode(String.valueOf(bookingRecord.getId()));
+
+                bookingRecord.setDiscount(repeatedVoucher.getDiscount());
+                bookingRecord.setDate(repeatedVoucher.getDate());
+                bookingRecord.setStart(repeatedVoucher.getStart());
+                bookingRecord.setEnd(repeatedVoucher.getEnd());
+            }   
+        } else {
+            Voucher voucher = voucherRepository.getById(voucherId);
+
+            bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);
+            bookingRecord.setDinerId(dinerId);
+            bookingRecord.setEateryId(voucher.getEateryId());
+            bookingRecord.setEatingStyle(voucher.getEatingStyle());
+
+            String code = jwtUtils.encode(String.valueOf(bookingRecord.getId()));
+
+            bookingRecord.setDiscount(voucher.getDiscount());
+            bookingRecord.setDate(voucher.getDate());
+            bookingRecord.setStart(voucher.getStart());
+            bookingRecord.setEnd(voucher.getEnd());
+        }
+
+        bookingRecordRepository.save(bookingRecord);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully booked: " + bookingRecord.getCode()));
+
     }
 }

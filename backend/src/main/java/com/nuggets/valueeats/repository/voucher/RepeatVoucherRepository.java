@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RepeatVoucherRepository extends JpaRepository<RepeatedVoucher, Long> {
@@ -15,6 +16,10 @@ public interface RepeatVoucherRepository extends JpaRepository<RepeatedVoucher, 
 
     @Query("select max(id) from RepeatedVoucher")
     Long findMaxId();
+
+    Optional<RepeatedVoucher> findById(Long id);
+
+    boolean existsById(Long id);
 
     void deleteById(Long id);
 

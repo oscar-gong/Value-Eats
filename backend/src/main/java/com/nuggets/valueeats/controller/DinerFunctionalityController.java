@@ -10,6 +10,7 @@ import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.service.CuisineService;
 import com.nuggets.valueeats.service.UserManagementService;
+import com.nuggets.valueeats.service.VoucherService;
 import com.nuggets.valueeats.service.DinerFunctionalityService;
 
 import org.json.simple.JSONObject;
@@ -33,6 +34,9 @@ public final class DinerFunctionalityController {
     private CuisineService cuisineService;
 
     @Autowired
+    private VoucherService voucherService;
+
+    @Autowired
     private DinerFunctionalityService dinerFunctionalityService;
 
     @RequestMapping(value = "diner/createreview", method = RequestMethod.POST)
@@ -53,5 +57,10 @@ public final class DinerFunctionalityController {
     @RequestMapping(value = "diner/editreview", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> editReview(@RequestBody Review review, @RequestHeader (name="Authorization") String token){
         return dinerFunctionalityService.editReview(review, token);
+    }
+
+    @RequestMapping(value = "diner/book", method = RequestMethod.POST)
+    public ResponseEntity<JSONObject> bookVoucher(@RequestHeader (name="voucherId") Long voucherId, @RequestHeader (name="Authorization") String token){
+        return voucherService.bookVoucher(voucherId, token);
     }
 }
