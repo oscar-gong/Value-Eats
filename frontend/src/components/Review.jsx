@@ -12,35 +12,14 @@ import Carousel from 'react-material-ui-carousel';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
-  photo: {
-      color: "black",
-      transition: "transform 0.15s ease-in-out",
-      "&:hover": { transform: "scale3d(1.02, 1.02, 1)", maxHeight: "none" },
-      width: "150px",
-      height: "150px",
-      boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
-      objectFit: "contain",
-      backgroundColor: "white",
-  },
   photoCarousel: {
-      width: "400px",
-      height: "400px",
-      boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
+      justifyContent: "center",
+      width: "50%",
+      height: "50%",
       objectFit: "contain",
-      backgroundColor: "white",
-      padding: "100px",
-  },
-  gridContainer: {
-      background: "rgba(255, 255, 255, 0.2)",
-      marginTop: "10px",
-      borderRadius: "10px",
-      
-  },
-  subtitle: {
-      background: "rgba(255, 255, 255, 0.5)",
-      borderRadius: "10px",
-      margin: "10px 0px",
-      padding: "5px 0px",
+      backgroundColor: "rgba(255, 255, 255, 0.5)",
+      boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
+      padding: "10px"
   }
 });
 // export default function Review ({ token, review }) {
@@ -134,26 +113,30 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
           </Box>
         }
         {
-          editCreateReviewImages.length !== 0 &&
-          <Carousel
-            navButtonsProps={{
-                style: {
-                    opacity: "50%",
-                },
-            }}
-            navButtonsAlwaysVisible={true}
-            autoPlay={false}
-          >
-            {
-              editCreateReviewImages.map((imgdata, idx) => {
-                return (
-                  // Temp REPLACE WITH A CAROUSEL LATER
-                  <img key={idx} alt="review photos" src={imgdata} className={classes.photoCarousel}></img>
-                );
-              })
-            } 
-          </Carousel>
-        }
+          editCreateReviewImages.length !== 0 && (
+          <div style={{stop: "25%", margin: "auto", outline:"none"}}>
+            <Carousel
+              navButtonsProps={{
+                  style: {
+                      opacity: "50%",
+                  },
+              }}
+              navButtonsAlwaysVisible={false}
+              autoPlay={false}
+            >
+              {
+                editCreateReviewImages.map((imgdata, idx) => {
+                  return (
+                    <img key={idx} 
+                    alt="review photos" 
+                    src={imgdata} 
+                    className={classes.photoCarousel}></img>
+                  );
+                })
+              } 
+            </Carousel>
+          </div>
+        )}
       </Box>
       <ConfirmModal open={openDeleteModal}
         handleClose={handleCloseModal}
