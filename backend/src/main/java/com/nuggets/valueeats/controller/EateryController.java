@@ -19,6 +19,29 @@ public class EateryController {
     @Autowired
     private JwtUtils jwtUtils;
 
+    /*
+    {
+  "eateryId":"2",
+  "eatingStyle": "DineIn",
+  "discount": "80",
+  "quantity": "5",
+  "isRecurring": "true",
+  "date": "2021-07-31",
+  "startMinute": "0",
+  "endMinute": "1400"
+}
+{
+  "eateryId":"3",
+  "eatingStyle": "Takeaway",
+  "discount": "80",
+  "quantity": "5",
+  "isRecurring": "false",
+  "date": "2021-07-31",
+  "startMinute": "0",
+  "endMinute": "1400"
+}
+*/
+
     @RequestMapping(value = "eatery/voucher", method = RequestMethod.POST)
     // TODO: Add eatery security check annotation
     public ResponseEntity<JSONObject> eateryCreateVoucher(
