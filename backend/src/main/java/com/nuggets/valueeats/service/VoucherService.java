@@ -482,11 +482,11 @@ public class VoucherService {
 
                 if (repeatedVoucher.getQuantity() < 1) {
                     
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enoufh voucher for booking"));
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enough voucher for booking"));
                 
                 } else {
 
-                    repeatedVoucher.setQuantity(repeatedVoucher.getQuantity());
+                    repeatedVoucher.setQuantity(repeatedVoucher.getQuantity() - 1);
 
                     repeatVoucherRepository.save(repeatedVoucher);
                 }
@@ -516,7 +516,7 @@ public class VoucherService {
             
             } else {
 
-                voucher.setQuantity(voucher.getQuantity());
+                voucher.setQuantity(voucher.getQuantity() - 1);
                 
                 voucherRepository.save(voucher);
             }
@@ -538,7 +538,13 @@ public class VoucherService {
 
         bookingRecordRepository.save(bookingRecord);
 
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully booked: " + bookingRecord.getCode()));
+        Map<String,String> dataMedium = new HashMap<>();
+
+        dataMedium.put("code", bookingRecord.getCode());
+
+        JSONObject data = new JSONObject(dataMedium);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully booked", data));
 
     }
 }
