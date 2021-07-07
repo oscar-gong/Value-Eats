@@ -14,8 +14,8 @@ import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles({
   photoCarousel: {
       justifyContent: "center",
-      width: "50%",
-      height: "50%",
+      width: "35vw",
+      height: "200px",
       objectFit: "contain",
       backgroundColor: "rgba(255, 255, 255, 0.5)",
       boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
@@ -114,7 +114,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
         }
         {
           editCreateReviewImages.length !== 0 && (
-          <div style={{stop: "25%", margin: "auto", outline:"none"}}>
+          <div style={{top: "25%", margin: "auto", outline:"none", display: "flex", justifyContent: "center"}}>
             <Carousel
               navButtonsProps={{
                   style: {
