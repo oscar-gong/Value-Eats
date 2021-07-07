@@ -9,7 +9,7 @@ import ConfirmModal from './ConfirmModal';
 import EditCreateReview from "../components/EditCreateReview";
 import { StoreContext } from "../utils/store";
 import Carousel from 'react-material-ui-carousel';
-import { Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
   photo: {
@@ -114,9 +114,8 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
             {/* TODO FIX THIS BELOW */}
             {
               isOwner &&
-              <IconButton>
-                <EditIcon fontSize="large"
-                onClick={() => setOpenEditCreateReview(true)}/>
+              <IconButton onClick={() => setOpenEditCreateReview(true)}>
+                <EditIcon fontSize="large" />
               </IconButton>
             }
             {

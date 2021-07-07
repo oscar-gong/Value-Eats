@@ -153,7 +153,7 @@ export default function DinerLanding({ token }) {
                                                 </Grid>
                                                 <Grid item xs={4}>
                                                     <StarRating
-                                                        rating={item[i].rating}
+                                                        rating={parseFloat(item[i].rating)}
                                                     />
                                                 </Grid>
                                             </Grid>
@@ -207,7 +207,7 @@ export default function DinerLanding({ token }) {
                             <Grid item>
                                 <Grid item container>
                                     <Grid item>
-                                        <StarRating rating={item.rating} />
+                                        <StarRating rating={parseFloat(item.rating)} />
                                     </Grid>
                                     <Grid
                                         item

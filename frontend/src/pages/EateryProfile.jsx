@@ -99,7 +99,7 @@ export default function EateryProfile() {
         if (isDiner !== "false") {
             getUser();
         }
-      }, []);
+      }, [auth, isDiner]);
 
     useEffect(() => {
         const getEateryDetails = async () => {
@@ -249,7 +249,7 @@ export default function EateryProfile() {
                         <Typography variant="h3">
                             {eateryDetails.name}
                         </Typography>
-                        <StarRating rating={parseFloat(eateryDetails.rating)} /> {eateryDetails.rating}
+                        <StarRating rating={parseFloat(eateryDetails.rating)} /> {eateryDetails.rating === ".0" ? 0 : eateryDetails.joinrating}
                         <Typography variant="subtitle2">
                             {eateryDetails.address}
                         </Typography>
