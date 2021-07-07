@@ -25,7 +25,10 @@ const useStyles = makeStyles((theme) => ({
     logo: {
         fontSize: '2em',
         fontWeight:"bold",
-        flex: 1
+        flex: 1,
+        '&:hover': {
+            cursor: 'pointer'
+        }
     },
     barSize: {
         flex: 3
@@ -43,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     singleLine: {
         whiteSpace: 'nowrap'
-    },
+    }
   }));
 
 
