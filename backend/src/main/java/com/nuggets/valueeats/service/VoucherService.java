@@ -479,6 +479,18 @@ public class VoucherService {
             } else {  
             
                 RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
+
+                if (repeatedVoucher.getQuantity() < 1) {
+                    
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enoufh voucher for booking"));
+                
+                } else {
+
+                    repeatedVoucher.setQuantity(repeatedVoucher.getQuantity());
+
+                    repeatVoucherRepository.save(repeatedVoucher);
+                }
+
                 bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);
                 bookingRecord.setDinerId(dinerId);
                 bookingRecord.setEateryId(repeatedVoucher.getEateryId());
@@ -486,13 +498,28 @@ public class VoucherService {
 
                 String code = jwtUtils.encode(String.valueOf(bookingRecord.getId()));
 
+                bookingRecord.setCode(code);
+
                 bookingRecord.setDiscount(repeatedVoucher.getDiscount());
                 bookingRecord.setDate(repeatedVoucher.getDate());
                 bookingRecord.setStart(repeatedVoucher.getStart());
                 bookingRecord.setEnd(repeatedVoucher.getEnd());
             }   
         } else {
+            
             Voucher voucher = voucherRepository.getById(voucherId);
+
+
+            if (voucher.getQuantity() < 1) {
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enoufh voucher for booking"));
+            
+            } else {
+
+                voucher.setQuantity(voucher.getQuantity());
+                
+                voucherRepository.save(voucher);
+            }
 
             bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);
             bookingRecord.setDinerId(dinerId);
@@ -500,6 +527,8 @@ public class VoucherService {
             bookingRecord.setEatingStyle(voucher.getEatingStyle());
 
             String code = jwtUtils.encode(String.valueOf(bookingRecord.getId()));
+
+            bookingRecord.setCode(code);
 
             bookingRecord.setDiscount(voucher.getDiscount());
             bookingRecord.setDate(voucher.getDate());
