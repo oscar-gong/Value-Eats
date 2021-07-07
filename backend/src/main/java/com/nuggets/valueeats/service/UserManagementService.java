@@ -1,8 +1,11 @@
 package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
+import com.nuggets.valueeats.entity.voucher.Voucher;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
@@ -11,6 +14,8 @@ import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.repository.UserRepository;
+import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
+import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.ReviewRepository;
@@ -42,6 +47,12 @@ public class UserManagementService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+    
+    @Autowired
+    private VoucherRepository voucherRepository;
+    
+    @Autowired
+    private RepeatVoucherRepository repeatVoucherRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -349,9 +360,48 @@ public class UserManagementService {
         map.put("reviews", reviewsList);
         map.put("cuisines", eateryDb.getCuisines());
 
-        // TODO: Get Voucher PLACEHOLDERS FOR VOUCHER
-        // map.put("vouchers", voucherList);
+        ArrayList<Object> combinedVoucherList = new ArrayList<Object>();
+        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findByEateryId(eateryDb.getId());
+        ArrayList<Voucher> vouchersList = voucherRepository.findByEateryId(eateryDb.getId());
+        for (RepeatedVoucher v:repeatVouchersList){
+            HashMap<String, Object> voucher = new HashMap<String, Object>();
+            voucher.put("id", v.getId());
+            voucher.put("discount", v.getDiscount());
+            voucher.put("eateryId", v.getEateryId());
+            voucher.put("eatingStyle", v.getEatingStyle());
+            voucher.put("quantity", v.getQuantity());
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+            String strDate = formatter.format(v.getDate());
+            voucher.put("date", strDate);
+            int startHour = v.getStart() / 60; //since both are ints, you get an int
+            int startMinute = v.getStart() % 60;
+            int endHour = v.getEnd() / 60; //since both are ints, you get an int
+            int endMinute = v.getEnd() % 60;
+            voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
+            voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
+            combinedVoucherList.add(voucher);
+        }
 
+        for (Voucher v:vouchersList){
+            HashMap<String, Object> voucher = new HashMap<String, Object>();
+            voucher.put("id", v.getId());
+            voucher.put("discount", v.getDiscount());
+            voucher.put("eateryId", v.getEateryId());
+            voucher.put("eatingStyle", v.getEatingStyle());
+            voucher.put("quantity", v.getQuantity());
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+            String strDate = formatter.format(v.getDate());
+            voucher.put("date", strDate);
+            int startHour = v.getStart() / 60; //since both are ints, you get an int
+            int startMinute = v.getStart() % 60;
+            int endHour = v.getEnd() / 60; //since both are ints, you get an int
+            int endMinute = v.getEnd() % 60;
+            voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
+            voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
+            combinedVoucherList.add(voucher);
+        }
+
+        map.put("vouchers", combinedVoucherList);
 
         JSONObject data = new JSONObject(map);
 

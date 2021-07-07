@@ -28,13 +28,13 @@ public class EateryController {
 
     // An eatery list its own active vouchers
     // Check if the token is an eatery, then check the eateryId.
-    @RequestMapping(value = "eatery/list/vouchers", method = RequestMethod.GET)
+    @RequestMapping(value = "eatery/voucher", method = RequestMethod.GET)
     public ResponseEntity<JSONObject> EateryListVouchers (@RequestParam(required=false) Long id, @RequestHeader (name="Authorization") String token) {
         return voucherService.eateryListVouchers(token, id);
     }
 
     // A diner view the target resturant for all past or current vouchers
-    @RequestMapping(value = "diner/list/vouchers", method = RequestMethod.GET)
+    @RequestMapping(value = "diner/voucher", method = RequestMethod.GET)
     public ResponseEntity<JSONObject> DinerListVouchers(@RequestParam(required=false) Long id, @RequestHeader (name="Authorization") String token) {
         return voucherService.dinerListVouchers(token, id);
     }

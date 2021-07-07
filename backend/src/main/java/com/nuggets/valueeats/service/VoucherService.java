@@ -114,17 +114,7 @@ public class VoucherService {
 
     private ResponseEntity<JSONObject> handleOneOffCreateVoucher(VoucherInput voucherInput, Long eateryId) {
         Voucher newVoucher = new Voucher();
-        Long newId = (long) 0;
-        if (repeatVoucherRepository.findMaxId() != null && voucherRepository.findMaxId() != null){
-            newId = Math.max((repeatVoucherRepository.findMaxId()+1), (voucherRepository.findMaxId()+1));
-        } else if (repeatVoucherRepository.findMaxId() != null) {
-            newId = repeatVoucherRepository.findMaxId()+1;
-        }else if (voucherRepository.findMaxId() != null) {
-            newId = voucherRepository.findMaxId()+1;
-        }else {
-            newId = (long) 0;
-        }
-        newVoucher.setId(newId);
+        newVoucher.setId(getNextVoucherId());
         newVoucher.setEateryId(eateryId);
         newVoucher.setEatingStyle(voucherInput.getEatingStyle());
         newVoucher.setDiscount(voucherInput.getDiscount());
