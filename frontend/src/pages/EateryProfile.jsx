@@ -249,7 +249,7 @@ export default function EateryProfile() {
                         <Typography variant="h3">
                             {eateryDetails.name}
                         </Typography>
-                        <StarRating rating={parseFloat(eateryDetails.rating)} /> {eateryDetails.rating === ".0" ? 0 : eateryDetails.joinrating}
+                        <StarRating rating={parseFloat(eateryDetails.rating)} /> {eateryDetails.rating === ".0" ? 0 : eateryDetails.rating}
                         <Typography variant="subtitle2">
                             {eateryDetails.address}
                         </Typography>
