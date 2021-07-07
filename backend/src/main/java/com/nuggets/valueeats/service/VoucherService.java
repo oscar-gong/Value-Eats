@@ -498,7 +498,8 @@ public class VoucherService {
                 bookingRecord.setEateryId(repeatedVoucher.getEateryId());
                 bookingRecord.setEatingStyle(repeatedVoucher.getEatingStyle());
 
-                String code = jwtUtils.encode(String.valueOf(bookingRecord.getId()));
+                String code = jwtUtils.encode(String.valueOf(bookingRecord.getId() + String.valueOf(repeatedVoucher.getQuantity()
+                + String.valueOf(dinerId))));
 
                 bookingRecord.setCode(code);
 
@@ -536,7 +537,8 @@ public class VoucherService {
             bookingRecord.setEateryId(voucher.getEateryId());
             bookingRecord.setEatingStyle(voucher.getEatingStyle());
 
-            String code = jwtUtils.encode(String.valueOf(bookingRecord.getId()));
+            String code = jwtUtils.encode(String.valueOf(bookingRecord.getId() + String.valueOf(voucher.getQuantity()
+            + String.valueOf(dinerId))));
 
             bookingRecord.setCode(code);
 
