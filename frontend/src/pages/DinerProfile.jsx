@@ -63,7 +63,7 @@ export default function DinerProfile() {
       }
     };
     getUser();
-  }, []);
+  }, [token]);
 
   const handleClose = () => {
     setOpenProfile(false);

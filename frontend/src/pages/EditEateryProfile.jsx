@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
-import { useHistory, Redirect } from "react-router";
+import React, { useContext, useState, useEffect } from "react";
+import NavBar from "../components/Navbar";
 import { StoreContext } from "../utils/store";
 import EateryForm from "../components/EateryForm";
+import { useHistory, Redirect } from "react-router";
 
-export default function RegisterEatery() {
+export default function EditEateryLanding() {
     const defaultState = { value: "", valid: true };
     const [previewImages, setPreviewImages] = useState([]);
     const [images, setImages] = useState([]);
@@ -18,14 +19,45 @@ export default function RegisterEatery() {
     const history = useHistory();
 
     const context = useContext(StoreContext);
-    const setAlertOptions = context.alert[1];
     const [auth, setAuth] = context.auth;
     const [isDiner, setIsDiner] = context.isDiner;
+    const setAlertOptions = context.alert[1];
 
     // set to true for real demos
     const useGoogleAPI = false;
 
-    const registerUser = async () => {
+    useEffect(() => {
+        // on page init, load the users details
+        const getEatery = async () => {
+            const response = await fetch(
+                "http://localhost:8080/eatery/profile/details",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: auth,
+                    },
+                }
+            );
+            const responseData = await response.json();
+            if (response.status === 200) {
+                console.log(responseData);
+                setEateryName({ value: responseData.name, valid: true });
+                setAddress({ value: responseData.address, valid: true });
+                setEmail({ value: responseData.email, valid: true });
+                setCuisines({ value: responseData.cuisines, valid: true });
+                setImages(responseData.menuPhotos);
+                setPreviewImages(responseData.menuPhotos);
+            }
+        };
+        getEatery();
+    }, [auth]);
+
+    if (auth === null) return <Redirect to="/" />;
+    if (isDiner === "true") return <Redirect to="/DinerLanding" />;
+
+    const updateUser = async () => {
         // check register details
         console.log("register");
 
@@ -40,7 +72,7 @@ export default function RegisterEatery() {
         if (useGoogleAPI && address.value === "")
             setAddress({ value: "", valid: false });
 
-        // check that all fields are valid and not empty before registering
+        // check that all fields are valid and not empty before updating
         if (
             !email.valid ||
             !password.valid ||
@@ -57,13 +89,14 @@ export default function RegisterEatery() {
         if ((!address.valid || address.value === "") && useGoogleAPI) {
             return;
         }
-        console.log(images);
-        console.log(cuisines);
-        const response = await fetch("http://localhost:8080/register/eatery", {
+        console.log(images.length);
+
+        const response = await fetch("http://localhost:8080/update/eatery", {
             method: "POST",
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
+                Authorization: auth,
             },
             body: JSON.stringify({
                 alias: eateryName.value,
@@ -72,8 +105,6 @@ export default function RegisterEatery() {
                 password: password.value,
                 cuisines: cuisines.value,
                 menuPhotos: images, // array of data urls
-                profilePic:
-                    "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
             }),
         });
         console.log(response);
@@ -84,10 +115,6 @@ export default function RegisterEatery() {
                 variant: "success",
                 message: responseData.message,
             });
-            setAuth(responseData.data.token);
-            localStorage.setItem("token", responseData.data.token);
-            localStorage.setItem("isDiner", "false");
-            setIsDiner("false");
             history.push("/EateryLanding");
         } else {
             setAlertOptions({
@@ -98,30 +125,29 @@ export default function RegisterEatery() {
         }
     };
 
-    if (isDiner === "true" && auth !== null)
-        return <Redirect to="/DinerLanding" />;
-    if (isDiner === "false" && auth !== null)
-        return <Redirect to="/EateryLanding" />;
-
     return (
-        <EateryForm
-            email={email}
-            setEmail={setEmail}
-            password={password}
-            setPassword={setPassword}
-            confirmPassword={confirmPassword}
-            setConfirmPassword={setConfirmPassword}
-            eateryName={eateryName}
-            setEateryName={setEateryName}
-            address={address}
-            setAddress={setAddress}
-            cuisines={cuisines}
-            setCuisines={setCuisines}
-            setImages={setImages}
-            previewImages={previewImages}
-            setPreviewImages={setPreviewImages}
-            isRegister={true}
-            submitForm={registerUser}
-        />
+        <>
+            <NavBar isDiner={isDiner} />
+            {console.log(eateryName)}
+            <EateryForm
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                confirmPassword={confirmPassword}
+                setConfirmPassword={setConfirmPassword}
+                eateryName={eateryName}
+                setEateryName={setEateryName}
+                address={address}
+                setAddress={setAddress}
+                cuisines={cuisines}
+                setCuisines={setCuisines}
+                setImages={setImages}
+                previewImages={previewImages}
+                setPreviewImages={setPreviewImages}
+                isRegister={false}
+                submitForm={updateUser}
+            />
+        </>
     );
 }

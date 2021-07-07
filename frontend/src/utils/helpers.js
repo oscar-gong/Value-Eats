@@ -22,6 +22,7 @@ export const validPassword = (password, setPassword) => {
 
 export const validConfirmPassword = (password, confirmPassword, setConfirmPassword) => {
     setConfirmPassword({ ...confirmPassword, valid: (password.value === confirmPassword.value) });
+    validRequired(confirmPassword, setConfirmPassword);
 };
 
 export const checkValidPassword = (password) => {

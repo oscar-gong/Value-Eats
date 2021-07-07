@@ -67,10 +67,15 @@ export default function Navbar () {
 
     const handleProfile = () => {
         if (isDiner === "true") {
-            history.push("/dinerProfile");
+            history.push("/DinerProfile");
         } else {
-            history.push("/eateryProfile");
+            history.push("/EateryProfile");
         }
+        handleClose();
+    }
+
+    const handleEditProfile = () => {
+        history.push("/EditEateryProfile");
         handleClose();
     }
 
@@ -146,6 +151,10 @@ export default function Navbar () {
                         {
                             (isDiner === "true") &&
                             <MenuItem onClick={handleClose}>My Vouchers</MenuItem>
+                        }
+                        {
+                            (isDiner === "false") &&
+                            <MenuItem onClick={() => handleEditProfile()}>Edit Profile</MenuItem>
                         }
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>

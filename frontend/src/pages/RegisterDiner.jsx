@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
 import { AlignCenter } from "../styles/AlignCenter";
-import { Box, TextField, Button } from "@material-ui/core";
+import { Box, TextField, Button, makeStyles } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory, Redirect } from "react-router";
@@ -16,6 +16,15 @@ import { StoreContext } from "../utils/store";
 // set to true for real demos
 const useGoogleAPI = false;
 
+const useStyles = makeStyles({
+    root: {
+        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+    },
+    subtitle: {
+        color: "#ff855b",
+    },
+});
+
 export default function RegisterDiner({ setToken }) {
     const defaultState = { value: "", valid: true };
     const [username, setUsername] = useState(defaultState);
@@ -24,7 +33,7 @@ export default function RegisterDiner({ setToken }) {
     const [confirmPassword, setConfirmPassword] = useState(defaultState);
     const [address, setAddress] = useState(defaultState);
     const history = useHistory();
-
+    const classes = useStyles();
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
     const [auth, setAuth] = context.auth;
@@ -79,7 +88,8 @@ export default function RegisterDiner({ setToken }) {
                     email: email.value,
                     address: useGoogleAPI ? address.value : "Sydney",
                     password: password.value,
-                    profilePic: "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+                    profilePic:
+                        "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
                 }),
             }
         );
@@ -91,9 +101,9 @@ export default function RegisterDiner({ setToken }) {
                 message: registerResult.message,
             });
             setAuth(registerResult.data.token);
-            localStorage.setItem('token', registerResult.data.token);
-            setIsDiner('true');
-            localStorage.setItem('isDiner', 'true');
+            localStorage.setItem("token", registerResult.data.token);
+            setIsDiner("true");
+            localStorage.setItem("isDiner", "true");
             history.push("/DinerLanding");
         } else {
             setAlertOptions({
@@ -120,15 +130,18 @@ export default function RegisterDiner({ setToken }) {
         },
     });
 
-    if (isDiner === "true" && auth !== null) return <Redirect to="/DinerLanding" />;
-    if (isDiner === "false" && auth !== null) return <Redirect to="/EateryLanding" />;
-
+    if (isDiner === "true" && auth !== null)
+        return <Redirect to="/DinerLanding" />;
+    if (isDiner === "false" && auth !== null)
+        return <Redirect to="/EateryLanding" />;
 
     return (
         <AlignCenter>
             <FloatBox display="flex" flexDirection="column" alignItems="center">
                 <Box pt={2}>
-                    <Subtitle>Create Account</Subtitle>
+                    <Subtitle className={classes.subtitle}>
+                        Create Account
+                    </Subtitle>
                 </Box>
                 <Box pt={1} width="60%">
                     <TextField
@@ -153,7 +166,10 @@ export default function RegisterDiner({ setToken }) {
                         onChange={(e) =>
                             setEmail({ value: e.target.value, valid: true })
                         }
-                        onBlur={() => {console.log(email); validEmail(email, setEmail)}}
+                        onBlur={() => {
+                            console.log(email);
+                            validEmail(email, setEmail);
+                        }}
                         error={!email.valid}
                         helperText={
                             email.valid ? "" : "Please enter a valid email"
@@ -194,9 +210,7 @@ export default function RegisterDiner({ setToken }) {
                         onChange={(e) =>
                             setPassword({ value: e.target.value, valid: true })
                         }
-                        onBlur={() =>
-                            validPassword(password, setPassword)
-                        }
+                        onBlur={() => validPassword(password, setPassword)}
                         error={!password.valid}
                         helperText={
                             password.valid
@@ -242,6 +256,7 @@ export default function RegisterDiner({ setToken }) {
                         endIcon={<SendIcon />}
                         onKeyPress={handleKeyPress}
                         onClick={registerDiner}
+                        className={classes.root}
                     >
                         Sign Up
                     </Button>
