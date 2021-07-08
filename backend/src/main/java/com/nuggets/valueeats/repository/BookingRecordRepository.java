@@ -15,5 +15,7 @@ public interface BookingRecordRepository extends JpaRepository<BookingRecord, Lo
   Optional<BookingRecord> findById(Long id);
 
   boolean existsById(Long id);
+  
+  boolean existsByCode(String code);
 
 }

@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -498,9 +499,7 @@ public class VoucherService {
                 bookingRecord.setEateryId(repeatedVoucher.getEateryId());
                 bookingRecord.setEatingStyle(repeatedVoucher.getEatingStyle());
 
-                String code = jwtUtils.encode(String.valueOf(bookingRecord.getId()));
-
-                bookingRecord.setCode(code);
+                bookingRecord.setCode(generateRandomCode());
 
                 bookingRecord.setDiscount(repeatedVoucher.getDiscount());
                 bookingRecord.setDate(repeatedVoucher.getDate());
@@ -536,9 +535,7 @@ public class VoucherService {
             bookingRecord.setEateryId(voucher.getEateryId());
             bookingRecord.setEatingStyle(voucher.getEatingStyle());
 
-            String code = jwtUtils.encode(String.valueOf(bookingRecord.getId()));
-
-            bookingRecord.setCode(code);
+            bookingRecord.setCode(generateRandomCode());
 
             bookingRecord.setDiscount(voucher.getDiscount());
             bookingRecord.setDate(voucher.getDate());
@@ -555,6 +552,13 @@ public class VoucherService {
         JSONObject data = new JSONObject(dataMedium);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully booked", data));
+    }
 
+    private String generateRandomCode() {
+        String uuid = UUID.randomUUID().toString().substring(0, 5);
+        while (bookingRecordRepository.existsByCode(uuid)) {
+            uuid = UUID.randomUUID().toString().substring(0, 5);
+        }
+        return uuid;
     }
 }
