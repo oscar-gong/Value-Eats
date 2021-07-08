@@ -61,11 +61,11 @@ export default function EateryLanding() {
             mb={5}
             overflow="auto"
             >
-            <EateryVoucher discount={50} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher discount={50} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher discount={50} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher discount={50} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher discount={50} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher discount={5} isOneOff={true} isDineIn={false} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher discount={50} isOneOff={true} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
           </Box>
         </Box>
         <Box mb={5}

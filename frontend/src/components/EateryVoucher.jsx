@@ -9,7 +9,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 
-export default function EateryVoucher({voucherId, discount, isDineIn, vouchersLeft, timeRemaining}) {
+export default function EateryVoucher({voucherId, isOneOff, discount, isDineIn, vouchersLeft, timeRemaining}) {
   const context = useContext(StoreContext);
   const auth = context.auth[0];
   const isDiner = context.isDiner[0];
@@ -54,8 +54,12 @@ export default function EateryVoucher({voucherId, discount, isDineIn, vouchersLe
           <h1>{discount}% off - {isDineIn ? "Dine in" : "Takeaway"}</h1>
         </Box>
         <Box display="flex" flexDirection="column">
-          <h3>{vouchersLeft} vouchers remaining...</h3>
-          <h3>{timeRemaining} this will be counting down</h3>
+          <h3 style={{margin: "5px 0px"}}>{vouchersLeft} vouchers remaining...</h3>
+          <h3 style={{margin: "5px 0px"}}>{timeRemaining} this will be counting down</h3>
+          {
+            !isOneOff &&
+            <h3 style={{margin: "5px 0px"}}>Weekly deal</h3>
+          }
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center">
           <Box display="flex" justifyContent="center">
@@ -82,6 +86,7 @@ export default function EateryVoucher({voucherId, discount, isDineIn, vouchersLe
         open={editCreateModal}
         setOpen={setEditCreateModal}
         isEdit={true}
+        initOneOff={isOneOff ? 0 : 1} initDineIn={isDineIn ? "true" : "false"} initDiscount={discount} initQuantity={vouchersLeft}
       ></EditCreateVoucher>
     </>
   );
