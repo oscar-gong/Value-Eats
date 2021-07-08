@@ -17,6 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 
+/* Code for testing for convenience.
+{
+  "alias":"diner1",
+  "email":"diner1@gmail.com",
+  "password":"Abcd1234",
+  "address":"sydney"
+}
+
+{
+  "alias":"eatery1",
+  "email":"eatery1@gmail.com",
+  "password":"Abcd1234",
+  "address":"sydney"
+}
+*/
+
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
 public final class UserManagementController {

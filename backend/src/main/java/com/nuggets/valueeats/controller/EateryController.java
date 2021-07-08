@@ -15,13 +15,67 @@ import java.util.Objects;
 public class EateryController {
     @Autowired
     private VoucherService voucherService;
+    
     @Autowired
     private JwtUtils jwtUtils;
+
+    /*
+    {
+  "eateryId":"2",
+  "eatingStyle": "DineIn",
+  "discount": "80",
+  "quantity": "5",
+  "isRecurring": "true",
+  "date": "2021-07-31",
+  "startMinute": "0",
+  "endMinute": "1400"
+}
+{
+  "eateryId":"3",
+  "eatingStyle": "Takeaway",
+  "discount": "80",
+  "quantity": "5",
+  "isRecurring": "false",
+  "date": "2021-07-31",
+  "startMinute": "0",
+  "endMinute": "1400"
+}
+*/
 
     @RequestMapping(value = "eatery/voucher", method = RequestMethod.POST)
     // TODO: Add eatery security check annotation
     public ResponseEntity<JSONObject> eateryCreateVoucher(
             @RequestBody VoucherInput voucher, @RequestHeader(name = "Authorization") String token) {
-        return voucherService.createVoucher(voucher, Long.valueOf(Objects.requireNonNull(jwtUtils.decode(token))));
+        return voucherService.createVoucher(voucher, token);
+    }
+
+    // An eatery list its own active vouchers
+    // Check if the token is an eatery, then check the eateryId.
+    @RequestMapping(value = "eatery/voucher", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> EateryListVouchers (@RequestParam(required=false) Long id, @RequestHeader (name="Authorization") String token) {
+        return voucherService.eateryListVouchers(token, id);
+    }
+
+    // A diner view the target resturant for all past or current vouchers
+    @RequestMapping(value = "diner/voucher", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> DinerListVouchers(@RequestParam(required=false) Long id, @RequestHeader (name="Authorization") String token) {
+        return voucherService.dinerListVouchers(token, id);
+    }
+
+    @RequestMapping(value = "eatery/voucher", method = RequestMethod.PUT)
+    public ResponseEntity<JSONObject> DinerListVouchers(@RequestBody VoucherInput voucher, @RequestHeader (name="Authorization") String token) {
+        return voucherService.editVoucher(voucher, token);
     }
 }
+
+/*
+{
+  "eatingStyle":"DineIn",
+  "discount":"0.8",
+  "quantity":"1",
+  "isRecurring":"false",
+  "day":"1",
+  "startMinute":"10",
+  "endMinute":"20"
+}
+*/
