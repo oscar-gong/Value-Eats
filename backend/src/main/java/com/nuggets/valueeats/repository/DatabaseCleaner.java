@@ -12,10 +12,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @Configuration
 @EnableScheduling
@@ -25,30 +29,22 @@ public class DatabaseCleaner {
     @Autowired
     private VoucherRepository voucherRepository;
 
-    @Scheduled(fixedDelay = 100000)
+    @Scheduled(fixedDelay = 10000)
     public void updateVoucher() {
-        List<RepeatedVoucher> repeatedVouchers = repeatVoucherRepository.findOverdueRepeatVouchers();
+        List<RepeatedVoucher> repeatedVouchers = repeatVoucherRepository.findAll();
+
+        Date timeNow = new Date(System.currentTimeMillis());
+        timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
+
         if (repeatedVouchers != null) {
-            System.out.println("We are cleaning up " + repeatedVouchers.size());
-
-            for (final RepeatedVoucher repeatedVoucher : repeatedVouchers) {
-                Voucher newVoucher = new Voucher();
-                newVoucher.setEateryId(repeatedVoucher.getEateryId());
-                newVoucher.setEatingStyle(repeatedVoucher.getEatingStyle());
-                newVoucher.setDiscount(repeatedVoucher.getDiscount());
-                newVoucher.setQuantity(repeatedVoucher.getQuantity());
-
-                try {
-                    newVoucher.setStart(new Timestamp(new SimpleDateFormat("mm").parse(String.valueOf(repeatedVoucher.getStart())).getTime() + LocalDateTime.now().with(TemporalAdjusters.next(repeatedVoucher.getDay())).atZone(ZoneId.systemDefault()).toEpochSecond() * 1000));
-                    newVoucher.setEnd(new Timestamp(new SimpleDateFormat("mm").parse(String.valueOf(repeatedVoucher.getEnd())).getTime() + LocalDateTime.now().with(TemporalAdjusters.next(repeatedVoucher.getDay())).atZone(ZoneId.systemDefault()).toEpochSecond() * 1000));
-                } catch (ParseException e) {
-                    System.out.println("You have a data integrity issue with " + repeatedVoucher.getId());
-                    continue;
+            for (RepeatedVoucher repeatedVoucher : repeatedVouchers) {
+                if (repeatedVoucher.getNextUpdate().compareTo(timeNow) < 0){
+                    System.out.println("Updated Voucher " + repeatedVoucher.getId());
+                    repeatedVoucher.setQuantity(repeatedVoucher.getRestockTo());
+                    repeatedVoucher.setNextUpdate(Date.from(repeatedVoucher.getDate().toInstant().plus(Duration.ofMinutes(repeatedVoucher.getStart()).plus(Duration.ofDays(7)))));
+                    repeatedVoucher.setDate(Date.from(repeatedVoucher.getNextUpdate().toInstant().minus(Duration.ofDays(7)).minus(Duration.ofMinutes(repeatedVoucher.getStart()))));
+                    repeatVoucherRepository.save(repeatedVoucher);
                 }
-                voucherRepository.save(newVoucher);
-
-                repeatedVoucher.setNextUpdate(Timestamp.valueOf(LocalDateTime.now().with(TemporalAdjusters.next(repeatedVoucher.getDay()))));
-                repeatVoucherRepository.save(repeatedVoucher);
             }
         }
     }

@@ -4,15 +4,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.DayOfWeek;
+
+import java.util.Date;
 
 @NoArgsConstructor
 @Data
 @Entity
 public class Voucher {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long eateryId;
 
@@ -20,6 +19,7 @@ public class Voucher {
     private Double discount;
     private Integer quantity;
 
-    private Timestamp start;
-    private Timestamp end;
+    private Date date;
+    private Integer start;
+    private Integer end;
 }
