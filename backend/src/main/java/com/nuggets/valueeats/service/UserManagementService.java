@@ -125,7 +125,7 @@ public class UserManagementService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to login, please try again"));
         }
 
-        String token = jwtUtils.encode(String.valueOf(user.getId()));
+        String token = jwtUtils.encode(String.valueOf(userDb.getId()));
         userDb.setToken(token);
         System.out.println(userDb.getToken());
         userRepository.save(userDb);
