@@ -22,4 +22,5 @@ public class Voucher {
     private Date date;
     private Integer start;
     private Integer end;
+    private boolean isActive;
 }

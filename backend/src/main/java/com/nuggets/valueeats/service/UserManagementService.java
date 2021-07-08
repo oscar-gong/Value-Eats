@@ -362,8 +362,9 @@ public class UserManagementService {
         map.put("cuisines", eateryDb.getCuisines());
 
         ArrayList<Object> combinedVoucherList = new ArrayList<Object>();
-        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findByEateryId(eateryDb.getId());
-        ArrayList<Voucher> vouchersList = voucherRepository.findByEateryId(eateryDb.getId());
+        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findActiveByEateryId(eateryDb.getId());
+        System.out.println(repeatVouchersList);
+        ArrayList<Voucher> vouchersList = voucherRepository.findActiveByEateryId(eateryDb.getId());
         for (RepeatedVoucher v:repeatVouchersList){
             HashMap<String, Object> voucher = new HashMap<String, Object>();
             voucher.put("id", v.getId());
