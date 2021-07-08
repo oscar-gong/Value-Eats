@@ -14,6 +14,4 @@ import java.util.List;
 @Data
 @PrimaryKeyJoinColumn(name = "id")
 public final class Diner extends User {
-    @ElementCollection
-    private List<Long> vouchers = new ArrayList<>();
 }
