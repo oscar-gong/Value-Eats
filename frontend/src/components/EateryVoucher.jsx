@@ -7,6 +7,7 @@ import { Box, Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
+import EditCreateVoucher from "../components/EditCreateVoucher";
 
 export default function EateryVoucher({voucherId, discount, isDineIn, vouchersLeft, timeRemaining}) {
   const context = useContext(StoreContext);
@@ -16,6 +17,7 @@ export default function EateryVoucher({voucherId, discount, isDineIn, vouchersLe
   console.log(auth);
   console.log(isDiner);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [editCreateModal, setEditCreateModal] = useState(false);
 
   if (auth === null) return <Redirect to="/" />;
   if (isDiner === "true") return <Redirect to="/DinerLanding" />;
@@ -58,7 +60,9 @@ export default function EateryVoucher({voucherId, discount, isDineIn, vouchersLe
         <Box display="flex" flexDirection="column" justifyContent="center">
           <Box display="flex" justifyContent="center">
             <IconButton onClick={() => {}}>
-              <EditIcon fontSize="large" />
+              <EditIcon fontSize="large" 
+                onClick={() => setEditCreateModal(true)}
+              />
             </IconButton>
             <IconButton onClick={() => {}}>
               <DeleteIcon fontSize="large" 
@@ -74,6 +78,11 @@ export default function EateryVoucher({voucherId, discount, isDineIn, vouchersLe
         message={`Customers will no longer be able to use the ${vouchersLeft} vouchers remaining, are you sure you want to delete?`}
         handleConfirm={() => removeVoucher(voucherId)}>
       </ConfirmModal>
+      <EditCreateVoucher voucherId={voucherId}
+        open={editCreateModal}
+        setOpen={setEditCreateModal}
+        isEdit={true}
+      ></EditCreateVoucher>
     </>
   );
 }

@@ -6,6 +6,7 @@ import { Redirect } from "react-router-dom";
 import { Box } from "@material-ui/core";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import EateryVoucher from "../components/EateryVoucher";
+import EditCreateVoucher from "../components/EditCreateVoucher";
 
 export default function EateryLanding() {
   const context = useContext(StoreContext);
@@ -80,6 +81,11 @@ export default function EateryLanding() {
           >Create Discount</ButtonStyled>
         </Box>
       </MainContent>
+      <EditCreateVoucher voucherId={-1}
+        open={openCreateDiscount}
+        setOpen={setOpenCreateDiscount}
+        isEdit={false}
+      ></EditCreateVoucher>
     </>
   );
 }
