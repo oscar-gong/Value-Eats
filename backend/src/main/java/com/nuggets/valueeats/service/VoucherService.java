@@ -516,8 +516,6 @@ public class VoucherService {
         
         Long dinerId = dinerInDb.getId();
 
-        boolean isExist = voucherRepository.existsById(voucherId);
-
         if (!voucherRepository.existsById(voucherId) && !repeatVoucherRepository.existsById(voucherId)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher does not exist"));
         }
