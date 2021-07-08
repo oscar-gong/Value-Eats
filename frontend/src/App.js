@@ -18,6 +18,7 @@ import { Alert } from "@material-ui/lab";
 import { StoreContext } from "./utils/store";
 import DinerProfile from "./pages/DinerProfile";
 import EditEateryProfile from "./pages/EditEateryProfile";
+import DinerVouchers from "./pages/DinerVouchers";
 
 function App() {
     const context = useContext(StoreContext);
@@ -50,6 +51,9 @@ function App() {
                         </Route>
                         <Route exact path="/dinerProfile">
                             <DinerProfile />
+                        </Route>
+                        <Route exact path="/DinerVouchers">
+                            <DinerVouchers />
                         </Route>
                         <Route exact path="/">
                             <Default />
