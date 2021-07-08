@@ -16,6 +16,7 @@ import { useLocation, Redirect } from "react-router-dom";
 import { StoreContext } from "../utils/store";
 import Carousel from "react-material-ui-carousel";
 import EditCreateReview from "../components/EditCreateReview";
+import ConfirmModal from "../components/ConfirmModal";
 
 const useStyles = makeStyles({
     photo: {
@@ -40,14 +41,13 @@ const useStyles = makeStyles({
         background: "rgba(255, 255, 255, 0.2)",
         marginTop: "10px",
         borderRadius: "10px",
-        
     },
     subtitle: {
         background: "rgba(255, 255, 255, 0.5)",
         borderRadius: "10px",
         margin: "10px 0px",
         padding: "5px 0px",
-    }
+    },
 });
 
 export default function EateryProfile() {
@@ -57,11 +57,18 @@ export default function EateryProfile() {
     const context = React.useContext(StoreContext);
     const [auth] = context.auth;
     const [isDiner] = context.isDiner;
-    const eateryId = location.pathname.split("/")[3] ? location.pathname.split("/")[3] : "";
-    const [ openCreateReview, setOpenCreateReview ] = useState(false);
-    const [ user, setUser ] = useState({});
+    const eateryId = location.pathname.split("/")[3]
+        ? location.pathname.split("/")[3]
+        : "";
+    const [openCreateReview, setOpenCreateReview] = useState(false);
+    const [user, setUser] = useState({});
+    const [openConfirmModal, setConfirmModal] = useState(false);
+    const handleCloseModal = () => setConfirmModal(false);
+    const [open, setOpen] = useState(false);
+    const [startTime, setStartTime] = useState("");
+    const [endTime, setEndTime] = useState("");
 
-    const [open, setOpen] = React.useState(false);
+    const [isConfirmed, setIsConfirmed] = useState(false);
 
     const handleOpen = () => {
         setOpen(true);
@@ -74,32 +81,32 @@ export default function EateryProfile() {
     useEffect(() => {
         // on page init, load the users details
         const getUser = async () => {
-          const response = await fetch(
-            "http://localhost:8080/diner/profile/details",
-            {
-              method: "GET",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: auth,
-              },
+            const response = await fetch(
+                "http://localhost:8080/diner/profile/details",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: auth,
+                    },
+                }
+            );
+            const responseData = await response.json();
+            if (response.status === 200) {
+                console.log(responseData);
+                setUser({
+                    username: responseData.name,
+                    email: responseData.email,
+                    profilePic: responseData["profile picture"],
+                });
+                // setEateryList(responseData.eateryList);
             }
-          );
-          const responseData = await response.json();
-          if (response.status === 200) {
-              console.log(responseData);
-              setUser({
-                "username": responseData.name,
-                "email": responseData.email,
-                "profilePic": responseData["profile picture"],
-              })
-              // setEateryList(responseData.eateryList);
-          }
         };
         if (isDiner !== "false") {
             getUser();
         }
-      }, [auth, isDiner]);
+    }, [auth, isDiner]);
 
     useEffect(() => {
         const getEateryDetails = async () => {
@@ -193,6 +200,21 @@ export default function EateryProfile() {
         return <div>{`${eateryDetails.menuPhotos.length} images`}</div>;
     };
 
+    const handleBooking = () => {
+        console.log("handling booking");
+        if (isConfirmed) {
+            setConfirmModal(false);
+        } else {
+            setIsConfirmed(true);
+        }
+    };
+
+    const handleVoucher = (startTime, endTime) => {
+        setConfirmModal(true);
+        setStartTime(startTime);
+        setEndTime(endTime);
+    };
+
     const getVouchers = () => {
         if (!eateryDetails.vouchers) return;
         if (eateryDetails.vouchers.length === 0) {
@@ -214,16 +236,20 @@ export default function EateryProfile() {
                                 variant="contained"
                                 color="primary"
                                 style={{ display: "block", width: "15vw" }}
+                                disabled={isDiner === "true" ? false : true}
+                                onClick={() =>
+                                    handleVoucher(item.startTime, item.endTime)
+                                }
                             >
-                                {`${item.discount * 100}% OFF - ${item.type}`}
+                                {`${item.discount}% OFF - ${item.eatingStyle}`}
                             </Button>
                         </Grid>
                         <Grid item>
                             <Box style={{ margin: "10px" }}>
-                                5 LEFT PLACEHOLDER
+                                {`${item.quantity} Vouchers Left`}
                             </Box>
                             <Box style={{ margin: "10px" }}>
-                                VALID 1-2PM PLACEHOLDER
+                                {`Valid from ${item.startTime} - ${item.endTime}`}
                             </Box>
                         </Grid>
                     </Grid>
@@ -242,31 +268,30 @@ export default function EateryProfile() {
             <NavBar isDiner={isDiner} />
             <MainContainer>
                 <Grid container spacing={5} className={classes.gridContainer}>
-                    <Grid
-                        item
-                        xs={6}
-                    >
+                    <Grid item xs={6}>
                         <Typography variant="h3">
                             {eateryDetails.name}
                         </Typography>
-                        <StarRating rating={parseFloat(eateryDetails.rating)} /> {eateryDetails.rating === ".0" ? 0 : eateryDetails.rating}
+                        <StarRating rating={parseFloat(eateryDetails.rating)} />{" "}
+                        {eateryDetails.rating === ".0"
+                            ? 0
+                            : eateryDetails.rating}
                         <Typography variant="subtitle2">
                             {eateryDetails.address}
                         </Typography>
                         <Typography variant="subtitle2">
                             {getCuisines()}
                         </Typography>
-                        <Typography
-                            variant="h5"
-                            className={classes.subtitle}
-                        >
+                        <Typography variant="h5" className={classes.subtitle}>
                             Menu Photos
                         </Typography>
                         <Box flex-wrap="wrap" flexDirection="row">
                             {getSingleImage()}
                         </Box>
                         {getNumberOfImages()}
-                        <Typography className={classes.subtitle} variant="h5">Reviews</Typography>
+                        <Typography className={classes.subtitle} variant="h5">
+                            Reviews
+                        </Typography>
                         <Button
                             style={{ margin: "10px 0px" }}
                             variant="contained"
@@ -280,7 +305,7 @@ export default function EateryProfile() {
                         <Box>{getReviews()}</Box>
                     </Grid>
 
-                    <Grid item xs={6} >
+                    <Grid item xs={6}>
                         <Typography variant="h3">Discounts</Typography>
                         {getVouchers()}
                         <div>
@@ -318,8 +343,30 @@ export default function EateryProfile() {
                         </div>
                     </Grid>
                 </Grid>
-                <EditCreateReview id={-1} eateryId={parseInt(eateryId)} open={openCreateReview} setOpen={setOpenCreateReview} username={user.username} profilePic={user.profilePic} reviewTextState={["", null]} ratingState={["", null]} reviewImagesState={[[], null]} isEdit={false}/>
-
+                <EditCreateReview
+                    id={-1}
+                    eateryId={parseInt(eateryId)}
+                    open={openCreateReview}
+                    setOpen={setOpenCreateReview}
+                    username={user.username}
+                    profilePic={user.profilePic}
+                    reviewTextState={["", null]}
+                    ratingState={["", null]}
+                    reviewImagesState={[[], null]}
+                    isEdit={false}
+                />
+                <ConfirmModal
+                    open={openConfirmModal}
+                    handleClose={handleCloseModal}
+                    eateryId={eateryId}
+                    title={"Confirmation"}
+                    message={
+                        !isConfirmed
+                            ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${endTime}`
+                            : "CONFIRMED BOOKING"
+                    }
+                    handleConfirm={() => handleBooking()}
+                ></ConfirmModal>
             </MainContainer>
         </>
     );
