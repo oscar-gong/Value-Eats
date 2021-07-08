@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { MainContent } from "../styles/MainContent";
 import { StoreContext } from "../utils/store";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { Box } from "@material-ui/core";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import EateryVoucher from "../components/EateryVoucher";
@@ -12,6 +12,7 @@ export default function EateryLanding() {
   const context = useContext(StoreContext);
   const auth = context.auth[0];
   const isDiner = context.isDiner[0];
+  const history = useHistory();
   console.log(auth);
   console.log(isDiner);
   const [eateryDetails, setEateryDetails] = useState({});
@@ -58,7 +59,6 @@ export default function EateryLanding() {
             height="60vh"
             border="3px solid #4F4846"
             bgcolor="#E8CEBF"
-            mb={5}
             overflow="auto"
             >
             <EateryVoucher discount={5} isOneOff={true} isDineIn={false} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
@@ -68,17 +68,22 @@ export default function EateryLanding() {
             <EateryVoucher discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
           </Box>
         </Box>
-        <Box mb={5}
-          display="flex"
-          justifyContent="space-evenly"
-        >
-          <ButtonStyled variant="contained"
-            color="primary"
-          >Verify Voucher</ButtonStyled>
-          <ButtonStyled variant="contained"
-            color="primary"
-            onClick={() => setOpenCreateDiscount(true)}
-          >Create Discount</ButtonStyled>
+        <Box display="flex" flexDirection="column" justifyContent="center" height="30vh">
+          <Box
+            display="flex"
+            justifyContent="space-evenly"
+          >
+            <ButtonStyled variant="contained"
+              color="primary"
+              onClick={() => history.push("/RedeemVoucher")}
+            >
+              Verify Voucher
+            </ButtonStyled>
+            <ButtonStyled variant="contained"
+              color="primary"
+              onClick={() => setOpenCreateDiscount(true)}
+            >Create Discount</ButtonStyled>
+          </Box>
         </Box>
       </MainContent>
       <EditCreateVoucher voucherId={-1}
