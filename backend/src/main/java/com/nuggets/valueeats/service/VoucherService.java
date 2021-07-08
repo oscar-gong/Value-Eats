@@ -547,7 +547,18 @@ public class VoucherService {
 
         Map<String,String> dataMedium = new HashMap<>();
 
+        dataMedium.put("id",String.valueOf(bookingRecord.getId()));
+        dataMedium.put("dinerId",String.valueOf(bookingRecord.getDinerId()));
+        dataMedium.put("eateryId",String.valueOf(bookingRecord.getEateryId()));
+
+        dataMedium.put("eatingStyle",String.valueOf(bookingRecord.getEatingStyle()));
         dataMedium.put("code", bookingRecord.getCode());
+
+        dataMedium.put("discount",String.valueOf(bookingRecord.getDiscount()));
+        dataMedium.put("date",String.valueOf(bookingRecord.getDate()));
+        dataMedium.put("start",String.valueOf(bookingRecord.getStart()));
+        dataMedium.put("end",String.valueOf(bookingRecord.getEnd()));
+
 
         JSONObject data = new JSONObject(dataMedium);
 
