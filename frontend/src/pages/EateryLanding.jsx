@@ -14,6 +14,7 @@ export default function EateryLanding() {
   console.log(auth);
   console.log(isDiner);
   const [eateryDetails, setEateryDetails] = useState({});
+  const [openCreateDiscount, setOpenCreateDiscount] = useState(false);
   useEffect(() => {
     const getEateryDetails = async () => {
       const response = await fetch(
@@ -75,6 +76,7 @@ export default function EateryLanding() {
           >Verify Voucher</ButtonStyled>
           <ButtonStyled variant="contained"
             color="primary"
+            onClick={() => setOpenCreateDiscount(true)}
           >Create Discount</ButtonStyled>
         </Box>
       </MainContent>
