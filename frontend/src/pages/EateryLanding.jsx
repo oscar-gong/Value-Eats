@@ -61,11 +61,11 @@ export default function EateryLanding() {
             bgcolor="#E8CEBF"
             overflow="auto"
             >
-            <EateryVoucher discount={5} isOneOff={true} isDineIn={false} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher discount={50} isOneOff={true} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher eateryId={eateryDetails.id} discount={5} isOneOff={true} isDineIn={false} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={true} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
           </Box>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center" height="30vh">
@@ -86,7 +86,7 @@ export default function EateryLanding() {
           </Box>
         </Box>
       </MainContent>
-      <EditCreateVoucher voucherId={-1}
+      <EditCreateVoucher eateryId={eateryDetails.id} voucherId={-1}
         open={openCreateDiscount}
         setOpen={setOpenCreateDiscount}
         isEdit={false}

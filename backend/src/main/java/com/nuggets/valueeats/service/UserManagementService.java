@@ -333,6 +333,7 @@ public class UserManagementService {
         DecimalFormat df = new DecimalFormat("#.0"); 
         
         HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("id", eateryDb.getId());
         map.put("name", eateryDb.getAlias());
         map.put("email", eateryDb.getEmail());
         map.put("rating", df.format(averageRating));

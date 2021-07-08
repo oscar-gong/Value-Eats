@@ -9,7 +9,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 
-export default function EateryVoucher({voucherId, isOneOff, discount, isDineIn, vouchersLeft, timeRemaining}) {
+export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, isDineIn, vouchersLeft, timeRemaining}) {
   const context = useContext(StoreContext);
   const auth = context.auth[0];
   const isDiner = context.isDiner[0];
@@ -82,7 +82,7 @@ export default function EateryVoucher({voucherId, isOneOff, discount, isDineIn, 
         message={`Customers will no longer be able to use the ${vouchersLeft} vouchers remaining, are you sure you want to delete?`}
         handleConfirm={() => removeVoucher(voucherId)}>
       </ConfirmModal>
-      <EditCreateVoucher voucherId={voucherId}
+      <EditCreateVoucher eateryId={eateryId} voucherId={voucherId}
         open={editCreateModal}
         setOpen={setEditCreateModal}
         isEdit={true}

@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, Box, TextField , DialogActions, But
 import { StoreContext } from '../utils/store';
 import { validRequired } from '../utils/helpers';
 
-export default function EditCreateVoucher ({ voucherId, open, setOpen, initOneOff=0, initDineIn="true", initDiscount="", initQuantity="", initStartTime="", initEndTime="", isEdit }) {
+export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen, initOneOff=0, initDineIn="true", initDiscount="", initQuantity="", initStartTime="", initEndTime="", isEdit }) {
   const date = new Date();
 
   const context = useContext(StoreContext);
@@ -29,28 +29,32 @@ export default function EditCreateVoucher ({ voucherId, open, setOpen, initOneOf
       return;
     }
     console.log("This will create the voucher");
-    // const response = await fetch("http://localhost:8080/diner/createVoucher", 
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Accept": "application/json",
-    //       "Content-Type": "application/json",
-    //       "Authorization": token
-    //     },
-    //     body: JSON.stringify({
-    //       "eateryId": eateryId,
-    //       "rating": rating,
-    //       "message": reviewText,
-    //       "reviewPhotos": images
-    //     })
-    //   });
-    // const responseData = await response.json();
-    // if (response.status === 200) {
-    //   setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
-    // } else {
-    //   setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
-    // }
-    // setOpen(false);
+    const response = await fetch("http://localhost:8080/eatery/voucher", 
+      {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": token
+        },
+        body: JSON.stringify({
+          "eateryId": eateryId,
+          "eatingStyle": (isDineIn.value === "true" ? "DineIn" : "Takeaway"),
+          "discount": discount.value,
+          "quantity": quantity.value,
+          "isRecurring": (isOneOff === 1 ? false : true)
+          // "rating": rating,
+          // "message": reviewText,
+          // "reviewPhotos": images
+        })
+      });
+    const responseData = await response.json();
+    if (response.status === 200) {
+      setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+    } else {
+      setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
+    }
+    setOpen(false);
   }
 
   // const validDiscount = (discount, setDiscount) => {
