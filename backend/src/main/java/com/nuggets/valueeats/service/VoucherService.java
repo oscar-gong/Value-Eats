@@ -531,6 +531,10 @@ public class VoucherService {
         if (repeatVoucherRepository.existsById(voucherId)) {
             RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
 
+            if (!repeatedVoucher.isActive()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher is no longer active."));
+            }
+
             if (repeatedVoucher.getQuantity() < 1) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enough voucher for booking"));
             
@@ -550,6 +554,9 @@ public class VoucherService {
         } else if (voucherRepository.existsById(voucherId)) {
             Voucher voucher = voucherRepository.getById(voucherId);
 
+            if (!voucher.isActive()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher is no longer active."));
+            }
 
             if (voucher.getQuantity() < 1) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enoufh voucher for booking"));
