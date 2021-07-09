@@ -63,10 +63,11 @@ export default function EateryProfile() {
     const [openCreateReview, setOpenCreateReview] = useState(false);
     const [user, setUser] = useState({});
     const [openConfirmModal, setConfirmModal] = useState(false);
-    const handleCloseModal = () => setConfirmModal(false);
+
     const [open, setOpen] = useState(false);
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
+    const [discount, setDiscount] = useState(0);
 
     const [isConfirmed, setIsConfirmed] = useState(false);
 
@@ -203,6 +204,7 @@ export default function EateryProfile() {
     const handleBooking = () => {
         console.log("handling booking");
         if (isConfirmed) {
+            setIsConfirmed(false);
             setConfirmModal(false);
         } else {
             setIsConfirmed(true);
@@ -213,6 +215,11 @@ export default function EateryProfile() {
         setConfirmModal(true);
         setStartTime(startTime);
         setEndTime(endTime);
+    };
+
+    const handleCloseModal = () => {
+        setConfirmModal(false);
+        setIsConfirmed(false);
     };
 
     const getVouchers = () => {
@@ -238,7 +245,11 @@ export default function EateryProfile() {
                                 style={{ display: "block", width: "15vw" }}
                                 disabled={isDiner === "true" ? false : true}
                                 onClick={() =>
-                                    handleVoucher(item.startTime, item.endTime)
+                                    handleVoucher(
+                                        item.startTime,
+                                        item.endTime,
+                                        item.discount
+                                    )
                                 }
                             >
                                 {`${item.discount}% OFF - ${item.eatingStyle}`}
@@ -359,11 +370,11 @@ export default function EateryProfile() {
                     open={openConfirmModal}
                     handleClose={handleCloseModal}
                     eateryId={eateryId}
-                    title={"Confirmation"}
+                    title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
                     message={
                         !isConfirmed
                             ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${endTime}`
-                            : "CONFIRMED BOOKING"
+                            : `${discount}% off at ${eateryDetails.name}, CODE: PLACEHOLDER AT THE MOMENT, Valid between ${startTime} - ${endTime} Expires in PLACEHOLDER TIME `
                     }
                     handleConfirm={() => handleBooking()}
                 ></ConfirmModal>
