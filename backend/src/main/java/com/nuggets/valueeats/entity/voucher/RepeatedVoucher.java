@@ -27,4 +27,5 @@ public class RepeatedVoucher {
 
     private Integer restockTo;
     private Date nextUpdate;
+    private boolean isActive;
 }

@@ -24,13 +24,7 @@ public class BookingRecord {
 
   private Long dinerId;
   private Long eateryId;
-
-  private VoucherEatingStyle eatingStyle;
+  private Long voucherId;
   private String code;
-  private Double discount;
-
-  private Date date;
-  private Integer start;
-  private Integer end;
 
 }

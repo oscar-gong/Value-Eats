@@ -30,7 +30,7 @@ public class DatabaseCleaner {
     private VoucherRepository voucherRepository;
 
     @Scheduled(fixedDelay = 10000)
-    public void updateVoucher() {
+    public void updateRepeatedVoucher() {
         List<RepeatedVoucher> repeatedVouchers = repeatVoucherRepository.findAll();
 
         Date timeNow = new Date(System.currentTimeMillis());
@@ -41,11 +41,45 @@ public class DatabaseCleaner {
                 if (repeatedVoucher.getNextUpdate().compareTo(timeNow) < 0){
                     System.out.println("Updated Voucher " + repeatedVoucher.getId());
                     repeatedVoucher.setQuantity(repeatedVoucher.getRestockTo());
-                    repeatedVoucher.setNextUpdate(Date.from(repeatedVoucher.getDate().toInstant().plus(Duration.ofMinutes(repeatedVoucher.getStart()).plus(Duration.ofDays(7)))));
-                    repeatedVoucher.setDate(Date.from(repeatedVoucher.getNextUpdate().toInstant().minus(Duration.ofDays(7)).minus(Duration.ofMinutes(repeatedVoucher.getStart()))));
+                    repeatedVoucher.setActive(true);
+                    repeatedVoucher.setDate(repeatedVoucher.getNextUpdate());
+                    repeatedVoucher.setNextUpdate(Date.from(repeatedVoucher.getNextUpdate().toInstant().plus(Duration.ofDays(7))));
                     repeatVoucherRepository.save(repeatedVoucher);
                 }
             }
         }
     }
+
+    @Scheduled(fixedDelay = 10000)
+    public void updateExpiredVoucher() {
+        List<RepeatedVoucher> repeatedVouchers = repeatVoucherRepository.findAllActive();
+        List<Voucher> vouchers = voucherRepository.findAllActive();
+
+        Date timeNow = new Date(System.currentTimeMillis());
+        timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
+
+        if (repeatedVouchers != null) {
+            for (RepeatedVoucher repeatedVoucher : repeatedVouchers) {
+                Date endTime = new Date();
+                endTime = Date.from(repeatedVoucher.getDate().toInstant().plus(Duration.ofMinutes(repeatedVoucher.getEnd())));;
+                if (endTime.compareTo(timeNow) < 0){
+                    System.out.println("Voucher " + repeatedVoucher.getId() + " has expired.");
+                    repeatedVoucher.setActive(false);
+                    repeatVoucherRepository.save(repeatedVoucher);
+                }
+            }
+        }
+        if (vouchers != null) {
+            for (Voucher voucher : vouchers) {
+                Date endTime = new Date();
+                endTime = Date.from(voucher.getDate().toInstant().plus(Duration.ofMinutes(voucher.getEnd())));;
+                if (endTime.compareTo(timeNow) < 0){
+                    System.out.println("Voucher " + voucher.getId() + " has expired.");
+                    voucher.setActive(false);
+                    voucherRepository.save(voucher);
+                }
+            }
+        }
+    }
+
 }
