@@ -3,6 +3,7 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.controller.model.VoucherInput;
 import com.nuggets.valueeats.entity.BookingRecord;
 import com.nuggets.valueeats.entity.Diner;
+import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
 import com.nuggets.valueeats.repository.BookingRecordRepository;
@@ -257,6 +258,14 @@ public class VoucherService {
                 dinerBooking.put("eateryId", voucherDb.getEateryId());
                 dinerBooking.put("isRedeemable", isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()));
 
+                Optional<Eatery> eatery = eateryRepository.findById(voucherDb.getEateryId());
+                if (!eatery.isPresent()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery ID is booking is invalid."));
+                }
+                Eatery eateryDb = eatery.get();
+                
+                dinerBooking.put("eateryName", eateryDb.getAlias());
+
                 SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
                 String strDate = formatter.format(voucherDb.getDate());
                 int startHour = voucherDb.getStart() / 60; //since both are ints, you get an int
@@ -279,6 +288,14 @@ public class VoucherService {
                 dinerBooking.put("eatingStyle", voucherDb.getEatingStyle());
                 dinerBooking.put("discount", voucherDb.getDiscount());
                 dinerBooking.put("eateryId", voucherDb.getEateryId());
+
+                Optional<Eatery> eatery = eateryRepository.findById(voucherDb.getEateryId());
+                if (!eatery.isPresent()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery ID is booking is invalid."));
+                }
+                Eatery eateryDb = eatery.get();
+
+                dinerBooking.put("eateryName", eateryDb.getAlias());
 
                 SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
                 String strDate = formatter.format(voucherDb.getDate());
@@ -635,7 +652,7 @@ public class VoucherService {
             bookingRecord.setCode(generateRandomCode());
             bookingRecord.setVoucherId(voucherId);
         }
-
+        bookingRecord.setRedeemed(false);
         bookingRecordRepository.save(bookingRecord);
 
         Map<String,String> dataMedium = new HashMap<>();
@@ -658,5 +675,81 @@ public class VoucherService {
             uuid = UUID.randomUUID().toString().substring(0, 5);
         }
         return uuid;
+    }
+
+    public ResponseEntity<JSONObject> deleteVoucher (Long voucherId, String token) {
+        String decodedToken = jwtUtils.decode(token);
+
+        if (decodedToken == null) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+
+        }
+
+        Eatery eateryInDb = eateryRepository.findByToken(token);
+
+        if (eateryInDb == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+        }
+
+        if (!voucherRepository.existsById(voucherId) && !repeatVoucherRepository.existsById(voucherId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher does not exist"));
+        }
+
+        if (repeatVoucherRepository.existsById(voucherId)) {
+            RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
+            repeatedVoucher.setActive(false);
+            repeatedVoucher.setQuantity(0);
+            repeatVoucherRepository.save(repeatedVoucher);
+        } else if (voucherRepository.existsById(voucherId)) {
+            Voucher voucher = voucherRepository.getById(voucherId);
+            voucher.setActive(false);
+            voucher.setQuantity(0);
+            voucherRepository.save(voucher);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher successfully deleted."));
+    }
+
+    public ResponseEntity<JSONObject> verifyVoucher (String code, String token) {
+        String decodedToken = jwtUtils.decode(token);
+
+        if (decodedToken == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+        }
+
+        // Check if token is from an eatery
+        Eatery eateryInDb = eateryRepository.findByToken(token);
+
+        if (eateryInDb == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+        }
+        
+        // Check if code is from the eatery
+        BookingRecord booking = bookingRecordRepository.findBookingByEateryIdAndCode(eateryInDb.getId(), code);
+
+        if (booking == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid voucher code."));
+        }
+
+        Optional<Voucher> voucher = voucherRepository.findById(booking.getVoucherId());
+
+        if (!voucher.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid voucher code."));
+        }
+        Voucher voucherDb = voucher.get();
+        // Check if voucher is in redeem range
+        if (!isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher has expired or cannot be redeemed yet."));
+        }
+
+        // Check if voucher is already redeemed.
+        if (booking.isRedeemed()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher has already been redeemed."));
+        }
+
+        // If voucher is, set booking to redeemed.
+        booking.setRedeemed(true);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher is valid and has been used!"));
     }
 }

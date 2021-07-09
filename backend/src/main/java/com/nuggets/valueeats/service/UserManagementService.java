@@ -16,6 +16,7 @@ import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
+import com.nuggets.valueeats.repository.BookingRecordRepository;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.ReviewRepository;
@@ -53,6 +54,9 @@ public class UserManagementService {
     
     @Autowired
     private RepeatVoucherRepository repeatVoucherRepository;
+    
+    @Autowired
+    private BookingRecordRepository bookingRecordRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -381,6 +385,11 @@ public class UserManagementService {
             int endMinute = v.getEnd() % 60;
             voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
             voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
+            if(dinerDb != null){
+                voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), v.getId())) != 0);
+            } else {
+                voucher.put("disableButton", true);
+            }
             combinedVoucherList.add(voucher);
         }
 
@@ -400,6 +409,11 @@ public class UserManagementService {
             int endMinute = v.getEnd() % 60;
             voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
             voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
+            if(dinerDb != null){
+                voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), v.getId())) != 0);
+            } else {
+                voucher.put("disableButton", true);
+            }
             combinedVoucherList.add(voucher);
         }
 

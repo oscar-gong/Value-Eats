@@ -60,6 +60,16 @@ public class EateryController {
     public ResponseEntity<JSONObject> DinerListVouchers(@RequestBody VoucherInput voucher, @RequestHeader (name="Authorization") String token) {
         return voucherService.editVoucher(voucher, token);
     }
+
+    @RequestMapping(value = "eatery/voucher", method = RequestMethod.DELETE)
+    public ResponseEntity<JSONObject> eateryDeleteVoucher(@RequestParam Long id, @RequestHeader (name="Authorization") String token) {
+        return voucherService.deleteVoucher(id, token);
+    }
+
+    @RequestMapping(value = "eatery/verify/voucher", method = RequestMethod.DELETE)
+    public ResponseEntity<JSONObject> eateryVerifyVoucher(@RequestParam String code, @RequestHeader (name="Authorization") String token) {
+        return voucherService.verifyVoucher(code, token);
+    }
 }
 
 /*
