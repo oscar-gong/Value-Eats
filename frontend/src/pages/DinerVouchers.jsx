@@ -13,6 +13,30 @@ export default function DinerVouchers() {
     const token = context.auth[0];
     const [showHistory, setShowHistory] = useState(false);
 
+    // useEffect(() => {
+    //     const getVouchers = async () => {
+    //         const response = await fetch(
+    //             "http://localhost:8080/diner/GETVOUCHERSIDK",
+    //             {
+    //                 method: "GET",
+    //                 headers: {
+    //                     Accept: "application/json",
+    //                     "Content-Type": "application/json",
+    //                     Authorization: token,
+    //                 },
+    //             }
+    //         );
+    //         const responseData = await response.json();
+    //         if (response.status === 200) {
+    //             console.log(responseData);
+
+    //         } else {
+    //             console.log("cannot get vouchers")
+    //         }
+    //     };
+    //     getVouchers();
+    // }, []);
+
     if (token === null) return <Redirect to="/" />;
 
     // when show historical checkbox is clicked

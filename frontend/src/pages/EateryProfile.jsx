@@ -51,7 +51,7 @@ const useStyles = makeStyles({
 });
 
 export default function EateryProfile() {
-    const [eateryDetails, setEateryDetails] = useState([]);
+    const [eateryDetails, setEateryDetails] = useState({});
     const location = useLocation();
     const classes = useStyles();
     const context = React.useContext(StoreContext);
@@ -68,7 +68,8 @@ export default function EateryProfile() {
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [discount, setDiscount] = useState(0);
-
+    const [voucherID, setVoucherID] = useState(0);
+    const [code, setCode] = useState("");
     const [isConfirmed, setIsConfirmed] = useState(false);
 
     const handleOpen = () => {
@@ -133,7 +134,7 @@ export default function EateryProfile() {
             }
         };
         getEateryDetails();
-    }, [auth, eateryId]);
+    }, [auth, eateryId, code]);
     if (auth === null) return <Redirect to="/" />;
 
     const getReviews = () => {
@@ -201,20 +202,41 @@ export default function EateryProfile() {
         return <div>{`${eateryDetails.menuPhotos.length} images`}</div>;
     };
 
-    const handleBooking = () => {
-        console.log("handling booking");
+    const handleBooking = async () => {
         if (isConfirmed) {
             setIsConfirmed(false);
             setConfirmModal(false);
         } else {
-            setIsConfirmed(true);
+            const response = await fetch(
+                `http://localhost:8080/diner/book?id=${voucherID}`,
+                {
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: auth,
+                    },
+                }
+            );
+            console.log(response);
+            const responseData = await response.json();
+            if (response.status === 200) {
+                console.log(responseData);
+                setCode(responseData.data.code);
+                setIsConfirmed(true);
+            } else {
+                // TODO ERROR MSGS
+                console.log("unsuccessful");
+            }
         }
     };
 
-    const handleVoucher = (startTime, endTime) => {
+    const handleVoucher = (startTime, endTime, discount, id) => {
         setConfirmModal(true);
         setStartTime(startTime);
         setEndTime(endTime);
+        setDiscount(discount);
+        setVoucherID(id);
     };
 
     const handleCloseModal = () => {
@@ -248,7 +270,8 @@ export default function EateryProfile() {
                                     handleVoucher(
                                         item.startTime,
                                         item.endTime,
-                                        item.discount
+                                        item.discount,
+                                        item.id
                                     )
                                 }
                             >
@@ -374,7 +397,7 @@ export default function EateryProfile() {
                     message={
                         !isConfirmed
                             ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${endTime}`
-                            : `${discount}% off at ${eateryDetails.name}, CODE: PLACEHOLDER AT THE MOMENT, Valid between ${startTime} - ${endTime} Expires in PLACEHOLDER TIME `
+                            : `${discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${startTime} - ${endTime} Expires in PLACEHOLDER TIME `
                     }
                     handleConfirm={() => handleBooking()}
                 ></ConfirmModal>
