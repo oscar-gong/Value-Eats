@@ -66,7 +66,7 @@ public class EateryController {
         return voucherService.deleteVoucher(id, token);
     }
 
-    @RequestMapping(value = "eatery/verify/voucher", method = RequestMethod.DELETE)
+    @RequestMapping(value = "eatery/verify/voucher", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> eateryVerifyVoucher(@RequestParam String code, @RequestHeader (name="Authorization") String token) {
         return voucherService.verifyVoucher(code, token);
     }

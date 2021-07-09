@@ -750,6 +750,8 @@ public class VoucherService {
         // If voucher is, set booking to redeemed.
         booking.setRedeemed(true);
 
+        bookingRecordRepository.save(booking);
+
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher is valid and has been used!"));
     }
 }
