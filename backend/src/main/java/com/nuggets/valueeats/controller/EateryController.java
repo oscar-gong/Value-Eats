@@ -56,12 +56,6 @@ public class EateryController {
         return voucherService.eateryListVouchers(token, id);
     }
 
-    // A diner view the target resturant for all past or current vouchers
-    @RequestMapping(value = "diner/voucher", method = RequestMethod.GET)
-    public ResponseEntity<JSONObject> DinerListVouchers(@RequestParam(required=false) Long id, @RequestHeader (name="Authorization") String token) {
-        return voucherService.dinerListVouchers(token, id);
-    }
-
     @RequestMapping(value = "eatery/voucher", method = RequestMethod.PUT)
     public ResponseEntity<JSONObject> DinerListVouchers(@RequestBody VoucherInput voucher, @RequestHeader (name="Authorization") String token) {
         return voucherService.editVoucher(voucher, token);
