@@ -399,6 +399,7 @@ export default function EateryProfile() {
                             ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${endTime}`
                             : `${discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${startTime} - ${endTime} Expires in PLACEHOLDER TIME `
                     }
+                    isConfirmVoucher={isConfirmed ? true : false}
                     handleConfirm={() => handleBooking()}
                 ></ConfirmModal>
             </MainContainer>

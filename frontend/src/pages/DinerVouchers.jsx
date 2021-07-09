@@ -12,30 +12,31 @@ export default function DinerVouchers() {
     const setAlertOptions = context.alert[1];
     const token = context.auth[0];
     const [showHistory, setShowHistory] = useState(false);
+    const [vouchers, setVouchers] = useState([]);
 
-    // useEffect(() => {
-    //     const getVouchers = async () => {
-    //         const response = await fetch(
-    //             "http://localhost:8080/diner/GETVOUCHERSIDK",
-    //             {
-    //                 method: "GET",
-    //                 headers: {
-    //                     Accept: "application/json",
-    //                     "Content-Type": "application/json",
-    //                     Authorization: token,
-    //                 },
-    //             }
-    //         );
-    //         const responseData = await response.json();
-    //         if (response.status === 200) {
-    //             console.log(responseData);
-
-    //         } else {
-    //             console.log("cannot get vouchers")
-    //         }
-    //     };
-    //     getVouchers();
-    // }, []);
+    useEffect(() => {
+        const getVouchers = async () => {
+            const response = await fetch(
+                "http://localhost:8080/diner/voucher",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: token,
+                    },
+                }
+            );
+            const responseData = await response.json();
+            if (response.status === 200) {
+                console.log(responseData.vouchers);
+                setVouchers(responseData.vouchers);
+            } else {
+                console.log("cannot get vouchers");
+            }
+        };
+        getVouchers();
+    }, []);
 
     if (token === null) return <Redirect to="/" />;
 
@@ -45,11 +46,49 @@ export default function DinerVouchers() {
     };
 
     const getCurrentVouchers = () => {
-        return <div>current vouchers</div>;
+        if (!vouchers) return;
+        if (vouchers.length === 0) return <div>no current vouchers</div>;
+        return vouchers.map((item, key) => {
+            return (
+                item.isRedeemable && (
+                    <DinerVoucher
+                        code={item.code}
+                        date={item.date}
+                        discount={item.discount}
+                        eateryID={item.eateryId}
+                        eatingStyle={item.eatingStyle}
+                        endTime={item.endTime}
+                        isActive={item.isActive}
+                        isRedeemable={item.isRedeemable}
+                        startTime={item.startTime}
+                        eateryName={item.eateryName}
+                        key={key}
+                    />
+                )
+            );
+        });
     };
 
     const getPastVouchers = () => {
-        return <div>past vouchers</div>;
+        if (!vouchers) return;
+        return vouchers.map((item, key) => {
+            return (
+                !item.isRedeemable && (
+                    <DinerVoucher
+                        code={item.code}
+                        date={item.date}
+                        discount={item.discount}
+                        eateryID={item.eateryId}
+                        eatingStyle={item.eatingStyle}
+                        endTime={item.endTime}
+                        isActive={item.isActive}
+                        isRedeemable={item.isRedeemable}
+                        startTime={item.startTime}
+                        key={key}
+                    />
+                )
+            );
+        });
     };
 
     return (
@@ -84,7 +123,6 @@ export default function DinerVouchers() {
                     >
                         {getCurrentVouchers()}
                         {showHistory && getPastVouchers()}
-                        <DinerVoucher />
                     </Box>
                 </Box>
             </MainContent>
