@@ -53,7 +53,7 @@ export default function DinerVouchers() {
                 !item.used &&
                 item.isActive && (
                     <DinerVoucher
-                        duration={item.Duration}
+                        duration={item.duration}
                         code={item.code}
                         date={item.date}
                         discount={item.discount}

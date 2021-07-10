@@ -38,7 +38,15 @@ export default function DinerVoucher({
             margin="20px"
         >
             <Box display="flex" flexDirection="column">
-                <h1>{isActive ? (used ? "USED" : "ACTIVE") : "EXPIRED"}</h1>
+                <h1>
+                    {isActive
+                        ? used
+                            ? "USED"
+                            : "ACTIVE"
+                        : used
+                        ? "USED"
+                        : "EXPIRED"}
+                </h1>
             </Box>
             <Box display="flex" flexDirection="column">
                 <h1>
@@ -68,7 +76,7 @@ export default function DinerVoucher({
             </Box>
             <Box display="flex" flexDirection="column" justifyContent="center">
                 <Box display="flex" justifyContent="center">
-                    <Button onClick={handleViewEateryClick}>
+                    <Button onClick={handleViewEateryClick} variant="contained">
                         view restaurant
                     </Button>
                 </Box>

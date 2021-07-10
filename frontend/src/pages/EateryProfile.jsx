@@ -67,6 +67,7 @@ export default function EateryProfile() {
     const [open, setOpen] = useState(false);
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
+    const [date, setDate] = useState("");
     const [discount, setDiscount] = useState(0);
     const [voucherID, setVoucherID] = useState(0);
     const [code, setCode] = useState("");
@@ -241,11 +242,12 @@ export default function EateryProfile() {
         }
     };
 
-    const handleVoucher = (startTime, endTime, discount, id) => {
+    const handleVoucher = (startTime, endTime, discount, id, date) => {
         setConfirmModal(true);
         setStartTime(startTime);
         setEndTime(endTime);
         setDiscount(discount);
+        setDate(date);
         setVoucherID(id);
     };
 
@@ -275,13 +277,16 @@ export default function EateryProfile() {
                                 variant="contained"
                                 color="primary"
                                 style={{ display: "block", width: "15vw" }}
-                                disabled={isDiner === "true" ? false : true}
+                                disabled={
+                                    item.disableButton === true ? true : false
+                                }
                                 onClick={() =>
                                     handleVoucher(
                                         item.startTime,
                                         item.endTime,
                                         item.discount,
-                                        item.id
+                                        item.id,
+                                        item.date
                                     )
                                 }
                             >
@@ -291,6 +296,9 @@ export default function EateryProfile() {
                         <Grid item>
                             <Box style={{ margin: "10px" }}>
                                 {`${item.quantity} Vouchers Left`}
+                            </Box>
+                            <Box style={{ margin: "10px" }}>
+                                {`${item.date}`}
                             </Box>
                             <Box style={{ margin: "10px" }}>
                                 {`Valid from ${item.startTime} - ${item.endTime}`}
@@ -406,8 +414,8 @@ export default function EateryProfile() {
                     title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
                     message={
                         !isConfirmed
-                            ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${endTime}`
-                            : `${discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${startTime} - ${endTime} Expires in PLACEHOLDER TIME `
+                            ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${endTime} on ${date}`
+                            : `${discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${startTime} - ${endTime}`
                     }
                     isConfirmVoucher={isConfirmed ? true : false}
                     handleConfirm={() => handleBooking()}
