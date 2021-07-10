@@ -71,6 +71,7 @@ export default function EateryProfile() {
     const [voucherID, setVoucherID] = useState(0);
     const [code, setCode] = useState("");
     const [isConfirmed, setIsConfirmed] = useState(false);
+    const setAlertOptions = context.alert[1];
 
     const handleOpen = () => {
         setOpen(true);
@@ -224,9 +225,18 @@ export default function EateryProfile() {
                 console.log(responseData);
                 setCode(responseData.data.code);
                 setIsConfirmed(true);
+                setAlertOptions({
+                    showAlert: true,
+                    variant: "success",
+                    message: responseData.message,
+                });
             } else {
-                // TODO ERROR MSGS
-                console.log("unsuccessful");
+                setAlertOptions({
+                    showAlert: true,
+                    variant: "error",
+                    message: responseData.message,
+                });
+                setConfirmModal(false);
             }
         }
     };

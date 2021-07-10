@@ -84,6 +84,7 @@ export default function DinerVouchers() {
                         isActive={item.isActive}
                         isRedeemable={item.isRedeemable}
                         startTime={item.startTime}
+                        eateryName={item.eateryName}
                         key={key}
                     />
                 )
