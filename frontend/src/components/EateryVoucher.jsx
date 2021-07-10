@@ -45,26 +45,23 @@ export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, 
 
   const removeVoucher = async (id) => {
     const response = await fetch(
-        "http://localhost:8080/eatery/voucher",
+        "http://localhost:8080/eatery/voucher?id=" + voucherId,
         {
           method: "DELETE",
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
             "Authorization": auth
-          },
-          body: JSON.stringify({
-            "voucherId": id
-          })
+          }
         }
     );
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
-
     } else {
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
     }
+    setOpenDeleteModal(false);
   }
 
   return (
