@@ -256,7 +256,7 @@ public class VoucherService {
                 dinerBooking.put("eatingStyle", voucherDb.getEatingStyle());
                 dinerBooking.put("discount", voucherDb.getDiscount());
                 dinerBooking.put("eateryId", voucherDb.getEateryId());
-                dinerBooking.put("isRedeemable", isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()) && !booking.isRedeemed());
+                dinerBooking.put("isRedeemable", isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()));
                 dinerBooking.put("used", booking.isRedeemed());
 
                 Optional<Eatery> eatery = eateryRepository.findById(voucherDb.getEateryId());
