@@ -7,7 +7,7 @@ import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
-import com.nuggets.valueeats.service.HealthService;
+import com.nuggets.valueeats.utils.HealthService;
 import com.nuggets.valueeats.utils.JwtUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

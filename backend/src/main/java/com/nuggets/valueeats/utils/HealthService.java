@@ -1,4 +1,4 @@
-package com.nuggets.valueeats.service;
+package com.nuggets.valueeats.utils;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
