@@ -3,6 +3,7 @@ package com.nuggets.valueeats.service;
 import com.nuggets.valueeats.controller.model.VoucherInput;
 import com.nuggets.valueeats.entity.BookingRecord;
 import com.nuggets.valueeats.entity.Diner;
+import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
 import com.nuggets.valueeats.repository.BookingRecordRepository;
@@ -244,56 +245,72 @@ public class VoucherService {
 
         for (BookingRecord booking:dinerBookings) {
             HashMap<String, Object> dinerBooking = new HashMap<String, Object>();
-            Optional<Voucher> voucher = voucherRepository.findById(booking.getVoucherId());
-            Optional<RepeatedVoucher> repeatVoucher = repeatVoucherRepository.findById(booking.getVoucherId());
+            boolean voucherExists = voucherRepository.existsById(booking.getVoucherId());
+            boolean repeatVoucherExists = repeatVoucherRepository.existsById(booking.getVoucherId());
 
-            if (voucher.isPresent()){
-                Voucher voucherDb = voucher.get();
+            if (voucherExists) {
                 dinerBooking.put("bookingId", booking.getId());
                 dinerBooking.put("code", booking.getCode());
-                dinerBooking.put("isActive", voucherDb.isActive());
-                dinerBooking.put("eatingStyle", voucherDb.getEatingStyle());
-                dinerBooking.put("discount", voucherDb.getDiscount());
-                dinerBooking.put("eateryId", voucherDb.getEateryId());
-                dinerBooking.put("isRedeemable", isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()));
+                dinerBooking.put("isActive", checkActive(booking.getDate(), booking.getEnd()));
+                dinerBooking.put("eatingStyle", booking.getEatingStyle());
+                dinerBooking.put("discount", booking.getDiscount());
+                dinerBooking.put("eateryId", booking.getEateryId());
+                dinerBooking.put("isRedeemable", isInTimeRange(booking.getDate(), booking.getStart(), booking.getEnd()));
+                dinerBooking.put("used", booking.isRedeemed());
+
+                Optional<Eatery> eatery = eateryRepository.findById(booking.getEateryId());
+                if (!eatery.isPresent()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery ID is booking is invalid."));
+                }
+                Eatery eateryDb = eatery.get();
+                
+                dinerBooking.put("eateryName", eateryDb.getAlias());
 
                 SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
-                String strDate = formatter.format(voucherDb.getDate());
-                int startHour = voucherDb.getStart() / 60; //since both are ints, you get an int
-                int startMinute = voucherDb.getStart() % 60;
-                int endHour = voucherDb.getEnd() / 60; //since both are ints, you get an int
-                int endMinute = voucherDb.getEnd() % 60;
+                String strDate = formatter.format(booking.getDate());
+                int startHour = booking.getStart() / 60; //since both are ints, you get an int
+                int startMinute = booking.getStart() % 60;
+                int endHour = booking.getEnd() / 60; //since both are ints, you get an int
+                int endMinute = booking.getEnd() % 60;
                 
                 dinerBooking.put("date", strDate);
                 dinerBooking.put("startTime", String.format("%d:%02d", startHour, startMinute));
                 dinerBooking.put("endTime", String.format("%d:%02d", endHour, endMinute));
 
-                if (isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()))
-                    dinerBooking.put("Duration", getDuration(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()));
+                if (isInTimeRange(booking.getDate(), booking.getStart(), booking.getEnd()))
+                    dinerBooking.put("duration", getDuration(booking.getDate(), booking.getStart(), booking.getEnd()));
 
-            } else if (repeatVoucher.isPresent()) {
-                RepeatedVoucher voucherDb = repeatVoucher.get();
+            } else if (repeatVoucherExists) {
                 dinerBooking.put("bookingId", booking.getId());
                 dinerBooking.put("code", booking.getCode());
-                dinerBooking.put("isActive", voucherDb.isActive());
-                dinerBooking.put("eatingStyle", voucherDb.getEatingStyle());
-                dinerBooking.put("discount", voucherDb.getDiscount());
-                dinerBooking.put("eateryId", voucherDb.getEateryId());
+                dinerBooking.put("isActive", checkActive(booking.getDate(), booking.getEnd()));
+                dinerBooking.put("eatingStyle", booking.getEatingStyle());
+                dinerBooking.put("discount", booking.getDiscount());
+                dinerBooking.put("eateryId", booking.getEateryId());
+                dinerBooking.put("isRedeemable", isInTimeRange(booking.getDate(), booking.getStart(), booking.getEnd()));
+                dinerBooking.put("used", booking.isRedeemed());
+
+                Optional<Eatery> eatery = eateryRepository.findById(booking.getEateryId());
+                if (!eatery.isPresent()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery ID is booking is invalid."));
+                }
+                Eatery eateryDb = eatery.get();
+
+                dinerBooking.put("eateryName", eateryDb.getAlias());
 
                 SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
-                String strDate = formatter.format(voucherDb.getDate());
-                int startHour = voucherDb.getStart() / 60; //since both are ints, you get an int
-                int startMinute = voucherDb.getStart() % 60;
-                int endHour = voucherDb.getEnd() / 60; //since both are ints, you get an int
-                int endMinute = voucherDb.getEnd() % 60;
+                String strDate = formatter.format(booking.getDate());
+                int startHour = booking.getStart() / 60; //since both are ints, you get an int
+                int startMinute = booking.getStart() % 60;
+                int endHour = booking.getEnd() / 60; //since both are ints, you get an int
+                int endMinute = booking.getEnd() % 60;
                 
                 dinerBooking.put("date", strDate);
                 dinerBooking.put("startTime", String.format("%d:%02d", startHour, startMinute));
                 dinerBooking.put("endTime", String.format("%d:%02d", endHour, endMinute));
 
-                dinerBooking.put("isRedeemable", isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()));
-                if (isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()))
-                    dinerBooking.put("Duration", getDuration(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()));
+                if (isInTimeRange(booking.getDate(), booking.getStart(), booking.getEnd()))
+                    dinerBooking.put("duration", getDuration(booking.getDate(), booking.getStart(), booking.getEnd()));
                     
             }
             bookingData.add(dinerBooking);
@@ -303,6 +320,13 @@ public class VoucherService {
         JSONObject data = new JSONObject(dataMedium);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
+    }
+
+    private boolean checkActive (Date date, Integer end) {
+        Date timeNow = new Date(System.currentTimeMillis());
+        timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
+        Date endTime = Date.from(date.toInstant().plus(Duration.ofMinutes(end)));;
+        return (endTime.compareTo(timeNow) > 0);
     }
 
     private boolean isInTimeRange(Date date, Integer start, Integer end) {
@@ -608,7 +632,7 @@ public class VoucherService {
                 repeatVoucherRepository.save(repeatedVoucher);
 
             }
-
+            setVoucherDetails(bookingRecord, repeatedVoucher);
             bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);
             bookingRecord.setDinerId(dinerId);
             bookingRecord.setEateryId(repeatedVoucher.getEateryId());
@@ -629,13 +653,14 @@ public class VoucherService {
                 voucherRepository.save(voucher);
             }
 
+            setVoucherDetails(bookingRecord, voucher);
             bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);
             bookingRecord.setDinerId(dinerId);
             bookingRecord.setEateryId(voucher.getEateryId());
             bookingRecord.setCode(generateRandomCode());
             bookingRecord.setVoucherId(voucherId);
         }
-
+        bookingRecord.setRedeemed(false);
         bookingRecordRepository.save(bookingRecord);
 
         Map<String,String> dataMedium = new HashMap<>();
@@ -652,11 +677,126 @@ public class VoucherService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully booked", data));
     }
 
+    private BookingRecord setVoucherDetails(BookingRecord bookingRecord, Voucher voucher) {
+        bookingRecord.setEatingStyle(voucher.getEatingStyle());
+        bookingRecord.setDiscount(voucher.getDiscount());
+        bookingRecord.setDate(voucher.getDate());
+        bookingRecord.setStart(voucher.getStart());
+        bookingRecord.setEnd(voucher.getEnd());
+        return bookingRecord;
+    }
+
+    private BookingRecord setVoucherDetails(BookingRecord bookingRecord, RepeatedVoucher repeatedVoucher) {
+        bookingRecord.setEatingStyle(repeatedVoucher.getEatingStyle());
+        bookingRecord.setDiscount(repeatedVoucher.getDiscount());
+        bookingRecord.setDate(repeatedVoucher.getDate());
+        bookingRecord.setStart(repeatedVoucher.getStart());
+        bookingRecord.setEnd(repeatedVoucher.getEnd());
+        return bookingRecord;
+    }
+
     private String generateRandomCode() {
         String uuid = UUID.randomUUID().toString().substring(0, 5);
         while (bookingRecordRepository.existsByCode(uuid)) {
             uuid = UUID.randomUUID().toString().substring(0, 5);
         }
         return uuid;
+    }
+
+    public ResponseEntity<JSONObject> deleteVoucher (Long voucherId, String token) {
+        String decodedToken = jwtUtils.decode(token);
+
+        if (decodedToken == null) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+
+        }
+
+        Eatery eateryInDb = eateryRepository.findByToken(token);
+
+        if (eateryInDb == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+        }
+
+        if (!voucherRepository.existsById(voucherId) && !repeatVoucherRepository.existsById(voucherId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher does not exist"));
+        }
+
+        if (repeatVoucherRepository.existsById(voucherId)) {
+            RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
+            repeatedVoucher.setActive(false);
+            repeatedVoucher.setQuantity(0);
+            repeatVoucherRepository.save(repeatedVoucher);
+        } else if (voucherRepository.existsById(voucherId)) {
+            Voucher voucher = voucherRepository.getById(voucherId);
+            voucher.setActive(false);
+            voucher.setQuantity(0);
+            voucherRepository.save(voucher);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher successfully deleted."));
+    }
+
+    public ResponseEntity<JSONObject> verifyVoucher (String code, String token) {
+        String decodedToken = jwtUtils.decode(token);
+
+        if (decodedToken == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+        }
+
+        // Check if token is from an eatery
+        Eatery eateryInDb = eateryRepository.findByToken(token);
+
+        if (eateryInDb == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+        }
+        
+        // Check if code is from the eatery
+        BookingRecord booking = bookingRecordRepository.findBookingByEateryIdAndCode(eateryInDb.getId(), code);
+
+        if (booking == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid voucher code."));
+        }
+
+        boolean voucherExists = voucherRepository.existsById(booking.getVoucherId());
+        boolean repeatedVoucherExists = repeatVoucherRepository.existsById(booking.getVoucherId());
+
+        // Check if voucher is in redeem range
+        HashMap<String, Object> dinerBooking = new HashMap<String, Object>();
+        if  (voucherExists) {
+            if (!isInTimeRange(booking.getDate(), booking.getStart(), booking.getEnd())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher has expired or cannot be redeemed yet."));
+            }
+            dinerBooking.put("eatingStyle", booking.getEatingStyle());
+            dinerBooking.put("discount", booking.getDiscount());
+            dinerBooking.put("date", booking.getDate());
+            dinerBooking.put("start", booking.getStart());
+            dinerBooking.put("end", booking.getEnd());
+        } else if (repeatedVoucherExists) {
+            if (!isInTimeRange(booking.getDate(), booking.getStart(), booking.getEnd())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher has expired or cannot be redeemed yet."));
+            }
+            dinerBooking.put("eatingStyle", booking.getEatingStyle());
+            dinerBooking.put("discount", booking.getDiscount());
+            dinerBooking.put("date", booking.getDate());
+            dinerBooking.put("start", booking.getStart());
+            dinerBooking.put("end", booking.getEnd());
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher cannot be found."));
+        }
+
+        // Check if voucher is already redeemed.
+        if (booking.isRedeemed()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher has already been redeemed."));
+        }
+        Map<String, Object> dataMedium = new HashMap<>();
+        dataMedium.put("data", dinerBooking);
+        JSONObject data = new JSONObject(dataMedium);
+
+        // If voucher is, set booking to redeemed.
+        booking.setRedeemed(true);
+
+        bookingRecordRepository.save(booking);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher is valid and has been used!", data));
     }
 }
