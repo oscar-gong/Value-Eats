@@ -50,8 +50,10 @@ export default function DinerVouchers() {
         if (vouchers.length === 0) return <div>no current vouchers</div>;
         return vouchers.map((item, key) => {
             return (
-                item.isRedeemable && (
+                !item.used &&
+                item.isActive && (
                     <DinerVoucher
+                        duration={item.Duration}
                         code={item.code}
                         date={item.date}
                         discount={item.discount}
@@ -62,6 +64,7 @@ export default function DinerVouchers() {
                         isRedeemable={item.isRedeemable}
                         startTime={item.startTime}
                         eateryName={item.eateryName}
+                        used={item.used}
                         key={key}
                     />
                 )
@@ -73,7 +76,7 @@ export default function DinerVouchers() {
         if (!vouchers) return;
         return vouchers.map((item, key) => {
             return (
-                !item.isRedeemable && (
+                (item.used || !item.isActive) && (
                     <DinerVoucher
                         code={item.code}
                         date={item.date}
@@ -85,6 +88,7 @@ export default function DinerVouchers() {
                         isRedeemable={item.isRedeemable}
                         startTime={item.startTime}
                         eateryName={item.eateryName}
+                        used={item.used}
                         key={key}
                     />
                 )

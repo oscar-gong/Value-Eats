@@ -1,7 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Box, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import Countdown from "react-countdown";
 export default function DinerVoucher({
+    duration,
     code,
     date,
     discount,
@@ -12,10 +14,18 @@ export default function DinerVoucher({
     isRedeemable,
     startTime,
     eateryName,
+    used,
 }) {
     const history = useHistory();
+
     const handleViewEateryClick = () => {
         history.push(`/EateryProfile/${eateryName}/${eateryID}`);
+    };
+    // not redeemable  means it is complete
+    // redeemable means it has a countdown
+    const [complete, setComplete] = useState(!isRedeemable);
+    const handleComplete = () => {
+        setComplete(true);
     };
 
     return (
@@ -24,11 +34,11 @@ export default function DinerVoucher({
             justifyContent="space-around"
             alignItems="center"
             border="3px solid #4F4846"
-            bgcolor={isRedeemable ? "#E8CEBF" : "#808080"}
+            bgcolor={used || !isActive ? "#808080" : "#E8CEBF"}
             margin="20px"
         >
             <Box display="flex" flexDirection="column">
-                <h1>{isRedeemable ? "ACTIVE" : "USED"}</h1>
+                <h1>{isActive ? (used ? "USED" : "ACTIVE") : "EXPIRED"}</h1>
             </Box>
             <Box display="flex" flexDirection="column">
                 <h1>
@@ -36,8 +46,25 @@ export default function DinerVoucher({
                 </h1>
             </Box>
             <Box display="flex" flexDirection="column">
-                <h3 style={{ margin: "5px 0px" }}>Time remaining {endTime}</h3>
-                <h3 style={{ margin: "5px 0px" }}>Code: {code}</h3>
+                {((!isRedeemable && !used) || (!used && complete)) && (
+                    <h3 style={{ margin: "5px 0px" }}>
+                        Use between {startTime} - {endTime}
+                    </h3>
+                )}
+                {isRedeemable && !used && !complete && (
+                    <h3 style={{ margin: "5px 0px" }}>
+                        Time remaining{" "}
+                        <Countdown
+                            onComplete={handleComplete}
+                            date={Date.now() + duration}
+                        />
+                    </h3>
+                )}
+
+                {!used && <h3 style={{ margin: "5px 0px" }}>Code: {code}</h3>}
+                {used && (
+                    <h3 style={{ margin: "5px 0px" }}>Redeemed on {date}</h3>
+                )}
             </Box>
             <Box display="flex" flexDirection="column" justifyContent="center">
                 <Box display="flex" justifyContent="center">
