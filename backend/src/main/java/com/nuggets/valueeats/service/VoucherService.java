@@ -162,11 +162,6 @@ public class VoucherService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully created voucher"));
     }
 
-    private Date getDateTime(Date date, Integer minute){
-        return Date.from(date.toInstant().plus(Duration.ofMinutes(minute)));
-    }
-
-
     public ResponseEntity<JSONObject> eateryListVouchers(String token, Long id) {
 
         String decodedToken = jwtUtils.decode(token);
@@ -646,11 +641,14 @@ public class VoucherService {
             }
 
             if (voucher.getQuantity() < 1) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enoufh voucher for booking"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enough voucher for booking"));
             
             } else {
                 voucher.setQuantity(voucher.getQuantity() - 1);
                 voucherRepository.save(voucher);
+            }
+            if (voucher.getQuantity() == 0) {
+                voucher.setActive(false);
             }
 
             setVoucherDetails(bookingRecord, voucher);
