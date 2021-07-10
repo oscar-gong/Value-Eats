@@ -49,13 +49,6 @@ public class EateryController {
         return voucherService.createVoucher(voucher, token);
     }
 
-    // An eatery list its own active vouchers
-    // Check if the token is an eatery, then check the eateryId.
-    @RequestMapping(value = "eatery/voucher", method = RequestMethod.GET)
-    public ResponseEntity<JSONObject> EateryListVouchers (@RequestParam(required=false) Long id, @RequestHeader (name="Authorization") String token) {
-        return voucherService.eateryListVouchers(token, id);
-    }
-
     @RequestMapping(value = "eatery/voucher", method = RequestMethod.PUT)
     public ResponseEntity<JSONObject> DinerListVouchers(@RequestBody VoucherInput voucher, @RequestHeader (name="Authorization") String token) {
         return voucherService.editVoucher(voucher, token);

@@ -77,6 +77,10 @@ public class VoucherService {
         } catch (NumberFormatException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery ID is invalid"));
         }
+
+        if (!eateryRepository.existsByToken(decodedToken)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid."));
+        }
         
         if(!eateryRepository.existsById(eateryId)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
@@ -160,61 +164,6 @@ public class VoucherService {
         voucherRepository.save(newVoucher);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully created voucher"));
-    }
-
-    private Date getDateTime(Date date, Integer minute){
-        return Date.from(date.toInstant().plus(Duration.ofMinutes(minute)));
-    }
-
-
-    public ResponseEntity<JSONObject> eateryListVouchers(String token, Long id) {
-
-        String decodedToken = jwtUtils.decode(token);
-
-        Long eateryId;
-
-        if (decodedToken == null) {
-            eateryId = id;
-        } else {
-            eateryId = Long.valueOf(decodedToken);
-        } 
-
-        if (!eateryRepository.existsById(eateryId)) {
-            eateryId = id;
-        }
-        
-        Boolean isEateryExit = eateryRepository.existsById(eateryId);
-        
-        if (isEateryExit == false) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist, the token or eatery Id must be valid"));
-        }
-
-        ArrayList<Voucher> vouchersList = voucherRepository.findByEateryId(eateryId);
-
-        if (vouchersList == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not have any vouchers"));
-        }
-        
-        List<Map<String,String>> ls = new ArrayList<Map<String,String>>();
-
-        for (Voucher v : vouchersList) {
-            Map<String,String> tmp = new HashMap<>();
-            tmp.put("id", Long.toString(v.getId()));
-            tmp.put("eateryId", Long.toString(v.getEateryId()));
-            tmp.put("eatingStyle", v.getEatingStyle().toString());
-            tmp.put("discount", Double.toString(v.getDiscount()));
-            tmp.put("quantity", Integer.toString(v.getQuantity()));
-            tmp.put("start", v.getQuantity().toString());
-            tmp.put("end", v.getEnd().toString());
-            ls.add(tmp);
-        }
-        Map<String, List<Map<String,String>>> dataMedium = new HashMap<>();
-        
-        dataMedium.put("voucherList", ls);
-        
-        JSONObject data = new JSONObject(dataMedium);
-
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 
     public ResponseEntity<JSONObject> dinerListVouchers(String token) {
@@ -646,11 +595,14 @@ public class VoucherService {
             }
 
             if (voucher.getQuantity() < 1) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enoufh voucher for booking"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enough voucher for booking"));
             
             } else {
                 voucher.setQuantity(voucher.getQuantity() - 1);
                 voucherRepository.save(voucher);
+            }
+            if (voucher.getQuantity() == 0) {
+                voucher.setActive(false);
             }
 
             setVoucherDetails(bookingRecord, voucher);
