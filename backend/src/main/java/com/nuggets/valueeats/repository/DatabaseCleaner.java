@@ -29,7 +29,7 @@ public class DatabaseCleaner {
     @Autowired
     private VoucherRepository voucherRepository;
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(cron = "0 * * * * *")
     public void updateRepeatedVoucher() {
         List<RepeatedVoucher> repeatedVouchers = repeatVoucherRepository.findAll();
 
@@ -50,7 +50,7 @@ public class DatabaseCleaner {
         }
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(cron = "0 * * * * *")
     public void updateExpiredVoucher() {
         List<RepeatedVoucher> repeatedVouchers = repeatVoucherRepository.findAllActive();
         List<Voucher> vouchers = voucherRepository.findAllActive();
