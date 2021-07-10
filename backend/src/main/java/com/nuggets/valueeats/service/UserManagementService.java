@@ -25,12 +25,12 @@ import com.nuggets.valueeats.utils.EncryptionUtils;
 import com.nuggets.valueeats.utils.JwtUtils;
 import com.nuggets.valueeats.utils.ResponseUtils;
 import com.nuggets.valueeats.utils.ValidationUtils;
+import com.nuggets.valueeats.utils.HelperFunctions;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.metadata.Db2CallMetaDataProvider;
 import org.springframework.stereotype.Service;
 
 
@@ -377,6 +377,9 @@ public class UserManagementService {
             voucher.put("eateryId", v.getEateryId());
             voucher.put("eatingStyle", v.getEatingStyle());
             voucher.put("quantity", v.getQuantity());
+            voucher.put("duration", HelperFunctions.getDuration(v.getDate(), v.getEnd()));
+
+
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
             String strDate = formatter.format(v.getDate());
             voucher.put("date", strDate);
@@ -402,6 +405,7 @@ public class UserManagementService {
             voucher.put("eateryId", v.getEateryId());
             voucher.put("eatingStyle", v.getEatingStyle());
             voucher.put("quantity", v.getQuantity());
+            voucher.put("duration", HelperFunctions.getDuration(v.getDate(), v.getEnd()));
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
             String strDate = formatter.format(v.getDate());
             voucher.put("date", strDate);
