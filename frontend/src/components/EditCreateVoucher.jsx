@@ -12,23 +12,31 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
   const defaultState = (initialValue = "") => {
     return { value: initialValue, valid: true }
   };
-  // isOneOff will either be 0 or 1, used for tabs - 1 for is oneoff, 0 for is not oneoff
+  // isOneOff will either be 0 or 1, used for tabs - 1 for is weekly, 0 for is oneoff
   const [isOneOff, setIsOneOff] = useState(initOneOff);
   const [isDineIn, setisDineIn] = useState(defaultState(initDineIn));
   const [discount, setDiscount] = useState(defaultState(initDiscount));
   const [quantity, setQuantity] = useState(defaultState(initQuantity));
-  const [startDateTime, setStartDateTime] = useState(defaultState(initStartTime === "" ? date.toISOString().split('T')[0] + "T10:30" : initStartTime.toISOString().slice(0, -1)));
-  const [endDateTime, setEndDateTime] = useState(defaultState(initEndTime === "" ? date.toISOString().split('T')[0] + "T10:30" : initEndTime.toISOString().slice(0, -1)));
-  const handleUpdateVoucher = async () => {
-    console.log("Make the API call here that will udpate this particular Voucher for a particular restaurant");
-  }
+  const [startDateTime, setStartDateTime] = useState(defaultState(initStartTime === "" ? 
+    date.toISOString().split('T')[0] + "T10:30" : 
+    initStartTime.toISOString().slice(0, -1)));
+  const [endDateTime, setEndDateTime] = useState(defaultState(initEndTime === "" ? 
+    date.toISOString().split('T')[0] + "T10:30" : 
+    initEndTime.toISOString().slice(0, -1)));
 
-  const handleCreateVoucher = async () => {
-    // Must first ensure that all the fields are valid       
+  const checkFormValid = () => {
     validRequired(discount, setDiscount);
     validRequired(quantity, setQuantity);
     checkValidEndDate();
-    if (discount === "" || quantity === "" || !checkValidEndDate(false)) {
+    if (discount.value === "" || quantity.value === "" || !checkValidEndDate(false)) {
+      return false;
+    }
+    return true;
+  }
+
+  const handleEditCreateVoucher = async (isEdit) => {
+    // Must first ensure that all the fields are valid       
+    if (!checkFormValid) {
       return;
     }
     console.log("This will create the voucher");
@@ -39,27 +47,29 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
     console.log(startDateTime.value.split('T')[0]);
     console.log(startMinute);
     console.log(endMinute);
+    const reqType = isEdit ? "PUT" : "POST";
+    const body = {
+      "eateryId": eateryId,
+      "eatingStyle": (isDineIn.value === "true" ? "DineIn" : "Takeaway"),
+      "discount": discount.value,
+      "quantity": quantity.value,
+      "isRecurring": (isOneOff === 0 ? false : true),
+      "date": startDateTime.value.split('T')[0],
+      "startMinute": startMinute,
+      "endMinute": endMinute
+    }
+    if (isEdit) {
+      body["id"] = voucherId;
+    }
     const response = await fetch("http://localhost:8080/eatery/voucher", 
       {
-        method: "POST",
+        method: reqType,
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
           "Authorization": token
         },
-        body: JSON.stringify({
-          "eateryId": eateryId,
-          "eatingStyle": (isDineIn.value === "true" ? "DineIn" : "Takeaway"),
-          "discount": discount.value,
-          "quantity": quantity.value,
-          "isRecurring": (isOneOff === 1 ? false : true),
-          "date": startDateTime.value.split('T')[0],
-          "startMinute": startMinute,
-          "endMinute": endMinute
-          // "rating": rating,
-          // "message": reviewText,
-          // "reviewPhotos": images
-        })
+        body: JSON.stringify(body)
       });
     const responseData = await response.json();
     if (response.status === 200) {
@@ -69,12 +79,6 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
     }
     setOpen(false);
   }
-
-  // const validDiscount = (discount, setDiscount) => {
-  //   if (discount < 0 || discount > 100) {
-  //     discount
-  //   }
-  // }
 
   const checkValidEndDate = (setValue=true) => {
     const start = new Date(startDateTime.value);
@@ -230,7 +234,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
           <Button autoFocus onClick={() => {setOpen(false)}} color="primary">
             Cancel
           </Button>
-          <Button autoFocus onClick={isEdit ? handleUpdateVoucher : handleCreateVoucher} color="primary">
+          <Button autoFocus onClick={() => handleEditCreateVoucher(isEdit)} color="primary">
             {isEdit ? "Save changes" : "Create voucher"}
           </Button>
         </DialogActions>
