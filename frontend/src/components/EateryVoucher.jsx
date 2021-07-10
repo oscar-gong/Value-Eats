@@ -9,7 +9,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 
-export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, isDineIn, vouchersLeft, date, startTime, endTime}) {
+export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, isDineIn, vouchersLeft, date, startTime, endTime, refreshList}) {
   // console.log(date);
 
   const convertToDateTime = (date, time) => {
@@ -56,6 +56,7 @@ export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, 
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+      refreshList();
     } else {
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
     }
@@ -106,6 +107,7 @@ export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, 
         initQuantity={vouchersLeft}
         initStartTime={startDateTime}
         initEndTime={endDateTime}
+        refreshList={refreshList}
       ></EditCreateVoucher>
     </>
   );

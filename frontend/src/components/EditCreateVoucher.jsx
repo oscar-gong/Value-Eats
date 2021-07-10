@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, Box, TextField , DialogActions, But
 import { StoreContext } from '../utils/store';
 import { validRequired } from '../utils/helpers';
 
-export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen, initOneOff=0, initDineIn="true", initDiscount="", initQuantity="", initStartTime="", initEndTime="", isEdit }) {
+export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen, initOneOff=0, initDineIn="true", initDiscount="", initQuantity="", initStartTime="", initEndTime="", isEdit, refreshList }) {
   const date = new Date();
 
   const context = useContext(StoreContext);
@@ -28,7 +28,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
     validRequired(discount, setDiscount);
     validRequired(quantity, setQuantity);
     checkValidEndDate();
-    if (discount.value === "" || quantity.value === "" || !checkValidEndDate(false)) {
+    if (discount.value === "" || quantity.value === "" || !checkValidEndDate(false) || !startDateTime.valid || !endDateTime.valid) {
       return false;
     }
     return true;
@@ -36,7 +36,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
 
   const handleEditCreateVoucher = async (isEdit) => {
     // Must first ensure that all the fields are valid       
-    if (!checkFormValid) {
+    if (!checkFormValid()) {
       return;
     }
     console.log("This will create the voucher");
@@ -74,6 +74,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+      refreshList();
     } else {
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
     }

@@ -17,29 +17,31 @@ export default function EateryLanding() {
   console.log(isDiner);
   const [eateryDetails, setEateryDetails] = useState({});
   const [openCreateDiscount, setOpenCreateDiscount] = useState(false);
-  useEffect(() => {
-    const getEateryDetails = async () => {
-      const response = await fetch(
-          `http://localhost:8080/eatery/profile/details`,
-          {
-              method: "GET",
-              headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                  Authorization: auth,
-              },
-          }
-      );
 
-      const responseData = await response.json();
-      if (response.status === 200) {
-          console.log(responseData);
-          setEateryDetails(responseData);
-      } else {
-          // TODO
-          console.log(responseData);
+  const getEateryDetails = async () => {
+    const response = await fetch(
+      `http://localhost:8080/eatery/profile/details`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: auth,
+        },
       }
-    };
+    );
+
+    const responseData = await response.json();
+    if (response.status === 200) {
+      console.log(responseData);
+      setEateryDetails(responseData);
+    } else {
+      // TODO
+      console.log(responseData);
+    }
+  };
+
+  useEffect(() => {
     getEateryDetails();
   }, [auth]);
 
@@ -72,7 +74,8 @@ export default function EateryLanding() {
                       vouchersLeft={v.quantity}
                       date={v.date} 
                       startTime={v.startTime}
-                      endTime={v.endTime}></EateryVoucher>
+                      endTime={v.endTime}
+                      refreshList={() => getEateryDetails()}></EateryVoucher>
                   );
                 }))
               }
@@ -105,6 +108,7 @@ export default function EateryLanding() {
         open={openCreateDiscount}
         setOpen={setOpenCreateDiscount}
         isEdit={false}
+        refreshList={() => getEateryDetails()}
       ></EditCreateVoucher>
     </>
   );
