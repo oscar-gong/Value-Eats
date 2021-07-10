@@ -26,5 +26,6 @@ public class BookingRecord {
   private Long eateryId;
   private Long voucherId;
   private String code;
+  private boolean redeemed;
 
 }

@@ -24,4 +24,7 @@ public interface BookingRecordRepository extends JpaRepository<BookingRecord, Lo
 
   @Query(value = "select * from booking_record where diner_id = ?1 order by id desc", nativeQuery = true)
   ArrayList<BookingRecord> findAllByDinerId (Long dinerId);
+
+  @Query(value = "select * from booking_record where eatery_id = ?1 and code = ?2", nativeQuery = true)
+  BookingRecord findBookingByEateryIdAndCode (Long eateryId, String code);
 }
