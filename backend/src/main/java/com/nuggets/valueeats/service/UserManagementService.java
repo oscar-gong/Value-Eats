@@ -125,7 +125,7 @@ public class UserManagementService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to login, please try again"));
         }
 
-        String token = jwtUtils.encode(String.valueOf(user.getId()));
+        String token = jwtUtils.encode(String.valueOf(userDb.getId()));
         userDb.setToken(token);
         System.out.println(userDb.getToken());
         userRepository.save(userDb);
@@ -363,8 +363,9 @@ public class UserManagementService {
         map.put("cuisines", eateryDb.getCuisines());
 
         ArrayList<Object> combinedVoucherList = new ArrayList<Object>();
-        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findByEateryId(eateryDb.getId());
-        ArrayList<Voucher> vouchersList = voucherRepository.findByEateryId(eateryDb.getId());
+        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findActiveByEateryId(eateryDb.getId());
+        System.out.println(repeatVouchersList);
+        ArrayList<Voucher> vouchersList = voucherRepository.findActiveByEateryId(eateryDb.getId());
         for (RepeatedVoucher v:repeatVouchersList){
             HashMap<String, Object> voucher = new HashMap<String, Object>();
             voucher.put("id", v.getId());

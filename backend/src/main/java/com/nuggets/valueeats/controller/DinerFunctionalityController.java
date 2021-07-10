@@ -63,4 +63,9 @@ public final class DinerFunctionalityController {
     public ResponseEntity<JSONObject> bookVoucher(@RequestParam Long id, @RequestHeader (name="Authorization") String token){
         return voucherService.bookVoucher(id, token);
     }
+
+    @RequestMapping(value = "diner/voucher", method = RequestMethod.GET)
+    public ResponseEntity<JSONObject> dinerListVouchers(@RequestHeader (name="Authorization") String token) {
+        return voucherService.dinerListVouchers(token);
+    }
 }
