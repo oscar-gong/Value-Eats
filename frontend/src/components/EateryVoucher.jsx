@@ -8,8 +8,20 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
 import EditCreateVoucher from "../components/EditCreateVoucher";
+import Countdown from "react-countdown";
 
-export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, isDineIn, vouchersLeft, date, startTime, endTime, refreshList}) {
+export default function EateryVoucher({eateryId, 
+  voucherId, 
+  isOneOff, 
+  discount, 
+  isDineIn, 
+  vouchersLeft, 
+  date, 
+  startTime, 
+  endTime, 
+  timeRemaining, 
+  refreshList
+}) {
   // console.log(date);
 
   const convertToDateTime = (date, time) => {
@@ -70,11 +82,18 @@ export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, 
           <h1>{discount}% off - {isDineIn ? "Dine in" : "Takeaway"}</h1>
         </Box>
         <Box display="flex" flexDirection="column">
-          <h3 style={{margin: "5px 0px"}}>{vouchersLeft} vouchers remaining...</h3>
-          <h3 style={{margin: "5px 0px"}}> this will be counting down</h3>
           {
             !isOneOff &&
             <h3 style={{margin: "5px 0px"}}>Weekly deal</h3>
+          }
+          <h3 style={{margin: "5px 0px"}}>{vouchersLeft} vouchers remaining...</h3>
+          {/* <h3 style={{margin: "5px 0px"}}> </h3> */}
+          {
+            startDateTime > Date.now() &&
+            <Countdown
+              onComplete={refreshList}
+              date={Date.now() + timeRemaining}
+            />
           }
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center">
