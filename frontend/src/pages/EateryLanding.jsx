@@ -61,11 +61,26 @@ export default function EateryLanding() {
             bgcolor="#E8CEBF"
             overflow="auto"
             >
-            <EateryVoucher eateryId={eateryDetails.id} discount={5} isOneOff={true} isDineIn={false} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+              {
+                eateryDetails.vouchers && (eateryDetails.vouchers.map((v) => {
+                  return (
+                    <EateryVoucher voucherId={v.id}
+                      eateryId={v.eateryId}
+                      discount={v.discount}
+                      isOneOff={!v.isRecurring}
+                      isDineIn={v.eatingStyle === "DineIn" ? true : false}
+                      vouchersLeft={v.quantity}
+                      date={v.date} 
+                      startTime={v.startTime}
+                      endTime={v.endTime}></EateryVoucher>
+                  );
+                }))
+              }
+            {/* <EateryVoucher eateryId={eateryDetails.id} discount={5} isOneOff={true} isDineIn={false} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
             <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
             <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={true} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
             <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
+            <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher> */}
           </Box>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center" height="30vh">

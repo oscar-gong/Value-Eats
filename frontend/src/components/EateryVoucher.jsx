@@ -9,7 +9,27 @@ import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 
-export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, isDineIn, vouchersLeft, timeRemaining}) {
+export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, isDineIn, vouchersLeft, date, startTime, endTime}) {
+  // console.log(date);
+
+  const convertToDateTime = (date, time) => {
+    const datetime = new Date(date);
+    const [hours, minutes] = time.split(":");
+    // console.log(hours);
+    // console.log(minutes);
+    if (hours < 24) {
+      datetime.setHours(hours);
+    } else {
+      datetime.setDate(datetime.getDate() + 1);
+      datetime.setHours(hours - 24);
+    }
+    datetime.setMinutes(minutes);
+    console.log(datetime);
+    return datetime;
+  }
+  const startDateTime = convertToDateTime(date, startTime);
+  const endDateTime = convertToDateTime(date, endTime);
+
   const context = useContext(StoreContext);
   const auth = context.auth[0];
   const isDiner = context.isDiner[0];
@@ -27,15 +47,15 @@ export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, 
     const response = await fetch(
         "http://localhost:8080/eatery/voucher",
         {
-            method: "DELETE",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": auth
-            },
-            body: JSON.stringify({
-              "voucherId": id
-            })
+          method: "DELETE",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": auth
+          },
+          body: JSON.stringify({
+            "voucherId": id
+          })
         }
     );
     const responseData = await response.json();
@@ -55,7 +75,7 @@ export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, 
         </Box>
         <Box display="flex" flexDirection="column">
           <h3 style={{margin: "5px 0px"}}>{vouchersLeft} vouchers remaining...</h3>
-          <h3 style={{margin: "5px 0px"}}>{timeRemaining} this will be counting down</h3>
+          <h3 style={{margin: "5px 0px"}}> this will be counting down</h3>
           {
             !isOneOff &&
             <h3 style={{margin: "5px 0px"}}>Weekly deal</h3>
@@ -86,7 +106,11 @@ export default function EateryVoucher({eateryId, voucherId, isOneOff, discount, 
         open={editCreateModal}
         setOpen={setEditCreateModal}
         isEdit={true}
-        initOneOff={isOneOff ? 0 : 1} initDineIn={isDineIn ? "true" : "false"} initDiscount={discount} initQuantity={vouchersLeft}
+        initOneOff={isOneOff ? 0 : 1} initDineIn={isDineIn ? "true" : "false"} 
+        initDiscount={discount} 
+        initQuantity={vouchersLeft}
+        initStartTime={startDateTime}
+        initEndTime={endDateTime}
       ></EditCreateVoucher>
     </>
   );

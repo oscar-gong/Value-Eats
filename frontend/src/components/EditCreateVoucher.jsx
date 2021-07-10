@@ -17,8 +17,8 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
   const [isDineIn, setisDineIn] = useState(defaultState(initDineIn));
   const [discount, setDiscount] = useState(defaultState(initDiscount));
   const [quantity, setQuantity] = useState(defaultState(initQuantity));
-  const [startDateTime, setStartDateTime] = useState(defaultState(initStartTime === "" ? date.toISOString().split('T')[0] + "T10:30" : initStartTime));
-  const [endDateTime, setEndDateTime] = useState(defaultState(initEndTime === "" ? date.toISOString().split('T')[0] + "T10:30" : initEndTime));
+  const [startDateTime, setStartDateTime] = useState(defaultState(initStartTime === "" ? date.toISOString().split('T')[0] + "T10:30" : initStartTime.toISOString().slice(0, -1)));
+  const [endDateTime, setEndDateTime] = useState(defaultState(initEndTime === "" ? date.toISOString().split('T')[0] + "T10:30" : initEndTime.toISOString().slice(0, -1)));
   const handleUpdateVoucher = async () => {
     console.log("Make the API call here that will udpate this particular Voucher for a particular restaurant");
   }
