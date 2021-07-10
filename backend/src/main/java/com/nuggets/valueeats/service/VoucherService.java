@@ -256,7 +256,8 @@ public class VoucherService {
                 dinerBooking.put("eatingStyle", voucherDb.getEatingStyle());
                 dinerBooking.put("discount", voucherDb.getDiscount());
                 dinerBooking.put("eateryId", voucherDb.getEateryId());
-                dinerBooking.put("isRedeemable", isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()));
+                dinerBooking.put("isRedeemable", isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()) && !booking.isRedeemed());
+                dinerBooking.put("used", booking.isRedeemed());
 
                 Optional<Eatery> eatery = eateryRepository.findById(voucherDb.getEateryId());
                 if (!eatery.isPresent()) {
@@ -288,6 +289,8 @@ public class VoucherService {
                 dinerBooking.put("eatingStyle", voucherDb.getEatingStyle());
                 dinerBooking.put("discount", voucherDb.getDiscount());
                 dinerBooking.put("eateryId", voucherDb.getEateryId());
+                dinerBooking.put("isRedeemable", isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()));
+                dinerBooking.put("used", booking.isRedeemed());
 
                 Optional<Eatery> eatery = eateryRepository.findById(voucherDb.getEateryId());
                 if (!eatery.isPresent()) {
@@ -308,7 +311,6 @@ public class VoucherService {
                 dinerBooking.put("startTime", String.format("%d:%02d", startHour, startMinute));
                 dinerBooking.put("endTime", String.format("%d:%02d", endHour, endMinute));
 
-                dinerBooking.put("isRedeemable", isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()));
                 if (isInTimeRange(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()))
                     dinerBooking.put("Duration", getDuration(voucherDb.getDate(), voucherDb.getStart(), voucherDb.getEnd()));
                     
