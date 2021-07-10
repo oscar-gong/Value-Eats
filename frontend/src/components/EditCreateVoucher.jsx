@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Dialog, DialogTitle, DialogContent, Box, TextField , DialogActions, Button, Tabs, Tab, Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
 import { StoreContext } from '../utils/store';
 import { validRequired } from '../utils/helpers';
@@ -24,11 +24,21 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
   }
 
   const handleCreateVoucher = async () => {
-    // Must first ensure that all the fields are valid
-    if (!discount.valid || !quantity.valid || !startDateTime.valid || !endDateTime.valid) {
+    // Must first ensure that all the fields are valid       
+    validRequired(discount, setDiscount);
+    validRequired(quantity, setQuantity);
+    checkValidEndDate();
+    if (discount === "" || quantity === "" || !checkValidEndDate(false)) {
       return;
     }
     console.log("This will create the voucher");
+    console.log(startDateTime.value);
+    const timeArry = startDateTime.value.split('T')[1].split(":");
+    const startMinute = parseInt(timeArry[0] * 60) + parseInt(timeArry[1]);
+    const endMinute = (new Date(endDateTime.value) - new Date(startDateTime.value)) / 60000 + startMinute;
+    console.log(startDateTime.value.split('T')[0]);
+    console.log(startMinute);
+    console.log(endMinute);
     const response = await fetch("http://localhost:8080/eatery/voucher", 
       {
         method: "POST",
@@ -42,7 +52,10 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
           "eatingStyle": (isDineIn.value === "true" ? "DineIn" : "Takeaway"),
           "discount": discount.value,
           "quantity": quantity.value,
-          "isRecurring": (isOneOff === 1 ? false : true)
+          "isRecurring": (isOneOff === 1 ? false : true),
+          "date": startDateTime.value.split('T')[0],
+          "startMinute": startMinute,
+          "endMinute": endMinute
           // "rating": rating,
           // "message": reviewText,
           // "reviewPhotos": images
@@ -63,15 +76,24 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
   //   }
   // }
 
-  const checkValidEndDate = () => {
+  const checkValidEndDate = (setValue=true) => {
     const start = new Date(startDateTime.value);
     const end = new Date(endDateTime.value);
     if (start > end) {
-      setStartDateTime({...startDateTime, valid: false});
+      if (setValue) {
+        setStartDateTime({...startDateTime, valid: false});
+      } else {
+        return false;
+      }
     } else if ((end - start) > 86400000 || (end - start) < 1800000) {
-      setEndDateTime({...endDateTime, valid: false});
+      if (setValue) {
+        setEndDateTime({...endDateTime, valid: false});
+      } else {
+        return false;
+      }
     }
-  }
+    return true;
+  };
 
   return (
     <>
@@ -103,10 +125,13 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
                     valid: true
                   })
                   :
-                  setDiscount({
-                    value: "",
-                    valid: true
-                  })
+                    (e.target.value > 100 ?
+                    null
+                    :
+                    setDiscount({
+                      value: "",
+                      valid: true
+                    }))
                 }
                 allowNegative={false}
                 error={!discount.valid}
@@ -150,6 +175,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
             />
             </Box>
             <Box py={2}>
+              {/* Making use of datetime local type does not work well for all browsers */}
               <TextField
                 label="Start at:"
                 type="datetime-local"
@@ -175,7 +201,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
             </Box>
             <Box py={2}>
               <TextField
-                label="Start at:"
+                label="End at:"
                 type="datetime-local"
                 onChange={(e) => {
                   setEndDateTime({

@@ -382,6 +382,7 @@ public class UserManagementService {
             int endMinute = v.getEnd() % 60;
             voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
             voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
+            voucher.put("isRecurring", true);
             combinedVoucherList.add(voucher);
         }
 
@@ -401,6 +402,7 @@ public class UserManagementService {
             int endMinute = v.getEnd() % 60;
             voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
             voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
+            voucher.put("isRecurring", false);
             combinedVoucherList.add(voucher);
         }
 
