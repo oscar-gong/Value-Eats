@@ -337,6 +337,7 @@ public class UserManagementService {
         DecimalFormat df = new DecimalFormat("#.0"); 
         
         HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("id", eateryDb.getId());
         map.put("name", eateryDb.getAlias());
         map.put("email", eateryDb.getEmail());
         map.put("rating", df.format(averageRating));
@@ -366,7 +367,7 @@ public class UserManagementService {
         map.put("cuisines", eateryDb.getCuisines());
 
         ArrayList<Object> combinedVoucherList = new ArrayList<Object>();
-        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findActiveByEateryId(eateryDb.getId());
+        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findByEateryId(eateryDb.getId());
         System.out.println(repeatVouchersList);
         ArrayList<Voucher> vouchersList = voucherRepository.findActiveByEateryId(eateryDb.getId());
         for (RepeatedVoucher v:repeatVouchersList){
@@ -377,17 +378,22 @@ public class UserManagementService {
             voucher.put("eatingStyle", v.getEatingStyle());
             voucher.put("quantity", v.getQuantity());
             voucher.put("duration", HelperFunctions.getDuration(v.getDate(), v.getEnd()));
-
-
+            voucher.put("isActive", HelperFunctions.checkActive(v.getDate(), v.getEnd()));
+            voucher.put("isRedeemable", HelperFunctions.isInTimeRange(v.getDate(), v.getStart(), v.getEnd()));
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+            if (v.getNextUpdate() != null) {
+                String nextUpdate = formatter.format(v.getNextUpdate());
+                voucher.put("nextUpdate", nextUpdate);
+            }
             String strDate = formatter.format(v.getDate());
             voucher.put("date", strDate);
-            int startHour = v.getStart() / 60; //since both are ints, you get an int
+            int startHour = v.getStart() / 60;
             int startMinute = v.getStart() % 60;
-            int endHour = v.getEnd() / 60; //since both are ints, you get an int
+            int endHour = v.getEnd() / 60;
             int endMinute = v.getEnd() % 60;
             voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
             voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
+            voucher.put("isRecurring", true);
             if(dinerDb != null){
                 voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), v.getId())) != 0);
             } else {
@@ -404,15 +410,18 @@ public class UserManagementService {
             voucher.put("eatingStyle", v.getEatingStyle());
             voucher.put("quantity", v.getQuantity());
             voucher.put("duration", HelperFunctions.getDuration(v.getDate(), v.getEnd()));
+            voucher.put("isActive", HelperFunctions.checkActive(v.getDate(), v.getEnd()));
+            voucher.put("isRedeemable", HelperFunctions.isInTimeRange(v.getDate(), v.getStart(), v.getEnd()));
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
             String strDate = formatter.format(v.getDate());
             voucher.put("date", strDate);
-            int startHour = v.getStart() / 60; //since both are ints, you get an int
+            int startHour = v.getStart() / 60;
             int startMinute = v.getStart() % 60;
-            int endHour = v.getEnd() / 60; //since both are ints, you get an int
+            int endHour = v.getEnd() / 60;
             int endMinute = v.getEnd() % 60;
             voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
             voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
+            voucher.put("isRecurring", false);
             if(dinerDb != null){
                 voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), v.getId())) != 0);
             } else {

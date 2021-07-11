@@ -1,15 +1,6 @@
 package com.nuggets.valueeats.controller;
 
-import java.util.Map;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nuggets.valueeats.entity.Diner;
-import com.nuggets.valueeats.entity.Eatery;
-import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.Review;
-import com.nuggets.valueeats.service.CuisineService;
-import com.nuggets.valueeats.service.UserManagementService;
 import com.nuggets.valueeats.service.VoucherService;
 import com.nuggets.valueeats.service.DinerFunctionalityService;
 
@@ -27,11 +18,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
 public final class DinerFunctionalityController {
-    @Autowired
-    private UserManagementService userManagementService;
-    
-    @Autowired
-    private CuisineService cuisineService;
 
     @Autowired
     private VoucherService voucherService;

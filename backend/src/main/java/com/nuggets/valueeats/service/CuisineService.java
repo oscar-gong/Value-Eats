@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.nuggets.valueeats.utils.ResponseUtils;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

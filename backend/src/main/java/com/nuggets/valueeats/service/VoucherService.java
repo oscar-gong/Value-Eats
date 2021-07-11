@@ -71,7 +71,7 @@ public class VoucherService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery ID is invalid"));
         }
 
-        if (!eateryRepository.existsByToken(decodedToken)) {
+        if (!eateryRepository.existsByToken(token)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid."));
         }
         
@@ -275,6 +275,11 @@ public class VoucherService {
         if (decodedToken == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
+
+        if (!eateryRepository.existsByToken(token)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid."));
+        }
+
         Long eateryId = Long.valueOf(decodedToken);
         Boolean isEateryExist = eateryRepository.existsById(eateryId);
         
@@ -643,6 +648,7 @@ public class VoucherService {
             RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
             repeatedVoucher.setActive(false);
             repeatedVoucher.setQuantity(0);
+            repeatedVoucher.setNextUpdate(null);
             repeatVoucherRepository.save(repeatedVoucher);
         } else if (voucherRepository.existsById(voucherId)) {
             Voucher voucher = voucherRepository.getById(voucherId);

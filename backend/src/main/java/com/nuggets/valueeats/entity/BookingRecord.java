@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PrimaryKeyJoinColumn;
 
-import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
-import com.nuggets.valueeats.entity.voucher.Voucher;
 import com.nuggets.valueeats.entity.voucher.VoucherEatingStyle;
 
 @Entity

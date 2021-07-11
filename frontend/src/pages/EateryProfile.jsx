@@ -129,6 +129,9 @@ export default function EateryProfile() {
             const responseData = await response.json();
             if (response.status === 200) {
                 console.log(responseData);
+                if (responseData.vouchers.length > 0) {
+                    responseData.vouchers = responseData.vouchers.filter(v => v.isActive);
+                } 
                 setEateryDetails(responseData);
             } else {
                 // TODO
@@ -395,8 +398,7 @@ export default function EateryProfile() {
                         </div>
                     </Grid>
                 </Grid>
-                <EditCreateReview
-                    id={-1}
+                <EditCreateReview id={-1}
                     eateryId={parseInt(eateryId)}
                     open={openCreateReview}
                     setOpen={setOpenCreateReview}
