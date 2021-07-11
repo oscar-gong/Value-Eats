@@ -395,8 +395,7 @@ export default function EateryProfile() {
                         </div>
                     </Grid>
                 </Grid>
-                <EditCreateReview
-                    id={-1}
+                <EditCreateReview id={-1}
                     eateryId={parseInt(eateryId)}
                     open={openCreateReview}
                     setOpen={setOpenCreateReview}

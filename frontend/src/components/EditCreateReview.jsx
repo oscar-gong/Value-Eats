@@ -75,40 +75,40 @@ export default function EditCreateReview ({ id, eateryId, open, setOpen, usernam
   return (
     <>
       <Dialog aria-labelledby="customized-dialog-title" open={open}>
-          <DialogTitle id="customized-dialog-title">
-            {isEdit ? "Edit Review" : "Create Review"}
-          </DialogTitle>
-          <DialogContent dividers>
-            <Box pt={1} display="flex" justifyContent="space-around">
-              <ProfilePhoto size={70} src={profilePic}></ProfilePhoto>
-              <h3>{username}</h3>
-            </Box>
-            <Box pt={1}>
-              <StarRating rating={rating} isEditable={true} setRating={setRating}></StarRating>
-            </Box>
-            <UploadPhotos setImages={setImages} setPreviewImages={setPreviewImages} previewImages={previewImages} uploadDescription={"Upload Review Photos"}/>
-            <Box pt={2}>
-              <TextField multiline
-                  id="outlined-basic"
-                  label="Let us know what you think..."
-                  onChange={(e) =>
-                    setReviewText(e.target.value)
-                  }
-                  value={reviewText}
-                  variant="outlined"
-                  fullWidth
-              />
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={() => {setOpen(false); setRating(ratingState[0]); setReviewText(reviewTextState[0]); setImages(reviewImagesState[0])}} color="primary">
-              Cancel
-            </Button>
-            <Button autoFocus onClick={isEdit ? handleUpdateReview : handleCreateReview} color="primary">
-              {isEdit ? "Save changes" : "Create review"}
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <DialogTitle id="customized-dialog-title">
+          {isEdit ? "Edit Review" : "Create Review"}
+        </DialogTitle>
+        <DialogContent dividers>
+          <Box pt={1} display="flex" justifyContent="space-around">
+            <ProfilePhoto size={70} src={profilePic}></ProfilePhoto>
+            <h3>{username}</h3>
+          </Box>
+          <Box pt={1}>
+            <StarRating rating={rating} isEditable={true} setRating={setRating}></StarRating>
+          </Box>
+          <UploadPhotos setImages={setImages} setPreviewImages={setPreviewImages} previewImages={previewImages} uploadDescription={"Upload Review Photos"}/>
+          <Box pt={2}>
+            <TextField multiline
+                id="outlined-basic"
+                label="Let us know what you think..."
+                onChange={(e) =>
+                  setReviewText(e.target.value)
+                }
+                value={reviewText}
+                variant="outlined"
+                fullWidth
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={() => {setOpen(false); setRating(ratingState[0]); setReviewText(reviewTextState[0]); setImages(reviewImagesState[0])}} color="primary">
+            Cancel
+          </Button>
+          <Button autoFocus onClick={isEdit ? handleUpdateReview : handleCreateReview} color="primary">
+            {isEdit ? "Save changes" : "Create review"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }

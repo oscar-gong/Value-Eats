@@ -18,6 +18,7 @@ import { Alert } from "@material-ui/lab";
 import { StoreContext } from "./utils/store";
 import DinerProfile from "./pages/DinerProfile";
 import EditEateryProfile from "./pages/EditEateryProfile";
+import RedeemVoucher from "./pages/RedeemVoucher";
 import DinerVouchers from "./pages/DinerVouchers";
 
 function App() {
@@ -76,6 +77,9 @@ function App() {
                         <Route exact path="/EateryLanding">
                             <EateryLanding />
                         </Route>
+                        <Route exact path="/RedeemVoucher">
+                            <RedeemVoucher />
+                        </Route>
                     </Switch>
                 </Router>
             </Main>
@@ -91,7 +95,7 @@ const Default = () => {
     if (auth === null) return <Redirect to="/Login" />;
     if (isDiner === "false") return <Redirect to="/EateryLanding" />;
     if (isDiner === "true") return <Redirect to="/DinerLanding" />;
-    return <Redirect to="/Login" />;
+    return <Redirect to="/Login"/>;
 };
 
 export default App;

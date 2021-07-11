@@ -71,7 +71,7 @@ public class VoucherService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery ID is invalid"));
         }
 
-        if (!eateryRepository.existsByToken(decodedToken)) {
+        if (!eateryRepository.existsByToken(token)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid."));
         }
         

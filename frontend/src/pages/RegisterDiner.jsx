@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
 import { AlignCenter } from "../styles/AlignCenter";
-import { Box, TextField, Button, makeStyles } from "@material-ui/core";
+import { Box, TextField } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory, Redirect } from "react-router";
@@ -13,17 +13,9 @@ import {
     validPassword,
 } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
+import { ButtonStyled } from "../styles/ButtonStyle";
 // set to true for real demos
 const useGoogleAPI = false;
-
-const useStyles = makeStyles({
-    root: {
-        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-    },
-    subtitle: {
-        color: "#ff855b",
-    },
-});
 
 export default function RegisterDiner({ setToken }) {
     const defaultState = { value: "", valid: true };
@@ -33,7 +25,6 @@ export default function RegisterDiner({ setToken }) {
     const [confirmPassword, setConfirmPassword] = useState(defaultState);
     const [address, setAddress] = useState(defaultState);
     const history = useHistory();
-    const classes = useStyles();
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
     const [auth, setAuth] = context.auth;
@@ -139,7 +130,7 @@ export default function RegisterDiner({ setToken }) {
         <AlignCenter>
             <FloatBox display="flex" flexDirection="column" alignItems="center">
                 <Box pt={2}>
-                    <Subtitle className={classes.subtitle}>
+                    <Subtitle>
                         Create Account
                     </Subtitle>
                 </Box>
@@ -250,16 +241,15 @@ export default function RegisterDiner({ setToken }) {
                     />
                 </Box>
                 <Box pt={4} pb={4}>
-                    <Button
+                    <ButtonStyled
                         variant="contained"
                         color="primary"
                         endIcon={<SendIcon />}
                         onKeyPress={handleKeyPress}
                         onClick={registerDiner}
-                        className={classes.root}
                     >
                         Sign Up
-                    </Button>
+                    </ButtonStyled>
                 </Box>
             </FloatBox>
         </AlignCenter>
