@@ -381,16 +381,18 @@ public class UserManagementService {
             voucher.put("isActive", HelperFunctions.checkActive(v.getDate(), v.getEnd()));
             voucher.put("isRedeemable", HelperFunctions.isInTimeRange(v.getDate(), v.getStart(), v.getEnd()));
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
-            String nextUpdate = formatter.format(v.getNextUpdate());
-            voucher.put("nextUpdate", nextUpdate);
+            if (v.getNextUpdate() != null) {
+                String nextUpdate = formatter.format(v.getNextUpdate());
+                voucher.put("nextUpdate", nextUpdate);
+            }
             String strDate = formatter.format(v.getDate());
             voucher.put("date", strDate);
             int startHour = v.getStart() / 60;
             int startMinute = v.getStart() % 60;
             int endHour = v.getEnd() / 60;
             int endMinute = v.getEnd() % 60;
-            voucher.put("startTime", String.format("%%02d:%02d", startHour, startMinute));
-            voucher.put("endTime", String.format("%02d:%02d", endHour, endMinute));
+            voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
+            voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
             voucher.put("isRecurring", true);
             if(dinerDb != null){
                 voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), v.getId())) != 0);
@@ -417,8 +419,8 @@ public class UserManagementService {
             int startMinute = v.getStart() % 60;
             int endHour = v.getEnd() / 60;
             int endMinute = v.getEnd() % 60;
-            voucher.put("startTime", String.format("%02d:%02d", startHour, startMinute));
-            voucher.put("endTime", String.format("%02d:%02d", endHour, endMinute));
+            voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
+            voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
             voucher.put("isRecurring", false);
             if(dinerDb != null){
                 voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), v.getId())) != 0);

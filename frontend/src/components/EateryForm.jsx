@@ -244,7 +244,7 @@ export default function EateryForm({
                         endIcon={<SendIcon />}
                         onClick={submitForm}
                     >
-                        Register
+                        {isRegister ? "Register" : "Update"}
                     </ButtonStyled>
                 </Box>
             </FloatBox>

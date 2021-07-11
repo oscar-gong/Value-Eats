@@ -30,14 +30,12 @@ export default function EateryVoucher({eateryId,
   const convertToDateTime = (date, time) => {
     const datetime = new Date(date);
     const [hours, minutes] = time.split(":");
-    console.log(hours);
-    console.log(minutes);
     // This accounts for the timezone difference between +10AEST and +0GMT
     datetime.setHours(hours);
     datetime.setMinutes(minutes - datetime.getTimezoneOffset());
+    console.log(date);
+    console.log(hours, minutes);
     console.log(datetime);
-    console.log(datetime.toISOString());
-    console.log(datetime.getTimezoneOffset());
     return datetime;
   }
   const startDateTime = convertToDateTime(date, startTime);
