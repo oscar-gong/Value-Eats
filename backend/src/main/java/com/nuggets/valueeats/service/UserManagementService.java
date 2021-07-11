@@ -387,7 +387,7 @@ public class UserManagementService {
             voucher.put("date", strDate);
             int startHour = v.getStart() / 60;
             int startMinute = v.getStart() % 60;
-            int endHour = (v.getEnd() / 60) % 24;
+            int endHour = v.getEnd() / 60;
             int endMinute = v.getEnd() % 60;
             voucher.put("startTime", String.format("%%02d:%02d", startHour, startMinute));
             voucher.put("endTime", String.format("%02d:%02d", endHour, endMinute));
@@ -415,7 +415,7 @@ public class UserManagementService {
             voucher.put("date", strDate);
             int startHour = v.getStart() / 60;
             int startMinute = v.getStart() % 60;
-            int endHour = (v.getEnd() / 60) % 24;
+            int endHour = v.getEnd() / 60;
             int endMinute = v.getEnd() % 60;
             voucher.put("startTime", String.format("%02d:%02d", startHour, startMinute));
             voucher.put("endTime", String.format("%02d:%02d", endHour, endMinute));
