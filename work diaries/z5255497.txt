@@ -143,12 +143,14 @@ Week6:
   
     - The sql relationship between voucher, repeated voucher and one-off voucher was complex, so we improved the data sturcture.
     - Difficult to implement the data and duration features, so we decided to define some enumerable variables for them.
+    - Difficult to test and verify the vouchers, because they have different code, date, duration. We implemented some
+      helper functions to check them.
   
     What was not finished, why this happened, how this affects the overall project
     progress and what adjustments (if any) are needed so the success of the project is
     not endangered:
     
-    - All stuff in the backend are done.
+    - All stuffs in the backend are done.
     
   What is planned for the next period:
     - I will continue working on the backend, finish the other features for vouchers and implement the search algorith.
