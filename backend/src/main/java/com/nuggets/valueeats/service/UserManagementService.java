@@ -385,12 +385,12 @@ public class UserManagementService {
             voucher.put("nextUpdate", nextUpdate);
             String strDate = formatter.format(v.getDate());
             voucher.put("date", strDate);
-            int startHour = v.getStart() / 60; //since both are ints, you get an int
+            int startHour = v.getStart() / 60;
             int startMinute = v.getStart() % 60;
-            int endHour = v.getEnd() / 60; //since both are ints, you get an int
+            int endHour = (v.getEnd() / 60) % 24;
             int endMinute = v.getEnd() % 60;
-            voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
-            voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
+            voucher.put("startTime", String.format("%%02d:%02d", startHour, startMinute));
+            voucher.put("endTime", String.format("%02d:%02d", endHour, endMinute));
             voucher.put("isRecurring", true);
             if(dinerDb != null){
                 voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), v.getId())) != 0);
@@ -413,12 +413,12 @@ public class UserManagementService {
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
             String strDate = formatter.format(v.getDate());
             voucher.put("date", strDate);
-            int startHour = v.getStart() / 60; //since both are ints, you get an int
+            int startHour = v.getStart() / 60;
             int startMinute = v.getStart() % 60;
-            int endHour = v.getEnd() / 60; //since both are ints, you get an int
+            int endHour = (v.getEnd() / 60) % 24;
             int endMinute = v.getEnd() % 60;
-            voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
-            voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
+            voucher.put("startTime", String.format("%02d:%02d", startHour, startMinute));
+            voucher.put("endTime", String.format("%02d:%02d", endHour, endMinute));
             voucher.put("isRecurring", false);
             if(dinerDb != null){
                 voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), v.getId())) != 0);
