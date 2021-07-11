@@ -126,18 +126,29 @@ Week5:
 
 Week6:
   What was planned for the period since the last work diary entry:
-
+    - We were planning to finish the voucher feature and booking voucher featuers.
+    - We were planning to improve the update profile method.
 
   What was finished:
+    - We have finished most of the voucher features.
+    - The vouchers are consist of repeated vouchers and one-off vouchers.
+    - We have finished the booking voucher feature and set its duration.
+    - I have implemented the feature to create a repeated voucher and a one-off voucher.
+    - I have implemented the feature to list all vouchers as an eatery or a diner.
+    - I have implemented the feature to make a booking and set its duration for a diner.
 
   
     What were the main technical and non-technical obstacles and how they were
   overcome:
-
+  
+    - The sql relationship between voucher, repeated voucher and one-off voucher was complex, so we improved the data sturcture.
+    - Difficult to implement the data and duration features, so we decided to define some enumerable variables for them.
   
     What was not finished, why this happened, how this affects the overall project
     progress and what adjustments (if any) are needed so the success of the project is
     not endangered:
-
+    
+    - All stuff in the backend are done.
     
   What is planned for the next period:
+    - I will continue working on the backend, finish the other features for vouchers and implement the search algorith.
