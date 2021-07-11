@@ -123,3 +123,21 @@ Week5:
   What is planned for the next period:
     - I will discuss the voucher feature and data structures with my teammates, I will also work on the sprint3 in backend.
     - I will work on the voucher create, voucher create and voucher edit.
+
+Week6:
+  What was planned for the period since the last work diary entry:
+
+
+  What was finished:
+
+  
+    What were the main technical and non-technical obstacles and how they were
+  overcome:
+
+  
+    What was not finished, why this happened, how this affects the overall project
+    progress and what adjustments (if any) are needed so the success of the project is
+    not endangered:
+
+    
+  What is planned for the next period:
