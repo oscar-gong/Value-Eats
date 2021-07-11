@@ -82,9 +82,10 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
   }
 
   const checkValidEndDate = (setValue=true) => {
+    const now = new Date();
     const start = new Date(startDateTime.value);
     const end = new Date(endDateTime.value);
-    if (start > end) {
+    if (start > end || start < now) {
       if (setValue) {
         setStartDateTime({...startDateTime, valid: false});
       } else {
@@ -194,7 +195,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
                 }
                 error={!startDateTime.valid}
                 helperText={
-                  startDateTime.valid ? "" : "Start time must be before the end time"
+                  startDateTime.valid ? "" : "Voucher must start before it ends and not be in the past"
                 }
                 onBlur={() => {
                   checkValidEndDate();
