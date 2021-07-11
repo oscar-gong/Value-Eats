@@ -3,7 +3,7 @@ import NavBar from "../components/Navbar";
 import { MainContent } from "../styles/MainContent";
 import { StoreContext } from "../utils/store";
 import { Redirect } from "react-router-dom";
-import { Box, Button, IconButton } from "@material-ui/core";
+import { Box, Button, IconButton, Grid } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
@@ -20,6 +20,7 @@ export default function EateryVoucher({eateryId,
   startTime, 
   endTime, 
   timeRemaining,
+  nextUpdate,
   isActive,
   isRedeemable,
   refreshList
@@ -84,35 +85,45 @@ export default function EateryVoucher({eateryId,
   }
 
   return (
-    <>
-      <Box display="flex" justifyContent="space-around" alignItems="center" border="3px solid #4F4846" bgcolor="#E8CEBF" margin="20px">
-        <Box display="flex" flexDirection="column">
-          <h1>{discount}% off - {isDineIn ? "Dine in" : "Takeaway"}</h1>
-        </Box>
-        <Box display="flex" flexDirection="column">
-          {
-            !isOneOff &&
-            <h3 style={{margin: "5px 0px"}}>Weekly deal</h3>
-          }
-          <h3 style={{margin: "5px 0px"}}>{vouchersLeft} vouchers remaining...</h3>
-          {/* <h3 style={{margin: "5px 0px"}}> </h3> */}
-          {
-            isRedeemable &&
-            <Countdown
-              onComplete={refreshList}
-              date={Date.now() + timeRemaining}
-            />
-          }
-          {
-            !isRedeemable && isActive &&
-            <h3>Deal starts at {date} {startTime}</h3>
-          }
-          {
-            !isRedeemable && !isActive &&
-            <h3>This deal has expired</h3>
-          }
-        </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center">
+    <Box border="3px solid #4F4846" bgcolor="#E8CEBF" margin="20px">
+      <Grid container direction="row" justifyContent="center" alignItems="center" border="3px solid #4F4846" bgcolor="#E8CEBF" margin="20px">
+        <Grid display="flex" flexDirection="column" xs={4}>
+          <Box display="flex" justifyContent="center">
+            <h1>{discount}% off - {isDineIn ? "Dine in" : "Takeaway"}</h1>
+          </Box>
+        </Grid>
+        <Grid display="flex" justifyContent="center" xs={5}>
+          <Box display="flex" flexDirection="column" pl={10}>
+            {
+              !isOneOff &&
+              <h3 style={{margin: "5px 0px"}}>Weekly deal</h3>
+            }
+            {
+              (isRedeemable || isActive) &&
+              <h3 style={{margin: "5px 0px"}}>{vouchersLeft} vouchers remaining...</h3>
+            }
+            {/* <h3 style={{margin: "5px 0px"}}> </h3> */}
+            {
+              isRedeemable &&
+              <Countdown
+                onComplete={refreshList}
+                date={Date.now() + timeRemaining}
+              />
+            }
+            {
+              !isRedeemable && isActive &&
+              <h3>Deal starts at {date} {startTime}</h3>
+            }
+            {
+              !isRedeemable && !isActive &&
+              <>
+                <h3 style={{margin: "5px 0px"}}>Deal will become available </h3>
+                <h3 style={{margin: "5px 0px"}}>again at {nextUpdate} {startTime}</h3>
+              </>
+            }
+          </Box>
+        </Grid>
+        <Grid display="flex" flexDirection="column" justifyContent="center" xs={3}>
           <Box display="flex" justifyContent="center">
             <IconButton onClick={() => {}}>
               <EditIcon fontSize="large" 
@@ -125,8 +136,8 @@ export default function EateryVoucher({eateryId,
               />
             </IconButton>
           </Box>
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
       <ConfirmModal open={openDeleteModal}
         handleClose={() => setOpenDeleteModal(false)}
         title={"Delete voucher?"}
@@ -144,6 +155,6 @@ export default function EateryVoucher({eateryId,
         initEndTime={endDateTime}
         refreshList={refreshList}
       ></EditCreateVoucher>
-    </>
+    </Box>
   );
 }

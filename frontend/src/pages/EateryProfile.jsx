@@ -129,6 +129,9 @@ export default function EateryProfile() {
             const responseData = await response.json();
             if (response.status === 200) {
                 console.log(responseData);
+                if (responseData.vouchers.length > 0) {
+                    responseData.vouchers = responseData.vouchers.filter(v => v.isActive);
+                } 
                 setEateryDetails(responseData);
             } else {
                 // TODO

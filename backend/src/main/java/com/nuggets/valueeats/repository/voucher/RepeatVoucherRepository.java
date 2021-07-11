@@ -25,8 +25,8 @@ public interface RepeatVoucherRepository extends JpaRepository<RepeatedVoucher, 
 
     ArrayList<RepeatedVoucher> findByEateryId (Long eateryId);
 
-    @Query(value = "select * from repeated_voucher where eatery_id = ?1 and is_active = true", nativeQuery = true)
-    ArrayList<RepeatedVoucher> findActiveByEateryId (Long eateryId);
+    // @Query(value = "select * from repeated_voucher where eatery_id = ?1 and is_active = true", nativeQuery = true)
+    // ArrayList<RepeatedVoucher> findActiveByEateryId (Long eateryId);
 
     @Query(value = "select * from repeated_voucher where is_active = true", nativeQuery = true)
     ArrayList<RepeatedVoucher> findAllActive ();

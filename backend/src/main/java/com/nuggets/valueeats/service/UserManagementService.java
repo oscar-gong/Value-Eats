@@ -367,7 +367,7 @@ public class UserManagementService {
         map.put("cuisines", eateryDb.getCuisines());
 
         ArrayList<Object> combinedVoucherList = new ArrayList<Object>();
-        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findActiveByEateryId(eateryDb.getId());
+        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findByEateryId(eateryDb.getId());
         System.out.println(repeatVouchersList);
         ArrayList<Voucher> vouchersList = voucherRepository.findActiveByEateryId(eateryDb.getId());
         for (RepeatedVoucher v:repeatVouchersList){
@@ -381,6 +381,8 @@ public class UserManagementService {
             voucher.put("isActive", HelperFunctions.checkActive(v.getDate(), v.getEnd()));
             voucher.put("isRedeemable", HelperFunctions.isInTimeRange(v.getDate(), v.getStart(), v.getEnd()));
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+            String nextUpdate = formatter.format(v.getNextUpdate());
+            voucher.put("nextUpdate", nextUpdate);
             String strDate = formatter.format(v.getDate());
             voucher.put("date", strDate);
             int startHour = v.getStart() / 60; //since both are ints, you get an int
