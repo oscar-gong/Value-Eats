@@ -275,6 +275,11 @@ public class VoucherService {
         if (decodedToken == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
+
+        if (!eateryRepository.existsByToken(token)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid."));
+        }
+
         Long eateryId = Long.valueOf(decodedToken);
         Boolean isEateryExist = eateryRepository.existsById(eateryId);
         
