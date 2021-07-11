@@ -378,8 +378,8 @@ public class UserManagementService {
             voucher.put("eatingStyle", v.getEatingStyle());
             voucher.put("quantity", v.getQuantity());
             voucher.put("duration", HelperFunctions.getDuration(v.getDate(), v.getEnd()));
-
-
+            voucher.put("isActive", HelperFunctions.checkActive(v.getDate(), v.getEnd()));
+            voucher.put("isRedeemable", HelperFunctions.isInTimeRange(v.getDate(), v.getStart(), v.getEnd()));
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
             String strDate = formatter.format(v.getDate());
             voucher.put("date", strDate);
@@ -406,6 +406,8 @@ public class UserManagementService {
             voucher.put("eatingStyle", v.getEatingStyle());
             voucher.put("quantity", v.getQuantity());
             voucher.put("duration", HelperFunctions.getDuration(v.getDate(), v.getEnd()));
+            voucher.put("isActive", HelperFunctions.checkActive(v.getDate(), v.getEnd()));
+            voucher.put("isRedeemable", HelperFunctions.isInTimeRange(v.getDate(), v.getStart(), v.getEnd()));
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
             String strDate = formatter.format(v.getDate());
             voucher.put("date", strDate);

@@ -76,6 +76,8 @@ export default function EateryLanding() {
                       startTime={v.startTime}
                       endTime={v.endTime}
                       timeRemaining={v.duration}
+                      isActive={v.isActive}
+                      isRedeemable={v.isRedeemable}
                       refreshList={() => getEateryDetails()}></EateryVoucher>
                   );
                 }))

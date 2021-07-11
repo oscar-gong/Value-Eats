@@ -19,7 +19,9 @@ export default function EateryVoucher({eateryId,
   date, 
   startTime, 
   endTime, 
-  timeRemaining, 
+  timeRemaining,
+  isActive,
+  isRedeemable,
   refreshList
 }) {
   // console.log(date);
@@ -39,6 +41,12 @@ export default function EateryVoucher({eateryId,
   }
   const startDateTime = convertToDateTime(date, startTime);
   const endDateTime = convertToDateTime(date, endTime);
+
+  // console.log(new Date().getMilliseconds);
+  // console.log("HLSKDJHFSDKJFH");
+  // const tmpStartCheck = new Date(startDateTime).setMinutes(startDateTime.getMinutes() - startDateTime.getTimezoneOffset());
+  // console.log(tmpStartCheck);
+  // console.log(Date.now() > (tmpStartCheck.getMilliseconds));
 
   const context = useContext(StoreContext);
   const auth = context.auth[0];
@@ -89,11 +97,19 @@ export default function EateryVoucher({eateryId,
           <h3 style={{margin: "5px 0px"}}>{vouchersLeft} vouchers remaining...</h3>
           {/* <h3 style={{margin: "5px 0px"}}> </h3> */}
           {
-            startDateTime > Date.now() &&
+            isRedeemable &&
             <Countdown
               onComplete={refreshList}
               date={Date.now() + timeRemaining}
             />
+          }
+          {
+            !isRedeemable && isActive &&
+            <h3>Deal starts at {date} {startTime}</h3>
+          }
+          {
+            !isRedeemable && !isActive &&
+            <h3>This deal has expired</h3>
           }
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center">
