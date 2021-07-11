@@ -648,6 +648,7 @@ public class VoucherService {
             RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
             repeatedVoucher.setActive(false);
             repeatedVoucher.setQuantity(0);
+            repeatedVoucher.setNextUpdate(null);
             repeatVoucherRepository.save(repeatedVoucher);
         } else if (voucherRepository.existsById(voucherId)) {
             Voucher voucher = voucherRepository.getById(voucherId);

@@ -9,17 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 @Configuration
 @EnableScheduling
@@ -38,7 +30,7 @@ public class DatabaseCleaner {
 
         if (repeatedVouchers != null) {
             for (RepeatedVoucher repeatedVoucher : repeatedVouchers) {
-                if (repeatedVoucher.getNextUpdate().compareTo(timeNow) < 0){
+                if (repeatedVoucher.getNextUpdate() != null && repeatedVoucher.getNextUpdate().compareTo(timeNow) < 0){
                     System.out.println("Updated Voucher " + repeatedVoucher.getId());
                     repeatedVoucher.setQuantity(repeatedVoucher.getRestockTo());
                     repeatedVoucher.setActive(true);
