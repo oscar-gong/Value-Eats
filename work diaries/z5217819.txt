@@ -47,3 +47,14 @@ Week 5
   I worked closely with frontend to ensure that any issues were resolved as soon as possible.
 - All backend features were completed on time. However, update eatery profile in frontend was not completed so that it will be moved to the next sprint.
 - We plan to implement mostly the features surrounding eatery voucher distribution in the following sprint.
+
+Week 6
+- Last week, we have planned to implement mostly the features surrounding eatery voucher distribution in the Sprint 3.
+- We have managed to implement all these features including a couple extra features that were included in Sprint 4.
+- The features implemented in backend included: create, edit, delete, verify, book and list diner vouchers. The eatery profile list of vouchers was also updated to include actual vouchers rather than placeholder values.
+- Some of the obstacles we've faced included:
+    - The project objective having a lot of edge cases that weren't considered carefully initially which required a lot of structural adjustments as we implemented each new feature. However, we have managed to overcome this
+    and getting the structure working.
+    - The JAVA date API isn't designed very well leading to issues with timezones (Date doesn't deal with timezones). To overcome this, I have decided to offset the times so that times are compared in the same timezone.
+- Everything that we had planned to finish in this sprint were finished on time.
+- Next week we plan to begin sprint 5. However, before we start doing this, I plan to improve our code design in backend to remove a lot of repetitive code.
