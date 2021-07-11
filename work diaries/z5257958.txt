@@ -74,3 +74,30 @@ What was not finished
 
 What is planned for next sprint
  - Next sprint we aim to complete the voucher functionality of our application as well as resolve the story we did not finish in sprint 2.
+
+Week 6
+What was planned for the period since the last work diary
+ - Last week, our plan was to finish most of the functionality associated with creating and booking vouchers. We also planned to finish off edit eatery profile which we didn't quite get
+ around to finishing last week
+
+What was finished
+ - We were able to successfully complete our sprint with plenty of time to spare. Whilst their was quite a lot to do it was managable as everyone worked consistently 
+ throughout the week. Everyone also had more time than normal as a result  of flex week. I in particular focused on implementing the frontend of the voucher 
+ components from the eatery perspective. This involved primarily creating, editing and deleting vouchers. This with any other feature required close communication with 
+ the backend in order to ensure that endpoints were being called in the right way to receieve the data how we need it. I also made a template for the redeem voucher page
+ so that feature will be easier to implement next sprint. Additionally, Ash was able to finish of the edit eatery profile page reusing the register form component to make
+ that section of code functionally decomposed and easy to work with.
+
+What were the main technical and non technical obstacles and how they were overcome
+ - One of the main challenges that arose this week was the maven seemingly out of the blue stopped compiling, meaning our backend could not be run. This happened towards the end of the
+ week and was a major source of stress for me in particular, as I believe I was the first to encounter it. After alot of trial and error experimenting with different possible resolution options
+ for approximately 4-5 hours, it turned out to be an issue with the parent pom that our spring application was being built from. Once I discovered that, I attempted rolling back to a previous version
+ and thankfully that worked. This was quite a difficult task, as alot of the resources online were not particularly clear or did not match up with the issue I was facing. 
+ - We did not have any non technical obstacles, as we worked well as a team, making use of the feedback we gave each other from the retrospective we completed including improving our branch
+ names, leveraging each others code wherever possible and communicating our plans effectively (with endpoint tables and better use of JIRA).
+
+What was not finished
+ - This week, we were able to finish everything that we planned to do/
+
+What is planned for next sprint
+ - Next sprint we aim to complete the voucher functionality of our application as well as resolve the story we did not finish in sprint 2.
