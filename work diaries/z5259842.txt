@@ -86,3 +86,29 @@ Week 5
     - Start and complete Sprint 3 which mainly focuses upon eatery providing vouchers
     - Work on the UI, starting from Login screen
     - refactor code + test 
+
+
+Week 6
+- What was planned for the period since the last work diary entry:
+    - The plan was to complete sprint 3 and continue to work on the UI which was successfully completed
+
+- What we finished:
+    - Both sprint 3 (eatery voucher distribution) and sprint 4 (user voucher acceptance) were finished this week 
+    - I also finished off updating eatery profile details (allowing eateries to edit their profile) which was not finished in the previous sprint 
+    - This week I mainly worked on setting up frontend to display the user side of vouchers. This encompasses diners being able to see a voucher on an eatery profile, book a voucher and display all their vouchers, both past and present with appropriate time stamps. 
+    - I also worked on designing the login page with visual elements that reflect our project
+    - Backend was implemented by my other teammates and Ben implemented the frontend of the eatery side of vouchers. 
+    - started making repetitive code into components (overlap of register eatery form and eatery update form)
+
+- Obstacles that we faced:
+    - There were design complications in the backend in regards to the best way to provide vouchers for recurring voucher which was resolved by changing the initial implementation.
+    - Occasionally, frontend required more details from the backend endpoints, but this was easily resolved and swiftly handled by communciating the changes that needed to be made.
+
+- What was not finished:
+    - set up polling for vouchers
+    - error message from the frontend if backend has not been started 
+
+- What is planned for the next period:
+    - As both sprints are completed earlier than expected, we plan to make a start on sprint 5 
+    - I plan to continue to improve the UI as well as set up polling
+    - continue to refactor frontend
