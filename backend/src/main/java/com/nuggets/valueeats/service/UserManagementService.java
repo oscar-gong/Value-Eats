@@ -148,12 +148,12 @@ public class UserManagementService {
     @Transactional
     public ResponseEntity<JSONObject> logout(String token) {
         if (!userRepository.existsByToken(token) || token.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't find the token: " + token));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Can't find the token: " + token));
         }
 
         String userId = jwtUtils.decode(token);
         if (userId == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Can't get user associated with token"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Can't get user associated with token"));
         }
 
 
@@ -203,11 +203,11 @@ public class UserManagementService {
             userDb = userRepository.findByToken(token);
         } catch (PersistenceException e) {
             System.out.println("error");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse(e.toString()));
         }
 
         if (userDb == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Failed to verify, please try again"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Failed to verify, please try again"));
         }
         String result = processNewProfile(user, userDb);
 
@@ -284,13 +284,21 @@ public class UserManagementService {
     }
 
     public ResponseEntity<JSONObject> getDinerProfile(String token) {
+        String decodedToken = jwtUtils.decode(token);
+
+        if (decodedToken == null) {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
+
+        }
+        
         if (!dinerRepository.existsByToken(token) || token.isEmpty()){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is invalid"));
         }
 
         Diner diner = dinerRepository.findByToken(token);
         if (diner == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Diner does not exist"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Diner does not exist"));
         }
         List<Review> reviews = reviewRepository.findByDinerId(diner.getId());
         ArrayList<Object> reviewsList = new ArrayList<Object>();
@@ -313,16 +321,23 @@ public class UserManagementService {
     }
 
     public ResponseEntity<JSONObject> getEateryProfile(Long id, String token) {
+        String decodedToken = jwtUtils.decode(token);
+
+        if (decodedToken == null) {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
+
+        }
         Eatery eateryDb;
         Diner dinerDb = null;
         if(eateryRepository.existsByToken(token) && !token.isEmpty()){
             eateryDb = eateryRepository.findByToken(token);
         }else{
             if(token.isEmpty() || !(dinerRepository.existsByToken(token))) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid"));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is invalid"));
             }
             if(id == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("ID is required"));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("ID is required"));
             }
             Optional<Eatery> eateryInDb = eateryRepository.findById(id);
             if(!eateryInDb.isPresent()){

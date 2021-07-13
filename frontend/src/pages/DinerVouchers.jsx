@@ -6,6 +6,7 @@ import { Redirect } from "react-router";
 import DinerVoucher from "../components/DinerVoucher";
 
 import { StoreContext } from "../utils/store";
+import { logUserOut } from "../utils/logoutHelper";
 
 export default function DinerVouchers() {
     const context = useContext(StoreContext);
@@ -31,6 +32,8 @@ export default function DinerVouchers() {
             if (response.status === 200) {
                 console.log(responseData.vouchers);
                 setVouchers(responseData.vouchers);
+            } else if (response.status === 401) {
+                logUserOut();
             } else {
                 console.log("cannot get vouchers");
             }

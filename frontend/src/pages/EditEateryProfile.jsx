@@ -3,6 +3,7 @@ import NavBar from "../components/Navbar";
 import { StoreContext } from "../utils/store";
 import EateryForm from "../components/EateryForm";
 import { useHistory, Redirect } from "react-router";
+import { logUserOut } from "../utils/logoutHelper";
 
 export default function EditEateryLanding() {
     const defaultState = { value: "", valid: true };
@@ -49,6 +50,8 @@ export default function EditEateryLanding() {
                 setCuisines({ value: responseData.cuisines, valid: true });
                 setImages(responseData.menuPhotos);
                 setPreviewImages(responseData.menuPhotos);
+            } else if (response.status === 401) {
+                logUserOut();
             }
         };
         getEatery();

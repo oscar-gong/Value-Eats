@@ -17,6 +17,7 @@ import { StoreContext } from "../utils/store";
 import Carousel from "react-material-ui-carousel";
 import EditCreateReview from "../components/EditCreateReview";
 import ConfirmModal from "../components/ConfirmModal";
+import { logUserOut } from "../utils/logoutHelper";
 
 const useStyles = makeStyles({
     photo: {
@@ -105,6 +106,8 @@ export default function EateryProfile() {
                     profilePic: responseData["profile picture"],
                 });
                 // setEateryList(responseData.eateryList);
+            } else if (response.status === 401) {
+                logUserOut();
             }
         };
         if (isDiner !== "false") {

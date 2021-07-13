@@ -61,18 +61,18 @@ public class VoucherService {
 
         if (decodedToken == null) {
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
 
         }
         Long eateryId;
         try{
             eateryId = Long.valueOf(decodedToken);
         } catch (NumberFormatException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery ID is invalid"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Eatery ID is invalid"));
         }
 
         if (!eateryRepository.existsByToken(token)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid."));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is invalid."));
         }
         
         if(!eateryRepository.existsById(eateryId)){
@@ -164,19 +164,19 @@ public class VoucherService {
         String id = jwtUtils.decode(token);
 
         if (id == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
         Long dinerId;
         try{
             dinerId = Long.parseLong(id);
         } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid ID format"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid ID format"));
         }
 
         Boolean isDinerExist = dinerRepository.existsById(dinerId);
 
         if (isDinerExist == false) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Diner does not exist, check your token please"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Diner does not exist, check your token please"));
         }
 
 
@@ -268,23 +268,23 @@ public class VoucherService {
     // Take a voucher and an eatery token as input.
     public ResponseEntity<JSONObject> editVoucher(VoucherInput voucher, String token) {
         if (voucher == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Please enter the valid information of a voucher"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Please enter the valid information of a voucher"));
         }
         String decodedToken = jwtUtils.decode(token);
 
         if (decodedToken == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
 
         if (!eateryRepository.existsByToken(token)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is invalid."));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is invalid."));
         }
 
         Long eateryId = Long.valueOf(decodedToken);
         Boolean isEateryExist = eateryRepository.existsById(eateryId);
         
         if (isEateryExist == false) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist, check your token again"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Eatery does not exist, check your token again"));
         }
 
         if (voucher.getEateryId() != eateryId) {
@@ -630,18 +630,18 @@ public class VoucherService {
 
         if (decodedToken == null) {
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
 
         }
 
         Eatery eateryInDb = eateryRepository.findByToken(token);
 
         if (eateryInDb == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
 
         if (!voucherRepository.existsById(voucherId) && !repeatVoucherRepository.existsById(voucherId)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher does not exist"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Voucher does not exist"));
         }
 
         if (repeatVoucherRepository.existsById(voucherId)) {
@@ -663,14 +663,14 @@ public class VoucherService {
         String decodedToken = jwtUtils.decode(token);
 
         if (decodedToken == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
 
         // Check if token is from an eatery
         Eatery eateryInDb = eateryRepository.findByToken(token);
 
         if (eateryInDb == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
         
         // Check if code is from the eatery
