@@ -69,7 +69,6 @@ export default function Login() {
         return <Redirect to="/EateryLanding" />;
 
     const handleLogin = async () => {
-        console.log("hello, " + email + " " + password);
         const loginResponse = await fetch("http://localhost:8080/login", {
             method: "POST",
             headers: {

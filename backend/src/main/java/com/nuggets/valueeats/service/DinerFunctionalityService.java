@@ -35,6 +35,11 @@ public class DinerFunctionalityService {
     public ResponseEntity<JSONObject> createReview(Review review, String token) {
         try {
 
+            // Check if token is valid
+            if(!dinerRepository.existsByToken(token)){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
+            }
+            
             // Check for required inputs
             if(!(StringUtils.isNotBlank(token) && review.getEateryId() != null && review.getRating() != null)){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
@@ -43,11 +48,6 @@ public class DinerFunctionalityService {
             // Check if eatery id exists
             if(!eateryRepository.existsById(review.getEateryId())){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid Eatery ID"));
-            }
-
-            // Check if token is valid
-            if(!dinerRepository.existsByToken(token)){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
             }
 
             // Check if rating is between 1 to 5 and is in increments of 0.5
@@ -81,12 +81,18 @@ public class DinerFunctionalityService {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Review was created successfully", data));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseUtils.createResponse(e.toString()));
         }
     }
 
     public ResponseEntity<JSONObject> removeReview(Review review, String token) {
         try {
+            
+            // Check if token is valid
+            if(!dinerRepository.existsByToken(token)){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
+            }
+
             // Check for required inputs
             if(!(StringUtils.isNotBlank(String.valueOf(token)) &&
                 StringUtils.isNotBlank(String.valueOf(review.getEateryId())) &&
@@ -100,12 +106,6 @@ public class DinerFunctionalityService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid Eatery ID"));
             }
 
-            // Check if token is valid
-            if(!dinerRepository.existsByToken(token)){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
-            }
-
-
             Long dinerId = dinerRepository.findByToken(token).getId();
 
             // Check if diner has a review and delete it
@@ -116,15 +116,13 @@ public class DinerFunctionalityService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Review does not exist."));
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseUtils.createResponse(e.toString()));
         }
     }
 
-    // WILL EVENTUALLY REQUIRE TOKEN TO VIEW
     public ResponseEntity<JSONObject> listEateries(String token) {
-        System.out.println("Token is:"+ token);
         if(!dinerRepository.existsByToken(token) || token.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
         }
         Diner diner = dinerRepository.findByToken(token);
         List<Eatery> eateryList = eateryRepository.findAll();
@@ -154,6 +152,12 @@ public class DinerFunctionalityService {
     
     public ResponseEntity<JSONObject> editReview(Review review, String token) {
         try {
+            
+            // Check if token is valid
+            if(!dinerRepository.existsByToken(token)){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
+            }
+            
             // Check for required inputs
             if(!(StringUtils.isNotBlank(String.valueOf(token)) &&
                 StringUtils.isNotBlank(String.valueOf(review.getEateryId())) &&
@@ -167,10 +171,6 @@ public class DinerFunctionalityService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid Eatery ID"));
             }
 
-            // Check if token is valid
-            if(!dinerRepository.existsByToken(token)){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid token"));
-            }
 
             Long dinerId = dinerRepository.findByToken(token).getId();
 
@@ -216,7 +216,7 @@ public class DinerFunctionalityService {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Review was edited successfully", data));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseUtils.createResponse(e.toString()));
         }
     }
 

@@ -5,6 +5,7 @@ import { MainContainer } from "../styles/MainContainer";
 import Carousel from "react-material-ui-carousel";
 import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
+import { logUserOut } from "../utils/logoutHelper";
 import {
     Card,
     Grid,
@@ -64,6 +65,8 @@ export default function DinerLanding({ token }) {
                 console.log(responseData);
                 setName(responseData.name);
                 setEateryList(responseData.eateryList);
+            } else if (response.status === 401) {
+                logUserOut();
             }
         };
         getEateryList();

@@ -11,11 +11,16 @@ import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import Review from "../components/Review";
 import { fileToDataUrl, validRequired, validEmail, validPassword, validConfirmPassword } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
+import { logUserOut } from "../utils/logoutHelper";
+import { Title } from "../styles/Title";
+import { ButtonStyled } from "../styles/ButtonStyle";
+import { useHistory } from "react-router";
 
 export default function DinerProfile() {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
   const token = context.auth[0];
+  const history = useHistory();
 
   const [openProfile, setOpenProfile] = useState(false);
 
@@ -47,19 +52,21 @@ export default function DinerProfile() {
       );
       const responseData = await response.json();
       if (response.status === 200) {
-          console.log(responseData);
-          setUser({
-            "username": responseData.name,
-            "email": responseData.email,
-            "profilePic": responseData["profile picture"],
-          })
-          console.log("reviews: ");
-          console.log(responseData.reviews);
-          setReviews(responseData.reviews);
-          setUsername(defaultState(responseData.name));
-          setEmail(defaultState(responseData.email));
-          setTmpProfilePic(responseData["profile picture"]);
-          // setEateryList(responseData.eateryList);
+        console.log(responseData);
+        setUser({
+          "username": responseData.name,
+          "email": responseData.email,
+          "profilePic": responseData["profile picture"],
+        })
+        console.log("reviews: ");
+        console.log(responseData.reviews);
+        setReviews(responseData.reviews);
+        setUsername(defaultState(responseData.name));
+        setEmail(defaultState(responseData.email));
+        setTmpProfilePic(responseData["profile picture"]);
+        // setEateryList(responseData.eateryList);
+      } else if (response.status === 401) {
+        logUserOut();
       }
     };
     getUser();
@@ -114,6 +121,8 @@ export default function DinerProfile() {
         })
         setOpenProfile(false);
         setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+    } else if (response.status === 401) {
+        logUserOut();
     } else {
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
     }
@@ -156,8 +165,9 @@ export default function DinerProfile() {
           <Divider variant="middle" />
         </Box>
         {/* Reviews would be mapped here... */}
-        <Box display="flex" flexDirection="column" flexGrow="1" alignItems="center" style={{overflowY: 'auto', height: "100%"}}>
+        <Box display="flex" flexDirection="column" flex="1" alignItems="center" style={{overflowY: 'auto', height: "100%"}}>
           {
+            reviews.length > 0 &&
             reviews.map((r) => {
               console.log(r);
               return (
@@ -173,6 +183,22 @@ export default function DinerProfile() {
                 onEateryProfile={true}></Review>
               );
             })
+          }
+          {
+            reviews.length === 0 &&
+            <Box display="flex"
+            flexDirection="column"
+            alignItems="center"
+            height="70vh"
+            pt={2}
+            >
+              <Title>No Reviews made yet...</Title>
+              <ButtonStyled widthPercentage={50}
+                onClick={() => history.push("/DinerLanding")}
+              >
+                Find restaurants
+              </ButtonStyled>
+            </Box>
           }
         </Box>
         <Dialog aria-labelledby="customized-dialog-title" open={openProfile}>

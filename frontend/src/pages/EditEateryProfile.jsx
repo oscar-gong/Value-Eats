@@ -3,6 +3,8 @@ import NavBar from "../components/Navbar";
 import { StoreContext } from "../utils/store";
 import EateryForm from "../components/EateryForm";
 import { useHistory, Redirect } from "react-router";
+import { logUserOut } from "../utils/logoutHelper";
+import { MainContainer } from "../styles/MainContainer";
 
 export default function EditEateryLanding() {
     const defaultState = { value: "", valid: true };
@@ -49,6 +51,8 @@ export default function EditEateryLanding() {
                 setCuisines({ value: responseData.cuisines, valid: true });
                 setImages(responseData.menuPhotos);
                 setPreviewImages(responseData.menuPhotos);
+            } else if (response.status === 401) {
+                logUserOut();
             }
         };
         getEatery();
@@ -116,6 +120,8 @@ export default function EditEateryLanding() {
                 message: responseData.message,
             });
             history.push("/EateryLanding");
+        } else if (response.status === 401) {
+            logUserOut();
         } else {
             setAlertOptions({
                 showAlert: true,
@@ -129,25 +135,27 @@ export default function EditEateryLanding() {
         <>
             <NavBar isDiner={isDiner} />
             {console.log(eateryName)}
-            <EateryForm
-                email={email}
-                setEmail={setEmail}
-                password={password}
-                setPassword={setPassword}
-                confirmPassword={confirmPassword}
-                setConfirmPassword={setConfirmPassword}
-                eateryName={eateryName}
-                setEateryName={setEateryName}
-                address={address}
-                setAddress={setAddress}
-                cuisines={cuisines}
-                setCuisines={setCuisines}
-                setImages={setImages}
-                previewImages={previewImages}
-                setPreviewImages={setPreviewImages}
-                isRegister={false}
-                submitForm={updateUser}
-            />
+            <MainContainer>
+                <EateryForm
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
+                    confirmPassword={confirmPassword}
+                    setConfirmPassword={setConfirmPassword}
+                    eateryName={eateryName}
+                    setEateryName={setEateryName}
+                    address={address}
+                    setAddress={setAddress}
+                    cuisines={cuisines}
+                    setCuisines={setCuisines}
+                    setImages={setImages}
+                    previewImages={previewImages}
+                    setPreviewImages={setPreviewImages}
+                    isRegister={false}
+                    submitForm={updateUser}
+                />
+            </MainContainer>
         </>
     );
 }

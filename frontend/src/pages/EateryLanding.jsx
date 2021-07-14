@@ -7,6 +7,7 @@ import { Box } from "@material-ui/core";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import EateryVoucher from "../components/EateryVoucher";
 import EditCreateVoucher from "../components/EditCreateVoucher";
+import { logUserOut } from "../utils/logoutHelper";
 
 export default function EateryLanding() {
   const context = useContext(StoreContext);
@@ -35,7 +36,9 @@ export default function EateryLanding() {
     if (response.status === 200) {
       console.log(responseData);
       setEateryDetails(responseData);
-    } else {
+    } else if (response.status === 401) {
+      logUserOut();
+    }else {
       // TODO
       console.log(responseData);
     }

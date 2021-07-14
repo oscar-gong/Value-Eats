@@ -6,6 +6,7 @@ import { Redirect } from "react-router-dom";
 import { Box, TextField } from "@material-ui/core";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import { Title } from "../styles/Title";
+import { logUserOut } from "../utils/logoutHelper";
 
 export default function RedeemVoucher() {
   const context = useContext(StoreContext);
@@ -14,31 +15,30 @@ export default function RedeemVoucher() {
   const [code, setCode] = useState("");
   console.log(auth);
   console.log(isDiner);
-//   useEffect(() => {
-//     const getEateryDetails = async () => {
-//       const response = await fetch(
-//           `http://localhost:8080/eatery/profile/details`,
-//           {
-//               method: "GET",
-//               headers: {
-//                   Accept: "application/json",
-//                   "Content-Type": "application/json",
-//                   Authorization: auth,
-//               },
-//           }
-//       );
 
-//       const responseData = await response.json();
-//       if (response.status === 200) {
-//           console.log(responseData);
-//           setEateryDetails(responseData);
-//       } else {
-//           // TODO
-//           console.log(responseData);
-//       }
-//     };
-//     getEateryDetails();
-//   }, [auth]);
+  // Want to call an endpoint which just checks if the token is valid!!!!!
+
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     const response = await fetch(
+  //         `http://localhost:8080/test/checktoken`,
+  //         {
+  //             method: "POST",
+  //             headers: {
+  //                 Accept: "application/json",
+  //                 "Content-Type": "application/json",
+  //                 Authorization: auth,
+  //             },
+  //         }
+  //     );
+
+  //     const responseData = await response.json();
+  //     if (response.status === 401) {
+  //         logUserOut();
+  //     } 
+  //   };
+  //   checkAuth();
+  // }, [auth]);
 
   const handleRedeem = () => {
     console.log("This will call the redeem voucher endpoint");
