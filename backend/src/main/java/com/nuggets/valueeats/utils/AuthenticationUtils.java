@@ -1,5 +1,7 @@
 package com.nuggets.valueeats.utils;
 
+import java.util.Map;
+
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,9 +9,12 @@ import org.springframework.http.ResponseEntity;
 public class AuthenticationUtils {
     public static ResponseEntity<JSONObject> loginPasswordCheck(final String loginPassword, final String secret, 
                                                                 final String actualPassword, final String successMessage, 
-                                                                final boolean isDiner, final JSONObject data) {
+                                                                final boolean isDiner, Map<String, String> dataMedium) {
         if (EncryptionUtils.encrypt(loginPassword, secret).equals(actualPassword)) {
-            data.put("type", (isDiner ? "diner" : "eatery"));
+
+            dataMedium.put("type", (isDiner ? "diner" : "eatery"));
+            JSONObject data = new JSONObject(dataMedium);
+
             return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(successMessage, data));
         }
 

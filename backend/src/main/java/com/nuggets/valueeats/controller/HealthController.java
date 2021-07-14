@@ -56,13 +56,13 @@ public class HealthController {
     }
 
     @RequestMapping(value = "health/list/cuisine", method = RequestMethod.GET)
-    public List listCuisines() {
+    public List<Object> listCuisines() {
         return healthService.listCuisines();
     }
 
     @RequestMapping(value = "test/checktoken", method = RequestMethod.POST)
     @CheckToken
-    public String testAuth(@RequestBody final Diner diner, @RequestHeader (name="Authorization") String token) {
+    public String testAuth(@RequestHeader (name="Authorization") String token, @RequestBody final Diner diner) {
         return token;
     }
     

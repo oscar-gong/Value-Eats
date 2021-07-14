@@ -5,7 +5,6 @@ import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
@@ -24,9 +23,9 @@ import com.nuggets.valueeats.utils.AuthenticationUtils;
 import com.nuggets.valueeats.utils.EncryptionUtils;
 import com.nuggets.valueeats.utils.JwtUtils;
 import com.nuggets.valueeats.utils.ResponseUtils;
+import com.nuggets.valueeats.utils.ReviewUtils;
 import com.nuggets.valueeats.utils.ValidationUtils;
-import com.nuggets.valueeats.utils.HelperFunctions;
-import org.apache.commons.lang3.StringUtils;
+import com.nuggets.valueeats.utils.VoucherUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,10 +82,11 @@ public class UserManagementService {
 
     @Transactional
     public ResponseEntity<JSONObject> register(User user) {
-        if (!isValidInput(user)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Please fill in all required fields."));
+        if (user.getEmail() == null || user.getPassword() == null || user.getAlias() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
         }
         user.setEmail(user.getEmail().toLowerCase());
+
         if (userRepository.existsByEmail(user.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ResponseUtils.createResponse("Email is taken, try another"));
         }
@@ -136,13 +136,10 @@ public class UserManagementService {
 
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", token);
-        JSONObject data = new JSONObject(dataMedium);
-
-        System.out.println(data);
 
         return AuthenticationUtils.loginPasswordCheck(user.getPassword(), String.valueOf(userDb.getId()),
                                                       userDb.getPassword(), "Welcome back, " + userDb.getEmail(),
-                                                      dinerRepository.existsByEmail(userDb.getEmail()), data);
+                                                      dinerRepository.existsByEmail(userDb.getEmail()), dataMedium);
     }
 
     @Transactional
@@ -218,12 +215,6 @@ public class UserManagementService {
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Update profile successfully, "
          + user.getAlias()));
-    }
-
-    private boolean isValidInput(User user) {
-        return StringUtils.isNotBlank(String.valueOf(user.getId())) &&
-                StringUtils.isNotBlank(user.getAddress()) &&
-                StringUtils.isNotBlank(user.getAlias());
     }
 
     public String validInputChecker(final User user) {
@@ -312,7 +303,8 @@ public class UserManagementService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
             }
             Eatery e = db.get();
-            HashMap<String, Object> review = createReview(r.getId(), diner.getProfilePic(), diner.getAlias(), r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos(), e.getAlias());
+            HashMap<String, Object> review = ReviewUtils.createReview(r.getId(), diner.getProfilePic(), diner.getAlias(),
+                                                                    r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos(), e.getAlias());
             reviewsList.add(review);
         }
         result.put("reviews", reviewsList);
@@ -368,7 +360,8 @@ public class UserManagementService {
             }
             Diner reviewDinerDb = reviewerInDinerDb.get();
 
-            HashMap<String, Object> review = createReview(r.getId(), reviewDinerDb.getProfilePic(), reviewDinerDb.getAlias(), r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos(), eateryDb.getAlias());
+            HashMap<String, Object> review = ReviewUtils.createReview(r.getId(), reviewDinerDb.getProfilePic(), reviewDinerDb.getAlias(),
+                                                                    r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos(), eateryDb.getAlias());
             if(dinerDb != null){
                 if(dinerDb.getId() == reviewDinerDb.getId()) {
                     review.put("isOwner", true);
@@ -386,62 +379,16 @@ public class UserManagementService {
         System.out.println(repeatVouchersList);
         ArrayList<Voucher> vouchersList = voucherRepository.findActiveByEateryId(eateryDb.getId());
         for (RepeatedVoucher v:repeatVouchersList){
-            HashMap<String, Object> voucher = new HashMap<String, Object>();
-            voucher.put("id", v.getId());
-            voucher.put("discount", v.getDiscount());
-            voucher.put("eateryId", v.getEateryId());
-            voucher.put("eatingStyle", v.getEatingStyle());
-            voucher.put("quantity", v.getQuantity());
-            voucher.put("duration", HelperFunctions.getDuration(v.getDate(), v.getEnd()));
-            voucher.put("isActive", HelperFunctions.checkActive(v.getDate(), v.getEnd()));
-            voucher.put("isRedeemable", HelperFunctions.isInTimeRange(v.getDate(), v.getStart(), v.getEnd()));
-            SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
-            if (v.getNextUpdate() != null) {
-                String nextUpdate = formatter.format(v.getNextUpdate());
-                voucher.put("nextUpdate", nextUpdate);
-            }
-            String strDate = formatter.format(v.getDate());
-            voucher.put("date", strDate);
-            int startHour = v.getStart() / 60;
-            int startMinute = v.getStart() % 60;
-            int endHour = v.getEnd() / 60;
-            int endMinute = v.getEnd() % 60;
-            voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
-            voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
-            voucher.put("isRecurring", true);
-            if(dinerDb != null){
-                voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), v.getId())) != 0);
-            } else {
-                voucher.put("disableButton", true);
-            }
+            HashMap<String, Object> voucher = VoucherUtils.createVoucher(v.getId(), v.getDiscount(), v.getEateryId(), v.getEatingStyle(),
+                                                                        v.getQuantity(), v.getDate(), v.getStart(), v.getEnd(), dinerDb, true,
+                                                                        v.getNextUpdate(), bookingRecordRepository);
             combinedVoucherList.add(voucher);
         }
 
         for (Voucher v:vouchersList){
-            HashMap<String, Object> voucher = new HashMap<String, Object>();
-            voucher.put("id", v.getId());
-            voucher.put("discount", v.getDiscount());
-            voucher.put("eateryId", v.getEateryId());
-            voucher.put("eatingStyle", v.getEatingStyle());
-            voucher.put("quantity", v.getQuantity());
-            voucher.put("duration", HelperFunctions.getDuration(v.getDate(), v.getEnd()));
-            voucher.put("isActive", HelperFunctions.checkActive(v.getDate(), v.getEnd()));
-            voucher.put("isRedeemable", HelperFunctions.isInTimeRange(v.getDate(), v.getStart(), v.getEnd()));
-            SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
-            String strDate = formatter.format(v.getDate());
-            voucher.put("date", strDate);
-            int startHour = v.getStart() / 60;
-            int startMinute = v.getStart() % 60;
-            int endHour = v.getEnd() / 60;
-            int endMinute = v.getEnd() % 60;
-            voucher.put("startTime", String.format("%d:%02d", startHour, startMinute));
-            voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
-            voucher.put("isRecurring", false);
-            if(dinerDb != null){
-                voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), v.getId())) != 0);
-            } else {
-                voucher.put("disableButton", true);
-            }
+            HashMap<String, Object> voucher = VoucherUtils.createVoucher(v.getId(), v.getDiscount(), v.getEateryId(), v.getEatingStyle(),
+                                                                        v.getQuantity(), v.getDate(), v.getStart(), v.getEnd(), dinerDb, false,
+                                                                        null, bookingRecordRepository);
             combinedVoucherList.add(voucher);
         }
 
@@ -452,22 +399,4 @@ public class UserManagementService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 
-    // HashMap<String, Object> createReview(Long id, String pic, String name, String message, float rating, boolean isOwner){
-    //     HashMap<String, Object> review = createReview(id, pic, name, message, rating);
-    //     review.put("isOwner", message);
-    //     return review;
-    // }
-
-    HashMap<String, Object> createReview(Long id, String pic, String name, String message, float rating, Long eateryId, ArrayList<String> reviewPhotos, String eateryName){
-        HashMap<String, Object> review = new HashMap<String, Object>();
-        review.put("reviewId", id);
-        review.put("profilePic", pic);
-        review.put("name", name);
-        review.put("rating", rating);
-        review.put("message", message);
-        review.put("eateryId", eateryId);
-        review.put("reviewPhotos", reviewPhotos);
-        review.put("eateryName", eateryName);
-        return review;
-    }
 }

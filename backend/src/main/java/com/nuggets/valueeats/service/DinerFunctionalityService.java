@@ -13,7 +13,8 @@ import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.ReviewRepository;
 import com.nuggets.valueeats.utils.ResponseUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.nuggets.valueeats.utils.ReviewUtils;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,7 @@ public class DinerFunctionalityService {
             }
             
             // Check for required inputs
-            if(!(StringUtils.isNotBlank(token) && review.getEateryId() != null && review.getRating() != null)){
+            if(!(token != null && review.getEateryId() != null && review.getRating() != null)){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
             }
 
@@ -51,12 +52,12 @@ public class DinerFunctionalityService {
             }
 
             // Check if rating is between 1 to 5 and is in increments of 0.5
-            if(!isValidRating(review.getRating())){
+            if(!ReviewUtils.isValidRating(review.getRating())){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Rating must be between 1 and 5 and in 0.5 increments"));
             }
 
             // Check if review character length does not exceed 280 characters.
-            if(!isValidMessage(review.getMessage())){
+            if(!ReviewUtils.isValidMessage(review.getMessage())){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Message must not exceed 280 characters"));
             }
 
@@ -90,14 +91,11 @@ public class DinerFunctionalityService {
             
             // Check if token is valid
             if(!dinerRepository.existsByToken(token)){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid diner token"));
             }
 
             // Check for required inputs
-            if(!(StringUtils.isNotBlank(String.valueOf(token)) &&
-                StringUtils.isNotBlank(String.valueOf(review.getEateryId())) &&
-                StringUtils.isNotBlank(String.valueOf(review.getId())))
-                ){
+            if(!(token != null && review.getEateryId() != null && review.getId() != null)){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
             }
 
@@ -159,10 +157,7 @@ public class DinerFunctionalityService {
             }
             
             // Check for required inputs
-            if(!(StringUtils.isNotBlank(String.valueOf(token)) &&
-                StringUtils.isNotBlank(String.valueOf(review.getEateryId())) &&
-                StringUtils.isNotBlank(String.valueOf(review.getId())))
-                ){
+            if(!(token != null && review.getEateryId() != null && review.getId() != null)){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
             }
 
@@ -187,7 +182,7 @@ public class DinerFunctionalityService {
 
             // Check if new review character length does not exceed 280 characters.
             if(review.getMessage() != ""){
-                if(!isValidMessage(review.getMessage())){
+                if(!ReviewUtils.isValidMessage(review.getMessage())){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Message must not exceed 280 characters"));
                 }
                 reviewDb.setMessage(review.getMessage());
@@ -195,7 +190,7 @@ public class DinerFunctionalityService {
             
             // Check if new rating is between 1 to 5 and is in increments of 0.5
             if(review.getRating() != null){
-                if(!isValidRating(review.getRating())){
+                if(!ReviewUtils.isValidRating(review.getRating())){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Rating must be between 1 and 5 and in 0.5 increments"));
                 }
                 reviewDb.setRating(review.getRating());
@@ -220,13 +215,7 @@ public class DinerFunctionalityService {
         }
     }
 
-    private static boolean isValidRating(Float rating){
-        return rating % 0.5 == 0 && rating >= 1 && rating <= 5;
-    }
 
-    private static boolean isValidMessage(String message){
-        return message.length() <= 280;
-    }
     
 }
 
