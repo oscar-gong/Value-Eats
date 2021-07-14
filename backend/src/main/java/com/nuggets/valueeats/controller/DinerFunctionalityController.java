@@ -28,7 +28,7 @@ public class DinerFunctionalityController {
 
     @RequestMapping(value = "diner/createreview", method = RequestMethod.POST)
     @CheckToken
-    public ResponseEntity<JSONObject> createReview(@RequestBody Review review, @RequestHeader (name="Authorization") String token){
+    public ResponseEntity<JSONObject> createReview(@RequestHeader (name="Authorization") String token, @RequestBody Review review){
         return dinerFunctionalityService.createReview(review, token);
     }
 
