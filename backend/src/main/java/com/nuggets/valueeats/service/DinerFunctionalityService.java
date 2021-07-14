@@ -51,9 +51,9 @@ public class DinerFunctionalityService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid Eatery ID"));
             }
 
-            // Check if rating is between 1 to 5 and is in increments of 0.5
+            // Check if rating is between 0.5 to 5 and is in increments of 0.5
             if(!ReviewUtils.isValidRating(review.getRating())){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Rating must be between 1 and 5 and in 0.5 increments"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Rating must be between 0.5 and 5 and in 0.5 increments"));
             }
 
             // Check if review character length does not exceed 280 characters.
@@ -188,10 +188,10 @@ public class DinerFunctionalityService {
                 reviewDb.setMessage(review.getMessage());
             }
             
-            // Check if new rating is between 1 to 5 and is in increments of 0.5
+            // Check if new rating is between 0.5 to 5 and is in increments of 0.5
             if(review.getRating() != null){
                 if(!ReviewUtils.isValidRating(review.getRating())){
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Rating must be between 1 and 5 and in 0.5 increments"));
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Rating must be between 0.5 and 5 and in 0.5 increments"));
                 }
                 reviewDb.setRating(review.getRating());
             }

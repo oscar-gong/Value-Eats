@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class ReviewUtils {
 
     public static boolean isValidRating(Float rating){
-        return rating % 0.5 == 0 && rating >= 1 && rating <= 5;
+        return rating % 0.5 == 0 && rating >= 0.5 && rating <= 5;
     }
 
     public static boolean isValidMessage(String message){
