@@ -342,22 +342,18 @@ public class UserManagementService {
         List<Float> ratings= reviewRepository.listReviewRatingsOfEatery(eateryDb.getId());
         Double averageRating = ratings.stream().mapToDouble(i -> i).average().orElse(0);
         DecimalFormat df = new DecimalFormat("#.0"); 
-        
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("id", eateryDb.getId());
-        map.put("name", eateryDb.getAlias());
-        map.put("email", eateryDb.getEmail());
-        map.put("rating", df.format(averageRating));
-        map.put("address", eateryDb.getAddress());
-        map.put("menuPhotos", eateryDb.getMenuPhotos());
+
         List<Review> reviews= reviewRepository.listReviewsOfEatery(eateryDb.getId());
         ArrayList<Object> reviewsList = new ArrayList<Object>();
         for(Review r:reviews){
             Long reviewDinerId = r.getDinerId();
+
             Optional<Diner> reviewerInDinerDb = dinerRepository.findById(reviewDinerId);
+            
             if(!reviewerInDinerDb.isPresent()){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
             }
+
             Diner reviewDinerDb = reviewerInDinerDb.get();
 
             HashMap<String, Object> review = ReviewUtils.createReview(r.getId(), reviewDinerDb.getProfilePic(), reviewDinerDb.getAlias(),
@@ -371,13 +367,12 @@ public class UserManagementService {
             }
             reviewsList.add(review);
         }
-        map.put("reviews", reviewsList);
-        map.put("cuisines", eateryDb.getCuisines());
+
+        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findByEateryId(eateryDb.getId());
+        ArrayList<Voucher> vouchersList = voucherRepository.findActiveByEateryId(eateryDb.getId());
 
         ArrayList<Object> combinedVoucherList = new ArrayList<Object>();
-        ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findByEateryId(eateryDb.getId());
-        System.out.println(repeatVouchersList);
-        ArrayList<Voucher> vouchersList = voucherRepository.findActiveByEateryId(eateryDb.getId());
+
         for (RepeatedVoucher v:repeatVouchersList){
             HashMap<String, Object> voucher = VoucherUtils.createVoucher(v.getId(), v.getDiscount(), v.getEateryId(), v.getEatingStyle(),
                                                                         v.getQuantity(), v.getDate(), v.getStart(), v.getEnd(), dinerDb, true,
@@ -392,6 +387,16 @@ public class UserManagementService {
             combinedVoucherList.add(voucher);
         }
 
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("id", eateryDb.getId());
+        map.put("name", eateryDb.getAlias());
+        map.put("email", eateryDb.getEmail());
+        map.put("rating", df.format(averageRating));
+        map.put("address", eateryDb.getAddress());
+        map.put("menuPhotos", eateryDb.getMenuPhotos());
+        map.put("reviews", reviewsList);
+        map.put("cuisines", eateryDb.getCuisines());
         map.put("vouchers", combinedVoucherList);
 
         JSONObject data = new JSONObject(map);
