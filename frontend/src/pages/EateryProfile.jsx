@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import StarRating from "../components/StarRating";
 import Review from "../components/Review";
-import { useLocation, Redirect } from "react-router-dom";
+import { useLocation, Redirect, useHistory } from "react-router-dom";
 import { StoreContext } from "../utils/store";
 import Carousel from "react-material-ui-carousel";
 import EditCreateReview from "../components/EditCreateReview";
@@ -74,6 +74,7 @@ export default function EateryProfile() {
     const [code, setCode] = useState("");
     const [isConfirmed, setIsConfirmed] = useState(false);
     const setAlertOptions = context.alert[1];
+    const history = useHistory();
 
     const handleOpen = () => {
         setOpen(true);
@@ -417,15 +418,17 @@ export default function EateryProfile() {
                 <ConfirmModal
                     open={openConfirmModal}
                     handleClose={handleCloseModal}
-                    eateryId={eateryId}
+                    // eateryId={eateryId}
                     title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
                     message={
                         !isConfirmed
                             ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${endTime} on ${date}`
                             : `${discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${startTime} - ${endTime}`
                     }
-                    isConfirmVoucher={isConfirmed ? true : false}
-                    handleConfirm={() => handleBooking()}
+                    denyText={isConfirmed ? "View Vouchers" : "Cancel"}
+                    handleDeny={isConfirmed ? () => history.push("/DinerVouchers") : null}
+                    handleConfirm={!isConfirmed ? () => handleBooking() : () => handleCloseModal()}
+                    confirmText={isConfirmed ? "Ok" : "Confirm"}
                 ></ConfirmModal>
             </MainContainer>
         </>
