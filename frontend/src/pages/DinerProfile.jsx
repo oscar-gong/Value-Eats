@@ -282,7 +282,7 @@ export default function DinerProfile() {
                     valid: true,
                   })
                 }
-                onBlur={() => { validConfirmPassword(password, confirmpassword, setConfirmpassword); console.log(confirmpassword);}}
+                onBlur={() => validConfirmPassword(password, confirmpassword, setConfirmpassword)}
                 error={!confirmpassword.valid}
                 helperText={
                   confirmpassword.valid

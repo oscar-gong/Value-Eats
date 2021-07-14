@@ -86,11 +86,20 @@ export default function EateryLanding() {
                   );
                 }))
               }
-            {/* <EateryVoucher eateryId={eateryDetails.id} discount={5} isOneOff={true} isDineIn={false} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={true} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher>
-            <EateryVoucher eateryId={eateryDetails.id} discount={50} isOneOff={false} isDineIn={true} vouchersLeft={5} timeRemaining={"00:30:59"} ></EateryVoucher> */}
+              {
+                eateryDetails.vouchers && eateryDetails.vouchers.length === 0 &&
+                <Box display="flex"
+                  flexDirection="column"
+                  minHeight="100%"
+                  justifyContent="center"
+                  alignItems="center">
+                  <h1 style={{marginTop: "0px"}}>
+                    No active discounts!
+                  </h1>
+                  <ButtonStyled widthPercentage={25}>Get started!</ButtonStyled>
+                </Box>
+
+              }
           </Box>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center" height="30vh">

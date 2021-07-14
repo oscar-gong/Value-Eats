@@ -66,9 +66,6 @@ export default function EditEateryLanding() {
         console.log("register");
 
         if (email.value === "") setEmail({ value: "", valid: false });
-        if (password.value === "") setPassword({ value: "", valid: false });
-        if (confirmPassword.value === "")
-            setConfirmPassword({ value: "", valid: false });
         if (eateryName.value === "") setEateryName({ value: "", valid: false });
         if (Array.isArray(cuisines.value) && !cuisines.value.length)
             setCuisines({ value: [], valid: false });
@@ -79,13 +76,11 @@ export default function EditEateryLanding() {
         // check that all fields are valid and not empty before updating
         if (
             !email.valid ||
-            !password.valid ||
+            (!password.valid && password.value.length !== 0) ||
             !confirmPassword.valid ||
             !eateryName.valid ||
             !cuisines.valid ||
             email.value === "" ||
-            password.value === "" ||
-            confirmPassword.value === "" ||
             eateryName.value === "" ||
             (Array.isArray(cuisines.value) && !cuisines.value.length)
         )
@@ -95,6 +90,17 @@ export default function EditEateryLanding() {
         }
         console.log(images.length);
 
+        const updateBody = {
+            alias: eateryName.value,
+            email: email.value,
+            address: useGoogleAPI ? address.value : "Sydney",
+            cuisines: cuisines.value,
+            menuPhotos: images
+        }
+        if (password.value.length > 0) {
+            updateBody.password = password.value;
+        }
+
         const response = await fetch("http://localhost:8080/update/eatery", {
             method: "POST",
             headers: {
@@ -102,14 +108,7 @@ export default function EditEateryLanding() {
                 "Content-Type": "application/json",
                 Authorization: auth,
             },
-            body: JSON.stringify({
-                alias: eateryName.value,
-                email: email.value,
-                address: useGoogleAPI ? address.value : "Sydney",
-                password: password.value,
-                cuisines: cuisines.value,
-                menuPhotos: images, // array of data urls
-            }),
+            body: JSON.stringify(updateBody),
         });
         console.log(response);
         const responseData = await response.json();

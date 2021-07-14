@@ -118,11 +118,11 @@ export default function EateryForm({
                         id="outlined-basic"
                         label="Password"
                         type="password"
+                        onBlur={() => validPassword(password, setPassword)}
                         onChange={(e) =>
                             setPassword({ value: e.target.value, valid: true })
                         }
-                        onBlur={() => validPassword(password, setPassword)}
-                        error={!password.valid}
+                        error={(!password.valid && isRegister) || (!isRegister && !password.valid && password.value.length !== 0)}
                         helperText={
                             password.valid
                                 ? ""
