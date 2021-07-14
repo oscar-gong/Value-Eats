@@ -136,6 +136,8 @@ export default function EateryProfile() {
                     responseData.vouchers = responseData.vouchers.filter(v => v.isActive);
                 } 
                 setEateryDetails(responseData);
+            } else if (response.status === 401) {
+                logUserOut();
             } else {
                 // TODO
                 console.log(responseData);

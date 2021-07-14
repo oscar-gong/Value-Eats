@@ -121,6 +121,8 @@ export default function DinerProfile() {
         })
         setOpenProfile(false);
         setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+    } else if (response.status === 401) {
+        logUserOut();
     } else {
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
     }
