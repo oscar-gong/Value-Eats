@@ -13,6 +13,6 @@ public interface EateryRepository extends UserRepository<Eatery> {
     boolean existsByIdAndToken(Long id, String token);
 
     @Query(value = "select * from Cuisines", nativeQuery = true)
-    List findAllCuisines();
+    List<Object> findAllCuisines();
 
 }

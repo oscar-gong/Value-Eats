@@ -49,7 +49,7 @@ public final class HealthService {
         return reviewRepository.findAll();
     }
 
-    public List listCuisines() {
+    public List<Object> listCuisines() {
         return eateryRepository.findAllCuisines();
     }
 

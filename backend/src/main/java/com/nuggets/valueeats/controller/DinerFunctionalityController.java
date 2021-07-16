@@ -1,5 +1,6 @@
 package com.nuggets.valueeats.controller;
 
+import com.nuggets.valueeats.controller.decorator.CheckToken;
 import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.service.VoucherService;
 import com.nuggets.valueeats.service.DinerFunctionalityService;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
-public final class DinerFunctionalityController {
+public class DinerFunctionalityController {
 
     @Autowired
     private VoucherService voucherService;
@@ -26,31 +27,37 @@ public final class DinerFunctionalityController {
     private DinerFunctionalityService dinerFunctionalityService;
 
     @RequestMapping(value = "diner/createreview", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> createReview(@RequestBody Review review, @RequestHeader (name="Authorization") String token){
+    @CheckToken
+    public ResponseEntity<JSONObject> createReview(@RequestHeader (name="Authorization") String token, @RequestBody Review review){
         return dinerFunctionalityService.createReview(review, token);
     }
 
     @RequestMapping(value = "diner/removereview", method = RequestMethod.DELETE)
-    public ResponseEntity<JSONObject> removeReview(@RequestBody Review review, @RequestHeader (name="Authorization") String token){
+    @CheckToken
+    public ResponseEntity<JSONObject> removeReview(@RequestHeader (name="Authorization") String token, @RequestBody Review review){
         return dinerFunctionalityService.removeReview(review, token);
     }
     
     @RequestMapping(value = "list/eateries", method = RequestMethod.GET)
+    @CheckToken
     public ResponseEntity<JSONObject> listEateries(@RequestHeader (name="Authorization") String token) {
         return dinerFunctionalityService.listEateries(token);
     }
 
     @RequestMapping(value = "diner/editreview", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> editReview(@RequestBody Review review, @RequestHeader (name="Authorization") String token){
+    @CheckToken
+    public ResponseEntity<JSONObject> editReview(@RequestHeader (name="Authorization") String token, @RequestBody Review review){
         return dinerFunctionalityService.editReview(review, token);
     }
 
     @RequestMapping(value = "diner/book", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> bookVoucher(@RequestParam Long id, @RequestHeader (name="Authorization") String token){
+    @CheckToken
+    public ResponseEntity<JSONObject> bookVoucher(@RequestHeader (name="Authorization") String token, @RequestParam Long id){
         return voucherService.bookVoucher(id, token);
     }
 
     @RequestMapping(value = "diner/voucher", method = RequestMethod.GET)
+    @CheckToken
     public ResponseEntity<JSONObject> dinerListVouchers(@RequestHeader (name="Authorization") String token) {
         return voucherService.dinerListVouchers(token);
     }

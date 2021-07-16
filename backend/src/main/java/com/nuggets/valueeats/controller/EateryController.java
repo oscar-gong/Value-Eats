@@ -1,5 +1,6 @@
 package com.nuggets.valueeats.controller;
 
+import com.nuggets.valueeats.controller.decorator.CheckToken;
 import com.nuggets.valueeats.controller.model.VoucherInput;
 import com.nuggets.valueeats.service.VoucherService;
 import org.json.simple.JSONObject;
@@ -13,50 +14,28 @@ import org.springframework.web.bind.annotation.*;
 public class EateryController {
     @Autowired
     private VoucherService voucherService;
-    
-
-    /*
-    {
-  "eateryId":"2",
-  "eatingStyle": "DineIn",
-  "discount": "80",
-  "quantity": "5",
-  "isRecurring": "true",
-  "date": "2021-07-31",
-  "startMinute": "0",
-  "endMinute": "1400"
-}
-{
-  "eateryId":"3",
-  "eatingStyle": "Takeaway",
-  "discount": "80",
-  "quantity": "5",
-  "isRecurring": "false",
-  "date": "2021-07-31",
-  "startMinute": "0",
-  "endMinute": "1400"
-}
-*/
 
     @RequestMapping(value = "eatery/voucher", method = RequestMethod.POST)
-    // TODO: Add eatery security check annotation
-    public ResponseEntity<JSONObject> eateryCreateVoucher(
-            @RequestBody VoucherInput voucher, @RequestHeader(name = "Authorization") String token) {
+    @CheckToken
+    public ResponseEntity<JSONObject> eateryCreateVoucher(@RequestHeader(name = "Authorization") String token, @RequestBody VoucherInput voucher) {
         return voucherService.createVoucher(voucher, token);
     }
 
     @RequestMapping(value = "eatery/voucher", method = RequestMethod.PUT)
-    public ResponseEntity<JSONObject> DinerListVouchers(@RequestBody VoucherInput voucher, @RequestHeader (name="Authorization") String token) {
+    @CheckToken
+    public ResponseEntity<JSONObject> DinerListVouchers(@RequestHeader (name="Authorization") String token, @RequestBody VoucherInput voucher) {
         return voucherService.editVoucher(voucher, token);
     }
 
     @RequestMapping(value = "eatery/voucher", method = RequestMethod.DELETE)
-    public ResponseEntity<JSONObject> eateryDeleteVoucher(@RequestParam Long id, @RequestHeader (name="Authorization") String token) {
+    @CheckToken
+    public ResponseEntity<JSONObject> eateryDeleteVoucher(@RequestHeader (name="Authorization") String token, @RequestParam Long id) {
         return voucherService.deleteVoucher(id, token);
     }
 
     @RequestMapping(value = "eatery/verify/voucher", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> eateryVerifyVoucher(@RequestParam String code, @RequestHeader (name="Authorization") String token) {
+    @CheckToken
+    public ResponseEntity<JSONObject> eateryVerifyVoucher(@RequestHeader (name="Authorization") String token, @RequestParam String code) {
         return voucherService.verifyVoucher(code, token);
     }
 }
