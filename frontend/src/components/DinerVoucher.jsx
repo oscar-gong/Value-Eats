@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Countdown from "react-countdown";

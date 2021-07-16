@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { MainContainer } from "../styles/MainContainer";
+import { ButtonStyled } from "../styles/ButtonStyle";
+
 import {
     Typography,
     Grid,
     Box,
     Card,
-    Button,
     Modal,
     makeStyles,
 } from "@material-ui/core";
@@ -44,10 +45,18 @@ const useStyles = makeStyles({
         borderRadius: "10px",
     },
     subtitle: {
-        background: "rgba(255, 255, 255, 0.5)",
-        borderRadius: "10px",
+        borderBottom: "1px solid #FF855B",
         margin: "10px 0px",
         padding: "5px 0px",
+        color: "#FF855B",
+    },
+    title: {
+        color: "#FF855B",
+        fontSize: "2em",
+        padding: "10px 0px",
+    },
+    detailsText: {
+        color: "#96AE33",
     },
 });
 
@@ -133,8 +142,10 @@ export default function EateryProfile() {
             if (response.status === 200) {
                 console.log(responseData);
                 if (responseData.vouchers.length > 0) {
-                    responseData.vouchers = responseData.vouchers.filter(v => v.isActive);
-                } 
+                    responseData.vouchers = responseData.vouchers.filter(
+                        (v) => v.isActive
+                    );
+                }
                 setEateryDetails(responseData);
             } else if (response.status === 401) {
                 logUserOut();
@@ -178,7 +189,6 @@ export default function EateryProfile() {
         }
         return eateryDetails.menuPhotos.map((item, key) => {
             return (
-                // TODO make it responsive
                 <img
                     src={item}
                     alt="menu photos"
@@ -281,7 +291,7 @@ export default function EateryProfile() {
                 >
                     <Grid container justify="space-around" alignItems="center">
                         <Grid item style={{ alignItems: "center" }}>
-                            <Button
+                            <ButtonStyled
                                 variant="contained"
                                 color="primary"
                                 style={{ display: "block", width: "15vw" }}
@@ -299,7 +309,7 @@ export default function EateryProfile() {
                                 }
                             >
                                 {`${item.discount}% OFF - ${item.eatingStyle}`}
-                            </Button>
+                            </ButtonStyled>
                         </Grid>
                         <Grid item>
                             <Box style={{ margin: "10px" }}>
@@ -329,44 +339,43 @@ export default function EateryProfile() {
             <MainContainer>
                 <Grid container spacing={5} className={classes.gridContainer}>
                     <Grid item xs={6}>
-                        <Typography variant="h3">
+                        <Box className={classes.title}>
                             {eateryDetails.name}
-                        </Typography>
-                        <StarRating rating={parseFloat(eateryDetails.rating)} />{" "}
-                        {eateryDetails.rating === ".0"
-                            ? 0
-                            : eateryDetails.rating}
-                        <Typography variant="subtitle2">
+                        </Box>
+                        <Box className={classes.detailsText}>
+                            <StarRating
+                                rating={parseFloat(eateryDetails.rating)}
+                            />
+                            {eateryDetails.rating === ".0"
+                                ? 0
+                                : eateryDetails.rating}
+                        </Box>
+                        <Box className={classes.detailsText}>
                             {eateryDetails.address}
-                        </Typography>
-                        <Typography variant="subtitle2">
+                        </Box>
+                        <Box className={classes.detailsText}>
                             {getCuisines()}
-                        </Typography>
+                        </Box>
                         <Typography variant="h5" className={classes.subtitle}>
                             Menu Photos
                         </Typography>
-                        <Box flex-wrap="wrap" flexDirection="row">
-                            {getSingleImage()}
-                        </Box>
-                        {getNumberOfImages()}
+                        <Box>{getSingleImage()}</Box>
+                        <Box>{getNumberOfImages()}</Box>
                         <Typography className={classes.subtitle} variant="h5">
                             Reviews
                         </Typography>
-                        <Button
-                            style={{ margin: "10px 0px" }}
+                        <ButtonStyled
                             variant="contained"
                             color="primary"
                             onClick={() => setOpenCreateReview(true)}
                             disabled={isDiner === "true" ? false : true}
-                            // disabled={true}
                         >
                             Write a Review
-                        </Button>
+                        </ButtonStyled>
                         <Box>{getReviews()}</Box>
                     </Grid>
-
                     <Grid item xs={6}>
-                        <Typography variant="h3">Discounts</Typography>
+                        <Box className={classes.title}>Discounts</Box>
                         {getVouchers()}
                         <div>
                             <Modal
@@ -403,7 +412,8 @@ export default function EateryProfile() {
                         </div>
                     </Grid>
                 </Grid>
-                <EditCreateReview id={-1}
+                <EditCreateReview
+                    id={-1}
                     eateryId={parseInt(eateryId)}
                     open={openCreateReview}
                     setOpen={setOpenCreateReview}
