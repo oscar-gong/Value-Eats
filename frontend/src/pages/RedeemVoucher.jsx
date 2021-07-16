@@ -8,7 +8,8 @@ import { ButtonStyled } from "../styles/ButtonStyle";
 import { Title } from "../styles/Title";
 import { logUserOut } from "../utils/logoutHelper";
 import ConfirmModal from "../components/ConfirmModal";
-import Confetti from 'react-confetti'
+import Confetti from 'react-confetti';
+import { ShakeHead } from "../styles/ShakeHead";
 
 export default function RedeemVoucher() {
   const context = useContext(StoreContext);
@@ -16,9 +17,8 @@ export default function RedeemVoucher() {
   const isDiner = context.isDiner[0];
   const setAlertOptions = context.alert[1];
   const history = useHistory();
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState({value: "", valid: true});
   const [openRedeemed, setOpenRedeemed] = useState(false);
-  const {width, height} = useWindowDimensions();
   console.log(auth);
   console.log(isDiner);
   
@@ -30,6 +30,7 @@ export default function RedeemVoucher() {
     }
   }
   
+  const {width, height} = useWindowDimensions();
   function useWindowDimensions() {
     
     const [windowDim, setWindowDim] = useState(getWindowDimensions());
@@ -71,7 +72,7 @@ export default function RedeemVoucher() {
 
   const handleRedeem = async () => {
     console.log("This will call the redeem voucher endpoint");
-    const response = await fetch(`http://localhost:8080/eatery/verify/voucher?code=${code}`, {
+    const response = await fetch(`http://localhost:8080/eatery/verify/voucher?code=${code.value}`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -86,6 +87,7 @@ export default function RedeemVoucher() {
     } else if (response.status === 401) {
       logUserOut();
     } else {
+      setCode({...code, valid: false});
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
     }
   };
@@ -106,13 +108,19 @@ export default function RedeemVoucher() {
         <Box display="flex" flexDirection="column" justifyContent="space-evenly" alignItems="center" height="90vh">
           <Title>Redeem Voucher</Title>
           <Box pt={2} width="50vw" display="flex" flexDirection="column" justifyContent="center">
-            <TextField
+            <ShakeHead
               id="outlined-basic"
               label="Enter code here to redeem your voucher"
+              animate={ !code.valid ? "shake-head" : ""}
               onChange={(e) =>
-                setCode(e.target.value)
+                setCode({
+                  value: e.target.value,
+                  valid: true
+                })
               }
-              value={code}
+              error={!code.valid}
+              helperText={code.valid ? "" :"Please try again"}
+              value={code.value}
               variant="filled"
               fullWidth
             />
