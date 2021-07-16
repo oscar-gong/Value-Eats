@@ -9,6 +9,7 @@ import { useHistory } from "react-router";
 import { StoreContext } from "../utils/store";
 import { MainContainer } from "../styles/MainContainer";
 import { NavLink } from "../styles/NavLink";
+import logo from "../assets/logo.png";
 
 const useStyles = makeStyles((theme) => ({
     searchContainer: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "1em",
         color: "#FF855B",
         minWidth: "50ch",
-        width: "35vw",
+        width: "20vw",
         paddingRight: 10,
         backgroundColor: "transparent",
         borderBottom: "1px solid rgba(255, 132, 91, 0.5)",

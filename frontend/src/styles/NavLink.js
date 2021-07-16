@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const NavLink = styled(Link)`
-    padding: 9px 25px;
+    padding: 9px 20px;
     font-weight: bold;
     color: #FF855B;
     transition: all 0.3s ease 0s;

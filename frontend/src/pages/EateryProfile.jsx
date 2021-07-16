@@ -55,9 +55,6 @@ const useStyles = makeStyles({
         fontSize: "2em",
         padding: "10px 0px",
     },
-    detailsText: {
-        color: "#96AE33",
-    },
 });
 
 export default function EateryProfile() {
@@ -168,7 +165,7 @@ export default function EateryProfile() {
             return (
                 <Review
                     id={item.reviewId}
-                    onEateryProfile={false}
+                    onEateryProfile={true}
                     profilePic={item.profilePic}
                     eateryName={item.eateryName}
                     review={item.message}
@@ -342,7 +339,7 @@ export default function EateryProfile() {
                         <Box className={classes.title}>
                             {eateryDetails.name}
                         </Box>
-                        <Box className={classes.detailsText}>
+                        <Box>
                             <StarRating
                                 rating={parseFloat(eateryDetails.rating)}
                             />
@@ -350,12 +347,8 @@ export default function EateryProfile() {
                                 ? 0
                                 : eateryDetails.rating}
                         </Box>
-                        <Box className={classes.detailsText}>
-                            {eateryDetails.address}
-                        </Box>
-                        <Box className={classes.detailsText}>
-                            {getCuisines()}
-                        </Box>
+                        <Box>{eateryDetails.address}</Box>
+                        <Box>{getCuisines()}</Box>
                         <Typography variant="h5" className={classes.subtitle}>
                             Menu Photos
                         </Typography>

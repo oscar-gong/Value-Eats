@@ -180,7 +180,7 @@ export default function DinerProfile() {
                 rating={r.rating}
                 images={r.reviewPhotos ? r.reviewPhotos : []}
                 isOwner={true}
-                onEateryProfile={true}></Review>
+                onEateryProfile={false}></Review>
               );
             })
           }

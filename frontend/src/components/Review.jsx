@@ -10,6 +10,7 @@ import EditCreateReview from "../components/EditCreateReview";
 import { StoreContext } from "../utils/store";
 import Carousel from 'react-material-ui-carousel';
 import { useHistory } from 'react-router-dom';
+import { ButtonStyled } from '../styles/ButtonStyle';
 
 const useStyles = makeStyles({
   photoCarousel: {
@@ -20,6 +21,11 @@ const useStyles = makeStyles({
       backgroundColor: "rgba(255, 255, 255, 0.5)",
       boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
       padding: "10px"
+  },
+  name: {
+    fontSize: "1.5em",
+    fontWeight: "bold",
+    padding: "5px 0"
   }
 });
 // export default function Review ({ token, review }) {
@@ -71,24 +77,24 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
 
   return (
     <>
-      <Box display="flex" flexDirection="column" border="3px solid #4F4846" bgcolor="#E8CEBF" minWidth={onEateryProfile ? "50vw" : "100%"} maxWidth="70vw" marginBottom="20px">
+      <Box display="flex" flexDirection="column" border="2px solid white" borderRadius="20px" padding="10px" bgcolor="#E6F1D1" minWidth={onEateryProfile ? "100%" : "50vw"} maxWidth="70vw" margin="10px 0">
         <Box display="flex">
           <Box display="flex" flexDirection="column">
             <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
             <StarRating rating={editRating}></StarRating>
           </Box>
           <div style={{margin: "0px 5%", flexGrow: 1}}>
-            <h2><b><u>{eateryName}</u></b></h2>
-            <h3>{editCreateReview}</h3>
+            <Box className={classes.name}>{onEateryProfile ? username : eateryName}</Box>
+            <Box>{editCreateReview}</Box>
           </div>
           <Box display="flex" flexDirection="column" justifyContent="center">
             <Box display="flex" justifyContent="center">
             {
-              onEateryProfile && 
-              <Button variant="contained"
+              !onEateryProfile && 
+              <ButtonStyled variant="contained"
                 color="primary" onClick={()=>handleEatery(eateryId)}>
                 View Restaurant  
-              </Button>
+              </ButtonStyled>
             }
             {/* TODO FIX THIS BELOW */}
             {
