@@ -173,7 +173,7 @@ export default function DinerProfile() {
               return (
                 <Review id={r.reviewId}
                 eateryId={r.eateryId}
-                username={r.username}
+                username={r.name}
                 profilePic={r.profilePic}
                 eateryName={r.eateryName}
                 review={r.message}

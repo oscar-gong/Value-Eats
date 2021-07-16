@@ -107,7 +107,7 @@ export default function EateryProfile() {
             if (response.status === 200) {
                 console.log(responseData);
                 setUser({
-                    username: responseData.name,
+                    name: responseData.name,
                     email: responseData.email,
                     profilePic: responseData["profile picture"],
                 });
@@ -167,6 +167,7 @@ export default function EateryProfile() {
                     id={item.reviewId}
                     onEateryProfile={true}
                     profilePic={item.profilePic}
+                    username={item.name}
                     eateryName={item.eateryName}
                     review={item.message}
                     rating={item.rating}
@@ -410,7 +411,7 @@ export default function EateryProfile() {
                     eateryId={parseInt(eateryId)}
                     open={openCreateReview}
                     setOpen={setOpenCreateReview}
-                    username={user.username}
+                    username={user.name}
                     profilePic={user.profilePic}
                     reviewTextState={["", null]}
                     ratingState={["", null]}
