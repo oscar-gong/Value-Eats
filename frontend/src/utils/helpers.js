@@ -52,3 +52,13 @@ export const fileToDataUrl = (file) => {
     reader.readAsDataURL(file);
     return dataUrlPromise;
 };
+
+export const handleTimeNextDay = (time) => {
+    console.log(time);
+    const [hours, minutes] = time.split(":");
+    if (parseInt(hours) < 24) {
+        return time;
+    } else {
+        return (parseInt(hours) - 24).toString() + ":" + minutes + " the next day";
+    }
+}

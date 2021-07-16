@@ -18,6 +18,7 @@ import Carousel from "react-material-ui-carousel";
 import EditCreateReview from "../components/EditCreateReview";
 import ConfirmModal from "../components/ConfirmModal";
 import { logUserOut } from "../utils/logoutHelper";
+import { handleTimeNextDay } from "../utils/helpers";
 
 const useStyles = makeStyles({
     photo: {
@@ -310,7 +311,7 @@ export default function EateryProfile() {
                                 {`${item.date}`}
                             </Box>
                             <Box style={{ margin: "10px" }}>
-                                {`Valid from ${item.startTime} - ${item.endTime}`}
+                                {`Valid from ${item.startTime} - ${handleTimeNextDay(item.endTime)}`}
                             </Box>
                         </Grid>
                     </Grid>
@@ -422,8 +423,8 @@ export default function EateryProfile() {
                     title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
                     message={
                         !isConfirmed
-                            ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${endTime} on ${date}`
-                            : `${discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${startTime} - ${endTime}`
+                            ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${handleTimeNextDay(endTime)} on ${date}`
+                            : `${discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${startTime} - ${handleTimeNextDay(endTime)}`
                     }
                     denyText={isConfirmed ? "View Vouchers" : "Cancel"}
                     handleDeny={isConfirmed ? () => history.push("/DinerVouchers") : null}
