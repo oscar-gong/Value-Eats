@@ -137,6 +137,14 @@ export default function DinerProfile() {
     });
   };
 
+  const getNumPhotos = () => {
+    let total = 0;
+    for (const review of reviews) {
+      total += review.reviewPhotos.length;
+    }
+    return total;
+  }
+
   return (
     <>
       <NavBar isDiner={true}/>
@@ -157,7 +165,7 @@ export default function DinerProfile() {
             <h1>review{reviews.length === 1 ? "" : "s"}</h1>
           </StatBox>
           <StatBox>
-            <h1>X</h1>
+            <h1>{getNumPhotos()}</h1>
             <h1>photos</h1>
           </StatBox>
         </Box>
