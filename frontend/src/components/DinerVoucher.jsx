@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Box, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Countdown from "react-countdown";
+import { handleTimeNextDay } from "../utils/helpers";
 export default function DinerVoucher({
     duration,
     code,
@@ -56,7 +57,7 @@ export default function DinerVoucher({
             <Box display="flex" flexDirection="column">
                 {((!isRedeemable && !used) || (!used && complete)) && (
                     <h3 style={{ margin: "5px 0px" }}>
-                        Use between {startTime} - {endTime}
+                        Use on {date} between {startTime} - {handleTimeNextDay(endTime)}
                     </h3>
                 )}
                 {isRedeemable && !used && !complete && (
