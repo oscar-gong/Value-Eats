@@ -20,6 +20,7 @@ import EditCreateReview from "../components/EditCreateReview";
 import ConfirmModal from "../components/ConfirmModal";
 import { logUserOut } from "../utils/logoutHelper";
 import { handleTimeNextDay } from "../utils/helpers";
+import RatingWithNum from "../components/RatingWithNum";
 
 const useStyles = makeStyles({
     photo: {
@@ -341,14 +342,7 @@ export default function EateryProfile() {
                         <Box className={classes.title}>
                             {eateryDetails.name}
                         </Box>
-                        <Box>
-                            <StarRating
-                                rating={parseFloat(eateryDetails.rating)}
-                            />
-                            {eateryDetails.rating === ".0"
-                                ? 0
-                                : eateryDetails.rating}
-                        </Box>
+                        <RatingWithNum rating={eateryDetails.rating} />
                         <Box>{eateryDetails.address}</Box>
                         <Box>{getCuisines()}</Box>
                         <Typography variant="h5" className={classes.subtitle}>

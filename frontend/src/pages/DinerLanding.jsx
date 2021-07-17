@@ -20,6 +20,7 @@ import {
     Box,
     FormControl,
 } from "@material-ui/core";
+import RatingWithNum from "../components/RatingWithNum";
 
 const useStyles = makeStyles({
     card: {
@@ -208,20 +209,7 @@ export default function DinerLanding({ token }) {
                                 </Typography>
                             </Grid>
                             <Grid item>
-                                <Grid item container>
-                                    <Grid item>
-                                        <StarRating rating={parseFloat(item.rating)} />
-                                    </Grid>
-                                    <Grid
-                                        item
-                                        style={{
-                                            marginLeft: "10px",
-                                            marginTop: "4px",
-                                        }}
-                                    >
-                                        {item.rating === ".0" ? 0 : item.rating}
-                                    </Grid>
-                                </Grid>
+                                <RatingWithNum rating={item.rating} />
                             </Grid>
                         </Grid>
                     </CardContent>

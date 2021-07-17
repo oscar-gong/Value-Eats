@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
     singleLine: {
         whiteSpace: "nowrap",
-        padding: "5px 0px",
+        padding: "0px"
     },
 }));
 
