@@ -18,8 +18,6 @@ const useStyles = makeStyles({
       width: "35vw",
       height: "200px",
       objectFit: "contain",
-      backgroundColor: "rgba(255, 255, 255, 0.5)",
-      boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.3)",
       padding: "10px"
   },
   name: {
