@@ -258,6 +258,7 @@ export default function EateryProfile() {
 
     const handleVoucher = (startTime, endTime, discount, id, date) => {
         setConfirmModal(true);
+        console.log("HANDLING");
         setVoucherDetails({
             startTime: startTime,
             endTime: endTime,
@@ -288,7 +289,7 @@ export default function EateryProfile() {
                     key={key}
                 >
                     <Grid container justify="space-around" alignItems="center">
-                        <Grid item style={{ alignItems: "center" }}>
+                        <Grid item xs={4}style={{ alignItems: "center" }}>
                             <ButtonStyled
                                 variant="contained"
                                 color="primary"
@@ -309,7 +310,7 @@ export default function EateryProfile() {
                                 {`${item.discount}% OFF - ${item.eatingStyle}`}
                             </ButtonStyled>
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={4}>
                             <Box style={{ margin: "10px" }}>
                                 {`${item.quantity} Vouchers Left`}
                             </Box>
@@ -317,7 +318,7 @@ export default function EateryProfile() {
                                 {`${item.date}`}
                             </Box>
                             <Box style={{ margin: "10px" }}>
-                                {`Valid from ${item.startTime} - ${handleTimeNextDay(item.endTime)}`}
+                                {`Valid ${item.startTime} - ${handleTimeNextDay(item.endTime)}`}
                             </Box>
                         </Grid>
                     </Grid>
@@ -425,8 +426,8 @@ export default function EateryProfile() {
                     title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
                     message={
                         !isConfirmed
-                            ? `Purchase for ${eateryDetails.name}, valid for use between ${voucherDetails.startTime} - ${handleTimeNextDay(voucherDetails.endTime)} on ${voucherDetails.date}.`
-                            : `${voucherDetails.discount}% OFF at ${eateryDetails.name}. CODE ${code}. Valid between ${voucherDetails.startTime} - ${handleTimeNextDay(voucherDetails.endTime)} on ${voucherDetails.date}.`
+                            ? `Purchase for ${eateryDetails.name}, valid for use between ${voucherDetails.startTime} - ${handleTimeNextDay(voucherDetails.endTime)} on ${voucherDetails.date}`
+                            : `${voucherDetails.discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${voucherDetails.startTime} - ${handleTimeNextDay(voucherDetails.endTime)} on ${voucherDetails.date}.`
                     }
                     denyText={isConfirmed ? "View Vouchers" : "Cancel"}
                     handleDeny={isConfirmed ? () => history.push("/DinerVouchers") : null}

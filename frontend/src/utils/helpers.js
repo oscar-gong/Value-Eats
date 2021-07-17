@@ -55,6 +55,7 @@ export const fileToDataUrl = (file) => {
 
 export const handleTimeNextDay = (time) => {
     console.log(time);
+    if (!time) return;
     const [hours, minutes] = time.split(":");
     if (parseInt(hours) < 24) {
         return time;
