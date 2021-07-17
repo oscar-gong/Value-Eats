@@ -579,10 +579,12 @@ public class VoucherService {
         boolean repeatedVoucherExists = repeatVoucherRepository.existsById(booking.getVoucherId());
 
         // Check if voucher is in redeem range
-        if  (voucherExists && !VoucherUtils.isInTimeRange(booking.getDate(), booking.getStart(), booking.getEnd())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher has expired or cannot be redeemed yet."));
-        } else if (repeatedVoucherExists && !VoucherUtils.isInTimeRange(booking.getDate(), booking.getStart(), booking.getEnd())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher has expired or cannot be redeemed yet."));
+        if ((voucherExists || repeatedVoucherExists) && !VoucherUtils.isInTimeRange(booking.getDate(), booking.getStart(), booking.getEnd())) {
+            if (VoucherUtils.checkActive(booking.getDate(), booking.getEnd())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher cannot be redeemed yet."));
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher is expired."));
+            }
         } else if (!voucherExists && !repeatedVoucherExists) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher cannot be found."));
         }
