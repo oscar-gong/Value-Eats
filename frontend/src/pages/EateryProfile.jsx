@@ -72,11 +72,7 @@ export default function EateryProfile() {
     const [openConfirmModal, setConfirmModal] = useState(false);
 
     const [open, setOpen] = useState(false);
-    const [startTime, setStartTime] = useState("");
-    const [endTime, setEndTime] = useState("");
-    const [date, setDate] = useState("");
-    const [discount, setDiscount] = useState(0);
-    const [voucherID, setVoucherID] = useState(0);
+    const [voucherDetails, setVoucherDetails] = useState({});
     const [code, setCode] = useState("");
     const [isConfirmed, setIsConfirmed] = useState(false);
     const setAlertOptions = context.alert[1];
@@ -226,7 +222,7 @@ export default function EateryProfile() {
             setConfirmModal(false);
         } else {
             const response = await fetch(
-                `http://localhost:8080/diner/book?id=${voucherID}`,
+                `http://localhost:8080/diner/book?id=${voucherDetails.voucherID}`,
                 {
                     method: "POST",
                     headers: {
@@ -260,11 +256,13 @@ export default function EateryProfile() {
 
     const handleVoucher = (startTime, endTime, discount, id, date) => {
         setConfirmModal(true);
-        setStartTime(startTime);
-        setEndTime(endTime);
-        setDiscount(discount);
-        setDate(date);
-        setVoucherID(id);
+        setVoucherDetails({
+            startTime: startTime,
+            endTime: endTime,
+            discount: discount,
+            date: date,
+            voucherID: id,
+        });
     };
 
     const handleCloseModal = () => {
@@ -425,8 +423,8 @@ export default function EateryProfile() {
                     title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
                     message={
                         !isConfirmed
-                            ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${endTime} on ${date}`
-                            : `${discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${startTime} - ${endTime}`
+                            ? `Purchase for ${eateryDetails.name}, valid for use between ${voucherDetails.startTime} - ${voucherDetails.endTime} on ${voucherDetails.date}.`
+                            : `${voucherDetails.discount}% OFF at ${eateryDetails.name}. CODE ${code}. Valid between ${voucherDetails.startTime} - ${voucherDetails.endTime} on ${voucherDetails.date}.`
                     }
                     isConfirmVoucher={isConfirmed ? true : false}
                     handleConfirm={() => handleBooking()}
