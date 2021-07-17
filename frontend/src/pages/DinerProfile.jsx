@@ -19,7 +19,8 @@ import { useHistory } from "react-router";
 export default function DinerProfile() {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
-  const token = context.auth[0];
+  const [token, setAuth] = context.auth;
+  const setIsDiner = context.isDiner[1];
   const history = useHistory();
 
   const [openProfile, setOpenProfile] = useState(false);
@@ -66,7 +67,7 @@ export default function DinerProfile() {
         setTmpProfilePic(responseData["profile picture"]);
         // setEateryList(responseData.eateryList);
       } else if (response.status === 401) {
-        logUserOut();
+        logUserOut(setAuth, setIsDiner);
       }
     };
     getUser();
@@ -122,7 +123,7 @@ export default function DinerProfile() {
         setOpenProfile(false);
         setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
     } else if (response.status === 401) {
-        logUserOut();
+        logUserOut(setAuth, setIsDiner);
     } else {
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
     }

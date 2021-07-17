@@ -52,7 +52,7 @@ export default function EditEateryLanding() {
                 setImages(responseData.menuPhotos);
                 setPreviewImages(responseData.menuPhotos);
             } else if (response.status === 401) {
-                logUserOut();
+                logUserOut(setAuth, setIsDiner);
             }
         };
         getEatery();
@@ -120,7 +120,7 @@ export default function EditEateryLanding() {
             });
             history.push("/EateryLanding");
         } else if (response.status === 401) {
-            logUserOut();
+            logUserOut(setAuth, setIsDiner);
         } else {
             setAlertOptions({
                 showAlert: true,

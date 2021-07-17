@@ -13,8 +13,8 @@ import { ShakeHead } from "../styles/ShakeHead";
 
 export default function RedeemVoucher() {
   const context = useContext(StoreContext);
-  const auth = context.auth[0];
-  const isDiner = context.isDiner[0];
+  const [auth, setAuth] = context.auth;
+  const [isDiner, setIsDiner] = context.isDiner;
   const setAlertOptions = context.alert[1];
   const history = useHistory();
   const [code, setCode] = useState({value: "", valid: true});
@@ -85,7 +85,7 @@ export default function RedeemVoucher() {
       setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
       setOpenRedeemed(true);
     } else if (response.status === 401) {
-      logUserOut();
+      logUserOut(setAuth, setIsDiner);
     } else {
       setCode({...code, valid: false});
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });

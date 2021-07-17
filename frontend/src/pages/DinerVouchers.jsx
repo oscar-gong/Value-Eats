@@ -10,7 +10,8 @@ import { logUserOut } from "../utils/logoutHelper";
 
 export default function DinerVouchers() {
     const context = useContext(StoreContext);
-    const token = context.auth[0];
+    const [token, setAuth] = context.auth;
+    const setIsDiner = context.isDiner[1];
     const [showHistory, setShowHistory] = useState(false);
     const [vouchers, setVouchers] = useState([]);
 
@@ -32,7 +33,7 @@ export default function DinerVouchers() {
                 console.log(responseData.vouchers);
                 setVouchers(responseData.vouchers);
             } else if (response.status === 401) {
-                logUserOut();
+                logUserOut(setAuth, setIsDiner);
             } else {
                 console.log("cannot get vouchers");
             }

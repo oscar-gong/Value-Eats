@@ -43,8 +43,8 @@ export default function DinerLanding({ token }) {
     const classes = useStyles();
     const history = useHistory();
     const context = useContext(StoreContext);
-    const [auth] = context.auth;
-    const [isDiner] = context.isDiner;
+    const [auth, setAuth] = context.auth;
+    const [isDiner, setIsDiner] = context.isDiner;
     const [name, setName] = useState("");
     const [sortBy, setSortBy] = useState("");
 
@@ -67,7 +67,7 @@ export default function DinerLanding({ token }) {
                 setName(responseData.name);
                 setEateryList(responseData.eateryList);
             } else if (response.status === 401) {
-                logUserOut();
+                logUserOut(setAuth, setIsDiner);
             }
         };
         getEateryList();

@@ -64,8 +64,8 @@ export default function EateryProfile() {
     const location = useLocation();
     const classes = useStyles();
     const context = React.useContext(StoreContext);
-    const [auth] = context.auth;
-    const [isDiner] = context.isDiner;
+    const [auth, setAuth] = context.auth;
+    const [isDiner, setIsDiner] = context.isDiner;
     const eateryId = location.pathname.split("/")[3]
         ? location.pathname.split("/")[3]
         : "";
@@ -112,7 +112,7 @@ export default function EateryProfile() {
                 });
                 // setEateryList(responseData.eateryList);
             } else if (response.status === 401) {
-                logUserOut();
+                logUserOut(setAuth, setIsDiner);
             }
         };
         if (isDiner !== "false") {
@@ -144,7 +144,7 @@ export default function EateryProfile() {
                 }
                 setEateryDetails(responseData);
             } else if (response.status === 401) {
-                logUserOut();
+                logUserOut(setAuth, setIsDiner);
             } else {
                 // TODO
                 console.log(responseData);

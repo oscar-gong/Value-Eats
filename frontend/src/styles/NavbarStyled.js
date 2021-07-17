@@ -10,6 +10,7 @@ export const NavbarStyled = styled(AppBar)`
     justify-content: center;
     align-items: space-between;
     position: static;
+    padding: 0px 150px;
     max-height: 10vh;
     min-height: 10vh;
 `;

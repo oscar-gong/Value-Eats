@@ -108,54 +108,61 @@ export default function Navbar() {
 
     return (
         <NavbarStyled elevation={0}>
-            <MainContainer>
-                <Toolbar className={classes.singleLine}>
-                    <Typography
-                        className={classes.logo}
-                        onClick={handleLogoClick}
-                    >
-                        Value Eats
-                    </Typography>
-                    {isDiner === "true" && (
-                        <Toolbar className={classes.barSize}>
-                            <div className={classes.searchContainer}>
-                                <div style={{ marginRight: 10 }}>
-                                    <SearchIcon />
-                                </div>
-                                <div>
-                                    <InputBase
-                                        className={classes.searchBar}
-                                        placeholder="Restaurants, dishes, postcode, keywords..."
-                                        inputProps={{
-                                            "aria-label": "search",
-                                        }}
-                                    />
-                                </div>
+            <Toolbar className={classes.singleLine}>
+                <Typography
+                    className={classes.logo}
+                    onClick={handleLogoClick}
+                >
+                    Value Eats
+                </Typography>
+                {isDiner === "true" && (
+                    <Toolbar className={classes.barSize}>
+                        <div className={classes.searchContainer}>
+                            <div style={{ marginRight: 10 }}>
+                                <SearchIcon />
                             </div>
-                        </Toolbar>
-                    )}
-                    <NavLink
-                        to={
-                            isDiner === "true"
-                                ? "/DinerProfile"
-                                : "/EateryProfile"
-                        }
-                    >
-                        PROFILE
-                    </NavLink>
-                    {isDiner === "true" && (
-                        <NavLink to="/DinerVouchers">MY VOUCHERS</NavLink>
-                    )}
-                    {isDiner === "false" && (
-                        <NavLink to="/EditEateryProfile">EDIT PROFILE</NavLink>
-                    )}
-                    <NavLink onClick={handleLogout}>LOGOUT</NavLink>
+                            <div>
+                                <InputBase
+                                    className={classes.searchBar}
+                                    placeholder="Restaurants, dishes, postcode, keywords..."
+                                    inputProps={{
+                                        "aria-label": "search",
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </Toolbar>
+                )}
+                <NavLink
+                    to={
+                        isDiner === "true"
+                            ? "/DinerLanding"
+                            : "/EateryLanding"
+                    }
+                >
+                    HOME
+                </NavLink>
+                <NavLink
+                    to={
+                        isDiner === "true"
+                            ? "/DinerProfile"
+                            : "/EateryProfile"
+                    }
+                >
+                    PROFILE
+                </NavLink>
+                {isDiner === "true" && (
+                    <NavLink to="/DinerVouchers">MY VOUCHERS</NavLink>
+                )}
+                {isDiner === "false" && (
+                    <NavLink to="/EditEateryProfile">EDIT PROFILE</NavLink>
+                )}
+                <NavLink onClick={handleLogout}>LOGOUT</NavLink>
 
-                    {/* <IconButton onClick={handleClick} color="inherit">
-                        <AccountCircle style={{ fontSize: "50px" }} />
-                    </IconButton> */}
-                </Toolbar>
-            </MainContainer>
+                {/* <IconButton onClick={handleClick} color="inherit">
+                    <AccountCircle style={{ fontSize: "50px" }} />
+                </IconButton> */}
+            </Toolbar>
         </NavbarStyled>
     );
 }
