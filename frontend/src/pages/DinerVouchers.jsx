@@ -10,7 +10,6 @@ import { logUserOut } from "../utils/logoutHelper";
 
 export default function DinerVouchers() {
     const context = useContext(StoreContext);
-    const setAlertOptions = context.alert[1];
     const token = context.auth[0];
     const [showHistory, setShowHistory] = useState(false);
     const [vouchers, setVouchers] = useState([]);
@@ -39,7 +38,7 @@ export default function DinerVouchers() {
             }
         };
         getVouchers();
-    }, []);
+    }, [token]);
 
     if (token === null) return <Redirect to="/" />;
 

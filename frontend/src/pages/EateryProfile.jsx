@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { MainContainer } from "../styles/MainContainer";
+import { ButtonStyled } from "../styles/ButtonStyle";
+
 import {
     Typography,
     Grid,
     Box,
     Card,
-    Button,
     Modal,
     makeStyles,
 } from "@material-ui/core";
@@ -19,6 +20,7 @@ import EditCreateReview from "../components/EditCreateReview";
 import ConfirmModal from "../components/ConfirmModal";
 import { logUserOut } from "../utils/logoutHelper";
 import { handleTimeNextDay } from "../utils/helpers";
+import RatingWithNum from "../components/RatingWithNum";
 
 const useStyles = makeStyles({
     photo: {
@@ -45,10 +47,15 @@ const useStyles = makeStyles({
         borderRadius: "10px",
     },
     subtitle: {
-        background: "rgba(255, 255, 255, 0.5)",
-        borderRadius: "10px",
+        borderBottom: "1px solid #FF855B",
         margin: "10px 0px",
         padding: "5px 0px",
+        color: "#FF855B",
+    },
+    title: {
+        color: "#FF855B",
+        fontSize: "2em",
+        padding: "10px 0px",
     },
 });
 
@@ -67,11 +74,7 @@ export default function EateryProfile() {
     const [openConfirmModal, setConfirmModal] = useState(false);
 
     const [open, setOpen] = useState(false);
-    const [startTime, setStartTime] = useState("");
-    const [endTime, setEndTime] = useState("");
-    const [date, setDate] = useState("");
-    const [discount, setDiscount] = useState(0);
-    const [voucherID, setVoucherID] = useState(0);
+    const [voucherDetails, setVoucherDetails] = useState({});
     const [code, setCode] = useState("");
     const [isConfirmed, setIsConfirmed] = useState(false);
     const setAlertOptions = context.alert[1];
@@ -103,7 +106,7 @@ export default function EateryProfile() {
             if (response.status === 200) {
                 console.log(responseData);
                 setUser({
-                    username: responseData.name,
+                    name: responseData.name,
                     email: responseData.email,
                     profilePic: responseData["profile picture"],
                 });
@@ -135,8 +138,10 @@ export default function EateryProfile() {
             if (response.status === 200) {
                 console.log(responseData);
                 if (responseData.vouchers.length > 0) {
-                    responseData.vouchers = responseData.vouchers.filter(v => v.isActive);
-                } 
+                    responseData.vouchers = responseData.vouchers.filter(
+                        (v) => v.isActive
+                    );
+                }
                 setEateryDetails(responseData);
             } else if (response.status === 401) {
                 logUserOut();
@@ -159,8 +164,9 @@ export default function EateryProfile() {
             return (
                 <Review
                     id={item.reviewId}
-                    onEateryProfile={false}
+                    onEateryProfile={true}
                     profilePic={item.profilePic}
+                    username={item.name}
                     eateryName={item.eateryName}
                     review={item.message}
                     rating={item.rating}
@@ -180,7 +186,6 @@ export default function EateryProfile() {
         }
         return eateryDetails.menuPhotos.map((item, key) => {
             return (
-                // TODO make it responsive
                 <img
                     src={item}
                     alt="menu photos"
@@ -220,7 +225,7 @@ export default function EateryProfile() {
             setConfirmModal(false);
         } else {
             const response = await fetch(
-                `http://localhost:8080/diner/book?id=${voucherID}`,
+                `http://localhost:8080/diner/book?id=${voucherDetails.voucherID}`,
                 {
                     method: "POST",
                     headers: {
@@ -254,11 +259,14 @@ export default function EateryProfile() {
 
     const handleVoucher = (startTime, endTime, discount, id, date) => {
         setConfirmModal(true);
-        setStartTime(startTime);
-        setEndTime(endTime);
-        setDiscount(discount);
-        setDate(date);
-        setVoucherID(id);
+        console.log("HANDLING");
+        setVoucherDetails({
+            startTime: startTime,
+            endTime: endTime,
+            discount: discount,
+            date: date,
+            voucherID: id,
+        });
     };
 
     const handleCloseModal = () => {
@@ -282,8 +290,8 @@ export default function EateryProfile() {
                     key={key}
                 >
                     <Grid container justify="space-around" alignItems="center">
-                        <Grid item style={{ alignItems: "center" }}>
-                            <Button
+                        <Grid item xs={4}style={{ alignItems: "center" }}>
+                            <ButtonStyled
                                 variant="contained"
                                 color="primary"
                                 style={{ display: "block", width: "15vw" }}
@@ -301,9 +309,9 @@ export default function EateryProfile() {
                                 }
                             >
                                 {`${item.discount}% OFF - ${item.eatingStyle}`}
-                            </Button>
+                            </ButtonStyled>
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={4}>
                             <Box style={{ margin: "10px" }}>
                                 {`${item.quantity} Vouchers Left`}
                             </Box>
@@ -311,7 +319,7 @@ export default function EateryProfile() {
                                 {`${item.date}`}
                             </Box>
                             <Box style={{ margin: "10px" }}>
-                                {`Valid from ${item.startTime} - ${handleTimeNextDay(item.endTime)}`}
+                                {`Valid ${item.startTime} - ${handleTimeNextDay(item.endTime)}`}
                             </Box>
                         </Grid>
                     </Grid>
@@ -331,44 +339,32 @@ export default function EateryProfile() {
             <MainContainer>
                 <Grid container spacing={5} className={classes.gridContainer}>
                     <Grid item xs={6}>
-                        <Typography variant="h3">
+                        <Box className={classes.title}>
                             {eateryDetails.name}
-                        </Typography>
-                        <StarRating rating={parseFloat(eateryDetails.rating)} />{" "}
-                        {eateryDetails.rating === ".0"
-                            ? 0
-                            : eateryDetails.rating}
-                        <Typography variant="subtitle2">
-                            {eateryDetails.address}
-                        </Typography>
-                        <Typography variant="subtitle2">
-                            {getCuisines()}
-                        </Typography>
+                        </Box>
+                        <RatingWithNum rating={eateryDetails.rating} />
+                        <Box>{eateryDetails.address}</Box>
+                        <Box>{getCuisines()}</Box>
                         <Typography variant="h5" className={classes.subtitle}>
                             Menu Photos
                         </Typography>
-                        <Box flex-wrap="wrap" flexDirection="row">
-                            {getSingleImage()}
-                        </Box>
-                        {getNumberOfImages()}
+                        <Box>{getSingleImage()}</Box>
+                        <Box>{getNumberOfImages()}</Box>
                         <Typography className={classes.subtitle} variant="h5">
                             Reviews
                         </Typography>
-                        <Button
-                            style={{ margin: "10px 0px" }}
+                        <ButtonStyled
                             variant="contained"
                             color="primary"
                             onClick={() => setOpenCreateReview(true)}
                             disabled={isDiner === "true" ? false : true}
-                            // disabled={true}
                         >
                             Write a Review
-                        </Button>
+                        </ButtonStyled>
                         <Box>{getReviews()}</Box>
                     </Grid>
-
                     <Grid item xs={6}>
-                        <Typography variant="h3">Discounts</Typography>
+                        <Box className={classes.title}>Discounts</Box>
                         {getVouchers()}
                         <div>
                             <Modal
@@ -405,11 +401,12 @@ export default function EateryProfile() {
                         </div>
                     </Grid>
                 </Grid>
-                <EditCreateReview id={-1}
+                <EditCreateReview
+                    id={-1}
                     eateryId={parseInt(eateryId)}
                     open={openCreateReview}
                     setOpen={setOpenCreateReview}
-                    username={user.username}
+                    username={user.name}
                     profilePic={user.profilePic}
                     reviewTextState={["", null]}
                     ratingState={["", null]}
@@ -423,8 +420,8 @@ export default function EateryProfile() {
                     title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
                     message={
                         !isConfirmed
-                            ? `Purchase for ${eateryDetails.name} valid for use between ${startTime} - ${handleTimeNextDay(endTime)} on ${date}`
-                            : `${discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${startTime} - ${handleTimeNextDay(endTime)}`
+                            ? `Purchase for ${eateryDetails.name}, valid for use between ${voucherDetails.startTime} - ${handleTimeNextDay(voucherDetails.endTime)} on ${voucherDetails.date}`
+                            : `${voucherDetails.discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${voucherDetails.startTime} - ${handleTimeNextDay(voucherDetails.endTime)} on ${voucherDetails.date}.`
                     }
                     denyText={isConfirmed ? "View Vouchers" : "Cancel"}
                     handleDeny={isConfirmed ? () => history.push("/DinerVouchers") : null}

@@ -137,6 +137,14 @@ export default function DinerProfile() {
     });
   };
 
+  const getNumPhotos = () => {
+    let total = 0;
+    for (const review of reviews) {
+      total += review.reviewPhotos.length;
+    }
+    return total;
+  }
+
   return (
     <>
       <NavBar isDiner={true}/>
@@ -157,7 +165,7 @@ export default function DinerProfile() {
             <h1>review{reviews.length === 1 ? "" : "s"}</h1>
           </StatBox>
           <StatBox>
-            <h1>X</h1>
+            <h1>{getNumPhotos()}</h1>
             <h1>photos</h1>
           </StatBox>
         </Box>
@@ -173,14 +181,14 @@ export default function DinerProfile() {
               return (
                 <Review id={r.reviewId}
                 eateryId={r.eateryId}
-                username={r.username}
+                username={r.name}
                 profilePic={r.profilePic}
                 eateryName={r.eateryName}
                 review={r.message}
                 rating={r.rating}
                 images={r.reviewPhotos ? r.reviewPhotos : []}
                 isOwner={true}
-                onEateryProfile={true}></Review>
+                onEateryProfile={false}></Review>
               );
             })
           }

@@ -1,9 +1,7 @@
-import React, {useContext, useState, useEffect } from "react";
-import NavBar from "../components/Navbar";
-import { MainContent } from "../styles/MainContent";
+import React, {useContext, useState } from "react";
 import { StoreContext } from "../utils/store";
 import { Redirect } from "react-router-dom";
-import { Box, Button, IconButton, Grid } from "@material-ui/core";
+import { Box, IconButton, Grid } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
