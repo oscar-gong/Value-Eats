@@ -7,20 +7,17 @@ import {
     Button,
     Box,
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 
 export default function ConfirmModal({
     open,
     handleClose,
     title,
     message,
-    handleConfirm,
-    isConfirmVoucher = false,
+    handleConfirm, // handles text for right button
+    confirmText="Confirm", // handles the function for the right button
+    handleDeny=null, // handles text for the left button
+    denyText="Cancel", // handles the function for the left button
 }) {
-    const history = useHistory();
-    const handleViewVouchers = () => {
-        history.push("/DinerVouchers");
-    };
     return (
         <>
             <Dialog
@@ -33,42 +30,27 @@ export default function ConfirmModal({
                 </DialogTitle>
                 <DialogContent dividers>{message}</DialogContent>
                 <DialogActions>
-                    {!isConfirmVoucher && (
-                        <Box>
-                            <Button
-                                autoFocus
-                                onClick={handleClose}
-                                color="primary"
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                autoFocus
-                                onClick={handleConfirm}
-                                color="primary"
-                            >
-                                Confirm
-                            </Button>
-                        </Box>
-                    )}
-                    {isConfirmVoucher && (
-                        <Box>
-                            <Button
-                                autoFocus
-                                onClick={handleViewVouchers}
-                                color="primary"
-                            >
-                                View Vouchers
-                            </Button>
-                            <Button
-                                autoFocus
-                                onClick={handleConfirm}
-                                color="primary"
-                            >
-                                Ok
-                            </Button>
-                        </Box>
-                    )}
+                    <Box>
+                        <Button
+                            autoFocus
+                            onClick={() => {
+                                if (handleDeny) {
+                                    handleDeny();
+                                }
+                                handleClose();
+                            }}
+                            color="primary"
+                        >
+                            {denyText}
+                        </Button>
+                        <Button
+                            autoFocus
+                            onClick={handleConfirm}
+                            color="primary"
+                        >
+                            {confirmText}
+                        </Button>
+                    </Box>
                 </DialogActions>
             </Dialog>
         </>

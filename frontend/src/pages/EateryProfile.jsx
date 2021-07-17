@@ -13,12 +13,13 @@ import {
 } from "@material-ui/core";
 import StarRating from "../components/StarRating";
 import Review from "../components/Review";
-import { useLocation, Redirect } from "react-router-dom";
+import { useLocation, Redirect, useHistory } from "react-router-dom";
 import { StoreContext } from "../utils/store";
 import Carousel from "react-material-ui-carousel";
 import EditCreateReview from "../components/EditCreateReview";
 import ConfirmModal from "../components/ConfirmModal";
 import { logUserOut } from "../utils/logoutHelper";
+import { handleTimeNextDay } from "../utils/helpers";
 
 const useStyles = makeStyles({
     photo: {
@@ -76,6 +77,7 @@ export default function EateryProfile() {
     const [code, setCode] = useState("");
     const [isConfirmed, setIsConfirmed] = useState(false);
     const setAlertOptions = context.alert[1];
+    const history = useHistory();
 
     const handleOpen = () => {
         setOpen(true);
@@ -315,7 +317,7 @@ export default function EateryProfile() {
                                 {`${item.date}`}
                             </Box>
                             <Box style={{ margin: "10px" }}>
-                                {`Valid from ${item.startTime} - ${item.endTime}`}
+                                {`Valid from ${item.startTime} - ${handleTimeNextDay(item.endTime)}`}
                             </Box>
                         </Grid>
                     </Grid>
@@ -419,15 +421,17 @@ export default function EateryProfile() {
                 <ConfirmModal
                     open={openConfirmModal}
                     handleClose={handleCloseModal}
-                    eateryId={eateryId}
+                    // eateryId={eateryId}
                     title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
                     message={
                         !isConfirmed
-                            ? `Purchase for ${eateryDetails.name}, valid for use between ${voucherDetails.startTime} - ${voucherDetails.endTime} on ${voucherDetails.date}.`
-                            : `${voucherDetails.discount}% OFF at ${eateryDetails.name}. CODE ${code}. Valid between ${voucherDetails.startTime} - ${voucherDetails.endTime} on ${voucherDetails.date}.`
+                            ? `Purchase for ${eateryDetails.name}, valid for use between ${voucherDetails.startTime} - ${handleTimeNextDay(voucherDetails.endTime)} on ${voucherDetails.date}.`
+                            : `${voucherDetails.discount}% OFF at ${eateryDetails.name}. CODE ${code}. Valid between ${voucherDetails.startTime} - ${handleTimeNextDay(voucherDetails.endTime)} on ${voucherDetails.date}.`
                     }
-                    isConfirmVoucher={isConfirmed ? true : false}
-                    handleConfirm={() => handleBooking()}
+                    denyText={isConfirmed ? "View Vouchers" : "Cancel"}
+                    handleDeny={isConfirmed ? () => history.push("/DinerVouchers") : null}
+                    handleConfirm={!isConfirmed ? () => handleBooking() : () => handleCloseModal()}
+                    confirmText={isConfirmed ? "Ok" : "Confirm"}
                 ></ConfirmModal>
             </MainContainer>
         </>

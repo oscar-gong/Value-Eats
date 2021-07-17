@@ -96,7 +96,9 @@ export default function EateryLanding() {
                   <h1 style={{marginTop: "0px"}}>
                     No active discounts!
                   </h1>
-                  <ButtonStyled widthPercentage={25}>Get started!</ButtonStyled>
+                  <ButtonStyled widthPercentage={25}
+                    onClick={() => setOpenCreateDiscount(true)}
+                  >Get started!</ButtonStyled>
                 </Box>
 
               }
