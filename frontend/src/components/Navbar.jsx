@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import SearchIcon from "@material-ui/icons/Search";
@@ -7,8 +7,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { NavbarStyled } from "../styles/NavbarStyled";
 import { useHistory } from "react-router";
 import { StoreContext } from "../utils/store";
-import { MainContainer } from "../styles/MainContainer";
 import { NavLink } from "../styles/NavLink";
+import { Menu, MenuItem } from "@material-ui/core";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import { IconButtonShowSmall } from "../styles/IconButtonShowSmall";
 import logo from "../assets/logo.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "2em",
         fontWeight: "bold",
         color: "#FF855B",
-        flex: 1,
+        maxWidth: "50%",
         "&:hover": {
             cursor: "pointer",
             color: "#e06543",
@@ -38,8 +40,7 @@ const useStyles = makeStyles((theme) => ({
     searchBar: {
         fontSize: "1em",
         color: "#FF855B",
-        minWidth: "50ch",
-        width: "20vw",
+        width: "30vw",
         paddingRight: 10,
         backgroundColor: "transparent",
         borderBottom: "1px solid rgba(255, 132, 91, 0.5)",
@@ -61,6 +62,11 @@ export default function Navbar() {
     const setAlertOptions = context.alert[1];
     const [auth, setAuth] = context.auth;
     const [isDiner, setIsDiner] = context.isDiner;
+    const [openMenu, setOpenMenu] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const anchorElement = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
     const handleLogout = async () => {
         console.log("You are getting logged out");
@@ -107,7 +113,7 @@ export default function Navbar() {
     };
 
     return (
-        <NavbarStyled elevation={0}>
+        <NavbarStyled isDiner={isDiner} elevation={0}>
             <Toolbar className={classes.singleLine}>
                 <Typography
                     className={classes.logo}
@@ -133,7 +139,12 @@ export default function Navbar() {
                         </div>
                     </Toolbar>
                 )}
-                <NavLink
+                {
+                    // Hacky fix for flex stlying
+                    isDiner === "false" &&
+                    <div style={{flex: 1}}></div>
+                }
+                <NavLink isDiner={isDiner}
                     to={
                         isDiner === "true"
                             ? "/DinerLanding"
@@ -142,7 +153,7 @@ export default function Navbar() {
                 >
                     HOME
                 </NavLink>
-                <NavLink
+                <NavLink isDiner={isDiner}
                     to={
                         isDiner === "true"
                             ? "/DinerProfile"
@@ -152,16 +163,49 @@ export default function Navbar() {
                     PROFILE
                 </NavLink>
                 {isDiner === "true" && (
-                    <NavLink to="/DinerVouchers">MY VOUCHERS</NavLink>
+                    <NavLink isDiner={isDiner} to="/DinerVouchers">MY VOUCHERS</NavLink>
                 )}
                 {isDiner === "false" && (
-                    <NavLink to="/EditEateryProfile">EDIT PROFILE</NavLink>
+                    <NavLink isDiner={isDiner} to="/EditEateryProfile">EDIT PROFILE</NavLink>
                 )}
-                <NavLink onClick={handleLogout}>LOGOUT</NavLink>
+                <NavLink isDiner={isDiner} onClick={handleLogout}>LOGOUT</NavLink>
 
-                {/* <IconButton onClick={handleClick} color="inherit">
+                <IconButtonShowSmall isDiner={isDiner} onClick={(e) => {
+                    setOpenMenu(true); 
+                    anchorElement(e);
+                }}
+                    color="inherit"
+                >
                     <AccountCircle style={{ fontSize: "50px" }} />
-                </IconButton> */}
+                </IconButtonShowSmall>
+                <Menu
+                    className={classes.menu}
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    getContentAnchorEl={null}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                    }}
+                    open={openMenu}
+                    onClose={() => setOpenMenu(false)}
+                >
+                    <MenuItem onClick={() => isDiner ? history.push("/DinerProfile") : history.push("/EateryProfile")}>
+                        Profile
+                    </MenuItem>
+                    {isDiner === "true" && (
+                        <MenuItem onClick={() => history.push("/DinerVouchers")}>
+                            My Vouchers
+                        </MenuItem>
+                    )}
+                    {isDiner === "false" && (
+                        <MenuItem onClick={() => history.push("/EditEateryProfile")}>
+                            Edit Profile
+                        </MenuItem>
+                    )}
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
             </Toolbar>
         </NavbarStyled>
     );
