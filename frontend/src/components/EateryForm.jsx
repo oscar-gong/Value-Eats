@@ -34,6 +34,7 @@ export default function EateryForm({
     setPreviewImages,
     isRegister,
     submitForm,
+    removeBg=false
 }) {
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
@@ -87,7 +88,7 @@ export default function EateryForm({
     }, []);
 
     return (
-        <AlignCenter isRegister={isRegister}>
+        <AlignCenter removeBg={removeBg}>
             <FloatBox display="flex" flexDirection="column" alignItems="center">
                 <Box pt={2}>
                     <Subtitle>
