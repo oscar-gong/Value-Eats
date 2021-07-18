@@ -22,7 +22,7 @@ public class User {
     private String password;
     private String alias;
     private String address;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonIgnore
     private String token;
     private String profilePic;
 }

@@ -27,7 +27,6 @@ public class RecommendationService {
         List<Eatery> result = new ArrayList<>(10);
         while (!pq.isEmpty() && result.size() <= 10) {
             Eatery newEatery = pq.poll().getValue();
-            newEatery.calculateRating();
 
             newEatery.setEmail(null);
             newEatery.setPassword(null);

@@ -3,6 +3,7 @@ package com.nuggets.valueeats.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,16 +24,12 @@ public final class Eatery extends User {
     private ArrayList<String> menuPhotos;
 
     @JsonProperty("rating")
-    @Transient
+    @Formula("(select avg(r.rating) from review r where r.eatery_id = id)")
     private Float lazyRating;
+
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @OneToMany
     @JoinColumn(name = "eateryId")
     private List<Review> reviews;
-
-//??    @JsonIgnore
-    public void calculateRating() {
-        lazyRating = (float) reviews.stream().mapToDouble(Review::getRating).average().orElse(0);
-    }
 }
