@@ -166,3 +166,11 @@ Week7:
     - I have improved the booking function, and added some restriction to it.
     - I have finished implementing all features for the vouchers.
     - I have created some tests to test all functionalities and some edge cases.
+    - We also improved backend structure, and created seperate function to verify the token.
+    
+What were the main technical and non-technical obstacles and how they were
+  overcome:
+    - The backend structure is a little messy, there are some redundant functions. We cleaned them up, combined some functions
+      and created the verify function for the token.
+    - As we have different acceptance criterias and the functions are complex, I have implemented some tests for them especially
+      some edge cases.
