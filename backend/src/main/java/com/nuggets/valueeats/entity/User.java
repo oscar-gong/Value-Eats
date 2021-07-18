@@ -1,6 +1,7 @@
 package com.nuggets.valueeats.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,14 +15,14 @@ public class User {
     @JsonIgnore
     @Id
     private Long id;
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(unique=true)
     private String email;
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
     private String alias;
     private String address;
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;
     private String profilePic;
 }

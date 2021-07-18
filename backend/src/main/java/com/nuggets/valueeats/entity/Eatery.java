@@ -1,14 +1,10 @@
 package com.nuggets.valueeats.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,4 +21,18 @@ public final class Eatery extends User {
     private List<String> cuisines = new ArrayList<>();
 
     private ArrayList<String> menuPhotos;
+
+    @JsonProperty("rating")
+    @Transient
+    private Float lazyRating;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @OneToMany
+    @JoinColumn(name = "eateryId")
+    private List<Review> reviews;
+
+//??    @JsonIgnore
+    public void calculateRating() {
+        lazyRating = (float) reviews.stream().mapToDouble(Review::getRating).average().orElse(0);
+    }
 }

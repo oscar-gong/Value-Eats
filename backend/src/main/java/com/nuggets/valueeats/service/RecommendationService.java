@@ -26,7 +26,14 @@ public class RecommendationService {
 
         List<Eatery> result = new ArrayList<>(10);
         while (!pq.isEmpty() && result.size() <= 10) {
-            result.add(pq.poll().getValue());
+            Eatery newEatery = pq.poll().getValue();
+            newEatery.calculateRating();
+
+            newEatery.setEmail(null);
+            newEatery.setPassword(null);
+            newEatery.setReviews(null);
+
+            result.add(newEatery);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
