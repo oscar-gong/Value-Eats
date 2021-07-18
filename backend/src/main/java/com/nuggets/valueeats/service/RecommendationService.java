@@ -21,7 +21,7 @@ public class RecommendationService {
 
     public ResponseEntity<List<Eatery>> fuzzySearch(final String search) {
         final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateryRepository.findAll().stream()
-                .map(a -> new AbstractMap.SimpleImmutableEntry<>(FuzzySearch.weightedRatio(search, a.getCuisines().toString()), a))
+                .map(a -> new AbstractMap.SimpleImmutableEntry<>(FuzzySearch.weightedRatio(search, a.getCuisines().toString() + "|" + a.getAlias()), a))
                 .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
 
         List<Eatery> result = new ArrayList<>(10);
