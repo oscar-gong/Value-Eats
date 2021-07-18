@@ -13,8 +13,8 @@ import { Subtitle } from "../styles/Subtitle";
 
 export default function EateryLanding() {
   const context = useContext(StoreContext);
-  const auth = context.auth[0];
-  const isDiner = context.isDiner[0];
+  const [auth, setAuth] = context.auth;
+  const [isDiner, setIsDiner] = context.isDiner;
   const history = useHistory();
   console.log(auth);
   console.log(isDiner);
@@ -39,8 +39,8 @@ export default function EateryLanding() {
       console.log(responseData);
       setEateryDetails(responseData);
     } else if (response.status === 401) {
-      logUserOut();
-    }else {
+      logUserOut(setAuth, setIsDiner);
+    } else {
       // TODO
       console.log(responseData);
     }

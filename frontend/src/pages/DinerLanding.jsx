@@ -21,19 +21,27 @@ import {
     FormControl,
 } from "@material-ui/core";
 import RatingWithNum from "../components/RatingWithNum";
+import Loading from "../components/Loading";
 
 const useStyles = makeStyles({
     card: {
         color: "black",
         borderRadius: "0px",
         transition: "transform 0.15s ease-in-out",
-        "&:hover": { transform: "scale3d(1.02, 1.02, 1)", maxHeight: "none" },
+        "&:hover": { 
+            transform: "scale3d(1.02, 1.02, 1)", 
+            maxHeight: "none",
+            cursor: "pointer"
+        },
         maxHeight: "300px",
     },
     wideCard: {
         marginTop: "20px",
         transition: "transform 0.15s ease-in-out",
-        "&:hover": { transform: "scale3d(1.02, 1.02, 1)" },
+        "&:hover": { 
+            transform: "scale3d(1.02, 1.02, 1)",
+            cursor: "pointer"
+        },
     },
 });
 
@@ -43,13 +51,15 @@ export default function DinerLanding({ token }) {
     const classes = useStyles();
     const history = useHistory();
     const context = useContext(StoreContext);
-    const [auth] = context.auth;
-    const [isDiner] = context.isDiner;
+    const [auth, setAuth] = context.auth;
+    const [isDiner, setIsDiner] = context.isDiner;
     const [name, setName] = useState("");
     const [sortBy, setSortBy] = useState("");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const getEateryList = async () => {
+            setLoading(true);
             const response = await fetch(
                 "http://localhost:8080/list/eateries",
                 {
@@ -62,12 +72,13 @@ export default function DinerLanding({ token }) {
                 }
             );
             const responseData = await response.json();
+            setLoading(false);
             if (response.status === 200) {
                 console.log(responseData);
                 setName(responseData.name);
                 setEateryList(responseData.eateryList);
             } else if (response.status === 401) {
-                logUserOut();
+                logUserOut(setAuth, setIsDiner);
             }
         };
         getEateryList();
@@ -244,6 +255,7 @@ export default function DinerLanding({ token }) {
                 <Carousel>{getSlides()}</Carousel>
                 {getEateries()}
               </Box>
+              <Loading isLoading={loading} />
             </MainContainer>
         </>
     );

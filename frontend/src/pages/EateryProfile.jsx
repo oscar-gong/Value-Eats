@@ -8,7 +8,7 @@ import {
     Box,
     Card,
     Modal,
-    makeStyles,
+    makeStyles
 } from "@material-ui/core";
 import Review from "../components/Review";
 import { useLocation, Redirect, useHistory } from "react-router-dom";
@@ -19,6 +19,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import { logUserOut } from "../utils/logoutHelper";
 import { handleTimeNextDay } from "../utils/helpers";
 import RatingWithNum from "../components/RatingWithNum";
+import Loading from "../components/Loading";
 
 const useStyles = makeStyles({
     photo: {
@@ -62,14 +63,15 @@ export default function EateryProfile() {
     const location = useLocation();
     const classes = useStyles();
     const context = React.useContext(StoreContext);
-    const [auth] = context.auth;
-    const [isDiner] = context.isDiner;
+    const [auth, setAuth] = context.auth;
+    const [isDiner, setIsDiner] = context.isDiner;
     const eateryId = location.pathname.split("/")[3]
         ? location.pathname.split("/")[3]
         : "";
     const [openCreateReview, setOpenCreateReview] = useState(false);
     const [user, setUser] = useState({});
     const [openConfirmModal, setConfirmModal] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [open, setOpen] = useState(false);
     const [voucherDetails, setVoucherDetails] = useState({});
@@ -110,7 +112,7 @@ export default function EateryProfile() {
                 });
                 // setEateryList(responseData.eateryList);
             } else if (response.status === 401) {
-                logUserOut();
+                logUserOut(setAuth, setIsDiner);
             }
         };
         if (isDiner !== "false") {
@@ -120,6 +122,7 @@ export default function EateryProfile() {
 
     useEffect(() => {
         const getEateryDetails = async () => {
+            setLoading(true);
             const response = await fetch(
                 `http://localhost:8080/eatery/profile/details?id=${eateryId}`,
                 {
@@ -131,7 +134,7 @@ export default function EateryProfile() {
                     },
                 }
             );
-
+            setLoading(false);
             const responseData = await response.json();
             if (response.status === 200) {
                 console.log(responseData);
@@ -142,7 +145,7 @@ export default function EateryProfile() {
                 }
                 setEateryDetails(responseData);
             } else if (response.status === 401) {
-                logUserOut();
+                logUserOut(setAuth, setIsDiner);
             } else {
                 // TODO
                 console.log(responseData);
@@ -360,6 +363,7 @@ export default function EateryProfile() {
                             Write a Review
                         </ButtonStyled>
                         <Box>{getReviews()}</Box>
+                        <Loading isLoading={loading}/>
                     </Grid>
                     <Grid item xs={6}>
                         <Box className={classes.title}>Discounts</Box>
@@ -397,6 +401,7 @@ export default function EateryProfile() {
                                 }
                             </Modal>
                         </div>
+                        <Loading isLoading={loading}/>
                     </Grid>
                 </Grid>
                 <EditCreateReview

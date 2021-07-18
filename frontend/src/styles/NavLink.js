@@ -16,4 +16,8 @@ export const NavLink = styled(Link)`
     }
 
     width: ${(props) => props.widthPercentage}%;
+    @media (max-width: 1199px) {
+
+        ${(props) => props.isDiner === "true" ? "display: none !important" : ""};
+    }
 `;

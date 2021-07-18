@@ -21,8 +21,8 @@ export default function EditEateryLanding() {
     const history = useHistory();
 
     const context = useContext(StoreContext);
-    const [auth] = context.auth;
-    const [isDiner] = context.isDiner;
+    const [auth, setAuth] = context.auth;
+    const [isDiner, setIsDiner] = context.isDiner;
     const setAlertOptions = context.alert[1];
 
     // set to true for real demos
@@ -52,7 +52,7 @@ export default function EditEateryLanding() {
                 setImages(responseData.menuPhotos);
                 setPreviewImages(responseData.menuPhotos);
             } else if (response.status === 401) {
-                logUserOut();
+                logUserOut(setAuth, setIsDiner);
             }
         };
         getEatery();
@@ -120,7 +120,7 @@ export default function EditEateryLanding() {
             });
             history.push("/EateryLanding");
         } else if (response.status === 401) {
-            logUserOut();
+            logUserOut(setAuth, setIsDiner);
         } else {
             setAlertOptions({
                 showAlert: true,
