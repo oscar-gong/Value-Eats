@@ -112,3 +112,27 @@ Week 6
     - As both sprints are completed earlier than expected, we plan to make a start on sprint 5 
     - I plan to continue to improve the UI as well as set up polling
     - continue to refactor frontend
+
+
+Week 7
+- What was planned for the period since the last work diary entry:
+    - The plan was to finish off the basic functionalities for sprint 4 user stories
+    - improve the UI, continue to refactor
+
+- What we finished:
+    - Sprint 4 was successfully completed this week although most of it was completed in the previous week
+    - We made some basic UI design changes, Ben added confetti :D, improved responsiveness which will continue to be improved on in future sprints
+    - cleaned up some code on the frontend, made styled components to reduce repetition, allow ease of use and change + consistency
+    - Made a temporary logo for value eats
+    - Teammates in the backend made a start on sprint 5 in terms of implementing search and tests
+
+- Obstacles that we faced:
+    - No major obstacles were faced 
+    - required small change from backend to allow for deletion of weekly vouchers made by eateries, was easily resolved by adding an extra field
+
+- What was not finished:
+    - I made the overall frontend look too orange in my opinion - unfinished overall design, could increase contrast of colours
+
+- What is planned for the next period:
+    - Implement search for a restaurant based on various factors and recommendation algorithm
+    - Continue to fix up UI design + responsiveness + accessibility
