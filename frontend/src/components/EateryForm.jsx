@@ -87,7 +87,7 @@ export default function EateryForm({
     }, []);
 
     return (
-        <AlignCenter>
+        <AlignCenter isRegister={isRegister}>
             <FloatBox display="flex" flexDirection="column" alignItems="center">
                 <Box pt={2}>
                     <Subtitle>
