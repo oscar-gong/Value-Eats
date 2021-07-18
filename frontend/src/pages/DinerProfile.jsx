@@ -153,21 +153,21 @@ export default function DinerProfile() {
         <Box display="flex" justifyContent="center" alignItems="center" paddingTop="10px">
           <ProfilePhoto size={150} src={user.profilePic} />
           <Box display="flex" flexDirection="column" alignItems="center" paddingX="20px">
-            <h1>{user.username}</h1>
-            <Button variant="contained"
+            <Box style={{color: "#FF845B", fontSize: "1.5em"}}>{user.username}</Box>
+            <ButtonStyled variant="contained"
               color="primary"
               startIcon={<EditIcon />}
               onClick={() => setOpenProfile(true)}>
               Edit profile
-            </Button>
+            </ButtonStyled>
           </Box>
           <StatBox>
-            <h1>{reviews.length}</h1>
-            <h1>review{reviews.length === 1 ? "" : "s"}</h1>
+            <Box>{reviews.length}</Box>
+            <Box>review{reviews.length === 1 ? "" : "s"}</Box>
           </StatBox>
           <StatBox>
-            <h1>{getNumPhotos()}</h1>
-            <h1>photos</h1>
+            <Box>{getNumPhotos()}</Box>
+            <Box>photos</Box>
           </StatBox>
         </Box>
         <Box paddingY="30px">

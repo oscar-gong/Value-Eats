@@ -8,6 +8,8 @@ import { ButtonStyled } from "../styles/ButtonStyle";
 import EateryVoucher from "../components/EateryVoucher";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 import { logUserOut } from "../utils/logoutHelper";
+import { VoucherContainer } from "../styles/VoucherContainer";
+import { Subtitle } from "../styles/Subtitle";
 
 export default function EateryLanding() {
   const context = useContext(StoreContext);
@@ -57,54 +59,50 @@ export default function EateryLanding() {
     <>
       <NavBar isDiner={isDiner}/>
       <MainContent>
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-          <h1>{eateryDetails.name}'s Discounts</h1>
-          <Box mt={2}
-            width="80vw"
-            height="60vh"
-            border="3px solid #4F4846"
-            bgcolor="#E8CEBF"
-            overflow="auto"
-            >
-              {
-                eateryDetails.vouchers && (eateryDetails.vouchers.map((v) => {
-                  return (
-                    <EateryVoucher voucherId={v.id}
-                      eateryId={v.eateryId}
-                      discount={v.discount}
-                      isOneOff={!v.isRecurring}
-                      isDineIn={v.eatingStyle === "DineIn" ? true : false}
-                      vouchersLeft={v.quantity}
-                      date={v.date} 
-                      startTime={v.startTime}
-                      endTime={v.endTime}
-                      timeRemaining={v.duration}
-                      nextUpdate={v.nextUpdate ? v.nextUpdate : null}
-                      isActive={v.isActive}
-                      isRedeemable={v.isRedeemable}
-                      refreshList={() => getEateryDetails()}></EateryVoucher>
-                  );
-                }))
-              }
-              {
-                eateryDetails.vouchers && eateryDetails.vouchers.length === 0 &&
-                <Box display="flex"
-                  flexDirection="column"
-                  minHeight="100%"
-                  justifyContent="center"
-                  alignItems="center">
-                  <h1 style={{marginTop: "0px"}}>
-                    No active discounts!
-                  </h1>
-                  <ButtonStyled widthPercentage={25}
-                    onClick={() => setOpenCreateDiscount(true)}
-                  >Get started!</ButtonStyled>
-                </Box>
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <Subtitle>{eateryDetails.name}'s Discounts</Subtitle>
+          <VoucherContainer>
+            {
+              eateryDetails.vouchers && (eateryDetails.vouchers.map((v,key) => {
+                return (
+                  ((v.nextUpdate !== "Deleted" && v.isRecurring === true) || v.isRecurring === false) &&
+                  <EateryVoucher voucherId={v.id}
+                    key={key}
+                    eateryId={v.eateryId}
+                    discount={v.discount}
+                    isOneOff={!v.isRecurring}
+                    isDineIn={v.eatingStyle === "DineIn" ? true : false}
+                    vouchersLeft={v.quantity}
+                    date={v.date} 
+                    startTime={v.startTime}
+                    endTime={v.endTime}
+                    timeRemaining={v.duration}
+                    nextUpdate={v.nextUpdate ? v.nextUpdate : null}
+                    isActive={v.isActive}
+                    isRedeemable={v.isRedeemable}
+                    refreshList={() => getEateryDetails()}></EateryVoucher>
+                );
+              }))
+            }
+            {
+              eateryDetails.vouchers && eateryDetails.vouchers.length === 0 &&
+              <Box display="flex"
+                flexDirection="column"
+                minHeight="100%"
+                justifyContent="center"
+                alignItems="center">
+                <h1 style={{marginTop: "0px"}}>
+                  No active discounts!
+                </h1>
+                <ButtonStyled widthPercentage={25}
+                  onClick={() => setOpenCreateDiscount(true)}
+                >Get started!</ButtonStyled>
+              </Box>
 
-              }
-          </Box>
+            }
+          </VoucherContainer>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center" height="30vh">
+        <Box display="flex" flexDirection="column" height="30vh">
           <Box
             display="flex"
             justifyContent="space-evenly"
