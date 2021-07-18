@@ -58,3 +58,13 @@ Week 6
     - The JAVA date API isn't designed very well leading to issues with timezones (Date doesn't deal with timezones). To overcome this, I have decided to offset the times so that times are compared in the same timezone.
 - Everything that we had planned to finish in this sprint were finished on time.
 - Next week we plan to begin sprint 5. However, before we start doing this, I plan to improve our code design in backend to remove a lot of repetitive code.
+
+Week 7
+- Last week, I have planned to improve code design in the backend to remove repetitive code. We have also planned to begin sprint 5 which involves search and recommendation.
+- This week, I managed to clean up a lot of the repetitive code early in the week, making functions for repetitive code and putting them into their respective utils class.
+- I have also made some plans surrounding how recommendation will be implemented later in the week, however, this is not final and most likely subject to change in the future.
+- As we have finished implementing the features in Sprint 4 ahead of time, we spent this week mostly polishing things up and also slowly worked on Sprint 5.
+- Kevin had made a good start on implementing search.
+- We did not face any obstacles this week as it mostly involved code cleaning around already functional features.
+- Everything that we had planned to finish was essentially completed on time.
+- Next week, we plan to finalise recommendation and search features and also create some unit tests.
