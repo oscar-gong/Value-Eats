@@ -11,6 +11,7 @@ import { StoreContext } from "../utils/store";
 import Carousel from 'react-material-ui-carousel';
 import { useHistory } from 'react-router-dom';
 import { ButtonStyled } from '../styles/ButtonStyle';
+import { ReviewInfoBox } from '../styles/ReviewInfoBox';
 
 const useStyles = makeStyles({
   photoCarousel: {
@@ -76,7 +77,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
   return (
     <>
       <Box display="flex" flexDirection="column" border="2px solid white" borderRadius="20px" padding="10px" bgcolor="white" minWidth={onEateryProfile ? "100%" : "65vw"} maxWidth="70vw" margin="10px 0">
-        <Box display="flex">
+        <ReviewInfoBox>
           <Box display="flex" flexDirection="column">
             <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
             <StarRating rating={editRating}></StarRating>
@@ -109,7 +110,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
             }
             </Box>
           </Box>
-        </Box>
+        </ReviewInfoBox>
         {
           editCreateReviewImages.length !== 0 &&
           <Box paddingY="30px">

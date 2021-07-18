@@ -16,7 +16,7 @@ export default function DinerVouchers() {
     const [token, setAuth] = context.auth;
     const setIsDiner = context.isDiner[1];
     const [showHistory, setShowHistory] = useState(false);
-    const [vouchers, setVouchers] = useState([]);
+    const [vouchers, setVouchers] = useState(null);
     const history = useHistory();
 
     const getVouchers = async () => {
@@ -70,7 +70,20 @@ export default function DinerVouchers() {
                 Find restaurants
               </ButtonStyled>
             </Box>)
-
+         if (vouchers.reduce((total, voucher) => {
+            return total + (voucher.isActive ? 1 : 0);
+          }, 0) === 0 && !showHistory) return (
+            <Box display="flex"
+            flexDirection="column"
+            marginTop="10%"
+            alignItems="center"
+            height="70vh"
+            pt={2}
+            >
+              <Subtitle style={{color: "black"}}>No Currently Active Vouchers</Subtitle>
+              <Subtitle style={{color: "black"}}>Click "Show Historical" to see your redeemed vouchers</Subtitle>
+              
+            </Box>)
         return vouchers.map((item, key) => {
             return (
                 !item.used &&

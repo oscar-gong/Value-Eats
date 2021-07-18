@@ -11,7 +11,7 @@ import { NavLink } from "../styles/NavLink";
 import { Menu, MenuItem } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { IconButtonShowSmall } from "../styles/IconButtonShowSmall";
-import logo from "../assets/logo.png";
+// import logo from "../assets/logo.png";
 
 const useStyles = makeStyles((theme) => ({
     searchContainer: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     searchBar: {
         fontSize: "1em",
         color: "#FF855B",
-        width: "30vw",
+        width: "25vw",
         paddingRight: 10,
         backgroundColor: "transparent",
         borderBottom: "1px solid rgba(255, 132, 91, 0.5)",
@@ -191,6 +191,9 @@ export default function Navbar() {
                     open={openMenu}
                     onClose={() => setOpenMenu(false)}
                 >
+                    <MenuItem onClick={() => isDiner ? history.push("/DinerLanding") : history.push("/EateryLanding")}>
+                        Home
+                    </MenuItem>
                     <MenuItem onClick={() => isDiner ? history.push("/DinerProfile") : history.push("/EateryProfile")}>
                         Profile
                     </MenuItem>
