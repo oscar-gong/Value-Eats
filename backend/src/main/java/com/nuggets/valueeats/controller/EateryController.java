@@ -1,6 +1,6 @@
 package com.nuggets.valueeats.controller;
 
-import com.nuggets.valueeats.controller.decorator.CheckToken;
+import com.nuggets.valueeats.controller.decorator.token.CheckUserToken;
 import com.nuggets.valueeats.controller.model.VoucherInput;
 import com.nuggets.valueeats.service.VoucherService;
 import org.json.simple.JSONObject;
@@ -16,25 +16,25 @@ public class EateryController {
     private VoucherService voucherService;
 
     @RequestMapping(value = "eatery/voucher", method = RequestMethod.POST)
-    @CheckToken
+    @CheckUserToken
     public ResponseEntity<JSONObject> eateryCreateVoucher(@RequestHeader(name = "Authorization") String token, @RequestBody VoucherInput voucher) {
         return voucherService.createVoucher(voucher, token);
     }
 
     @RequestMapping(value = "eatery/voucher", method = RequestMethod.PUT)
-    @CheckToken
+    @CheckUserToken
     public ResponseEntity<JSONObject> DinerListVouchers(@RequestHeader (name="Authorization") String token, @RequestBody VoucherInput voucher) {
         return voucherService.editVoucher(voucher, token);
     }
 
     @RequestMapping(value = "eatery/voucher", method = RequestMethod.DELETE)
-    @CheckToken
+    @CheckUserToken
     public ResponseEntity<JSONObject> eateryDeleteVoucher(@RequestHeader (name="Authorization") String token, @RequestParam Long id) {
         return voucherService.deleteVoucher(id, token);
     }
 
     @RequestMapping(value = "eatery/verify/voucher", method = RequestMethod.POST)
-    @CheckToken
+    @CheckUserToken
     public ResponseEntity<JSONObject> eateryVerifyVoucher(@RequestHeader (name="Authorization") String token, @RequestParam String code) {
         return voucherService.verifyVoucher(code, token);
     }
