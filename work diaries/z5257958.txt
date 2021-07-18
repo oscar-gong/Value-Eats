@@ -100,4 +100,35 @@ What was not finished
  - This week, we were able to finish everything that we planned to do/
 
 What is planned for next sprint
- - Next sprint we aim to complete the voucher functionality of our application as well as resolve the story we did not finish in sprint 2.
+ - Next sprint we aim to complete the redeem functionality and additional diner voucher features.
+
+Week 7
+What was planned for the period since the last work diary
+ - Since last week, we planned to implement the voucher functionality which included the ability for vouchers that have been bought to be 
+redeemed.
+
+What was finished
+ - We again were able to complete this sprint with plenty of time to spare. As a result, we used this time to rework the design for the 
+frontend as well as fix some bugs that had been identified throughout the implementation process. 
+ - An example of an improvement made was better handling of invalid tokens, automatically logging the user out if they are on a page unauthorised. Furthermore, the display 
+on some of the dates were incorrect, so I made sure that the format made sense and was easy for users to understand. 
+ - I also added in some mobile responsiveness, so our application looks aesthetically pleasing on both large and small screen sizes. 
+ We also started working on some of the search functionality that we originally had planned for the next sprint, but since we finished so early, it 
+made sense to get a head start on it.
+ - I also added some UX features such as load spinners, so users have a better understanding of whether something is going wrong or if what
+ they are experiencing is the expected behaviour of the application.
+
+What were the main technical and non technical obstacles and how they were overcome
+ - Everything this week went very smoothly, we all worked together well and we had completed alot of this sprints functionality in the sprint prior
+ hence, we were able to clean up and then polish our application which was great.
+ - A technical obstable that we are beginning to face is not having yet implemented any tests for our project. Whilst when our application was small
+ a quick run through of the happy path along with backend API testing with ARC/Postman was sufficient to gauge whether the application was working.
+ - However, with so much functionality now implemented into the application, it is becoming very time consuming to run through all edge cases to make sure
+ our changes haven't messed anything up. If small problems have arised in the past, we have been able to identify and go to the person in the team who can 
+ assist us with that problem. However, to catch all of the issues more efficiently, having an extensive testing suite would be much more efficient.
+ - As a result, we plan on beginning writing tests in the coming weeks to ensure the correctness of our application.
+
+What is planned for next sprint
+ - Next sprint will be our last real application functionality sprint. In this our plan is to implement the recommendation algorithm and the search functionality
+ parts of the application. This will definitely be challenging, and we will ensure that everyone is active and working consistently throughout the next week in order to 
+ get everything done. However, as a result of having already started on some of the implementation, we should hopefully be able to finish all user stories by next Sunday. 
