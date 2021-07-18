@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, Grid } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Countdown from "react-countdown";
 import { handleTimeNextDay } from "../utils/helpers";
+import { ButtonStyled } from "../styles/ButtonStyle";
 export default function DinerVoucher({
     duration,
     code,
@@ -16,7 +17,7 @@ export default function DinerVoucher({
     startTime,
     eateryName,
     used,
-    handleRefresh
+    handleRefresh,
 }) {
     const history = useHistory();
 
@@ -33,50 +34,86 @@ export default function DinerVoucher({
             bgcolor={used || !isActive ? "#808080" : "#E8CEBF"}
             margin="20px"
         >
-            <Box display="flex" flexDirection="column">
-                <h1>
-                    {isActive
-                        ? used
-                            ? "USED"
-                            : "ACTIVE"
-                        : used
-                        ? "USED"
-                        : "EXPIRED"}
-                </h1>
-            </Box>
-            <Box display="flex" flexDirection="column">
-                <h1>
-                    {discount}% off - {eatingStyle}
-                </h1>
-            </Box>
-            <Box display="flex" flexDirection="column">
-                {(!isRedeemable && !used) && (
-                    <h3 style={{ margin: "5px 0px" }}>
-                        Use on {date} between {startTime} - {handleTimeNextDay(endTime)}
-                    </h3>
-                )}
-                {isRedeemable && !used && (
-                    <h3 style={{ margin: "5px 0px" }}>
-                        Time remaining{" "}
-                        <Countdown
-                            onComplete={handleRefresh}
-                            date={Date.now() + duration - 1000}
-                        />
-                    </h3>
-                )}
+            <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                border="3px solid #4F4846"
+                bgcolor="#E8CEBF"
+                margin="20px"
+            >
+                <Grid item display="flex" flexDirection="column" xs={2}>
+                    <Box display="flex" flexDirection="column" alignItems="center">
+                        <h1>
+                            {isActive
+                                ? used
+                                    ? "USED"
+                                    : "ACTIVE"
+                                : used
+                                ? "USED"
+                                : "EXPIRED"}
+                        </h1>
+                    </Box>
+                </Grid>
+                <Grid item display="flex" justifyContent="center" xs={3}>
+                    <Box display="flex" flexDirection="column" alignItems="center" flexWrap="nowrap">
+                        <h2>
+                            {discount}% off - {eatingStyle}
+                        </h2>
+                    </Box>
+                </Grid>
+                <Grid
+                    item
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    xs={4}
+                >
+                    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center">
+                        {!isRedeemable && !used && (
+                            <h3 style={{ margin: "5px 0px" }}>
+                                Use on {date} between {startTime} -
+                                {handleTimeNextDay(endTime)}
+                            </h3>
+                        )}
+                        {isRedeemable && !used && (
+                            <h3 style={{ margin: "5px 0px" }}>
+                                Time remaining{" "}
+                                <Countdown
+                                    onComplete={handleRefresh}
+                                    date={Date.now() + duration - 1000}
+                                />
+                            </h3>
+                        )}
 
-                {!used && <h3 style={{ margin: "5px 0px" }}>Code: {code}</h3>}
-                {used && (
-                    <h3 style={{ margin: "5px 0px" }}>Redeemed on {date}</h3>
-                )}
-            </Box>
-            <Box display="flex" flexDirection="column" justifyContent="center">
-                <Box display="flex" justifyContent="center">
-                    <Button onClick={handleViewEateryClick} variant="contained">
-                        view restaurant
-                    </Button>
-                </Box>
-            </Box>
+                        {!used && (
+                            <h3 style={{ margin: "5px 0px" }}>Code: {code}</h3>
+                        )}
+                        {used && (
+                            <h3 style={{ margin: "5px 0px" }}>
+                                Redeemed on {date}
+                            </h3>
+                        )}
+                    </Box>
+                </Grid>
+                <Grid item display="flex" justifyContent="center" xs={3}>
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                    >
+                        <Box display="flex" justifyContent="center"> 
+                            <ButtonStyled
+                                onClick={handleViewEateryClick}
+                                variant="contained"
+                            >
+                                view restaurant
+                            </ButtonStyled>
+                        </Box>
+                    </Box>
+                </Grid>
+            </Grid>
         </Box>
     );
 }
