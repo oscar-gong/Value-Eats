@@ -85,6 +85,8 @@ public class VoucherUtils {
         if (getNextUpdate != null) {
             String nextUpdate = formatter.format(getNextUpdate);
             voucher.put("nextUpdate", nextUpdate);
+        } else {
+            voucher.put("nextUpdate", "Deleted");
         }
 
         return voucher;

@@ -65,6 +65,7 @@ export default function EateryLanding() {
             {
               eateryDetails.vouchers && (eateryDetails.vouchers.map((v,key) => {
                 return (
+                  ((v.nextUpdate !== "Deleted" && v.isRecurring === true) || v.isRecurring === false) &&
                   <EateryVoucher voucherId={v.id}
                     key={key}
                     eateryId={v.eateryId}
