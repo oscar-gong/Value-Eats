@@ -9,6 +9,7 @@ import EateryVoucher from "../components/EateryVoucher";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 import { logUserOut } from "../utils/logoutHelper";
 import { VoucherContainer } from "../styles/VoucherContainer";
+import { Subtitle } from "../styles/Subtitle";
 
 export default function EateryLanding() {
   const context = useContext(StoreContext);
@@ -59,7 +60,7 @@ export default function EateryLanding() {
       <NavBar isDiner={isDiner}/>
       <MainContent>
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-          <h1>{eateryDetails.name}'s Discounts</h1>
+          <Subtitle>{eateryDetails.name}'s Discounts</Subtitle>
           <VoucherContainer>
             {
               eateryDetails.vouchers && (eateryDetails.vouchers.map((v,key) => {

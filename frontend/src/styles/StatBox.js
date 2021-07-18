@@ -5,7 +5,7 @@ export const StatBox = styled(Box)`
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid white;
+    border: 3px solid white;
     border-radius: 20px;
     background-color: #FFE5DD;
     padding: 1% 5%;

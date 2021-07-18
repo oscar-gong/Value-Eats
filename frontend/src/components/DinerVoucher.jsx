@@ -30,8 +30,9 @@ export default function DinerVoucher({
             display="flex"
             justifyContent="space-around"
             alignItems="center"
-            border="3px solid #4F4846"
-            bgcolor={used || !isActive ? "#808080" : "#E8CEBF"}
+            border="2px solid #FF845B"
+            borderRadius="20px"
+            bgcolor={used || !isActive ? "#d6d6d6" : "white"}
             margin="20px"
         >
             <Grid
@@ -39,9 +40,6 @@ export default function DinerVoucher({
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
-                border="3px solid #4F4846"
-                bgcolor="#E8CEBF"
-                margin="20px"
             >
                 <Grid item display="flex" flexDirection="column" xs={2}>
                     <Box display="flex" flexDirection="column" alignItems="center">

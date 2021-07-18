@@ -81,10 +81,10 @@ export default function EateryVoucher({eateryId,
   }
 
   return (
-    <Box border="3px solid #4F4846" bgcolor="#E8CEBF" margin="20px">
+    <Box bgcolor="white" margin="20px" border="2px solid #FF845B" borderRadius="20px" margin="20px">
       <Grid container direction="row" justifyContent="center" alignItems="center" border="3px solid #4F4846" bgcolor="#E8CEBF" margin="20px">
         <Grid item display="flex" flexDirection="column" xs={4}>
-          <Box display="flex" justifyContent="center">
+          <Box display="flex" justifyContent="center" alignItems="center">
             <h1>{discount}% off - {isDineIn ? "Dine in" : "Takeaway"}</h1>
           </Box>
         </Grid>
@@ -96,9 +96,8 @@ export default function EateryVoucher({eateryId,
             }
             {
               (isRedeemable || isActive) &&
-              <h3 style={{margin: "5px 0px"}}>{vouchersLeft} vouchers remaining...</h3>
+              <h4 style={{margin: "5px 0px"}}>{vouchersLeft} vouchers remaining...</h4>
             }
-            {/* <h3 style={{margin: "5px 0px"}}> </h3> */}
             {
               isRedeemable &&
               <Countdown
@@ -108,13 +107,13 @@ export default function EateryVoucher({eateryId,
             }
             {
               !isRedeemable && isActive &&
-              <h3>Deal starts at {date} {startTime}</h3>
+              <h4 style={{margin: "5px 0px"}}>Deal starts at {date} {startTime}</h4>
             }
             {
               !isRedeemable && !isActive &&
               <>
-                <h3 style={{margin: "5px 0px"}}>Deal will become available </h3>
-                <h3 style={{margin: "5px 0px"}}>again at {nextUpdate} {startTime}</h3>
+                <h4 style={{margin: "5px 0px"}}>Deal will become available </h4>
+                <h4 style={{margin: "5px 0px"}}>again at {nextUpdate} {startTime}</h4>
               </>
             }
           </Box>

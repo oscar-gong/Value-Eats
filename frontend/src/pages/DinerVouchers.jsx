@@ -5,7 +5,7 @@ import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
 import { Redirect } from "react-router";
 import DinerVoucher from "../components/DinerVoucher";
 import { VoucherContainer } from "../styles/VoucherContainer";
-
+import { Subtitle } from "../styles/Subtitle";
 import { StoreContext } from "../utils/store";
 import { logUserOut } from "../utils/logoutHelper";
 
@@ -111,7 +111,7 @@ export default function DinerVouchers() {
                     justifyContent="center"
                     alignItems="center"
                 >
-                    <h1>My Vouchers</h1>
+                    <Subtitle>My Vouchers</Subtitle>
                     <FormControlLabel
                         control={
                             <Checkbox

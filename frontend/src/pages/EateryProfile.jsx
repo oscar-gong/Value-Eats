@@ -296,7 +296,7 @@ export default function EateryProfile() {
                                 color="primary"
                                 style={{ display: "block", width: "15vw" }}
                                 disabled={
-                                    item.disableButton === true ? true : false
+                                    item.disableButton === true || item.quantity === 0 ? true : false
                                 }
                                 onClick={() =>
                                     handleVoucher(
