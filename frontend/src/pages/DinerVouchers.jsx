@@ -4,6 +4,7 @@ import { MainContent } from "../styles/MainContent";
 import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
 import { Redirect } from "react-router";
 import DinerVoucher from "../components/DinerVoucher";
+import { VoucherContainer } from "../styles/VoucherContainer";
 
 import { StoreContext } from "../utils/store";
 import { logUserOut } from "../utils/logoutHelper";
@@ -102,7 +103,6 @@ export default function DinerVouchers() {
         <>
             <NavBar isDiner={true} />
             <MainContent>
-                {/* // TODO - MAKE BEN'S BOX INTO A COMPONENT */}
                 <Box
                     display="flex"
                     flexDirection="column"
@@ -119,18 +119,10 @@ export default function DinerVouchers() {
                         }
                         label="Show Historical"
                     />
-                    <Box
-                        mt={2}
-                        width="80vw"
-                        height="60vh"
-                        border="3px solid #4F4846"
-                        bgcolor="#E8CEBF"
-                        mb={5}
-                        overflow="auto"
-                    >
+                    <VoucherContainer>
                         {getCurrentVouchers()}
                         {showHistory && getPastVouchers()}
-                    </Box>
+                    </VoucherContainer>
                 </Box>
             </MainContent>
         </>

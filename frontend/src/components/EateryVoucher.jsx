@@ -83,12 +83,12 @@ export default function EateryVoucher({eateryId,
   return (
     <Box border="3px solid #4F4846" bgcolor="#E8CEBF" margin="20px">
       <Grid container direction="row" justifyContent="center" alignItems="center" border="3px solid #4F4846" bgcolor="#E8CEBF" margin="20px">
-        <Grid display="flex" flexDirection="column" xs={4}>
+        <Grid item display="flex" flexDirection="column" xs={4}>
           <Box display="flex" justifyContent="center">
             <h1>{discount}% off - {isDineIn ? "Dine in" : "Takeaway"}</h1>
           </Box>
         </Grid>
-        <Grid display="flex" justifyContent="center" xs={5}>
+        <Grid item display="flex" justifyContent="center" xs={5}>
           <Box display="flex" flexDirection="column" pl={10}>
             {
               !isOneOff &&
@@ -119,7 +119,7 @@ export default function EateryVoucher({eateryId,
             }
           </Box>
         </Grid>
-        <Grid display="flex" flexDirection="column" justifyContent="center" xs={3}>
+        <Grid item display="flex" flexDirection="column" justifyContent="center" xs={3}>
           <Box display="flex" justifyContent="center">
             <IconButton onClick={() => {}}>
               <EditIcon fontSize="large" 

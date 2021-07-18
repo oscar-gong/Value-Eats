@@ -5,10 +5,14 @@ export const StatBox = styled(Box)`
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 3px solid #4F4846;
-    background-color: #E8CEBF;
+    border: 2px solid white;
+    border-radius: 20px;
+    background-color: #FFE5DD;
     padding: 0px 5%;
     height: 50%;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #FF845B;
     margin: 0px 2%;
     > * {
         margin: 5px 0px;

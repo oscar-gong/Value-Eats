@@ -75,7 +75,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
 
   return (
     <>
-      <Box display="flex" flexDirection="column" border="2px solid white" borderRadius="20px" padding="10px" bgcolor="#E6F1D1" minWidth={onEateryProfile ? "100%" : "50vw"} maxWidth="70vw" margin="10px 0">
+      <Box display="flex" flexDirection="column" border="2px solid white" borderRadius="20px" padding="10px" bgcolor="#E6F1D1" minWidth={onEateryProfile ? "100%" : "65vw"} maxWidth="70vw" margin="10px 0">
         <Box display="flex">
           <Box display="flex" flexDirection="column">
             <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
