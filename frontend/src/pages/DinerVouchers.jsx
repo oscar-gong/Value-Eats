@@ -8,12 +8,15 @@ import { VoucherContainer } from "../styles/VoucherContainer";
 import { Subtitle } from "../styles/Subtitle";
 import { StoreContext } from "../utils/store";
 import { logUserOut } from "../utils/logoutHelper";
+import { ButtonStyled } from "../styles/ButtonStyle";
+import { useHistory } from "react-router-dom";
 
 export default function DinerVouchers() {
     const context = useContext(StoreContext);
     const token = context.auth[0];
     const [showHistory, setShowHistory] = useState(false);
     const [vouchers, setVouchers] = useState([]);
+    const history = useHistory();
 
     const getVouchers = async () => {
         const response = await fetch(
@@ -51,7 +54,22 @@ export default function DinerVouchers() {
 
     const getCurrentVouchers = () => {
         if (!vouchers) return;
-        if (vouchers.length === 0) return <div>no current vouchers</div>;
+        if (vouchers.length === 0) return (
+            <Box display="flex"
+            flexDirection="column"
+            marginTop="10%"
+            alignItems="center"
+            height="70vh"
+            pt={2}
+            >
+              <Subtitle style={{color: "black"}}>No Vouchers Purchased Yet..</Subtitle>
+              <ButtonStyled widthPercentage={40}
+                onClick={() => history.push("/DinerLanding")}
+              >
+                Find restaurants
+              </ButtonStyled>
+            </Box>)
+
         return vouchers.map((item, key) => {
             return (
                 !item.used &&

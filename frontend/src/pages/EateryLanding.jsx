@@ -59,7 +59,7 @@ export default function EateryLanding() {
     <>
       <NavBar isDiner={isDiner}/>
       <MainContent>
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+        <Box display="flex" flexDirection="column" alignItems="center">
           <Subtitle>{eateryDetails.name}'s Discounts</Subtitle>
           <VoucherContainer>
             {
@@ -101,7 +101,7 @@ export default function EateryLanding() {
             }
           </VoucherContainer>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center" height="30vh">
+        <Box display="flex" flexDirection="column" height="30vh">
           <Box
             display="flex"
             justifyContent="space-evenly"

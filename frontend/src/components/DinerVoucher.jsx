@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, Button, Grid } from "@material-ui/core";
+import React from "react";
+import { Box, Grid } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Countdown from "react-countdown";
 import { handleTimeNextDay } from "../utils/helpers";

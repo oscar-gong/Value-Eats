@@ -3,7 +3,7 @@ import NavBar from "../components/Navbar";
 import { MainContent } from "../styles/MainContent";
 import { StoreContext } from "../utils/store";
 import { Redirect, useHistory } from "react-router-dom";
-import { Box, TextField } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import { Title } from "../styles/Title";
 import { logUserOut } from "../utils/logoutHelper";
