@@ -153,6 +153,7 @@ export default function EditEateryLanding() {
                     setPreviewImages={setPreviewImages}
                     isRegister={false}
                     submitForm={updateUser}
+                    removeBg={true}
                 />
             </MainContainer>
         </>
