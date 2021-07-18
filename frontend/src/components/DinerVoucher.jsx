@@ -16,17 +16,12 @@ export default function DinerVoucher({
     startTime,
     eateryName,
     used,
+    handleRefresh
 }) {
     const history = useHistory();
 
     const handleViewEateryClick = () => {
         history.push(`/EateryProfile/${eateryName}/${eateryID}`);
-    };
-    // not redeemable  means it is complete
-    // redeemable means it has a countdown
-    const [complete, setComplete] = useState(!isRedeemable);
-    const handleComplete = () => {
-        setComplete(true);
     };
 
     return (
@@ -55,17 +50,17 @@ export default function DinerVoucher({
                 </h1>
             </Box>
             <Box display="flex" flexDirection="column">
-                {((!isRedeemable && !used) || (!used && complete)) && (
+                {(!isRedeemable && !used) && (
                     <h3 style={{ margin: "5px 0px" }}>
                         Use on {date} between {startTime} - {handleTimeNextDay(endTime)}
                     </h3>
                 )}
-                {isRedeemable && !used && !complete && (
+                {isRedeemable && !used && (
                     <h3 style={{ margin: "5px 0px" }}>
                         Time remaining{" "}
                         <Countdown
-                            onComplete={handleComplete}
-                            date={Date.now() + duration}
+                            onComplete={handleRefresh}
+                            date={Date.now() + duration - 1000}
                         />
                     </h3>
                 )}

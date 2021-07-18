@@ -15,29 +15,30 @@ export default function DinerVouchers() {
     const [showHistory, setShowHistory] = useState(false);
     const [vouchers, setVouchers] = useState([]);
 
-    useEffect(() => {
-        const getVouchers = async () => {
-            const response = await fetch(
-                "http://localhost:8080/diner/voucher",
-                {
-                    method: "GET",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        Authorization: token,
-                    },
-                }
-            );
-            const responseData = await response.json();
-            if (response.status === 200) {
-                console.log(responseData.vouchers);
-                setVouchers(responseData.vouchers);
-            } else if (response.status === 401) {
-                logUserOut();
-            } else {
-                console.log("cannot get vouchers");
+    const getVouchers = async () => {
+        const response = await fetch(
+            "http://localhost:8080/diner/voucher",
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization: token,
+                },
             }
-        };
+        );
+        const responseData = await response.json();
+        if (response.status === 200) {
+            console.log(responseData.vouchers);
+            setVouchers(responseData.vouchers);
+        } else if (response.status === 401) {
+            logUserOut();
+        } else {
+            console.log("cannot get vouchers");
+        }
+    };
+
+    useEffect(() => {
         getVouchers();
     }, [token]);
 
@@ -69,6 +70,7 @@ export default function DinerVouchers() {
                         eateryName={item.eateryName}
                         used={item.used}
                         key={key}
+                        handleRefresh={() => getVouchers()}
                     />
                 )
             );
