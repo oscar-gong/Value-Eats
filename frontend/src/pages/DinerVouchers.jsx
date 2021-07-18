@@ -4,39 +4,44 @@ import { MainContent } from "../styles/MainContent";
 import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
 import { Redirect } from "react-router";
 import DinerVoucher from "../components/DinerVoucher";
-
+import { VoucherContainer } from "../styles/VoucherContainer";
+import { Subtitle } from "../styles/Subtitle";
 import { StoreContext } from "../utils/store";
 import { logUserOut } from "../utils/logoutHelper";
+import { ButtonStyled } from "../styles/ButtonStyle";
+import { useHistory } from "react-router-dom";
 
 export default function DinerVouchers() {
     const context = useContext(StoreContext);
     const token = context.auth[0];
     const [showHistory, setShowHistory] = useState(false);
     const [vouchers, setVouchers] = useState([]);
+    const history = useHistory();
+
+    const getVouchers = async () => {
+        const response = await fetch(
+            "http://localhost:8080/diner/voucher",
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization: token,
+                },
+            }
+        );
+        const responseData = await response.json();
+        if (response.status === 200) {
+            console.log(responseData.vouchers);
+            setVouchers(responseData.vouchers);
+        } else if (response.status === 401) {
+            logUserOut();
+        } else {
+            console.log("cannot get vouchers");
+        }
+    };
 
     useEffect(() => {
-        const getVouchers = async () => {
-            const response = await fetch(
-                "http://localhost:8080/diner/voucher",
-                {
-                    method: "GET",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        Authorization: token,
-                    },
-                }
-            );
-            const responseData = await response.json();
-            if (response.status === 200) {
-                console.log(responseData.vouchers);
-                setVouchers(responseData.vouchers);
-            } else if (response.status === 401) {
-                logUserOut();
-            } else {
-                console.log("cannot get vouchers");
-            }
-        };
         getVouchers();
     }, [token]);
 
@@ -49,7 +54,22 @@ export default function DinerVouchers() {
 
     const getCurrentVouchers = () => {
         if (!vouchers) return;
-        if (vouchers.length === 0) return <div>no current vouchers</div>;
+        if (vouchers.length === 0) return (
+            <Box display="flex"
+            flexDirection="column"
+            marginTop="10%"
+            alignItems="center"
+            height="70vh"
+            pt={2}
+            >
+              <Subtitle style={{color: "black"}}>No Vouchers Purchased Yet..</Subtitle>
+              <ButtonStyled widthPercentage={40}
+                onClick={() => history.push("/DinerLanding")}
+              >
+                Find restaurants
+              </ButtonStyled>
+            </Box>)
+
         return vouchers.map((item, key) => {
             return (
                 !item.used &&
@@ -68,6 +88,7 @@ export default function DinerVouchers() {
                         eateryName={item.eateryName}
                         used={item.used}
                         key={key}
+                        handleRefresh={() => getVouchers()}
                     />
                 )
             );
@@ -102,14 +123,13 @@ export default function DinerVouchers() {
         <>
             <NavBar isDiner={true} />
             <MainContent>
-                {/* // TODO - MAKE BEN'S BOX INTO A COMPONENT */}
                 <Box
                     display="flex"
                     flexDirection="column"
                     justifyContent="center"
                     alignItems="center"
                 >
-                    <h1>My Vouchers</h1>
+                    <Subtitle>My Vouchers</Subtitle>
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -119,18 +139,10 @@ export default function DinerVouchers() {
                         }
                         label="Show Historical"
                     />
-                    <Box
-                        mt={2}
-                        width="80vw"
-                        height="60vh"
-                        border="3px solid #4F4846"
-                        bgcolor="#E8CEBF"
-                        mb={5}
-                        overflow="auto"
-                    >
+                    <VoucherContainer>
                         {getCurrentVouchers()}
                         {showHistory && getPastVouchers()}
-                    </Box>
+                    </VoucherContainer>
                 </Box>
             </MainContent>
         </>

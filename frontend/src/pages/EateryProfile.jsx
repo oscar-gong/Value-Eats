@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { MainContainer } from "../styles/MainContainer";
 import { ButtonStyled } from "../styles/ButtonStyle";
-
 import {
     Typography,
     Grid,
@@ -11,7 +10,6 @@ import {
     Modal,
     makeStyles,
 } from "@material-ui/core";
-import StarRating from "../components/StarRating";
 import Review from "../components/Review";
 import { useLocation, Redirect, useHistory } from "react-router-dom";
 import { StoreContext } from "../utils/store";
@@ -157,7 +155,7 @@ export default function EateryProfile() {
     const getReviews = () => {
         if (!eateryDetails.reviews) return;
         if (eateryDetails.reviews.length === 0) {
-            return <div>no reviews currently</div>;
+            return <div>There are no reviews currently</div>;
         }
         console.log(eateryDetails.reviews);
         return eateryDetails.reviews.map((item, key) => {
@@ -199,7 +197,7 @@ export default function EateryProfile() {
     const getSingleImage = () => {
         if (!eateryDetails.menuPhotos) return;
         if (eateryDetails.menuPhotos.length === 0) {
-            return <div>no images currently</div>;
+            return;
         }
         return (
             <img
@@ -277,7 +275,7 @@ export default function EateryProfile() {
     const getVouchers = () => {
         if (!eateryDetails.vouchers) return;
         if (eateryDetails.vouchers.length === 0) {
-            return <div> no vouchers </div>;
+            return <div> There are no vouchers available </div>;
         }
         return eateryDetails.vouchers.map((item, key) => {
             return (
@@ -296,7 +294,7 @@ export default function EateryProfile() {
                                 color="primary"
                                 style={{ display: "block", width: "15vw" }}
                                 disabled={
-                                    item.disableButton === true ? true : false
+                                    item.disableButton === true || item.quantity === 0 ? true : false
                                 }
                                 onClick={() =>
                                     handleVoucher(

@@ -9,7 +9,6 @@ import { useHistory } from "react-router";
 import { StoreContext } from "../utils/store";
 import { MainContainer } from "../styles/MainContainer";
 import { NavLink } from "../styles/NavLink";
-import logo from "../assets/logo.png";
 
 const useStyles = makeStyles((theme) => ({
     searchContainer: {
