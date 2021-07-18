@@ -153,4 +153,16 @@ Week6:
     - All stuffs in the backend are done.
     
   What is planned for the next period:
-    - I will continue working on the backend, finish the other features for vouchers and implement the search algorith.
+    - I will continue working on the backend, finish the other features for vouchers and implement the search algorithms.
+
+Week7:
+  What was planned for the period since the last work diary entry:
+    - We planned to finish the other features for vouchers
+    - We planned to start implementing the search algorithms
+
+  What was finished:
+    - We have finished all of the voucher features, sprint 4 is successfully completed
+    - The one off vouchers and repeated vouchers are in seperate sql tables.
+    - I have improved the booking function, and added some restriction to it.
+    - I have finished implementing all features for the vouchers.
+    - I have created some tests to test all functionalities and some edge cases.
