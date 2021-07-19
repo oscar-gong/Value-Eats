@@ -232,3 +232,33 @@ Week 6
         - General nice to have features
             - More error checks
             - Better error messages
+
+Week 6
+    - What was planned for the period since the last work diary entry
+        - Further address tech debt as there has been a focus on feature implementation
+            - Improve code design
+            - Use functions instead of repeating
+        - UI/UX
+            - Continue polishing off the front end and make it look good overall
+        - Submit the retrospective along with any final adjustments
+        - General nice to have features
+            - More error checks
+            - Better error messages
+    - What was finished
+        - Tech Debt
+            - Cleaned up code, removing code smells and repetitiveness
+        - Sprint goals for the week
+        - Submitted retrospective
+        - Started on next sprint as we were able to
+            - I made a start with the recommendation algorithm and search
+    - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
+        - There were no new or recurring obstacles as it was primarily just getting stuff done
+        - Cleaning up and managing an increasingly large codebase
+        - Ensuring that changes don't break previously workings features
+            - We plan to create regression tests to ensure that we are able to solidify features
+            - This was done earlier due to the frequent changes occuring but we are now at a stage where we are finalising
+    - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
+        - Everything that was planned was accomplished
+    - What is planned for the next period (e.g., next week)
+        - To finalise the recommendation sprint
+        - Start finalising the project including creating unit tests
