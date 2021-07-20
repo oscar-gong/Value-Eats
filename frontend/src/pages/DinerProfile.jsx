@@ -37,39 +37,40 @@ export default function DinerProfile() {
   const [user, setUser] = useState({});
   const [reviews, setReviews] = useState([]);
 
+  const getUser = async () => {
+    const response = await fetch(
+      "http://localhost:8080/diner/profile/details",
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
+    const responseData = await response.json();
+    if (response.status === 200) {
+      console.log(responseData);
+      setUser({
+        "username": responseData.name,
+        "email": responseData.email,
+        "profilePic": responseData["profile picture"],
+      })
+      console.log("reviews: ");
+      console.log(responseData.reviews);
+      setReviews(responseData.reviews);
+      setUsername(defaultState(responseData.name));
+      setEmail(defaultState(responseData.email));
+      setTmpProfilePic(responseData["profile picture"]);
+      // setEateryList(responseData.eateryList);
+    } else if (response.status === 401) {
+      logUserOut(setAuth, setIsDiner);
+    }
+  };
+
   useEffect(() => {
     // on page init, load the users details
-    const getUser = async () => {
-      const response = await fetch(
-        "http://localhost:8080/diner/profile/details",
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        }
-      );
-      const responseData = await response.json();
-      if (response.status === 200) {
-        console.log(responseData);
-        setUser({
-          "username": responseData.name,
-          "email": responseData.email,
-          "profilePic": responseData["profile picture"],
-        })
-        console.log("reviews: ");
-        console.log(responseData.reviews);
-        setReviews(responseData.reviews);
-        setUsername(defaultState(responseData.name));
-        setEmail(defaultState(responseData.email));
-        setTmpProfilePic(responseData["profile picture"]);
-        // setEateryList(responseData.eateryList);
-      } else if (response.status === 401) {
-        logUserOut(setAuth, setIsDiner);
-      }
-    };
     getUser();
   }, [token]);
 
@@ -189,7 +190,8 @@ export default function DinerProfile() {
                 rating={r.rating}
                 images={r.reviewPhotos ? r.reviewPhotos : []}
                 isOwner={true}
-                onEateryProfile={false}></Review>
+                onEateryProfile={false}
+                refreshList={() => getUser()}></Review>
               );
             })
           }
