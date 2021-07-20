@@ -284,6 +284,7 @@ export default function EateryProfile() {
         }
         return eateryDetails.vouchers.map((item, key) => {
             return (
+                ((item.nextUpdate !== "Deleted" && item.isRecurring === true) || item.isRecurring === false) &&
                 <Card
                     style={{
                         paddingTop: "25px",
