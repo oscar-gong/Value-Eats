@@ -23,7 +23,7 @@ class UserManagementServiceTests {
 	EateryRepository eateryRepository;
 
 	@Test
-	void contextLoads() {
+	void dinerRegisterTest1() {
 		UserManagementController userManagementController = new UserManagementController();
 		Diner diner = new Diner();
 		diner.setAlias("diner1");
