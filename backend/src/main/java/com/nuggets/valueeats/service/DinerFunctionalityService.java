@@ -42,10 +42,15 @@ public class DinerFunctionalityService {
             }
             
             // Check for required inputs
-            if(!(token != null && review.getEateryId() != null && review.getRating() != null)){
+            if(!(token != null && review.getEateryId() != null)){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
             }
 
+            // Check for required inputs
+            if(review.getRating() == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Review must have a rating."));
+            }
+            
             // Check if eatery id exists
             if(!eateryRepository.existsById(review.getEateryId())){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Invalid Eatery ID"));
@@ -159,6 +164,11 @@ public class DinerFunctionalityService {
             // Check for required inputs
             if(!(token != null && review.getEateryId() != null && review.getId() != null)){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Missing fields"));
+            }
+
+            // Check for required inputs
+            if(review.getRating() == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Review must have a rating."));
             }
 
             // Check if eatery id exists
