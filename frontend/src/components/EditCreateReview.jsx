@@ -5,7 +5,18 @@ import UploadPhotos from './UploadPhotos';
 import StarRating from './StarRating';
 import { StoreContext } from '../utils/store';
 
-export default function EditCreateReview ({ id, eateryId, open, setOpen, username, profilePic, reviewImagesState, reviewTextState, ratingState, isEdit }) {
+export default function EditCreateReview ({ id, 
+  eateryId, 
+  open, 
+  setOpen, 
+  username, 
+  profilePic, 
+  reviewImagesState, 
+  reviewTextState, 
+  ratingState, 
+  isEdit, 
+  refreshList 
+}) {
 
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
@@ -37,6 +48,7 @@ export default function EditCreateReview ({ id, eateryId, open, setOpen, usernam
       });
     const responseData = await response.json();
     if (response.status === 200) {
+      refreshList();
       setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
     } else {
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
@@ -65,6 +77,7 @@ export default function EditCreateReview ({ id, eateryId, open, setOpen, usernam
       });
     const responseData = await response.json();
     if (response.status === 200) {
+      refreshList();
       setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
     } else {
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });

@@ -120,37 +120,38 @@ export default function EateryProfile() {
         }
     }, [auth, isDiner]);
 
-    useEffect(() => {
-        const getEateryDetails = async () => {
-            setLoading(true);
-            const response = await fetch(
-                `http://localhost:8080/eatery/profile/details?id=${eateryId}`,
-                {
-                    method: "GET",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        Authorization: auth,
-                    },
-                }
-            );
-            setLoading(false);
-            const responseData = await response.json();
-            if (response.status === 200) {
-                console.log(responseData);
-                if (responseData.vouchers.length > 0) {
-                    responseData.vouchers = responseData.vouchers.filter(
-                        (v) => v.isActive
-                    );
-                }
-                setEateryDetails(responseData);
-            } else if (response.status === 401) {
-                logUserOut(setAuth, setIsDiner);
-            } else {
-                // TODO
-                console.log(responseData);
+    const getEateryDetails = async () => {
+        setLoading(true);
+        const response = await fetch(
+            `http://localhost:8080/eatery/profile/details?id=${eateryId}`,
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization: auth,
+                },
             }
-        };
+        );
+        setLoading(false);
+        const responseData = await response.json();
+        if (response.status === 200) {
+            console.log(responseData);
+            if (responseData.vouchers.length > 0) {
+                responseData.vouchers = responseData.vouchers.filter(
+                    (v) => v.isActive
+                );
+            }
+            setEateryDetails(responseData);
+        } else if (response.status === 401) {
+            logUserOut(setAuth, setIsDiner);
+        } else {
+            // TODO
+            console.log(responseData);
+        }
+    };
+
+    useEffect(() => {
         getEateryDetails();
     }, [auth, eateryId, code]);
     if (auth === null) return <Redirect to="/" />;
@@ -175,6 +176,7 @@ export default function EateryProfile() {
                     eateryId={item.eateryId}
                     images={item.reviewPhotos ? item.reviewPhotos : []}
                     key={key}
+                    refreshList={() => getEateryDetails()}
                 ></Review>
             );
         });
@@ -282,6 +284,7 @@ export default function EateryProfile() {
         }
         return eateryDetails.vouchers.map((item, key) => {
             return (
+                ((item.nextUpdate !== "Deleted" && item.isRecurring === true) || item.isRecurring === false) &&
                 <Card
                     style={{
                         paddingTop: "25px",
@@ -415,6 +418,7 @@ export default function EateryProfile() {
                     ratingState={["", null]}
                     reviewImagesState={[[], null]}
                     isEdit={false}
+                    refreshList={() => getEateryDetails()}
                 />
                 <ConfirmModal
                     open={openConfirmModal}

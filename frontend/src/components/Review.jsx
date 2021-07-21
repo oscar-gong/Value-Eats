@@ -28,7 +28,19 @@ const useStyles = makeStyles({
   }
 });
 // export default function Review ({ token, review }) {
-export default function Review ({id, eateryId, username, profilePic, eateryName, review, rating, images, onEateryProfile, isOwner}) {
+export default function Review ({
+  id, 
+  eateryId, 
+  username, 
+  profilePic, 
+  eateryName, 
+  review, 
+  rating, 
+  images, 
+  onEateryProfile, 
+  isOwner, 
+  refreshList
+}) {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
   const token = context.auth[0];
@@ -62,6 +74,7 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+      refreshList();
     } else {
       setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
     }
@@ -151,7 +164,17 @@ export default function Review ({id, eateryId, username, profilePic, eateryName,
         handleConfirm={() => handleDelete(token, id, eateryId)}>
       </ConfirmModal>
       {/* put a carousel here */}
-      <EditCreateReview id={id} eateryId={eateryId} open={openEditCreateReview} setOpen={setOpenEditCreateReview} username={username} profilePic={profilePic} reviewTextState={[editCreateReview, setEditCreateReview]} ratingState={[editRating, setEditRating]} reviewImagesState={[editCreateReviewImages, setEditCreateReviewImages]} isEdit={true}/>
+      <EditCreateReview id={id}
+        eateryId={eateryId}
+        open={openEditCreateReview}
+        setOpen={setOpenEditCreateReview}
+        username={username}
+        profilePic={profilePic}
+        reviewTextState={[editCreateReview, setEditCreateReview]}
+        ratingState={[editRating, setEditRating]}
+        reviewImagesState={[editCreateReviewImages, setEditCreateReviewImages]}
+        isEdit={true}
+        refreshList={refreshList}/>
     </>
   )
 }
