@@ -30,4 +30,7 @@ public interface RepeatVoucherRepository extends JpaRepository<RepeatedVoucher, 
 
     @Query(value = "select * from repeated_voucher where is_active = true", nativeQuery = true)
     ArrayList<RepeatedVoucher> findAllActive ();
+
+    @Query(value = "select max(discount) from repeated_voucher where eatery_id = ?1 and is_active = true and next_update is not NULL", nativeQuery = true)
+    Long findMaxDiscountFromEatery (Long eateryId);
 }

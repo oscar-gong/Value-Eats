@@ -12,6 +12,9 @@ import com.nuggets.valueeats.entity.Review;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.ReviewRepository;
+import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
+import com.nuggets.valueeats.repository.voucher.VoucherRepository;
+import com.nuggets.valueeats.utils.EateryUtils;
 import com.nuggets.valueeats.utils.ResponseUtils;
 import com.nuggets.valueeats.utils.ReviewUtils;
 
@@ -32,6 +35,12 @@ public class DinerFunctionalityService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+    
+    @Autowired
+    private VoucherRepository voucherRepository;
+    
+    @Autowired
+    private RepeatVoucherRepository repeatVoucherRepository;
 
     public ResponseEntity<JSONObject> createReview(Review review, String token) {
         try {
@@ -133,15 +142,7 @@ public class DinerFunctionalityService {
         ArrayList<Object> list = new ArrayList<Object>();
 
         for(Eatery e : eateryList){
-            HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("name", e.getAlias());
-            map.put("discount", "50%"); // placeholder
-            List<Float> reviews= reviewRepository.listReviewRatingsOfEatery(e.getId());
-            Double averageRating = reviews.stream().mapToDouble(i -> i).average().orElse(0);
-            DecimalFormat df = new DecimalFormat("#.0"); 
-            map.put("rating", df.format(averageRating));
-            map.put("id", e.getId());
-            map.put("cuisines", e.getCuisines());
+            HashMap<String, Object> map = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, reviewRepository, e);
             list.add(map);
         }
 
