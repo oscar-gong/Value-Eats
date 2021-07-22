@@ -35,7 +35,7 @@ export default function SearchResults() {
             const responseData = await response.json();
             if (response.status === 200) {
                 console.log(responseData);
-                setEateryList(responseData);
+                setEateryList(responseData.eateryList);
             } else if (response.status === 401) {
                 logUserOut(setAuth, setIsDiner);
             } else {
@@ -51,10 +51,10 @@ export default function SearchResults() {
         return eateryList.map((item, key) => {
             return (
                 <EateryDisplay
-                    name={item.alias}
-                    id={"1"}
+                    name={item.name}
+                    id={item.id}
                     key={key}
-                    discount={"50%"}
+                    discount={item.discount}
                     cuisines={item.cuisines}
                     rating={item.rating}
                 />
