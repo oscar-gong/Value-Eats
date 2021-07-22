@@ -37,4 +37,10 @@ public class RecommendationService {
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
+    
+    public ResponseEntity<Object> recommendation(String token) {
+        return ResponseEntity.status(HttpStatus.OK).body("placeholder");
+    }
+
 }
