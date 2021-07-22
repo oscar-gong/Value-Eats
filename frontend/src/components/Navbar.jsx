@@ -125,6 +125,12 @@ export default function Navbar() {
         }
     };
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
     return (
         <NavbarStyled isDiner={isDiner} elevation={0}>
             <Toolbar className={classes.singleLine}>
@@ -142,6 +148,7 @@ export default function Navbar() {
                                     inputProps={{
                                         "aria-label": "search",
                                     }}
+                                    onKeyPress={handleKeyPress}
                                 />
                             </div>
                             <IconButton
