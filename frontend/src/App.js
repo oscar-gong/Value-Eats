@@ -20,6 +20,7 @@ import DinerProfile from "./pages/DinerProfile";
 import EditEateryProfile from "./pages/EditEateryProfile";
 import RedeemVoucher from "./pages/RedeemVoucher";
 import DinerVouchers from "./pages/DinerVouchers";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
     const context = useContext(StoreContext);
@@ -79,6 +80,9 @@ function App() {
                         </Route>
                         <Route exact path="/RedeemVoucher">
                             <RedeemVoucher />
+                        </Route>
+                        <Route path="/SearchResults">
+                            <SearchResults />
                         </Route>
                     </Switch>
                 </Router>

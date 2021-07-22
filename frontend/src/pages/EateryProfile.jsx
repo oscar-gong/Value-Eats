@@ -118,7 +118,7 @@ export default function EateryProfile() {
         if (isDiner !== "false") {
             getUser();
         }
-    }, [auth, isDiner]);
+    }, [auth, isDiner, setAuth, setIsDiner]);
 
     const getEateryDetails = async () => {
         setLoading(true);
