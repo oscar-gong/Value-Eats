@@ -96,7 +96,11 @@ public class RecommendationService {
                 .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
 
         List<Object> result = new ArrayList<Object>();
+        System.out.println(pq.toString());
         while (!pq.isEmpty() && result.size() <= 10) {
+            System.out.println(pq.peek().getKey());
+            System.out.println(pq.peek().getValue());
+
             Eatery newEatery = pq.poll().getValue();
             HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, reviewRepository, newEatery);
             result.add(eatery);
@@ -111,6 +115,8 @@ public class RecommendationService {
     }
 
     private Integer getWeight(Diner diner, Eatery eatery, List<Long> eateriesDinerBeenTo) {
+        System.out.println(eatery.getAlias());
+
         int weight = 0;
 
         // If the restaurant serves a cuisine the diner had before, +1 per cuisine
