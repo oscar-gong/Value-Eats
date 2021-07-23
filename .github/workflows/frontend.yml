@@ -19,7 +19,7 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
     - name: Going to direcctory
-      run: cd frontend;
+      run: cd frontend
     - name: Installing Dependencies
       run: yarn install
     - name: Building
