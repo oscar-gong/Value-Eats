@@ -24,4 +24,4 @@ jobs:
     - name: Go to directory
       run: cd backend
     - name: Build and Run Tests
-      run: ./mvnw clean install;
+      run: cd backend; ./mvnw clean install;
