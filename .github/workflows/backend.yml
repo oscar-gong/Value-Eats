@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
         distribution: 'adopt'
     - name: Building and running tests
       run: cd backend; ./mvnw clean install
-  checkstyle_job:
+  Linter:
     runs-on: ubuntu-latest
     name: Checkstyle job
     steps:
@@ -28,5 +28,4 @@ jobs:
       uses: nikitasavinov/checkstyle-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        reporter: 'github-pr-check'
         tool_name: 'testtool'
