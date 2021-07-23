@@ -70,7 +70,7 @@ export default function EateryProfile() {
         : "";
     const [openCreateReview, setOpenCreateReview] = useState(false);
     const [user, setUser] = useState({});
-    const [openConfirmModal, setConfirmModal] = useState(false);
+    const [openConfirmModal, setOpenConfirmModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const [open, setOpen] = useState(false);
@@ -118,7 +118,7 @@ export default function EateryProfile() {
         if (isDiner !== "false") {
             getUser();
         }
-    }, [auth, isDiner]);
+    }, [auth, isDiner, setAuth, setIsDiner]);
 
     const getEateryDetails = async () => {
         setLoading(true);
@@ -223,46 +223,41 @@ export default function EateryProfile() {
     };
 
     const handleBooking = async () => {
-        if (isConfirmed) {
-            setIsConfirmed(false);
-            setConfirmModal(false);
-        } else {
-            const response = await fetch(
-                `http://localhost:8080/diner/book?id=${voucherDetails.voucherID}`,
-                {
-                    method: "POST",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        Authorization: auth,
-                    },
-                }
-            );
-            console.log(response);
-            const responseData = await response.json();
-            if (response.status === 200) {
-                console.log(responseData);
-                setCode(responseData.data.code);
-                setIsConfirmed(true);
-                setAlertOptions({
-                    showAlert: true,
-                    variant: "success",
-                    message: responseData.message,
-                });
-            } else {
-                setAlertOptions({
-                    showAlert: true,
-                    variant: "error",
-                    message: responseData.message,
-                });
-                setConfirmModal(false);
+        const response = await fetch(
+            `http://localhost:8080/diner/book?id=${voucherDetails.voucherID}`,
+            {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization: auth,
+                },
             }
+        );
+        console.log(response);
+        const responseData = await response.json();
+        if (response.status === 200) {
+            console.log(responseData);
+            setCode(responseData.data.code);
+            setIsConfirmed(true);
+            setAlertOptions({
+                showAlert: true,
+                variant: "success",
+                message: responseData.message,
+            });
+        } else {
+            setAlertOptions({
+                showAlert: true,
+                variant: "error",
+                message: responseData.message,
+            });
+            setOpenConfirmModal(false);
         }
+        
     };
 
     const handleVoucher = (startTime, endTime, discount, id, date) => {
-        setConfirmModal(true);
-        console.log("HANDLING");
+        setOpenConfirmModal(true);
         setVoucherDetails({
             startTime: startTime,
             endTime: endTime,
@@ -273,7 +268,7 @@ export default function EateryProfile() {
     };
 
     const handleCloseModal = () => {
-        setConfirmModal(false);
+        setOpenConfirmModal(false);
         setIsConfirmed(false);
     };
 
@@ -420,7 +415,7 @@ export default function EateryProfile() {
                     isEdit={false}
                     refreshList={() => getEateryDetails()}
                 />
-                <ConfirmModal
+                {openConfirmModal && <ConfirmModal
                     open={openConfirmModal}
                     handleClose={handleCloseModal}
                     // eateryId={eateryId}
@@ -432,9 +427,9 @@ export default function EateryProfile() {
                     }
                     denyText={isConfirmed ? "View Vouchers" : "Cancel"}
                     handleDeny={isConfirmed ? () => history.push("/DinerVouchers") : null}
-                    handleConfirm={!isConfirmed ? () => handleBooking() : () => handleCloseModal()}
+                    handleConfirm={isConfirmed ? () => handleCloseModal() : () => handleBooking()}
                     confirmText={isConfirmed ? "Ok" : "Confirm"}
-                ></ConfirmModal>
+                ></ConfirmModal>}
             </MainContainer>
         </>
     );

@@ -10,6 +10,7 @@ import { StoreContext } from "../utils/store";
 import { logUserOut } from "../utils/logoutHelper";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import { useHistory } from "react-router-dom";
+import Loading from "../components/Loading";
 
 export default function DinerVouchers() {
     const context = useContext(StoreContext);
@@ -17,9 +18,11 @@ export default function DinerVouchers() {
     const setIsDiner = context.isDiner[1];
     const [showHistory, setShowHistory] = useState(false);
     const [vouchers, setVouchers] = useState(null);
+    const [loading, setLoading] = useState(false);
     const history = useHistory();
 
     const getVouchers = async () => {
+        setLoading(true);
         const response = await fetch(
             "http://localhost:8080/diner/voucher",
             {
@@ -40,6 +43,7 @@ export default function DinerVouchers() {
         } else {
             console.log("cannot get vouchers");
         }
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -156,6 +160,7 @@ export default function DinerVouchers() {
                     <VoucherContainer>
                         {getCurrentVouchers()}
                         {showHistory && getPastVouchers()}
+                        <Loading isLoading={loading} />
                     </VoucherContainer>
                 </Box>
             </MainContent>

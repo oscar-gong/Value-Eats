@@ -11,6 +11,7 @@ import { NavLink } from "../styles/NavLink";
 import { Menu, MenuItem } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { IconButtonShowSmall } from "../styles/IconButtonShowSmall";
+import IconButton from "@material-ui/core/IconButton";
 // import logo from "../assets/logo.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
     singleLine: {
         whiteSpace: "nowrap",
-        padding: "0px"
+        padding: "0px",
     },
 }));
 
@@ -67,6 +68,7 @@ export default function Navbar() {
     const anchorElement = (event) => {
         setAnchorEl(event.currentTarget);
     };
+    const [search, setSearch] = useState("");
 
     const handleLogout = async () => {
         console.log("You are getting logged out");
@@ -112,68 +114,89 @@ export default function Navbar() {
         if (isDiner === "false") return history.push("/EateryLanding");
     };
 
+    const handleSearch = () => {
+        // move to search page only if there is a search term
+        if (search !== "") {
+            history.push({
+                pathname: "/SearchResults",
+                search: `?query=${search}`,
+                state: { search: search },
+            });
+        }
+    };
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
     return (
         <NavbarStyled isDiner={isDiner} elevation={0}>
             <Toolbar className={classes.singleLine}>
-                <Typography
-                    className={classes.logo}
-                    onClick={handleLogoClick}
-                >
+                <Typography className={classes.logo} onClick={handleLogoClick}>
                     Value Eats
                 </Typography>
                 {isDiner === "true" && (
                     <Toolbar className={classes.barSize}>
                         <div className={classes.searchContainer}>
-                            <div style={{ marginRight: 10 }}>
-                                <SearchIcon />
-                            </div>
                             <div>
                                 <InputBase
+                                    onChange={(e) => setSearch(e.target.value)}
                                     className={classes.searchBar}
                                     placeholder="Restaurants, dishes, postcode, keywords..."
                                     inputProps={{
                                         "aria-label": "search",
                                     }}
+                                    onKeyPress={handleKeyPress}
                                 />
                             </div>
+                            <IconButton
+                                type="submit"
+                                aria-label="search"
+                                onClick={handleSearch}
+                            >
+                                <SearchIcon />
+                            </IconButton>
                         </div>
                     </Toolbar>
                 )}
                 {
                     // Hacky fix for flex stlying
-                    isDiner === "false" &&
-                    <div style={{flex: 1}}></div>
+                    isDiner === "false" && <div style={{ flex: 1 }}></div>
                 }
-                <NavLink isDiner={isDiner}
-                    to={
-                        isDiner === "true"
-                            ? "/DinerLanding"
-                            : "/EateryLanding"
-                    }
+                <NavLink
+                    isDiner={isDiner}
+                    to={isDiner === "true" ? "/DinerLanding" : "/EateryLanding"}
                 >
                     HOME
                 </NavLink>
-                <NavLink isDiner={isDiner}
-                    to={
-                        isDiner === "true"
-                            ? "/DinerProfile"
-                            : "/EateryProfile"
-                    }
+                <NavLink
+                    isDiner={isDiner}
+                    to={isDiner === "true" ? "/DinerProfile" : "/EateryProfile"}
                 >
                     PROFILE
                 </NavLink>
                 {isDiner === "true" && (
-                    <NavLink isDiner={isDiner} to="/DinerVouchers">MY VOUCHERS</NavLink>
+                    <NavLink isDiner={isDiner} to="/DinerVouchers">
+                        MY VOUCHERS
+                    </NavLink>
                 )}
                 {isDiner === "false" && (
-                    <NavLink isDiner={isDiner} to="/EditEateryProfile">EDIT PROFILE</NavLink>
+                    <NavLink isDiner={isDiner} to="/EditEateryProfile">
+                        EDIT PROFILE
+                    </NavLink>
                 )}
-                <NavLink isDiner={isDiner} onClick={handleLogout}>LOGOUT</NavLink>
+                <NavLink isDiner={isDiner} onClick={handleLogout}>
+                    LOGOUT
+                </NavLink>
 
-                <IconButtonShowSmall isDiner={isDiner} onClick={(e) => {
-                    setOpenMenu(true); 
-                    anchorElement(e);
-                }}
+                <IconButtonShowSmall
+                    isDiner={isDiner}
+                    onClick={(e) => {
+                        setOpenMenu(true);
+                        anchorElement(e);
+                    }}
                     color="inherit"
                 >
                     <AccountCircle style={{ fontSize: "50px" }} />
@@ -191,19 +214,35 @@ export default function Navbar() {
                     open={openMenu}
                     onClose={() => setOpenMenu(false)}
                 >
-                    <MenuItem onClick={() => isDiner ? history.push("/DinerLanding") : history.push("/EateryLanding")}>
+                    <MenuItem
+                        onClick={() =>
+                            isDiner
+                                ? history.push("/DinerLanding")
+                                : history.push("/EateryLanding")
+                        }
+                    >
                         Home
                     </MenuItem>
-                    <MenuItem onClick={() => isDiner ? history.push("/DinerProfile") : history.push("/EateryProfile")}>
+                    <MenuItem
+                        onClick={() =>
+                            isDiner
+                                ? history.push("/DinerProfile")
+                                : history.push("/EateryProfile")
+                        }
+                    >
                         Profile
                     </MenuItem>
                     {isDiner === "true" && (
-                        <MenuItem onClick={() => history.push("/DinerVouchers")}>
+                        <MenuItem
+                            onClick={() => history.push("/DinerVouchers")}
+                        >
                             My Vouchers
                         </MenuItem>
                     )}
                     {isDiner === "false" && (
-                        <MenuItem onClick={() => history.push("/EditEateryProfile")}>
+                        <MenuItem
+                            onClick={() => history.push("/EditEateryProfile")}
+                        >
                             Edit Profile
                         </MenuItem>
                     )}

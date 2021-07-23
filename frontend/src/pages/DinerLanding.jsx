@@ -20,27 +20,27 @@ import {
     Box,
     FormControl,
 } from "@material-ui/core";
-import RatingWithNum from "../components/RatingWithNum";
 import Loading from "../components/Loading";
+import EateryDisplay from "../components/EateryDisplay";
 
 const useStyles = makeStyles({
     card: {
         color: "black",
         borderRadius: "0px",
         transition: "transform 0.15s ease-in-out",
-        "&:hover": { 
-            transform: "scale3d(1.02, 1.02, 1)", 
+        "&:hover": {
+            transform: "scale3d(1.02, 1.02, 1)",
             maxHeight: "none",
-            cursor: "pointer"
+            cursor: "pointer",
         },
         maxHeight: "300px",
     },
     wideCard: {
         marginTop: "20px",
         transition: "transform 0.15s ease-in-out",
-        "&:hover": { 
+        "&:hover": {
             transform: "scale3d(1.02, 1.02, 1)",
-            cursor: "pointer"
+            cursor: "pointer",
         },
     },
 });
@@ -82,7 +82,7 @@ export default function DinerLanding({ token }) {
             }
         };
         getEateryList();
-    }, [auth]);
+    }, [auth, setAuth, setIsDiner]);
 
     if (auth === null) return <Redirect to="/" />;
     if (isDiner === "false") return <Redirect to="/EateryLanding" />;
@@ -168,7 +168,9 @@ export default function DinerLanding({ token }) {
                                                 </Grid>
                                                 <Grid item xs={4}>
                                                     <StarRating
-                                                        rating={parseFloat(item[i].rating)}
+                                                        rating={parseFloat(
+                                                            item[i].rating
+                                                        )}
                                                     />
                                                 </Grid>
                                             </Grid>
@@ -187,75 +189,48 @@ export default function DinerLanding({ token }) {
         if (!eateryList) return;
         return eateryList.map((item, key) => {
             return (
-                <Card
-                    className={classes.wideCard}
-                    onClick={(e) =>
-                        history.push({
-                            pathname: `/EateryProfile/${item.name}/${item.id}`,
-                        })
-                    }
+                <EateryDisplay
+                    name={item.name}
+                    id={item.id}
                     key={key}
-                >
-                    <CardHeader title={"UP TO " + item.discount + " OFF"} />
-                    <CardMedia
-                        style={{
-                            height: "150px",
-                        }}
-                        image={
-                            "https://i.pinimg.com/originals/b8/e1/4a/b8e14a14af9434aa5ccc0376a47a5237.jpg"
-                        }
-                    />
-                    <CardContent>
-                        <Grid
-                            container
-                            justify="space-between"
-                            alignItems="flex-end"
-                        >
-                            <Grid item xs={8}>
-                                <Typography variant="h5">
-                                    {item.name}
-                                </Typography>
-                                <Typography variant="subtitle2">
-                                    {item.cuisines.join(", ")}
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <RatingWithNum rating={item.rating} />
-                            </Grid>
-                        </Grid>
-                    </CardContent>
-                </Card>
+                    discount={item.discount}
+                    cuisines={item.cuisines}
+                    rating={item.rating}
+                />
             );
         });
     };
     return (
         <>
-          <NavBar isDiner={isDiner} />
-          <MainContainer>
-            <Box py={4}>
-              <Typography variant="h5">Hi {name},</Typography>
-              <Box textAlign="right">
-                  <FormControl variant="filled" style={{ minWidth: "100px" }}>
-                      <InputLabel>Sort By</InputLabel>
-                      <Select
-                          value={sortBy}
-                          onChange={(e) => setSortBy(e.target.value)}
-                      >
-                          <MenuItem value={"distance"}>Distance</MenuItem>
-                          <MenuItem value={"rating"}>Rating</MenuItem>
-                          <MenuItem value={"new"}>New</MenuItem>
-                      </Select>
-                  </FormControl>
-              </Box>
+            <NavBar isDiner={isDiner} />
+            <MainContainer>
+                <Box py={4}>
+                    <Typography variant="h5">Hi {name},</Typography>
+                    <Box textAlign="right">
+                        <FormControl
+                            variant="filled"
+                            style={{ minWidth: "100px" }}
+                        >
+                            <InputLabel>Sort By</InputLabel>
+                            <Select
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value)}
+                            >
+                                <MenuItem value={"distance"}>Distance</MenuItem>
+                                <MenuItem value={"rating"}>Rating</MenuItem>
+                                <MenuItem value={"new"}>New</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
 
-              <Typography variant="h6">
-                  Restaurants we think you would like
-              </Typography>
+                    <Typography variant="h6">
+                        Restaurants we think you would like
+                    </Typography>
 
-                <Carousel>{getSlides()}</Carousel>
-                {getEateries()}
-              </Box>
-              <Loading isLoading={loading} />
+                    <Carousel>{getSlides()}</Carousel>
+                    {getEateries()}
+                </Box>
+                <Loading isLoading={loading} />
             </MainContainer>
         </>
     );

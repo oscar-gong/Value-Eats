@@ -81,7 +81,7 @@ export default function EateryVoucher({eateryId,
   }
 
   return (
-    <Box bgcolor="white" margin="20px" border="2px solid #FF845B" borderRadius="20px" margin="20px">
+    <Box bgcolor="white" margin="20px" border="2px solid #FF845B" borderRadius="20px">
       <Grid container direction="row" justifyContent="center" alignItems="center" border="3px solid #4F4846" bgcolor="#E8CEBF" margin="20px">
         <Grid item display="flex" flexDirection="column" xs={4}>
           <Box display="flex" justifyContent="center" alignItems="center">
