@@ -2,11 +2,9 @@ name: Backend Checks
 
 on:
   push:
-    branches:
-      - '*'
+    branches: [ feature/CICD ]
   pull_request:
-    branches:
-      - '*'
+    branches: [ master ]
 
 jobs:
   build:
