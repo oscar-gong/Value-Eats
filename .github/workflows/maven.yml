@@ -21,5 +21,7 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Build with Maven
-      run: cd backend;
+    - name: Go to directory
+      run: cd backend
+    - name: Build and Run Tests
+      run: ./mvnw clean install;
