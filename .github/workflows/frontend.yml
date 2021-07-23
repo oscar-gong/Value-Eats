@@ -2,7 +2,7 @@ name: Frontend Works
 
 on:
   push:
-    branches: [ feature/CICD, master ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
