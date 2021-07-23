@@ -56,6 +56,7 @@ export default function DinerLanding({ token }) {
     const [name, setName] = useState("");
     const [sortBy, setSortBy] = useState("");
     const [loading, setLoading] = useState(false);
+    const [recommendationList, setRecommendationList] = useState([]);
 
     useEffect(() => {
         const getEateryList = async () => {
@@ -84,6 +85,32 @@ export default function DinerLanding({ token }) {
         getEateryList();
     }, [auth, setAuth, setIsDiner]);
 
+    useEffect(() => {
+        const getRecommendationList = async () => {
+            setLoading(true);
+            const response = await fetch(
+                "http://localhost:8080/recommendation",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: auth,
+                    },
+                }
+            );
+            const responseData = await response.json();
+            setLoading(false);
+            if (response.status === 200) {
+                console.log(responseData);
+                setRecommendationList(responseData.eateryList);
+            } else if (response.status === 401) {
+                logUserOut(setAuth, setIsDiner);
+            }
+        };
+        getRecommendationList();
+    }, [auth, setAuth, setIsDiner]);
+
     if (auth === null) return <Redirect to="/" />;
     if (isDiner === "false") return <Redirect to="/EateryLanding" />;
 
@@ -96,10 +123,10 @@ export default function DinerLanding({ token }) {
     };
 
     const getSlides = () => {
-        if (!eateryList) return;
+        if (!recommendationList) return;
         const splitEateryList = [];
-        for (var i = 0; i < eateryList.length; i++) {
-            let subList = eateryList.slice(i, i + 3);
+        for (var i = 0; i < recommendationList.length; i++) {
+            let subList = recommendationList.slice(i, i + 3);
             splitEateryList.push(subList);
             i = i + 2;
         }
