@@ -111,8 +111,6 @@ public class RecommendationService {
     }
 
     private Integer getWeight(Diner diner, Eatery eatery, List<Long> eateriesDinerBeenTo) {
-        System.out.println(eatery.getAlias());
-
         int weight = 0;
 
         // If the restaurant serves a cuisine the diner had before, +1 per cuisine
