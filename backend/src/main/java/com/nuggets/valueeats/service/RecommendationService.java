@@ -96,11 +96,7 @@ public class RecommendationService {
                 .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
 
         List<Object> result = new ArrayList<Object>();
-        System.out.println(pq.toString());
         while (!pq.isEmpty() && result.size() <= 10) {
-            System.out.println(pq.peek().getKey());
-            System.out.println(pq.peek().getValue());
-
             Eatery newEatery = pq.poll().getValue();
             HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, reviewRepository, newEatery);
             result.add(eatery);
