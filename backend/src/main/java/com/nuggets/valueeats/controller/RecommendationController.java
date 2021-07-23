@@ -22,7 +22,7 @@ public class RecommendationController {
         return recommendationService.fuzzySearch(search);
     }
 
-    @GetMapping("/test")
+    @GetMapping("")
     @CheckDinerToken
     public ResponseEntity<JSONObject> recommendation(@RequestHeader(name = "Authorization") String token) {
         return recommendationService.recommendation(token);

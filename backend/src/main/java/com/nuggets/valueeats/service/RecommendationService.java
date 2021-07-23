@@ -49,9 +49,6 @@ public class RecommendationService {
 
     @Autowired
     private BookingRecordRepository bookingRecordRepository;
-    
-    @Autowired
-    private UserRepository userRepository;
 
     public ResponseEntity<JSONObject> fuzzySearch(final String search) {
         final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateryRepository.findAll().stream()
@@ -88,9 +85,7 @@ public class RecommendationService {
         
         Diner diner = dinerRepository.findByToken(token);
 
-        List<Long> eateriesDinerBeenTo = bookingRecordRepository.findEateriesDinerBeenTo(diner.getId());
-
-        System.out.println(eateriesDinerBeenTo.toString());
+        List<Long> eateriesDinerBeenTo = bookingRecordRepository.findEateriesDinerBeenTo(diner.getId());;
 
 
         // Sort these eateries based on diner interests.
@@ -99,10 +94,6 @@ public class RecommendationService {
         final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateriesDinerNotBeenTo.stream()
                 .map(a -> new AbstractMap.SimpleImmutableEntry<>(getWeight(diner, a, eateriesDinerBeenTo), a))
                 .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
-
-        for (Eatery e:eateriesDinerNotBeenTo){
-            System.out.println(getWeight(diner, e, eateriesDinerBeenTo));
-        }
 
         List<Object> result = new ArrayList<Object>();
         while (!pq.isEmpty() && result.size() <= 10) {
