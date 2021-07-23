@@ -1,4 +1,4 @@
-name: Frontend Checks
+name: Frontend Works
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
         node-version: 12.x
     - name: Installing Dependencies
       run: cd frontend; yarn install
-    # - name: Building
-    #   run: cd frontend; yarn build
+    - name: Building
+      run: cd frontend; yarn build
     - name: Test
       run: cd frontend; yarn test
