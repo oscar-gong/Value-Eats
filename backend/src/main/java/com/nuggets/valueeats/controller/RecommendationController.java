@@ -21,4 +21,10 @@ public class RecommendationController {
             @RequestHeader(name = "Authorization") String token, @PathVariable final String search) {
         return recommendationService.fuzzySearch(search);
     }
+
+    @GetMapping("/test")
+    @CheckDinerToken
+    public ResponseEntity<JSONObject> recommendation(@RequestHeader(name = "Authorization") String token) {
+        return recommendationService.recommendation(token);
+    }
 }

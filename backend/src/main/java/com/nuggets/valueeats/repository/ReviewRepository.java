@@ -31,4 +31,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByDinerId(Long id);
 
     void deleteById(Long reviewId);
+
+    @Query(value = "select eatery_id from Review where diner_id = ?1 and rating < 3", nativeQuery = true)
+    List<Long> listEateriesDinerDidNotEnjoy(Long dinerId);
 }

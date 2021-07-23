@@ -1,6 +1,7 @@
 package com.nuggets.valueeats.repository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.nuggets.valueeats.entity.BookingRecord;
@@ -27,4 +28,8 @@ public interface BookingRecordRepository extends JpaRepository<BookingRecord, Lo
 
   @Query(value = "select * from booking_record where eatery_id = ?1 and code = ?2", nativeQuery = true)
   BookingRecord findBookingByEateryIdAndCode (Long eateryId, String code);
+
+  @Query(value = "select distinct(eatery_id) from booking_record where diner_id = ?1", nativeQuery = true)
+  List<Long> findEateriesDinerBeenTo(Long id);
+
 }
