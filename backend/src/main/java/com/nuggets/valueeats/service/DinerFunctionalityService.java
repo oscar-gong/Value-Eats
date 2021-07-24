@@ -1,11 +1,17 @@
 package com.nuggets.valueeats.service;
 
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.PriorityQueue;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.Review;
@@ -18,12 +24,17 @@ import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 import com.nuggets.valueeats.utils.EateryUtils;
 import com.nuggets.valueeats.utils.ResponseUtils;
 import com.nuggets.valueeats.utils.ReviewUtils;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Service
@@ -140,7 +151,7 @@ public class DinerFunctionalityService {
         }
     }
 
-    public ResponseEntity<JSONObject> listEateries(String token, String sort) {
+    public ResponseEntity<JSONObject> listEateries(String token, String sort, Double latitude, Double longitude) {
         if(!dinerRepository.existsByToken(token) || token.isEmpty()){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
         }
@@ -151,6 +162,20 @@ public class DinerFunctionalityService {
             eateryList = eateryRepository.findAllByOrderByIdDesc();
         } else if ("Rating".equals(sort)) {
             eateryList = eateryRepository.findAllByOrderByLazyRatingDesc();
+        } else if ("Distance".equals(sort)) {
+            if (latitude == null || longitude == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Latitude and Longitude must be provided."));
+            }
+            final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateryList.stream()
+                .map(a -> new AbstractMap.SimpleImmutableEntry<>(findDistance(latitude, longitude, a.getAddress()), a))
+                .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
+
+            List<Eatery> result = new ArrayList<Eatery>();
+            while (!pq.isEmpty()) {
+                Eatery newEatery = pq.poll().getValue();
+                result.add(0, newEatery);
+            }
+            eateryList = result;
         }
 
         ArrayList<Object> list = new ArrayList<Object>();
@@ -166,6 +191,40 @@ public class DinerFunctionalityService {
         JSONObject data = new JSONObject(dataMedium);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
+    }
+
+    private Integer findDistance(Double latitude, Double longitude, String address) {
+        Integer distance = Integer.MAX_VALUE;
+
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String encodedAddress = URLEncoder.encode(address, "UTF-8");
+            String encodedLatitude = URLEncoder.encode(latitude.toString(), "UTF-8");
+            String encodedLongitude = URLEncoder.encode(longitude.toString(), "UTF-8");
+            Request request = new Request.Builder()
+                    .url("https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+ encodedLatitude + ","+ encodedLongitude +"&destinations="+ encodedAddress +"&key=" + "AIzaSyCG80LxbPTd4MNoZuPdzbF-aQA_DcCAGVQ")
+                    .get()
+                    .build();
+            com.squareup.okhttp.ResponseBody responseBody = client.newCall(request).execute().body();
+
+            JSONParser parser = new JSONParser();
+            Object response = parser.parse(responseBody.string());
+            JSONObject map = (JSONObject) response;
+            String status= (String) map.get("status");
+            if (status.equals("OK")) {
+                JSONObject elements = (JSONObject)((JSONArray)((JSONObject)((JSONArray) map.get("rows")).get(0)).get("elements")).get(0);
+                String elementStatus = (String) elements.get("status");
+                if (elementStatus.equals("OK")) {
+                    JSONObject obj4 = (JSONObject) elements.get("distance");
+                    distance = Integer.parseInt(obj4.get("value").toString());
+                    System.out.println("Distance between you and " + address + " is " + distance + "m.");
+                }
+            }
+
+        } catch(Exception e) {
+            System.out.println("something went wrong" + e);
+        }
+        return distance;
     }
     
     public ResponseEntity<JSONObject> editReview(Review review, String token) {
