@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.Review;
+import com.nuggets.valueeats.repository.BookingRecordRepository;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.ReviewRepository;
@@ -41,6 +42,9 @@ public class DinerFunctionalityService {
     
     @Autowired
     private RepeatVoucherRepository repeatVoucherRepository;
+    
+    @Autowired
+    private BookingRecordRepository bookingRepository;
 
     public ResponseEntity<JSONObject> createReview(Review review, String token) {
         try {
@@ -76,6 +80,10 @@ public class DinerFunctionalityService {
             }
 
             Long dinerId = dinerRepository.findByToken(token).getId();
+
+            if (bookingRepository.existsByDinerIdAndEateryId(dinerId, review.getEateryId()) == 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("You cannot review a restaurant that you have not dined at."));
+            }
 
             // Check if user already made a review
             if(reviewRepository.existsByDinerIdAndEateryId(dinerId, review.getEateryId()) == 1){
@@ -132,12 +140,18 @@ public class DinerFunctionalityService {
         }
     }
 
-    public ResponseEntity<JSONObject> listEateries(String token) {
+    public ResponseEntity<JSONObject> listEateries(String token, String sort) {
         if(!dinerRepository.existsByToken(token) || token.isEmpty()){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
         }
         Diner diner = dinerRepository.findByToken(token);
         List<Eatery> eateryList = eateryRepository.findAll();
+
+        if ("New".equals(sort)) {
+            eateryList = eateryRepository.findAllByOrderByIdDesc();
+        } else if ("Rating".equals(sort)) {
+            eateryList = eateryRepository.findAllByOrderByLazyRatingDesc();
+        }
 
         ArrayList<Object> list = new ArrayList<Object>();
 

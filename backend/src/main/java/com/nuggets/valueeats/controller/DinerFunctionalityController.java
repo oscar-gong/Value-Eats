@@ -40,8 +40,8 @@ public class DinerFunctionalityController {
 
     @RequestMapping(value = "list/eateries", method = RequestMethod.GET)
     @CheckUserToken
-    public ResponseEntity<JSONObject> listEateries(@RequestHeader (name="Authorization") String token) {
-        return dinerFunctionalityService.listEateries(token);
+    public ResponseEntity<JSONObject> listEateries(@RequestHeader (name="Authorization") String token, @RequestParam(required=false) String sort) {
+        return dinerFunctionalityService.listEateries(token, sort);
     }
 
     @RequestMapping(value = "diner/editreview", method = RequestMethod.POST)
