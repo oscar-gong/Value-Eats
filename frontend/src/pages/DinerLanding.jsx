@@ -84,6 +84,17 @@ export default function DinerLanding({ token }) {
         getEateryList();
     }, [auth, setAuth, setIsDiner]);
 
+    useEffect(() => {
+        const getUserLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => console.log(pos.coords));
+            } else {
+                console.log("location not permitted");
+            }
+        }
+        getUserLocation();
+    }, []);
+
     if (auth === null) return <Redirect to="/" />;
     if (isDiner === "false") return <Redirect to="/EateryLanding" />;
 
