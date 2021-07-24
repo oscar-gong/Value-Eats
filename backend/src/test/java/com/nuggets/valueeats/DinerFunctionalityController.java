@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,9 +46,9 @@ public class DinerFunctionalityController {
 	@Autowired
 	private MockMvc mockMvc;
 
-  // Test successfully create a review.
+  // Test create a review with valid input.
   @Test
-  void dinerCreaateReviewTest1() throws Exception {
+  void dinerCreateReviewTest1() throws Exception {
     this.userRepository.deleteAll();
     this.reviewRepository.deleteAll();
     Map<String, String> diner = new HashMap<>();
@@ -94,4 +95,278 @@ public class DinerFunctionalityController {
     )
     .andExpect(status().isOk());
   }
+
+  // Test create a review with invalid eatery id.
+  @Test
+  void dinerCreateReviewTest2() throws Exception {
+    this.userRepository.deleteAll();
+    this.reviewRepository.deleteAll();
+    Map<String, String> diner = new HashMap<>();
+    diner.put("alias", "diner1");
+    diner.put("email", "diner1@gmail.com");
+    diner.put("address", "Sydney");
+    diner.put("password", "12rwqeDsad@");
+
+    String result = this.mockMvc.perform(
+      post("/register/diner")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(String.valueOf(new JSONObject(diner)))
+    )
+    .andReturn()
+    .getResponse()
+    .getContentAsString();
+
+    JSONObject data = new JSONObject(result);
+    String token = data.getJSONObject("data").getString("token");
+
+    Map<String, String> eatery = new HashMap<>();
+    eatery.put("alias", "eatery1");
+    eatery.put("email", "eatery1@gmail.com");
+    eatery.put("address", "Sydney");
+    eatery.put("password", "12rwqeDsad@");
+
+    this.mockMvc.perform(
+      post("/register/eatery")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(String.valueOf(new JSONObject(eatery)))
+    );
+
+    Map<String, String> review = new HashMap<>();
+    review.put("dinerId","100");
+    review.put("eateryId","100");
+    review.put("message","hello");
+    review.put("rating","2");
+
+    this.mockMvc.perform(
+      post("/diner/createreview")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(review)))
+    )
+    .andExpect(status().is4xxClientError());
+  }
+  
+  // Test create a review with invalid rating.
+  @Test
+  void dinerCreateReviewTest3() throws Exception {
+    this.userRepository.deleteAll();
+    this.reviewRepository.deleteAll();
+    Map<String, String> diner = new HashMap<>();
+    diner.put("alias", "diner1");
+    diner.put("email", "diner1@gmail.com");
+    diner.put("address", "Sydney");
+    diner.put("password", "12rwqeDsad@");
+
+    String result = this.mockMvc.perform(
+      post("/register/diner")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(String.valueOf(new JSONObject(diner)))
+    )
+    .andReturn()
+    .getResponse()
+    .getContentAsString();
+
+    JSONObject data = new JSONObject(result);
+    String token = data.getJSONObject("data").getString("token");
+
+    Map<String, String> eatery = new HashMap<>();
+    eatery.put("alias", "eatery1");
+    eatery.put("email", "eatery1@gmail.com");
+    eatery.put("address", "Sydney");
+    eatery.put("password", "12rwqeDsad@");
+
+    this.mockMvc.perform(
+      post("/register/eatery")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(String.valueOf(new JSONObject(eatery)))
+    );
+
+    Map<String, String> review = new HashMap<>();
+    review.put("dinerId","0");
+    review.put("eateryId","1");
+    review.put("message","hello");
+    review.put("rating","5.3");
+
+    this.mockMvc.perform(
+      post("/diner/createreview")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(review)))
+    )
+    .andExpect(status().is4xxClientError());
+  }
+
+  // Test remove a review with valid input.
+  @Test
+  void dinerRemoveReviewTest1() throws Exception {
+    this.userRepository.deleteAll();
+    this.reviewRepository.deleteAll();
+    Map<String, String> diner = new HashMap<>();
+    diner.put("alias", "diner1");
+    diner.put("email", "diner1@gmail.com");
+    diner.put("address", "Sydney");
+    diner.put("password", "12rwqeDsad@");
+
+    String result = this.mockMvc.perform(
+      post("/register/diner")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(String.valueOf(new JSONObject(diner)))
+    )
+    .andReturn()
+    .getResponse()
+    .getContentAsString();
+
+    JSONObject data = new JSONObject(result);
+    String token = data.getJSONObject("data").getString("token");
+
+    Map<String, String> eatery = new HashMap<>();
+    eatery.put("alias", "eatery1");
+    eatery.put("email", "eatery1@gmail.com");
+    eatery.put("address", "Sydney");
+    eatery.put("password", "12rwqeDsad@");
+
+    this.mockMvc.perform(
+      post("/register/eatery")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(String.valueOf(new JSONObject(eatery)))
+    );
+
+    Map<String, String> review = new HashMap<>();
+    review.put("id","0");
+    review.put("dinerId","0");
+    review.put("eateryId","1");
+    review.put("message","hello");
+    review.put("rating","4");
+
+    this.mockMvc.perform(
+      post("/diner/createreview")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(review)))
+    );
+
+    this.mockMvc.perform(
+      MockMvcRequestBuilders
+      .delete("/diner/removereview")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(review)))
+    )
+    .andExpect(status().isOk());
+  }
+
+  // Test remove a review with invalid token.
+  @Test
+  void dinerRemoveReviewTest2() throws Exception {
+    this.userRepository.deleteAll();
+    this.reviewRepository.deleteAll();
+    Map<String, String> diner = new HashMap<>();
+    diner.put("alias", "diner1");
+    diner.put("email", "diner1@gmail.com");
+    diner.put("address", "Sydney");
+    diner.put("password", "12rwqeDsad@");
+
+    this.mockMvc.perform(
+      post("/register/diner")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(String.valueOf(new JSONObject(diner)))
+    );
+    String token = "InvalidTOken";
+
+    Map<String, String> eatery = new HashMap<>();
+    eatery.put("alias", "eatery1");
+    eatery.put("email", "eatery1@gmail.com");
+    eatery.put("address", "Sydney");
+    eatery.put("password", "12rwqeDsad@");
+
+    this.mockMvc.perform(
+      post("/register/eatery")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(String.valueOf(new JSONObject(eatery)))
+    );
+
+    Map<String, String> review = new HashMap<>();
+    review.put("id","0");
+    review.put("dinerId","0");
+    review.put("eateryId","1");
+    review.put("message","hello");
+    review.put("rating","4");
+
+    this.mockMvc.perform(
+      post("/diner/createreview")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(review)))
+    );
+
+    this.mockMvc.perform(
+      MockMvcRequestBuilders
+      .delete("/diner/removereview")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(review)))
+    )
+    .andExpect(status().is4xxClientError());
+  }
+
+  // Test remove a review with invalid message id.
+  @Test
+  void dinerRemoveReviewTest3() throws Exception {
+    this.userRepository.deleteAll();
+    this.reviewRepository.deleteAll();
+    Map<String, String> diner = new HashMap<>();
+    diner.put("alias", "diner1");
+    diner.put("email", "diner1@gmail.com");
+    diner.put("address", "Sydney");
+    diner.put("password", "12rwqeDsad@");
+
+    String result = this.mockMvc.perform(
+      post("/register/diner")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(String.valueOf(new JSONObject(diner)))
+    )
+    .andReturn()
+    .getResponse()
+    .getContentAsString();
+
+    JSONObject data = new JSONObject(result);
+    String token = data.getJSONObject("data").getString("token");
+
+    Map<String, String> eatery = new HashMap<>();
+    eatery.put("alias", "eatery1");
+    eatery.put("email", "eatery1@gmail.com");
+    eatery.put("address", "Sydney");
+    eatery.put("password", "12rwqeDsad@");
+
+    this.mockMvc.perform(
+      post("/register/eatery")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(String.valueOf(new JSONObject(eatery)))
+    );
+
+    Map<String, String> review = new HashMap<>();
+    review.put("id","100");
+    review.put("dinerId","0");
+    review.put("eateryId","1");
+    review.put("message","hello");
+    review.put("rating","4");
+
+    this.mockMvc.perform(
+      post("/diner/createreview")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(review)))
+    );
+
+    this.mockMvc.perform(
+      MockMvcRequestBuilders
+      .delete("/diner/removereview")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(review)))
+    )
+    .andExpect(status().is4xxClientError());
+  }
+
+  
 }
