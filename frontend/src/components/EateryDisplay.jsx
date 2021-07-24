@@ -25,7 +25,6 @@ const useStyles = makeStyles({
 export default function EateryDisplay({
     name,
     id,
-    key,
     discount,
     cuisines,
     rating,
@@ -40,7 +39,6 @@ export default function EateryDisplay({
                     pathname: `/EateryProfile/${name}/${id}`,
                 })
             }
-            key={key}
         >
             <CardHeader title={"UP TO " + discount + " OFF"} />
             <CardMedia

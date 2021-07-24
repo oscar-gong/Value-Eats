@@ -153,7 +153,7 @@ export default function EateryProfile() {
 
     useEffect(() => {
         getEateryDetails();
-    }, [auth, eateryId, code]);
+    }, [auth, eateryId]);
     if (auth === null) return <Redirect to="/" />;
 
     const getReviews = () => {
@@ -270,6 +270,7 @@ export default function EateryProfile() {
     const handleCloseModal = () => {
         setOpenConfirmModal(false);
         setIsConfirmed(false);
+        getEateryDetails();
     };
 
     const getVouchers = () => {
@@ -279,7 +280,7 @@ export default function EateryProfile() {
         }
         return eateryDetails.vouchers.map((item, key) => {
             return (
-                ((item.nextUpdate !== "Deleted" && item.isRecurring === true) || item.isRecurring === false) &&
+                ((item.nextUpdate !== "Deleted" && item.isRecurring === true) || item.isRecurring === false) && item.quantity !== 0 &&
                 <Card
                     style={{
                         paddingTop: "25px",
@@ -312,7 +313,7 @@ export default function EateryProfile() {
                         </Grid>
                         <Grid item xs={4}>
                             <Box style={{ margin: "10px" }}>
-                                {`${item.quantity} Vouchers Left`}
+                                {`${item.quantity} Voucher${item.quantity === 1 ? "" : "s"} Left`}
                             </Box>
                             <Box style={{ margin: "10px" }}>
                                 {`${item.date}`}
