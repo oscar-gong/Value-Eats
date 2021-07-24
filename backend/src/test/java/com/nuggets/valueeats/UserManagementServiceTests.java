@@ -14,14 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import org.json.simple.JSONObject;
+import org.json.JSONString;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserManagementServiceTests {
 	@Autowired
 	private MockMvc mockMvc;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	// Test valid diner.
 	@Test
@@ -56,7 +60,7 @@ class UserManagementServiceTests {
 		  )
 			.andExpect(status().isOk());
 	}
-	
+
 	// Test diner with the duplicate alias.
 	@Test
 	void dinerRegisterTest2() throws Exception {
@@ -308,4 +312,32 @@ void eateryRegisterTest2() throws Exception {
 				)
 				.andExpect(status().is4xxClientError());
 		}
+
+	@Test
+	void dinerUpdateTest1() throws Exception {
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "diner1");
+		body.put("email", "diner1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+		System.out.println(new JSONObject(body));
+
+		String result = this.mockMvc.perform(
+		post("/register/diner")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		)
+		.andReturn()
+		.getResponse()
+		.getContentAsString();
+		JSONObject data = new JSONObject(result);
+		String token = data.getJSONObject("data").getString("token");
+		
+		this.mockMvc.perform(
+			post("/update/diner")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+			.andExpect(status().isOk());
+	}
 }
