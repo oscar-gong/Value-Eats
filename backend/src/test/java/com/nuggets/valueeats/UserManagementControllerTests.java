@@ -56,8 +56,8 @@ class UserManagementControllerTests {
 
 		this.mockMvc.perform(
 			post("/register/diner")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 		  )
 			.andExpect(status().isOk());
 	}
@@ -75,14 +75,14 @@ class UserManagementControllerTests {
 
 		this.mockMvc.perform(
 			post("/register/diner")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 		  );
 
 		this.mockMvc.perform(
 			post("/register/diner")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 			.andExpect(status().is4xxClientError());
 	}
@@ -101,8 +101,8 @@ class UserManagementControllerTests {
 
 		this.mockMvc.perform(
 			post("/register/diner")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 			.andExpect(status().is4xxClientError());
 	}
@@ -121,8 +121,8 @@ void dinerRegisterTest4() throws Exception {
 
 	this.mockMvc.perform(
 		post("/register/diner")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		)
 		.andExpect(status().is4xxClientError());
 }
@@ -140,8 +140,8 @@ void eateryRegisterTest1() throws Exception {
 
 	this.mockMvc.perform(
 		post("/register/eatery")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		)
 		.andExpect(status().isOk());
 }
@@ -159,14 +159,14 @@ void eateryRegisterTest2() throws Exception {
 
 	this.mockMvc.perform(
 		post("/register/eatery")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		);
 
 	this.mockMvc.perform(
 		post("/register/eatery")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		)
 		.andExpect(status().is4xxClientError());
 }
@@ -185,8 +185,8 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/register/eatery")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 			.andExpect(status().is4xxClientError());
 	}
@@ -205,8 +205,8 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 		post("/register/eatery")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		)
 		.andExpect(status().is4xxClientError());
 	}
@@ -224,47 +224,47 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/register/diner")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 		);
+
+		this.mockMvc.perform(
+			post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
+			)
+			.andExpect(status().isOk());
+	}
+
+	// Test diner login with invalid detail.
+	@Test
+	void dinerLoginTest2() throws Exception {
+		this.userRepository.deleteAll();
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "diner1");
+		body.put("email", "diner1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+
+		this.mockMvc.perform(
+			post("/register/diner")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
+		);
+
+		body = new HashMap<>();
+		body.put("alias", "diner1");
+		body.put("email", "diner@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
 
 		this.mockMvc.perform(
 			post("/login")
 							.contentType(MediaType.APPLICATION_JSON)
 							.content(String.valueOf(new JSONObject(body)))
 			)
-			.andExpect(status().isOk());
+			.andExpect(status().is4xxClientError());
 	}
-
-		// Test diner login with invalid detail.
-		@Test
-		void dinerLoginTest2() throws Exception {
-			this.userRepository.deleteAll();
-			Map<String, String> body = new HashMap<>();
-			body.put("alias", "diner1");
-			body.put("email", "diner1@gmail.com");
-			body.put("address", "Sydney");
-			body.put("password", "12rwqeDsad@");
-	
-			this.mockMvc.perform(
-				post("/register/diner")
-								.contentType(MediaType.APPLICATION_JSON)
-								.content(String.valueOf(new JSONObject(body)))
-			);
-	
-			body = new HashMap<>();
-			body.put("alias", "diner1");
-			body.put("email", "diner@gmail.com");
-			body.put("address", "Sydney");
-			body.put("password", "12rwqeDsad@");
-
-			this.mockMvc.perform(
-				post("/login")
-								.contentType(MediaType.APPLICATION_JSON)
-								.content(String.valueOf(new JSONObject(body)))
-				)
-				.andExpect(status().is4xxClientError());
-		}
 
 			// Test eatery login with valid detail.
 	@Test
@@ -279,47 +279,47 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/register/eatery")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 		);
 
 		this.mockMvc.perform(
 			post("/login")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 			.andExpect(status().isOk());
 	}
 
-		// Test eatery login with invalid detail.
-		@Test
-		void eateryLoginTest2() throws Exception {
-			this.userRepository.deleteAll();
-			Map<String, String> body = new HashMap<>();
-			body.put("alias", "eatery1");
-			body.put("email", "eatery1@gmail.com");
-			body.put("address", "Sydney");
-			body.put("password", "12rwqeDsad@");
-	
-			this.mockMvc.perform(
-				post("/register/eatery")
-								.contentType(MediaType.APPLICATION_JSON)
-								.content(String.valueOf(new JSONObject(body)))
-			);
-	
-			body = new HashMap<>();
-			body.put("alias", "eatery1");
-			body.put("email", "eatery@gmail.com");
-			body.put("address", "Sydney");
-			body.put("password", "12rwqeDsad@");
+	// Test eatery login with invalid detail.
+	@Test
+	void eateryLoginTest2() throws Exception {
+		this.userRepository.deleteAll();
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "eatery1");
+		body.put("email", "eatery1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
 
-			this.mockMvc.perform(
-				post("/login")
-								.contentType(MediaType.APPLICATION_JSON)
-								.content(String.valueOf(new JSONObject(body)))
-				)
-				.andExpect(status().is4xxClientError());
-		}
+		this.mockMvc.perform(
+			post("/register/eatery")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
+		);
+
+		body = new HashMap<>();
+		body.put("alias", "eatery1");
+		body.put("email", "eatery@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+
+		this.mockMvc.perform(
+			post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
+			)
+			.andExpect(status().is4xxClientError());
+	}
 
 	// Test update diner with valid information.
 	@Test
@@ -335,8 +335,8 @@ void eateryRegisterTest2() throws Exception {
 
 		String result = this.mockMvc.perform(
 		post("/register/diner")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		)
 		.andReturn()
 		.getResponse()
@@ -350,9 +350,9 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/update/diner")
-							.contentType(MediaType.APPLICATION_JSON)
-							.header("Authorization", token)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", token)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 			.andExpect(status().isOk());
 	}
@@ -370,8 +370,8 @@ void eateryRegisterTest2() throws Exception {
 	
 			String result = this.mockMvc.perform(
 			post("/register/diner")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 			.andReturn()
 			.getResponse()
@@ -385,9 +385,9 @@ void eateryRegisterTest2() throws Exception {
 	
 			this.mockMvc.perform(
 				post("/update/diner")
-								.contentType(MediaType.APPLICATION_JSON)
-								.header("Authorization", token)
-								.content(String.valueOf(new JSONObject(body)))
+					.contentType(MediaType.APPLICATION_JSON)
+					.header("Authorization", token)
+					.content(String.valueOf(new JSONObject(body)))
 				)
 				.andExpect(status().is4xxClientError());
 		}
@@ -406,8 +406,8 @@ void eateryRegisterTest2() throws Exception {
 
 		String result = this.mockMvc.perform(
 		post("/register/eatery")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		)
 		.andReturn()
 		.getResponse()
@@ -421,9 +421,9 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/update/eatery")
-							.contentType(MediaType.APPLICATION_JSON)
-							.header("Authorization", token)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", token)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 			.andExpect(status().isOk());
 	}
@@ -441,8 +441,8 @@ void eateryRegisterTest2() throws Exception {
 
 		String result = this.mockMvc.perform(
 		post("/register/eatery")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		)
 		.andReturn()
 		.getResponse()
@@ -456,9 +456,9 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/update/eatery")
-							.contentType(MediaType.APPLICATION_JSON)
-							.header("Authorization", token)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", token)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 			.andExpect(status().is4xxClientError());
 	}
@@ -476,14 +476,14 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 		post("/register/diner")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		);
 
 		String result = this.mockMvc.perform(
 			post("/login")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 		.andReturn()
 		.getResponse()
@@ -517,14 +517,14 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 		post("/register/diner")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		);
 
 		this.mockMvc.perform(
 			post("/login")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 			);
 
 		String token = "invalidtoken";
@@ -535,8 +535,8 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/logout")
-							.contentType(MediaType.APPLICATION_JSON)
-							.header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", token)
 			)
 			.andExpect(status().is4xxClientError());
 	}
@@ -554,14 +554,14 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 		post("/register/eatery")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		);
 
 		String result = this.mockMvc.perform(
 			post("/login")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 		.andReturn()
 		.getResponse()
@@ -576,8 +576,8 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/logout")
-							.contentType(MediaType.APPLICATION_JSON)
-							.header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", token)
 			)
 			.andExpect(status().isOk());
 	}
@@ -595,14 +595,14 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 		post("/register/eatery")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(String.valueOf(new JSONObject(body)))
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(String.valueOf(new JSONObject(body)))
 		);
 
 		this.mockMvc.perform(
 			post("/login")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 			);
 
 		String token = "invalidtoken";
@@ -613,8 +613,8 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/logout")
-							.contentType(MediaType.APPLICATION_JSON)
-							.header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", token)
 			)
 			.andExpect(status().is4xxClientError());
 	}
