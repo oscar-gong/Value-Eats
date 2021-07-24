@@ -215,8 +215,8 @@ public class DinerFunctionalityService {
                 JSONObject elements = (JSONObject)((JSONArray)((JSONObject)((JSONArray) map.get("rows")).get(0)).get("elements")).get(0);
                 String elementStatus = (String) elements.get("status");
                 if (elementStatus.equals("OK")) {
-                    JSONObject obj4 = (JSONObject) elements.get("distance");
-                    distance = Integer.parseInt(obj4.get("value").toString());
+                    JSONObject distanceObj = (JSONObject) elements.get("distance");
+                    distance = Integer.parseInt(distanceObj.get("value").toString());
                     System.out.println("Distance between you and " + address + " is " + distance + "m.");
                 }
             }
