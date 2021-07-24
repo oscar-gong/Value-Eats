@@ -164,7 +164,7 @@ public class DinerFunctionalityService {
             eateryList = eateryRepository.findAllByOrderByLazyRatingDesc();
         } else if ("Distance".equals(sort)) {
             if (latitude == null || longitude == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Latitude and Longitude must be provided."));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Location must be provided."));
             }
             final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateryList.stream()
                 .map(a -> new AbstractMap.SimpleImmutableEntry<>(findDistance(latitude, longitude, a.getAddress()), a))
