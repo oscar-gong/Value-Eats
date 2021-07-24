@@ -81,7 +81,8 @@ public class EateryControllerTests {
     voucher1.put("discount","0.8");
     voucher1.put("quantity","15");
     voucher1.put("isRecurring","false");
-    voucher1.put("date","2800000000000");
+    long currenttime = System.currentTimeMillis() + Long.valueOf(3000000);
+    voucher1.put("date", Long.toString(currenttime));
     voucher1.put("startMinute","10");
     voucher1.put("endMinute","50");
 
@@ -124,7 +125,8 @@ public class EateryControllerTests {
     voucher1.put("discount","0.8");
     voucher1.put("quantity","15");
     voucher1.put("isRecurring","true");
-    voucher1.put("date","2800000000000");
+    long currenttime = System.currentTimeMillis() + Long.valueOf("3000000");
+    voucher1.put("date", Long.toString(currenttime));
     voucher1.put("startMinute","10");
     voucher1.put("endMinute","50");
 
@@ -167,7 +169,8 @@ public class EateryControllerTests {
       voucher1.put("discount","0.8");
       voucher1.put("quantity","15");
       voucher1.put("isRecurring","true");
-      voucher1.put("date","1000000000000");
+      long currenttime = System.currentTimeMillis() - Long.valueOf("3000000");
+      voucher1.put("date", Long.toString(currenttime));
       voucher1.put("startMinute","10");
       voucher1.put("endMinute","50");
   
@@ -210,7 +213,8 @@ public class EateryControllerTests {
     voucher1.put("discount","0.8");
     voucher1.put("quantity","15");
     voucher1.put("isRecurring","true");
-    voucher1.put("date","2800000000000");
+    long currenttime = System.currentTimeMillis() + Long.valueOf("3000000");
+    voucher1.put("date", Long.toString(currenttime));
     voucher1.put("startMinute","10");
     voucher1.put("endMinute","20");
 
@@ -253,7 +257,8 @@ public class EateryControllerTests {
     voucher1.put("discount","0.8");
     voucher1.put("quantity","15");
     voucher1.put("isRecurring","true");
-    voucher1.put("date","2800000000000");
+    long currenttime = System.currentTimeMillis() + Long.valueOf("3000000");
+    voucher1.put("date", Long.toString(currenttime));
     voucher1.put("startMinute","10");
     voucher1.put("endMinute","40");
 
@@ -304,7 +309,8 @@ public class EateryControllerTests {
     voucher1.put("discount","0.8");
     voucher1.put("quantity","15");
     voucher1.put("isRecurring","true");
-    voucher1.put("date","2800000000000");
+    long currenttime = System.currentTimeMillis() + Long.valueOf("3000000");
+    voucher1.put("date", Long.toString(currenttime));
     voucher1.put("startMinute","10");
     voucher1.put("endMinute","40");
 
@@ -355,7 +361,8 @@ public class EateryControllerTests {
     voucher1.put("discount","0.8");
     voucher1.put("quantity","15");
     voucher1.put("isRecurring","true");
-    voucher1.put("date","2800000000000");
+    long currenttime = System.currentTimeMillis() + Long.valueOf("3000000");
+    voucher1.put("date", Long.toString(currenttime));
     voucher1.put("startMinute","10");
     voucher1.put("endMinute","40");
 
