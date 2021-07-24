@@ -72,6 +72,7 @@ public class UserManagementService {
 
     @Transactional
     public ResponseEntity<JSONObject> registerDiner(Diner diner) {
+        System.out.println(diner.getEmail());
         ResponseEntity<JSONObject> result = register(diner);
         if (result.getStatusCode().is2xxSuccessful()) {
             dinerRepository.save(diner);
