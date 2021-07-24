@@ -103,7 +103,7 @@ export default function DinerLanding({ token }) {
             setLoading(false);
             if (response.status === 200) {
                 console.log(responseData);
-                setRecommendationList(responseData.eateryList);
+                setRecommendationList(responseData.eateryList.filter((eatery) => eatery.discount !== "0%"));
             } else if (response.status === 401) {
                 logUserOut(setAuth, setIsDiner);
             }
@@ -214,12 +214,12 @@ export default function DinerLanding({ token }) {
 
     const getEateries = () => {
         if (!eateryList) return;
-        return eateryList.map((item, key) => {
+        return eateryList.map((item, index) => {
             return (
                 <EateryDisplay
                     name={item.name}
                     id={item.id}
-                    key={key}
+                    key={index}
                     discount={item.discount}
                     cuisines={item.cuisines}
                     rating={item.rating}
