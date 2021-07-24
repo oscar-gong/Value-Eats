@@ -6,5 +6,6 @@ export const ProfilePhoto= styled.img`
     max-height: ${props => props.size}px;
     min-height: ${props => props.size}px;
     border-radius: 50%;
+    object-fit: cover;
     border: ${props => (props.size / 30)}px solid white;
 `

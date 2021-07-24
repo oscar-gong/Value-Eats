@@ -56,12 +56,13 @@ export default function DinerLanding({ token }) {
     const [name, setName] = useState("");
     const [sortBy, setSortBy] = useState("");
     const [loading, setLoading] = useState(false);
+    const [recommendationList, setRecommendationList] = useState([]);
 
     useEffect(() => {
         const getEateryList = async () => {
             setLoading(true);
             const response = await fetch(
-                "http://localhost:8080/list/eateries",
+                `http://localhost:8080/list/eateries?sort=${sortBy}`,
                 {
                     method: "GET",
                     headers: {
@@ -82,6 +83,32 @@ export default function DinerLanding({ token }) {
             }
         };
         getEateryList();
+    }, [auth, setAuth, setIsDiner, sortBy]);
+
+    useEffect(() => {
+        const getRecommendationList = async () => {
+            setLoading(true);
+            const response = await fetch(
+                "http://localhost:8080/recommendation",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: auth,
+                    },
+                }
+            );
+            const responseData = await response.json();
+            setLoading(false);
+            if (response.status === 200) {
+                console.log(responseData);
+                setRecommendationList(responseData.eateryList.filter((eatery) => eatery.discount !== "0%"));
+            } else if (response.status === 401) {
+                logUserOut(setAuth, setIsDiner);
+            }
+        };
+        getRecommendationList();
     }, [auth, setAuth, setIsDiner]);
 
     useEffect(() => {
@@ -107,10 +134,10 @@ export default function DinerLanding({ token }) {
     };
 
     const getSlides = () => {
-        if (!eateryList) return;
+        if (!recommendationList) return;
         const splitEateryList = [];
-        for (var i = 0; i < eateryList.length; i++) {
-            let subList = eateryList.slice(i, i + 3);
+        for (var i = 0; i < recommendationList.length; i++) {
+            let subList = recommendationList.slice(i, i + 3);
             splitEateryList.push(subList);
             i = i + 2;
         }
@@ -198,12 +225,12 @@ export default function DinerLanding({ token }) {
 
     const getEateries = () => {
         if (!eateryList) return;
-        return eateryList.map((item, key) => {
+        return eateryList.map((item, index) => {
             return (
                 <EateryDisplay
                     name={item.name}
                     id={item.id}
-                    key={key}
+                    key={index}
                     discount={item.discount}
                     cuisines={item.cuisines}
                     rating={item.rating}
@@ -224,12 +251,12 @@ export default function DinerLanding({ token }) {
                         >
                             <InputLabel>Sort By</InputLabel>
                             <Select
-                                value={sortBy}
+                                defaultValue={"Distance"}
                                 onChange={(e) => setSortBy(e.target.value)}
                             >
-                                <MenuItem value={"distance"}>Distance</MenuItem>
-                                <MenuItem value={"rating"}>Rating</MenuItem>
-                                <MenuItem value={"new"}>New</MenuItem>
+                                <MenuItem selected value={"Distance"}>Distance</MenuItem>
+                                <MenuItem value={"Rating"}>Rating</MenuItem>
+                                <MenuItem value={"New"}>New</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
