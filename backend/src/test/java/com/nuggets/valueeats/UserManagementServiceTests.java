@@ -46,6 +46,7 @@ class UserManagementServiceTests {
 	// Test valid diner.
 	@Test
 	void dinerRegisterTest1() throws Exception {
+		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner1");
 		body.put("email", "diner1@gmail.com");
@@ -64,6 +65,7 @@ class UserManagementServiceTests {
 	// Test diner with the duplicate alias.
 	@Test
 	void dinerRegisterTest2() throws Exception {
+		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner1");
 		body.put("email", "diner1@gmail.com");
@@ -88,6 +90,7 @@ class UserManagementServiceTests {
 	// Test diner with the invalid email.
 	@Test
 	void dinerRegisterTest3() throws Exception {
+		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner2");
 		body.put("email", "diner2");
@@ -107,6 +110,7 @@ class UserManagementServiceTests {
 // Test diner with the invalid password.
 @Test
 void dinerRegisterTest4() throws Exception {
+	this.userRepository.deleteAll();
 	Map<String, String> body = new HashMap<>();
 	body.put("alias", "diner2");
 	body.put("email", "diner2@gmail.com");
@@ -126,6 +130,7 @@ void dinerRegisterTest4() throws Exception {
 // Test valid diner.
 @Test
 void eateryRegisterTest1() throws Exception {
+	this.userRepository.deleteAll();
 	Map<String, String> body = new HashMap<>();
 	body.put("alias", "eatery1");
 	body.put("email", "eatery1@gmail.com");
@@ -144,6 +149,7 @@ void eateryRegisterTest1() throws Exception {
 // Test eatery with the duplicate alias.
 @Test
 void eateryRegisterTest2() throws Exception {
+	this.userRepository.deleteAll();
 	Map<String, String> body = new HashMap<>();
 	body.put("alias", "eatery1");
 	body.put("email", "eatery1@gmail.com");
@@ -168,6 +174,7 @@ void eateryRegisterTest2() throws Exception {
 	// Test eatery with the invalid email.
 	@Test
 	void eateryRegisterTest3() throws Exception {
+		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery2");
 		body.put("email", "eatery2");
@@ -187,6 +194,7 @@ void eateryRegisterTest2() throws Exception {
 	// Test eatery with the invalid password.
 	@Test
 	void eateryRegisterTest4() throws Exception {
+		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery2");
 		body.put("email", "eatery2@gmail.com");
@@ -206,6 +214,7 @@ void eateryRegisterTest2() throws Exception {
 	// Test diner login with valid detail.
 	@Test
 	void dinerLoginTest1() throws Exception {
+		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner1");
 		body.put("email", "diner1@gmail.com");
@@ -230,12 +239,12 @@ void eateryRegisterTest2() throws Exception {
 		// Test diner login with invalid detail.
 		@Test
 		void dinerLoginTest2() throws Exception {
+			this.userRepository.deleteAll();
 			Map<String, String> body = new HashMap<>();
 			body.put("alias", "diner1");
 			body.put("email", "diner1@gmail.com");
 			body.put("address", "Sydney");
 			body.put("password", "12rwqeDsad@");
-			System.out.println(new JSONObject(body));
 	
 			this.mockMvc.perform(
 				post("/register/diner")
@@ -248,7 +257,6 @@ void eateryRegisterTest2() throws Exception {
 			body.put("email", "diner@gmail.com");
 			body.put("address", "Sydney");
 			body.put("password", "12rwqeDsad@");
-			System.out.println(new JSONObject(body));
 
 			this.mockMvc.perform(
 				post("/login")
@@ -261,6 +269,7 @@ void eateryRegisterTest2() throws Exception {
 			// Test eatery login with valid detail.
 	@Test
 	void eateryLoginTest1() throws Exception {
+		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery1");
 		body.put("email", "eatery1@gmail.com");
@@ -285,12 +294,12 @@ void eateryRegisterTest2() throws Exception {
 		// Test eatery login with invalid detail.
 		@Test
 		void eateryLoginTest2() throws Exception {
+			this.userRepository.deleteAll();
 			Map<String, String> body = new HashMap<>();
 			body.put("alias", "eatery1");
 			body.put("email", "eatery1@gmail.com");
 			body.put("address", "Sydney");
 			body.put("password", "12rwqeDsad@");
-			System.out.println(new JSONObject(body));
 	
 			this.mockMvc.perform(
 				post("/register/eatery")
@@ -303,7 +312,6 @@ void eateryRegisterTest2() throws Exception {
 			body.put("email", "eatery@gmail.com");
 			body.put("address", "Sydney");
 			body.put("password", "12rwqeDsad@");
-			System.out.println(new JSONObject(body));
 
 			this.mockMvc.perform(
 				post("/login")
@@ -313,8 +321,11 @@ void eateryRegisterTest2() throws Exception {
 				.andExpect(status().is4xxClientError());
 		}
 
+	// Test update diner with valid information.
 	@Test
 	void dinerUpdateTest1() throws Exception {
+		this.userRepository.deleteAll();
+		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner1");
 		body.put("email", "diner1@gmail.com");
@@ -333,11 +344,279 @@ void eateryRegisterTest2() throws Exception {
 		JSONObject data = new JSONObject(result);
 		String token = data.getJSONObject("data").getString("token");
 		
+		body = new HashMap<>();
+		body.put("alias", "superman");
+		System.out.println(new JSONObject(body));
+
 		this.mockMvc.perform(
 			post("/update/diner")
 							.contentType(MediaType.APPLICATION_JSON)
+							.header("Authorization", token)
 							.content(String.valueOf(new JSONObject(body)))
 			)
 			.andExpect(status().isOk());
 	}
+
+		// Test update diner with invalid information.
+		@Test
+		void dinerUpdateTest2() throws Exception {
+			this.userRepository.deleteAll();
+			this.userRepository.deleteAll();
+			Map<String, String> body = new HashMap<>();
+			body.put("alias", "diner1");
+			body.put("email", "diner1@gmail.com");
+			body.put("address", "Sydney");
+			body.put("password", "12rwqeDsad@");
+	
+			String result = this.mockMvc.perform(
+			post("/register/diner")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+			JSONObject data = new JSONObject(result);
+			String token = data.getJSONObject("data").getString("token");
+			
+			body = new HashMap<>();
+			body.put("alias", "superman");
+			body.put("password","1234");
+	
+			this.mockMvc.perform(
+				post("/update/diner")
+								.contentType(MediaType.APPLICATION_JSON)
+								.header("Authorization", token)
+								.content(String.valueOf(new JSONObject(body)))
+				)
+				.andExpect(status().is4xxClientError());
+		}
+
+			// Test update eatery with valid information.
+	@Test
+	void eateryUpdateTest1() throws Exception {
+		this.userRepository.deleteAll();
+		this.userRepository.deleteAll();
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "eatery1");
+		body.put("email", "eatery1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+		System.out.println(new JSONObject(body));
+
+		String result = this.mockMvc.perform(
+		post("/register/eatery")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		)
+		.andReturn()
+		.getResponse()
+		.getContentAsString();
+		JSONObject data = new JSONObject(result);
+		String token = data.getJSONObject("data").getString("token");
+		
+		body = new HashMap<>();
+		body.put("alias", "superman");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+			post("/update/eatery")
+							.contentType(MediaType.APPLICATION_JSON)
+							.header("Authorization", token)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+			.andExpect(status().isOk());
+	}
+
+	// Test update eatery with invalid information.
+	@Test
+	void eateryUpdateTest2() throws Exception {
+		this.userRepository.deleteAll();
+		this.userRepository.deleteAll();
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "eatery1");
+		body.put("email", "eatery1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+
+		String result = this.mockMvc.perform(
+		post("/register/eatery")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		)
+		.andReturn()
+		.getResponse()
+		.getContentAsString();
+		JSONObject data = new JSONObject(result);
+		String token = data.getJSONObject("data").getString("token");
+		
+		body = new HashMap<>();
+		body.put("alias", "superman");
+		body.put("email","1234");
+
+		this.mockMvc.perform(
+			post("/update/eatery")
+							.contentType(MediaType.APPLICATION_JSON)
+							.header("Authorization", token)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+			.andExpect(status().is4xxClientError());
+	}
+
+	// Test diner logout with valid token.
+	@Test
+	void dinerLogoutTest1() throws Exception {
+		this.userRepository.deleteAll();
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "diner1");
+		body.put("email", "diner1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+		post("/register/diner")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		);
+
+		String result = this.mockMvc.perform(
+			post("/login")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+		.andReturn()
+		.getResponse()
+		.getContentAsString();
+
+		JSONObject data = new JSONObject(result);
+		String token = data.getJSONObject("data").getString("token");
+		
+		body = new HashMap<>();
+		body.put("alias", "superman");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+			post("/logout")
+							.contentType(MediaType.APPLICATION_JSON)
+							.header("Authorization", token)
+			)
+			.andExpect(status().isOk());
+	}
+
+	// Test diner logout with invalid token.
+	@Test
+	void dinerLogoutTest2() throws Exception {
+		this.userRepository.deleteAll();
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "diner1");
+		body.put("email", "diner1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+		post("/register/diner")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		);
+
+		this.mockMvc.perform(
+			post("/login")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			);
+
+		String token = "invalidtoken";
+		
+		body = new HashMap<>();
+		body.put("alias", "superman");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+			post("/logout")
+							.contentType(MediaType.APPLICATION_JSON)
+							.header("Authorization", token)
+			)
+			.andExpect(status().is4xxClientError());
+	}
+
+	// Test eatery logout with valid token.
+	@Test
+	void eateryLogoutTest1() throws Exception {
+		this.userRepository.deleteAll();
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "eatery1");
+		body.put("email", "eatery1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+		post("/register/eatery")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		);
+
+		String result = this.mockMvc.perform(
+			post("/login")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+		.andReturn()
+		.getResponse()
+		.getContentAsString();
+
+		JSONObject data = new JSONObject(result);
+		String token = data.getJSONObject("data").getString("token");
+		
+		body = new HashMap<>();
+		body.put("alias", "superman");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+			post("/logout")
+							.contentType(MediaType.APPLICATION_JSON)
+							.header("Authorization", token)
+			)
+			.andExpect(status().isOk());
+	}
+
+	// Test eatery logout with invalid token.
+	@Test
+	void eateryLogoutTest2() throws Exception {
+		this.userRepository.deleteAll();
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "eatery1");
+		body.put("email", "eatery1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+		post("/register/eatery")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		);
+
+		this.mockMvc.perform(
+			post("/login")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			);
+
+		String token = "invalidtoken";
+		
+		body = new HashMap<>();
+		body.put("alias", "superman");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+			post("/logout")
+							.contentType(MediaType.APPLICATION_JSON)
+							.header("Authorization", token)
+			)
+			.andExpect(status().is4xxClientError());
+	}
+		
 }
