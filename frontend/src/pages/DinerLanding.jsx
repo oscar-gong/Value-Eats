@@ -62,7 +62,7 @@ export default function DinerLanding({ token }) {
         const getEateryList = async () => {
             setLoading(true);
             const response = await fetch(
-                "http://localhost:8080/list/eateries",
+                `http://localhost:8080/list/eateries?sort=${sortBy}`,
                 {
                     method: "GET",
                     headers: {
@@ -83,7 +83,7 @@ export default function DinerLanding({ token }) {
             }
         };
         getEateryList();
-    }, [auth, setAuth, setIsDiner]);
+    }, [auth, setAuth, setIsDiner, sortBy]);
 
     useEffect(() => {
         const getRecommendationList = async () => {
@@ -240,12 +240,12 @@ export default function DinerLanding({ token }) {
                         >
                             <InputLabel>Sort By</InputLabel>
                             <Select
-                                value={sortBy}
+                                defaultValue={"Distance"}
                                 onChange={(e) => setSortBy(e.target.value)}
                             >
-                                <MenuItem value={"distance"}>Distance</MenuItem>
-                                <MenuItem value={"rating"}>Rating</MenuItem>
-                                <MenuItem value={"new"}>New</MenuItem>
+                                <MenuItem selected value={"Distance"}>Distance</MenuItem>
+                                <MenuItem value={"Rating"}>Rating</MenuItem>
+                                <MenuItem value={"New"}>New</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
