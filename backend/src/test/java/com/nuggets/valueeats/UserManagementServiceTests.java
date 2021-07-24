@@ -37,12 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class UserManagementServiceTests {
 	@Autowired
-	DinerRepository dinerRepository;
-
-	@Autowired
-	EateryRepository eateryRepository;
-
-	@Autowired
 	private MockMvc mockMvc;
 
 	// Test valid diner.
@@ -56,12 +50,13 @@ class UserManagementServiceTests {
 		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
-						post("/register/diner")
-										.contentType(MediaType.APPLICATION_JSON)
-										.content(String.valueOf(new JSONObject(body)))
-						)
-						.andExpect(status().isOk());
+			post("/register/diner")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+		  )
+			.andExpect(status().isOk());
 	}
+	
 	// Test diner with the duplicate alias.
 	@Test
 	void dinerRegisterTest2() throws Exception {
@@ -79,48 +74,238 @@ class UserManagementServiceTests {
 		  );
 
 		this.mockMvc.perform(
-						post("/register/diner")
-										.contentType(MediaType.APPLICATION_JSON)
-										.content(String.valueOf(new JSONObject(body)))
-						)
-						.andExpect(status().is4xxClientError());
+			post("/register/diner")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+			.andExpect(status().is4xxClientError());
 	}
 
-		// Test diner with the invalid email.
+	// Test diner with the invalid email.
+	@Test
+	void dinerRegisterTest3() throws Exception {
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "diner2");
+		body.put("email", "diner2");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+		System.out.println(new JSONObject(body));
+
+
+		this.mockMvc.perform(
+			post("/register/diner")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+			.andExpect(status().is4xxClientError());
+	}
+
+// Test diner with the invalid password.
+@Test
+void dinerRegisterTest4() throws Exception {
+	Map<String, String> body = new HashMap<>();
+	body.put("alias", "diner2");
+	body.put("email", "diner2@gmail.com");
+	body.put("address", "Sydney");
+	body.put("password", "1234");
+	System.out.println(new JSONObject(body));
+
+
+	this.mockMvc.perform(
+		post("/register/diner")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		)
+		.andExpect(status().is4xxClientError());
+}
+
+// Test valid diner.
+@Test
+void eateryRegisterTest1() throws Exception {
+	Map<String, String> body = new HashMap<>();
+	body.put("alias", "eatery1");
+	body.put("email", "eatery1@gmail.com");
+	body.put("address", "Sydney");
+	body.put("password", "12rwqeDsad@");
+	System.out.println(new JSONObject(body));
+
+	this.mockMvc.perform(
+		post("/register/eatery")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		)
+		.andExpect(status().isOk());
+}
+
+// Test eatery with the duplicate alias.
+@Test
+void eateryRegisterTest2() throws Exception {
+	Map<String, String> body = new HashMap<>();
+	body.put("alias", "eatery1");
+	body.put("email", "eatery1@gmail.com");
+	body.put("address", "Sydney");
+	body.put("password", "12rwqeDsad@");
+	System.out.println(new JSONObject(body));
+
+	this.mockMvc.perform(
+		post("/register/eatery")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		);
+
+	this.mockMvc.perform(
+		post("/register/eatery")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		)
+		.andExpect(status().is4xxClientError());
+}
+
+	// Test eatery with the invalid email.
+	@Test
+	void eateryRegisterTest3() throws Exception {
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "eatery2");
+		body.put("email", "eatery2");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+		System.out.println(new JSONObject(body));
+
+
+		this.mockMvc.perform(
+			post("/register/eatery")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+			.andExpect(status().is4xxClientError());
+	}
+
+	// Test eatery with the invalid password.
+	@Test
+	void eateryRegisterTest4() throws Exception {
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "eatery2");
+		body.put("email", "eatery2@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "1234");
+		System.out.println(new JSONObject(body));
+
+
+		this.mockMvc.perform(
+		post("/register/eatery")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(String.valueOf(new JSONObject(body)))
+		)
+		.andExpect(status().is4xxClientError());
+	}
+
+	// Test diner login with valid detail.
+	@Test
+	void dinerLoginTest1() throws Exception {
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "diner1");
+		body.put("email", "diner1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+			post("/register/diner")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+		);
+
+		this.mockMvc.perform(
+			post("/login")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+			.andExpect(status().isOk());
+	}
+
+		// Test diner login with invalid detail.
 		@Test
-		void dinerRegisterTest3() throws Exception {
+		void dinerLoginTest2() throws Exception {
 			Map<String, String> body = new HashMap<>();
-			body.put("alias", "diner2");
-			body.put("email", "diner2");
+			body.put("alias", "diner1");
+			body.put("email", "diner1@gmail.com");
 			body.put("address", "Sydney");
 			body.put("password", "12rwqeDsad@");
 			System.out.println(new JSONObject(body));
 	
-	
 			this.mockMvc.perform(
-							post("/register/diner")
-											.contentType(MediaType.APPLICATION_JSON)
-											.content(String.valueOf(new JSONObject(body)))
-							)
-							.andExpect(status().is4xxClientError());
+				post("/register/diner")
+								.contentType(MediaType.APPLICATION_JSON)
+								.content(String.valueOf(new JSONObject(body)))
+			);
+	
+			body = new HashMap<>();
+			body.put("alias", "diner1");
+			body.put("email", "diner@gmail.com");
+			body.put("address", "Sydney");
+			body.put("password", "12rwqeDsad@");
+			System.out.println(new JSONObject(body));
+
+			this.mockMvc.perform(
+				post("/login")
+								.contentType(MediaType.APPLICATION_JSON)
+								.content(String.valueOf(new JSONObject(body)))
+				)
+				.andExpect(status().is4xxClientError());
 		}
 
-		// Test diner with the invalid password.
+			// Test eatery login with valid detail.
+	@Test
+	void eateryLoginTest1() throws Exception {
+		Map<String, String> body = new HashMap<>();
+		body.put("alias", "eatery1");
+		body.put("email", "eatery1@gmail.com");
+		body.put("address", "Sydney");
+		body.put("password", "12rwqeDsad@");
+		System.out.println(new JSONObject(body));
+
+		this.mockMvc.perform(
+			post("/register/eatery")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+		);
+
+		this.mockMvc.perform(
+			post("/login")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(String.valueOf(new JSONObject(body)))
+			)
+			.andExpect(status().isOk());
+	}
+
+		// Test eatery login with invalid detail.
 		@Test
-		void dinerRegisterTest4() throws Exception {
+		void eateryLoginTest2() throws Exception {
 			Map<String, String> body = new HashMap<>();
-			body.put("alias", "diner2");
-			body.put("email", "diner2@gmail.com");
+			body.put("alias", "eatery1");
+			body.put("email", "eatery1@gmail.com");
 			body.put("address", "Sydney");
-			body.put("password", "1234");
+			body.put("password", "12rwqeDsad@");
 			System.out.println(new JSONObject(body));
 	
-	
 			this.mockMvc.perform(
-							post("/register/diner")
-											.contentType(MediaType.APPLICATION_JSON)
-											.content(String.valueOf(new JSONObject(body)))
-							)
-							.andExpect(status().is4xxClientError());
+				post("/register/eatery")
+								.contentType(MediaType.APPLICATION_JSON)
+								.content(String.valueOf(new JSONObject(body)))
+			);
+	
+			body = new HashMap<>();
+			body.put("alias", "eatery1");
+			body.put("email", "eatery@gmail.com");
+			body.put("address", "Sydney");
+			body.put("password", "12rwqeDsad@");
+			System.out.println(new JSONObject(body));
+
+			this.mockMvc.perform(
+				post("/login")
+								.contentType(MediaType.APPLICATION_JSON)
+								.content(String.valueOf(new JSONObject(body)))
+				)
+				.andExpect(status().is4xxClientError());
 		}
 }
