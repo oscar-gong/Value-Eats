@@ -54,15 +54,34 @@ export default function DinerLanding({ token }) {
     const [auth, setAuth] = context.auth;
     const [isDiner, setIsDiner] = context.isDiner;
     const [name, setName] = useState("");
-    const [sortBy, setSortBy] = useState("");
+    const [sortBy, setSortBy] = useState("Rating");
     const [loading, setLoading] = useState(false);
     const [recommendationList, setRecommendationList] = useState([]);
+    const [location, setLocation] = useState({});
+
+    useEffect(() => {
+        const getUserLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) =>
+                    setLocation({
+                        longitude: pos.coords.longitude,
+                        latitude: pos.coords.latitude,
+                    })
+                );
+            } else {
+                console.log("location not permitted");
+            }
+        };
+        getUserLocation();
+    }, []);
 
     useEffect(() => {
         const getEateryList = async () => {
             setLoading(true);
             const response = await fetch(
-                `http://localhost:8080/list/eateries?sort=${sortBy}`,
+                sortBy === "Distance"
+                    ? `http://localhost:8080/list/eateries?sort=${sortBy}&latitude=${location.latitude}&longitude=${location.longitude}`
+                    : `http://localhost:8080/list/eateries?sort=${sortBy}`,
                 {
                     method: "GET",
                     headers: {
@@ -72,6 +91,7 @@ export default function DinerLanding({ token }) {
                     },
                 }
             );
+
             const responseData = await response.json();
             setLoading(false);
             if (response.status === 200) {
@@ -103,24 +123,17 @@ export default function DinerLanding({ token }) {
             setLoading(false);
             if (response.status === 200) {
                 console.log(responseData);
-                setRecommendationList(responseData.eateryList.filter((eatery) => eatery.discount !== "0%"));
+                setRecommendationList(
+                    responseData.eateryList.filter(
+                        (eatery) => eatery.discount !== "0%"
+                    )
+                );
             } else if (response.status === 401) {
                 logUserOut(setAuth, setIsDiner);
             }
         };
         getRecommendationList();
     }, [auth, setAuth, setIsDiner]);
-
-    useEffect(() => {
-        const getUserLocation = () => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((pos) => console.log(pos.coords));
-            } else {
-                console.log("location not permitted");
-            }
-        }
-        getUserLocation();
-    }, []);
 
     if (auth === null) return <Redirect to="/" />;
     if (isDiner === "false") return <Redirect to="/EateryLanding" />;
@@ -251,11 +264,13 @@ export default function DinerLanding({ token }) {
                         >
                             <InputLabel>Sort By</InputLabel>
                             <Select
-                                defaultValue={"Distance"}
+                                defaultValue={"Rating"}
                                 onChange={(e) => setSortBy(e.target.value)}
                             >
-                                <MenuItem selected value={"Distance"}>Distance</MenuItem>
                                 <MenuItem value={"Rating"}>Rating</MenuItem>
+                                <MenuItem selected value={"Distance"}>
+                                    Distance
+                                </MenuItem>
                                 <MenuItem value={"New"}>New</MenuItem>
                             </Select>
                         </FormControl>
