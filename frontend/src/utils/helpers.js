@@ -62,3 +62,11 @@ export const handleTimeNextDay = (time) => {
         return (parseInt(hours) - 24).toString() + ":" + minutes + " the next day";
     }
 }
+
+export const handleImage = (data, setTmpProfilePic) => {
+    Array.from(data).forEach((file) => {
+        fileToDataUrl(file).then((url) => {
+          setTmpProfilePic(url);
+        });
+    });
+};
