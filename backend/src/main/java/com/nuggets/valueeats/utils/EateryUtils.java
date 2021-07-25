@@ -11,7 +11,7 @@ import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 
 public class EateryUtils {
 
-    public static HashMap<String, Object> createEatery(VoucherRepository voucherRepository, RepeatVoucherRepository repeatVoucherRepository, ReviewRepository reviewRepository, Eatery e) {
+    public static HashMap<String, Object> createEatery(VoucherRepository voucherRepository, RepeatVoucherRepository repeatVoucherRepository, ReviewRepository reviewRepository, Eatery e, HashMap<String, Integer> distanceFromDiner) {
         HashMap<String, Object> eatery = new HashMap<String, Object>();
 
         Long maxDiscountVoucher = voucherRepository.findMaxDiscountFromEatery(e.getId());
@@ -36,6 +36,13 @@ public class EateryUtils {
         eatery.put("rating", df.format(averageRating));
         eatery.put("id", e.getId());
         eatery.put("cuisines", e.getCuisines());
+        if (distanceFromDiner != null && distanceFromDiner.containsKey(e.getAddress())) {
+            if (distanceFromDiner.get(e.getAddress()) != Integer.MAX_VALUE) {
+                eatery.put("distance", DistanceUtils.convertDistanceToString(distanceFromDiner.get(e.getAddress())));
+            } else {
+                eatery.put("distance", "N/A");
+            }
+        }
 
         return eatery;
     }

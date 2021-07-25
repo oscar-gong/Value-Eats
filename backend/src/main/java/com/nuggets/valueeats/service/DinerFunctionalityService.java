@@ -22,6 +22,7 @@ import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.ReviewRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
+import com.nuggets.valueeats.utils.DistanceUtils;
 import com.nuggets.valueeats.utils.EateryUtils;
 import com.nuggets.valueeats.utils.ResponseUtils;
 import com.nuggets.valueeats.utils.ReviewUtils;
@@ -158,7 +159,7 @@ public class DinerFunctionalityService {
         }
         Diner diner = dinerRepository.findByToken(token);
         List<Eatery> eateryList = eateryRepository.findAll();
-
+        HashMap<String, Integer> distanceFromDiner = null;
         if ("New".equals(sort)) {
             eateryList = eateryRepository.findAllByOrderByIdDesc();
         } else if ("Rating".equals(sort)) {
@@ -177,12 +178,13 @@ public class DinerFunctionalityService {
             }
             try {
                 String addressesURLString = URLEncoder.encode(String.join("|", addresses), "UTF-8");
-                HashMap<String, Integer> distanceFromDiner = findDistanceFromDiner(latitude, longitude, addressesURLString, addresses);
+                distanceFromDiner = DistanceUtils.findDistanceFromDiner(latitude, longitude, addressesURLString, addresses);
                 if (distanceFromDiner == null) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Unable to retrieve distance data at the moment."));
                 }
+                final HashMap<String, Integer> distanceFromDinerFinal = distanceFromDiner;
                 final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateryList.stream()
-                    .map(a -> new AbstractMap.SimpleImmutableEntry<>(distanceFromDiner.get(a.getAddress()), a))
+                    .map(a -> new AbstractMap.SimpleImmutableEntry<>(distanceFromDinerFinal.get(a.getAddress()), a))
                     .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
 
                 List<Eatery> result = new ArrayList<Eatery>();
@@ -201,7 +203,7 @@ public class DinerFunctionalityService {
         ArrayList<Object> list = new ArrayList<Object>();
 
         for(Eatery e : eateryList){
-            HashMap<String, Object> map = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, reviewRepository, e);
+            HashMap<String, Object> map = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, reviewRepository, e, distanceFromDiner);
             list.add(map);
         }
 
@@ -211,45 +213,6 @@ public class DinerFunctionalityService {
         JSONObject data = new JSONObject(dataMedium);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
-    }
-
-    private HashMap<String, Integer> findDistanceFromDiner(Double latitude, Double longitude, String addressString, List<String> addresses) {
-        HashMap<String, Integer> addressDistanceFromDiner = new HashMap<>();
-        try {
-            OkHttpClient client = new OkHttpClient();
-            String encodedLatitude = URLEncoder.encode(latitude.toString(), "UTF-8");
-            String encodedLongitude = URLEncoder.encode(longitude.toString(), "UTF-8");
-            Request request = new Request.Builder()
-                    .url("https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+ encodedLatitude + ","+ encodedLongitude +"&destinations="+ addressString +"&key=" + "AIzaSyCG80LxbPTd4MNoZuPdzbF-aQA_DcCAGVQ")
-                    .get()
-                    .build();
-            com.squareup.okhttp.ResponseBody responseBody = client.newCall(request).execute().body();
-
-            JSONParser parser = new JSONParser();
-            Object response = parser.parse(responseBody.string());
-            JSONObject map = (JSONObject) response;
-            String status= (String) map.get("status");
-            if (status.equals("OK")) {
-                for (int i = 0; i < addresses.size(); i++) {
-                    JSONObject elements = (JSONObject)((JSONArray)((JSONObject)((JSONArray) map.get("rows")).get(0)).get("elements")).get(i);
-                    String elementStatus = (String) elements.get("status");
-                    if (elementStatus.equals("OK")) {
-                        JSONObject distanceObj = (JSONObject) elements.get("distance");
-                        Integer distance = Integer.parseInt(distanceObj.get("value").toString());
-                        System.out.println("Distance between you and " + addresses.get(i) + " is " + distance + "m.");
-                        addressDistanceFromDiner.put(addresses.get(i), distance);
-                    } else {
-                        System.out.println("Distance not found for:" + addresses.get(i));
-                        addressDistanceFromDiner.put(addresses.get(i), Integer.MAX_VALUE);
-                    }
-                }
-            }
-
-        } catch(Exception e) {
-            System.out.println("Distance retrieval failed due to: " + e);
-            return null;
-        }
-        return addressDistanceFromDiner;
     }
     
     public ResponseEntity<JSONObject> editReview(Review review, String token) {
