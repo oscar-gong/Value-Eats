@@ -1,25 +1,25 @@
-import React, { useState, useContext } from 'react';
-import DeleteIcon from '@material-ui/icons/Delete';
+import React, { useState, useContext } from "react";
+import DeleteIcon from "@material-ui/icons/Delete";
 import StarRating from "../components/StarRating";
-import IconButton from '@material-ui/core/IconButton';
-import { ProfilePhoto } from '../styles/ProfilePhoto';
-import { Box, Divider, makeStyles } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import ConfirmModal from './ConfirmModal';
+import IconButton from "@material-ui/core/IconButton";
+import { ProfilePhoto } from "../styles/ProfilePhoto";
+import { Box, Divider, makeStyles } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import ConfirmModal from "./ConfirmModal";
 import EditCreateReview from "../components/EditCreateReview";
 import { StoreContext } from "../utils/store";
-import Carousel from 'react-material-ui-carousel';
-import { useHistory } from 'react-router-dom';
-import { ButtonStyled } from '../styles/ButtonStyle';
-import { ReviewInfoBox } from '../styles/ReviewInfoBox';
+import Carousel from "react-material-ui-carousel";
+import { useHistory } from "react-router-dom";
+import { ButtonStyled } from "../styles/ButtonStyle";
+import { ReviewInfoBox } from "../styles/ReviewInfoBox";
 
 const useStyles = makeStyles({
   photoCarousel: {
-      justifyContent: "center",
-      width: "35vw",
-      height: "200px",
-      objectFit: "contain",
-      padding: "10px"
+    justifyContent: "center",
+    width: "35vw",
+    height: "200px",
+    objectFit: "contain",
+    padding: "10px"
   },
   name: {
     fontSize: "1em",
@@ -29,22 +29,21 @@ const useStyles = makeStyles({
 });
 // export default function Review ({ token, review }) {
 export default function Review ({
-  id, 
-  eateryId, 
-  username, 
-  profilePic, 
-  eateryName, 
-  review, 
-  rating, 
-  images, 
-  onEateryProfile, 
-  isOwner, 
+  id,
+  eateryId,
+  username,
+  profilePic,
+  eateryName,
+  review,
+  rating,
+  images,
+  onEateryProfile,
+  isOwner,
   refreshList
 }) {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
   const token = context.auth[0];
-  
   const classes = useStyles();
   const [openEditCreateReview, setOpenEditCreateReview] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
@@ -58,34 +57,34 @@ export default function Review ({
     console.log("This will be called when a review is deleted");
     console.log(token);
     console.log(id);
-    const response = await fetch("http://localhost:8080/diner/removereview", 
+    const response = await fetch("http://localhost:8080/diner/removereview",
       {
         method: "DELETE",
         headers: {
-          "Accept": "application/json",
+          Accept: "application/json",
           "Content-Type": "application/json",
-          "Authorization": token,
+          Authorization: token,
         },
         body: JSON.stringify({
-          "id": id,
-          "eateryId": eateryId
+          id: id,
+          eateryId: eateryId
         })
       });
     const responseData = await response.json();
     if (response.status === 200) {
-      setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+      setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });
       refreshList();
     } else {
-      setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
+      setAlertOptions({ showAlert: true, variant: "error", message: responseData.message });
     }
     setDeleteModal(false);
-  }
+  };
 
   const handleEatery = (eateryId) => {
     history.push({
       pathname: `/EateryProfile/${eateryName}/${eateryId}`,
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -95,17 +94,17 @@ export default function Review ({
             <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
             <StarRating rating={editRating}></StarRating>
           </Box>
-          <div style={{margin: "0px 5%", flexGrow: 1}}>
+          <div style={{ margin: "0px 5%", flexGrow: 1 }}>
             <Box className={classes.name}>{onEateryProfile ? username : eateryName}</Box>
             <Box>{editCreateReview}</Box>
           </div>
           <Box display="flex" flexDirection="column" justifyContent="center">
             <Box display="flex" justifyContent="center">
             {
-              !onEateryProfile && 
+              !onEateryProfile &&
               <ButtonStyled variant="contained"
-                color="primary" onClick={()=>handleEatery(eateryId)}>
-                View Restaurant  
+                color="primary" onClick={() => handleEatery(eateryId)}>
+                View Restaurant
               </ButtonStyled>
             }
             {/* TODO FIX THIS BELOW */}
@@ -132,12 +131,12 @@ export default function Review ({
         }
         {
           editCreateReviewImages.length !== 0 && (
-          <div style={{top: "25%", margin: "auto", outline:"none", display: "flex", justifyContent: "center"}}>
+          <div style={{ top: "25%", margin: "auto", outline: "none", display: "flex", justifyContent: "center" }}>
             <Carousel
               navButtonsProps={{
-                  style: {
-                      opacity: "50%",
-                  },
+                style: {
+                  opacity: "50%",
+                },
               }}
               navButtonsAlwaysVisible={false}
               autoPlay={false}
@@ -145,16 +144,17 @@ export default function Review ({
               {
                 editCreateReviewImages.map((imgdata, idx) => {
                   return (
-                    <img key={idx} 
-                    alt="review photos" 
-                    src={imgdata} 
+                    <img key={idx}
+                    alt="review photos"
+                    src={imgdata}
                     className={classes.photoCarousel}></img>
                   );
                 })
-              } 
+              }
             </Carousel>
           </div>
-        )}
+          )
+        }
       </Box>
       <ConfirmModal open={openDeleteModal}
         handleClose={handleCloseModal}
@@ -176,5 +176,5 @@ export default function Review ({
         isEdit={true}
         refreshList={refreshList}/>
     </>
-  )
+  );
 }

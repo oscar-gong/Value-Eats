@@ -1,51 +1,51 @@
 import React from "react";
 import {
-    Card,
-    Grid,
-    CardContent,
-    CardHeader,
-    CardMedia,
-    Typography,
-    makeStyles,
+  Card,
+  Grid,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Typography,
+  makeStyles,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import RatingWithNum from "../components/RatingWithNum";
 
 const useStyles = makeStyles({
-    wideCard: {
-        marginTop: "20px",
-        transition: "transform 0.15s ease-in-out",
-        "&:hover": {
-            transform: "scale3d(1.02, 1.02, 1)",
-            cursor: "pointer",
-        },
+  wideCard: {
+    marginTop: "20px",
+    transition: "transform 0.15s ease-in-out",
+    "&:hover": {
+      transform: "scale3d(1.02, 1.02, 1)",
+      cursor: "pointer",
     },
+  },
 });
 
-export default function EateryDisplay({
-    name,
-    id,
-    discount,
-    cuisines,
-    rating,
+export default function EateryDisplay ({
+  name,
+  id,
+  discount,
+  cuisines,
+  rating,
 }) {
-    const classes = useStyles();
-    const history = useHistory();
-    return (
+  const classes = useStyles();
+  const history = useHistory();
+  return (
         <Card
             className={classes.wideCard}
             onClick={(e) =>
-                history.push({
-                    pathname: `/EateryProfile/${name}/${id}`,
-                })
+              history.push({
+                pathname: `/EateryProfile/${name}/${id}`,
+              })
             }
         >
             <CardHeader title={"UP TO " + discount + " OFF"} />
             <CardMedia
                 style={{
-                    height: "150px",
+                  height: "150px",
                 }}
-                //TODO change display image for restaurant
+                // TODO change display image for restaurant
                 image={
                     "https://i.pinimg.com/originals/b8/e1/4a/b8e14a14af9434aa5ccc0376a47a5237.jpg"
                 }
@@ -64,5 +64,5 @@ export default function EateryDisplay({
                 </Grid>
             </CardContent>
         </Card>
-    );
+  );
 }

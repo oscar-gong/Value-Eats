@@ -1,22 +1,23 @@
-import React, {useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { StoreContext } from "../utils/store";
 import { Redirect } from "react-router-dom";
 import { Box, IconButton, Grid } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 import Countdown from "react-countdown";
 
-export default function EateryVoucher({eateryId, 
-  voucherId, 
-  isOneOff, 
-  discount, 
-  isDineIn, 
-  vouchersLeft, 
-  date, 
-  startTime, 
-  endTime, 
+export default function EateryVoucher ({
+  eateryId,
+  voucherId,
+  isOneOff,
+  discount,
+  isDineIn,
+  vouchersLeft,
+  date,
+  startTime,
+  endTime,
   timeRemaining,
   nextUpdate,
   isActive,
@@ -35,7 +36,7 @@ export default function EateryVoucher({eateryId,
     console.log(hours, minutes);
     console.log(datetime);
     return datetime;
-  }
+  };
   const startDateTime = convertToDateTime(date, startTime);
   const endDateTime = convertToDateTime(date, endTime);
 
@@ -60,25 +61,25 @@ export default function EateryVoucher({eateryId,
 
   const removeVoucher = async (id) => {
     const response = await fetch(
-        "http://localhost:8080/eatery/voucher?id=" + voucherId,
-        {
-          method: "DELETE",
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": auth
-          }
+      "http://localhost:8080/eatery/voucher?id=" + voucherId,
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: auth
         }
+      }
     );
     const responseData = await response.json();
     if (response.status === 200) {
-      setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+      setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });
       refreshList();
     } else {
-      setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
+      setAlertOptions({ showAlert: true, variant: "error", message: responseData.message });
     }
     setOpenDeleteModal(false);
-  }
+  };
 
   return (
     <Box bgcolor="white" margin="20px" border="2px solid #FF845B" borderRadius="20px">
@@ -92,11 +93,11 @@ export default function EateryVoucher({eateryId,
           <Box display="flex" flexDirection="column" pl={10}>
             {
               !isOneOff &&
-              <h3 style={{margin: "5px 0px"}}>Weekly deal</h3>
+              <h3 style={{ margin: "5px 0px" }}>Weekly deal</h3>
             }
             {
               (isRedeemable || isActive) &&
-              <h4 style={{margin: "5px 0px"}}>{vouchersLeft} vouchers remaining...</h4>
+              <h4 style={{ margin: "5px 0px" }}>{vouchersLeft} vouchers remaining...</h4>
             }
             {
               isRedeemable &&
@@ -107,13 +108,13 @@ export default function EateryVoucher({eateryId,
             }
             {
               !isRedeemable && isActive &&
-              <h4 style={{margin: "5px 0px"}}>Deal starts at {date} {startTime}</h4>
+              <h4 style={{ margin: "5px 0px" }}>Deal starts at {date} {startTime}</h4>
             }
             {
               !isRedeemable && !isActive &&
               <>
-                <h4 style={{margin: "5px 0px"}}>Deal will become available </h4>
-                <h4 style={{margin: "5px 0px"}}>again at {nextUpdate} {startTime}</h4>
+                <h4 style={{ margin: "5px 0px" }}>Deal will become available </h4>
+                <h4 style={{ margin: "5px 0px" }}>again at {nextUpdate} {startTime}</h4>
               </>
             }
           </Box>
@@ -121,12 +122,12 @@ export default function EateryVoucher({eateryId,
         <Grid item display="flex" flexDirection="column" justifyContent="center" xs={3}>
           <Box display="flex" justifyContent="center">
             <IconButton onClick={() => {}}>
-              <EditIcon fontSize="large" 
+              <EditIcon fontSize="large"
                 onClick={() => setEditCreateModal(true)}
               />
             </IconButton>
             <IconButton onClick={() => {}}>
-              <DeleteIcon fontSize="large" 
+              <DeleteIcon fontSize="large"
                 onClick={() => setOpenDeleteModal(true)}
               />
             </IconButton>
@@ -143,8 +144,8 @@ export default function EateryVoucher({eateryId,
         open={editCreateModal}
         setOpen={setEditCreateModal}
         isEdit={true}
-        initOneOff={isOneOff ? 0 : 1} initDineIn={isDineIn ? "true" : "false"} 
-        initDiscount={discount} 
+        initOneOff={isOneOff ? 0 : 1} initDineIn={isDineIn ? "true" : "false"}
+        initDiscount={discount}
         initQuantity={vouchersLeft}
         initStartTime={startDateTime}
         initEndTime={endDateTime}
