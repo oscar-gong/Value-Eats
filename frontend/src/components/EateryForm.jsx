@@ -15,6 +15,11 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { StoreContext } from "../utils/store";
 import { validRequired } from "../utils/helpers";
 import { ButtonStyled } from "../styles/ButtonStyle";
+import AddAPhoto from "@material-ui/icons/AddAPhoto";
+import { FileUpload } from "../styles/FileUpload";
+import { ProfilePhoto } from "../styles/ProfilePhoto";
+import { fileToDataUrl } from "../utils/helpers";
+import { Label } from "../styles/Label";
 
 export default function EateryForm({
     email,
@@ -34,7 +39,9 @@ export default function EateryForm({
     setPreviewImages,
     isRegister,
     submitForm,
-    removeBg=false
+    removeBg = false,
+    setTmpProfilePic,
+    tmpProfilePic
 }) {
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
@@ -87,6 +94,15 @@ export default function EateryForm({
         listOfCuisines();
     }, []);
 
+    const handleImage = (data) => {
+        Array.from(data).forEach((file) => {
+            fileToDataUrl(file).then((url) => {
+                setTmpProfilePic(url);
+                // setImages((prevArray) => [...prevArray, url]);
+            });
+        });
+    };
+
     return (
         <AlignCenter removeBg={removeBg}>
             <FloatBox display="flex" flexDirection="column" alignItems="center">
@@ -97,6 +113,25 @@ export default function EateryForm({
                             : "Update Eatery"}
                     </Subtitle>
                 </Box>
+                {!isRegister && (
+                    <Box pt={1} display="flex">
+                        <ProfilePhoto
+                            size={70}
+                            src={tmpProfilePic}
+                        ></ProfilePhoto>
+                        <Box pt={2}>
+                            <Label>
+                                <FileUpload
+                                    type="file"
+                                    onChange={(e) =>
+                                        handleImage(e.target.files)
+                                    }
+                                />
+                                {<AddAPhoto />} Change Profile Picture
+                            </Label>
+                        </Box>
+                    </Box>
+                )}
                 <Box pt={2} width="60%">
                     <TextField
                         id="outlined-basic"
@@ -123,7 +158,12 @@ export default function EateryForm({
                         onChange={(e) =>
                             setPassword({ value: e.target.value, valid: true })
                         }
-                        error={(!password.valid && isRegister) || (!isRegister && !password.valid && password.value.length !== 0)}
+                        error={
+                            (!password.valid && isRegister) ||
+                            (!isRegister &&
+                                !password.valid &&
+                                password.value.length !== 0)
+                        }
                         helperText={
                             password.valid
                                 ? ""

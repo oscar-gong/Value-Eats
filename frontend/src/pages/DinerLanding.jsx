@@ -62,13 +62,13 @@ const useStyles = makeStyles({
     },
     dinerNameText: {
         position: "absolute",
-        bottom: "5%",
+        bottom: "6%",
         left: "5%",
-        fontSize: "2vw",
+        fontSize: "1.75vw",
         textTransform: "uppercase",
         color: "#FF855B",
         fontWeight: "bold",
-        letterSpacing: "5px",
+        letterSpacing: "0.1em",
     }
 });
 
