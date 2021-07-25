@@ -393,6 +393,7 @@ public class UserManagementService {
         map.put("id", eateryDb.getId());
         map.put("name", eateryDb.getAlias());
         map.put("email", eateryDb.getEmail());
+        map.put("profilePic", eateryDb.getProfilePic());
         map.put("rating", df.format(averageRating));
         map.put("address", eateryDb.getAddress());
         map.put("menuPhotos", eateryDb.getMenuPhotos());
