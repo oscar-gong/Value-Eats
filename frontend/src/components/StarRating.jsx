@@ -11,15 +11,13 @@ import { Rating } from '@material-ui/lab';
 export default function StarRating({rating, isEditable=false, setRating}) {
     
     return (
-      <>
-        <Rating value={rating}
-        precision={0.5}
-        onChange={(event, newValue) => {
-            setRating(newValue);
-        }}
-        readOnly={!isEditable}
-        >
-        </Rating>
-      </>
+      <Rating value={rating}
+      precision={0.5}
+      onChange={(event, newValue) => {
+          setRating(newValue);
+      }}
+      readOnly={!isEditable}
+      >
+      </Rating>
     );
 }
