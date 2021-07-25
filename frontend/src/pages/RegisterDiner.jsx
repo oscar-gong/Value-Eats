@@ -14,6 +14,11 @@ import {
 } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 import { ButtonStyled } from "../styles/ButtonStyle";
+import AddAPhoto from "@material-ui/icons/AddAPhoto";
+import { FileUpload } from "../styles/FileUpload";
+import { ProfilePhoto } from "../styles/ProfilePhoto";
+import { fileToDataUrl } from "../utils/helpers";
+import { Label } from "../styles/Label";
 // set to true for real demos
 const useGoogleAPI = false;
 
@@ -29,6 +34,8 @@ export default function RegisterDiner({ setToken }) {
     const setAlertOptions = context.alert[1];
     const [auth, setAuth] = context.auth;
     const [isDiner, setIsDiner] = context.isDiner;
+    const [tmpProfilePic, setTmpProfilePic] = useState("https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg");
+
 
     const validAddress = () => {
         if (address.value === "") {
@@ -79,8 +86,7 @@ export default function RegisterDiner({ setToken }) {
                     email: email.value,
                     address: useGoogleAPI ? address.value : "Sydney",
                     password: password.value,
-                    profilePic:
-                        "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+                    profilePic: tmpProfilePic,
                 }),
             }
         );
@@ -121,6 +127,15 @@ export default function RegisterDiner({ setToken }) {
         },
     });
 
+    const handleImage = (data) => {
+        Array.from(data).forEach((file) => {
+            fileToDataUrl(file).then((url) => {
+                setTmpProfilePic(url);
+                // setImages((prevArray) => [...prevArray, url]);
+            });
+        });
+    };
+
     if (isDiner === "true" && auth !== null)
         return <Redirect to="/DinerLanding" />;
     if (isDiner === "false" && auth !== null)
@@ -130,9 +145,19 @@ export default function RegisterDiner({ setToken }) {
         <AlignCenter>
             <FloatBox display="flex" flexDirection="column" alignItems="center">
                 <Box pt={2}>
-                    <Subtitle>
-                        Create Account
-                    </Subtitle>
+                    <Subtitle>Create Account</Subtitle>
+                </Box>
+                <Box pt={1} display="flex">
+                    <ProfilePhoto size={70} src={tmpProfilePic}></ProfilePhoto>
+                    <Box pt={2}>
+                        <Label>
+                            <FileUpload
+                                type="file"
+                                onChange={(e) => handleImage(e.target.files)}
+                            />
+                            {<AddAPhoto />} Upload Profile Picture
+                        </Label>
+                    </Box>
                 </Box>
                 <Box pt={1} width="60%">
                     <TextField
