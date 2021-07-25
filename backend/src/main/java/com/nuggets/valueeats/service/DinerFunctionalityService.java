@@ -1,5 +1,6 @@
 package com.nuggets.valueeats.service;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.AbstractMap;
@@ -164,18 +165,37 @@ public class DinerFunctionalityService {
             eateryList = eateryRepository.findAllByOrderByLazyRatingDesc();
         } else if ("Distance".equals(sort)) {
             if (latitude == null || longitude == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Location must be provided."));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Location must be provided."));
             }
-            final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateryList.stream()
-                .map(a -> new AbstractMap.SimpleImmutableEntry<>(findDistance(latitude, longitude, a.getAddress()), a))
-                .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
+            if (eateryList.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("There are no eateries at the moment."));
+            }
 
-            List<Eatery> result = new ArrayList<Eatery>();
-            while (!pq.isEmpty()) {
-                Eatery newEatery = pq.poll().getValue();
-                result.add(0, newEatery);
+            List<String> addresses = new ArrayList<>();
+            for (Eatery e:eateryList) {
+                addresses.add(e.getAddress());
             }
-            eateryList = result;
+            try {
+                String addressesURLString = URLEncoder.encode(String.join("|", addresses), "UTF-8");
+                HashMap<String, Integer> distanceFromDiner = findDistanceFromDiner(latitude, longitude, addressesURLString, addresses);
+                if (distanceFromDiner == null) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Unable to retrieve distance data at the moment."));
+                }
+                final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateryList.stream()
+                    .map(a -> new AbstractMap.SimpleImmutableEntry<>(distanceFromDiner.get(a.getAddress()), a))
+                    .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
+
+                List<Eatery> result = new ArrayList<Eatery>();
+                while (!pq.isEmpty()) {
+                    Eatery newEatery = pq.poll().getValue();
+                    result.add(0, newEatery);
+                }
+                eateryList = result;
+
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Address cannot be encoded."));
+            } 
         }
 
         ArrayList<Object> list = new ArrayList<Object>();
@@ -193,16 +213,14 @@ public class DinerFunctionalityService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 
-    private Integer findDistance(Double latitude, Double longitude, String address) {
-        Integer distance = Integer.MAX_VALUE;
-
+    private HashMap<String, Integer> findDistanceFromDiner(Double latitude, Double longitude, String addressString, List<String> addresses) {
+        HashMap<String, Integer> addressDistanceFromDiner = new HashMap<>();
         try {
             OkHttpClient client = new OkHttpClient();
-            String encodedAddress = URLEncoder.encode(address, "UTF-8");
             String encodedLatitude = URLEncoder.encode(latitude.toString(), "UTF-8");
             String encodedLongitude = URLEncoder.encode(longitude.toString(), "UTF-8");
             Request request = new Request.Builder()
-                    .url("https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+ encodedLatitude + ","+ encodedLongitude +"&destinations="+ encodedAddress +"&key=" + "AIzaSyCG80LxbPTd4MNoZuPdzbF-aQA_DcCAGVQ")
+                    .url("https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+ encodedLatitude + ","+ encodedLongitude +"&destinations="+ addressString +"&key=" + "AIzaSyCG80LxbPTd4MNoZuPdzbF-aQA_DcCAGVQ")
                     .get()
                     .build();
             com.squareup.okhttp.ResponseBody responseBody = client.newCall(request).execute().body();
@@ -212,19 +230,26 @@ public class DinerFunctionalityService {
             JSONObject map = (JSONObject) response;
             String status= (String) map.get("status");
             if (status.equals("OK")) {
-                JSONObject elements = (JSONObject)((JSONArray)((JSONObject)((JSONArray) map.get("rows")).get(0)).get("elements")).get(0);
-                String elementStatus = (String) elements.get("status");
-                if (elementStatus.equals("OK")) {
-                    JSONObject distanceObj = (JSONObject) elements.get("distance");
-                    distance = Integer.parseInt(distanceObj.get("value").toString());
-                    System.out.println("Distance between you and " + address + " is " + distance + "m.");
+                for (int i = 0; i < addresses.size(); i++) {
+                    JSONObject elements = (JSONObject)((JSONArray)((JSONObject)((JSONArray) map.get("rows")).get(0)).get("elements")).get(i);
+                    String elementStatus = (String) elements.get("status");
+                    if (elementStatus.equals("OK")) {
+                        JSONObject distanceObj = (JSONObject) elements.get("distance");
+                        Integer distance = Integer.parseInt(distanceObj.get("value").toString());
+                        System.out.println("Distance between you and " + addresses.get(i) + " is " + distance + "m.");
+                        addressDistanceFromDiner.put(addresses.get(i), distance);
+                    } else {
+                        System.out.println("Distance not found for:" + addresses.get(i));
+                        addressDistanceFromDiner.put(addresses.get(i), Integer.MAX_VALUE);
+                    }
                 }
             }
 
         } catch(Exception e) {
-            System.out.println("something went wrong" + e);
+            System.out.println("Distance retrieval failed due to: " + e);
+            return null;
         }
-        return distance;
+        return addressDistanceFromDiner;
     }
     
     public ResponseEntity<JSONObject> editReview(Review review, String token) {
