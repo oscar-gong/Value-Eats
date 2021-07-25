@@ -10,16 +10,23 @@ import com.squareup.okhttp.Request;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DistanceUtils {
-    public static HashMap<String, Integer> findDistanceFromDiner(Double latitude, Double longitude, String addressString, List<String> addresses) {
+    @Value("${security.google_api}")
+    private String googleAPI;
+
+    public HashMap<String, Integer> findDistanceFromDiner(Double latitude, Double longitude, String addressString, List<String> addresses) {
         HashMap<String, Integer> addressDistanceFromDiner = new HashMap<>();
+        
         try {
             OkHttpClient client = new OkHttpClient();
             String encodedLatitude = URLEncoder.encode(latitude.toString(), "UTF-8");
             String encodedLongitude = URLEncoder.encode(longitude.toString(), "UTF-8");
             Request request = new Request.Builder()
-                    .url("https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+ encodedLatitude + ","+ encodedLongitude +"&destinations="+ addressString +"&key=" + "AIzaSyCG80LxbPTd4MNoZuPdzbF-aQA_DcCAGVQ")
+                    .url("https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+ encodedLatitude + ","+ encodedLongitude +"&destinations="+ addressString +"&key=" + googleAPI)
                     .get()
                     .build();
             com.squareup.okhttp.ResponseBody responseBody = client.newCall(request).execute().body();
@@ -42,6 +49,8 @@ public class DistanceUtils {
                         addressDistanceFromDiner.put(addresses.get(i), Integer.MAX_VALUE);
                     }
                 }
+            } else {
+                return null;
             }
 
         } catch(Exception e) {

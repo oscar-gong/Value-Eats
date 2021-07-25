@@ -59,6 +59,9 @@ public class DinerFunctionalityService {
     @Autowired
     private BookingRecordRepository bookingRepository;
 
+    @Autowired
+    private DistanceUtils distanceUtils;
+
     public ResponseEntity<JSONObject> createReview(Review review, String token) {
         try {
 
@@ -178,7 +181,7 @@ public class DinerFunctionalityService {
             }
             try {
                 String addressesURLString = URLEncoder.encode(String.join("|", addresses), "UTF-8");
-                distanceFromDiner = DistanceUtils.findDistanceFromDiner(latitude, longitude, addressesURLString, addresses);
+                distanceFromDiner = distanceUtils.findDistanceFromDiner(latitude, longitude, addressesURLString, addresses);
                 if (distanceFromDiner == null) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Unable to retrieve distance data at the moment."));
                 }
