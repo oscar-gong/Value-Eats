@@ -57,6 +57,7 @@ export default function SearchResults() {
                     discount={item.discount}
                     cuisines={item.cuisines}
                     rating={item.rating}
+                    image={item.profilePic}
                 />
             );
         });

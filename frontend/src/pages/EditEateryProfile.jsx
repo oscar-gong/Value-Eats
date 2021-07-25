@@ -51,7 +51,7 @@ export default function EditEateryLanding() {
                 setCuisines({ value: responseData.cuisines, valid: true });
                 setImages(responseData.menuPhotos);
                 setPreviewImages(responseData.menuPhotos);
-                setTmpProfilePic(responseData["profile picture"]);
+                setTmpProfilePic(responseData.profilePic);
             } else if (response.status === 401) {
                 logUserOut(setAuth, setIsDiner);
             }

@@ -24,6 +24,7 @@ import Loading from "../components/Loading";
 import EateryDisplay from "../components/EateryDisplay";
 import RatingWithNum from "../components/RatingWithNum";
 import DinerLandingImage from "../assets/DinerLandingImage.png";
+import EateryTempPic from "../assets/EateryTempPic.jpg";
 
 const useStyles = makeStyles({
     card: {
@@ -64,7 +65,7 @@ const useStyles = makeStyles({
         position: "absolute",
         bottom: "6%",
         left: "5%",
-        fontSize: "1.75vw",
+        fontSize: "1.7vw",
         textTransform: "uppercase",
         color: "#FF855B",
         fontWeight: "bold",
@@ -166,10 +167,7 @@ export default function DinerLanding({ token }) {
 
     const getCuisineList = (cuisines) => {
         if (cuisines.length < 3) return cuisines.join(", ");
-        let cuisineString = cuisines.slice(0, 2).join(", ") + "..";
-        // if (cuisineString.length > 25) {
-        //     cuisineString = cuisineString.substring(0, 24) + "...";
-        // }
+        let cuisineString = cuisines.slice(0, 2).join(", ") + ".."; 
         return cuisineString;
     };
 
@@ -206,9 +204,7 @@ export default function DinerLanding({ token }) {
                                     >
                                         <CardMedia
                                             className={classes.media}
-                                            image={
-                                                "https://i.pinimg.com/originals/b8/e1/4a/b8e14a14af9434aa5ccc0376a47a5237.jpg"
-                                            }
+                                            image={item[i].profilePic}
                                         />
                                         <CardContent
                                             className={classes.overlay}
@@ -265,6 +261,7 @@ export default function DinerLanding({ token }) {
                     discount={item.discount}
                     cuisines={item.cuisines}
                     rating={item.rating}
+                    image={item.profilePic}
                 />
             );
         });
