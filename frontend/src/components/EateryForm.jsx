@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import UploadPhotos from "./UploadPhotos";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
@@ -12,9 +12,13 @@ import {
 } from "../utils/helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { StoreContext } from "../utils/store";
 import { validRequired } from "../utils/helpers";
 import { ButtonStyled } from "../styles/ButtonStyle";
+import AddAPhoto from "@material-ui/icons/AddAPhoto";
+import { FileUpload } from "../styles/FileUpload";
+import { handleImage } from "../utils/helpers";
+import { Label } from "../styles/Label";
+import { BannerPhoto } from "../styles/BannerPhoto";
 
 export default function EateryForm({
     email,
@@ -34,11 +38,10 @@ export default function EateryForm({
     setPreviewImages,
     isRegister,
     submitForm,
-    removeBg=false
+    removeBg = false,
+    setTmpProfilePic,
+    tmpProfilePic,
 }) {
-    const context = useContext(StoreContext);
-    const setAlertOptions = context.alert[1];
-    const token = context.auth[0];
     const [cuisineList, setCuisineList] = useState([]);
     //set true for demos
     const useGoogleAPI = false;
@@ -97,6 +100,9 @@ export default function EateryForm({
                             : "Update Eatery"}
                     </Subtitle>
                 </Box>
+
+        
+
                 <Box pt={2} width="60%">
                     <TextField
                         id="outlined-basic"
@@ -123,7 +129,12 @@ export default function EateryForm({
                         onChange={(e) =>
                             setPassword({ value: e.target.value, valid: true })
                         }
-                        error={(!password.valid && isRegister) || (!isRegister && !password.valid && password.value.length !== 0)}
+                        error={
+                            (!password.valid && isRegister) ||
+                            (!isRegister &&
+                                !password.valid &&
+                                password.value.length !== 0)
+                        }
                         helperText={
                             password.valid
                                 ? ""
@@ -231,12 +242,30 @@ export default function EateryForm({
                         )}
                     />
                 </Box>
+             
+                <Box pt={2}>
+                    <Label>
+                        <FileUpload
+                            type="file"
+                            onChange={(e) => handleImage(e.target.files, setTmpProfilePic)}
+                        />
+                        {<AddAPhoto />}{" "}
+                        {isRegister
+                            ? "Upload Display Photo"
+                            : "Change Profile Picture"}
+                    </Label>
+                </Box>
+                <Box pt={2} display="flex" justifyContent="center">
+                    <BannerPhoto height={50} src={tmpProfilePic} />
+                </Box>
+
                 <UploadPhotos
                     setImages={setImages}
                     previewImages={previewImages}
                     setPreviewImages={setPreviewImages}
-                    uploadDescription={"Upload a Photo"}
+                    uploadDescription={"Upload Menu Photos"}
                 />
+              
 
                 <Box pt={3} pb={3}>
                     <ButtonStyled

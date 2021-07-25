@@ -19,7 +19,7 @@ export default function EditEateryLanding() {
     const [address, setAddress] = useState(defaultState);
     const [cuisines, setCuisines] = useState({ value: [], valid: true });
     const history = useHistory();
-
+    const [tmpProfilePic, setTmpProfilePic] = useState(defaultState);
     const context = useContext(StoreContext);
     const [auth, setAuth] = context.auth;
     const [isDiner, setIsDiner] = context.isDiner;
@@ -51,6 +51,7 @@ export default function EditEateryLanding() {
                 setCuisines({ value: responseData.cuisines, valid: true });
                 setImages(responseData.menuPhotos);
                 setPreviewImages(responseData.menuPhotos);
+                setTmpProfilePic(responseData.profilePic);
             } else if (response.status === 401) {
                 logUserOut(setAuth, setIsDiner);
             }
@@ -95,7 +96,9 @@ export default function EditEateryLanding() {
             email: email.value,
             address: useGoogleAPI ? address.value : "Sydney",
             cuisines: cuisines.value,
-            menuPhotos: images
+            menuPhotos: images,
+            profilePic: tmpProfilePic
+
         }
         if (password.value.length > 0) {
             updateBody.password = password.value;
@@ -154,6 +157,8 @@ export default function EditEateryLanding() {
                     isRegister={false}
                     submitForm={updateUser}
                     removeBg={true}
+                    tmpProfilePic={tmpProfilePic}
+                    setTmpProfilePic={setTmpProfilePic}
                 />
             </MainContainer>
         </>

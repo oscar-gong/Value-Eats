@@ -28,6 +28,7 @@ export default function EateryDisplay({
     discount,
     cuisines,
     rating,
+    image
 }) {
     const classes = useStyles();
     const history = useHistory();
@@ -46,8 +47,7 @@ export default function EateryDisplay({
                     height: "150px",
                 }}
                 //TODO change display image for restaurant
-                image={
-                    "https://i.pinimg.com/originals/b8/e1/4a/b8e14a14af9434aa5ccc0376a47a5237.jpg"
+                image={image
                 }
             />
             <CardContent>

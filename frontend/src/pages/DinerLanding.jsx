@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
-import StarRating from "../components/StarRating";
 import { MainContainer } from "../styles/MainContainer";
 import Carousel from "react-material-ui-carousel";
 import { useHistory, Redirect } from "react-router";
@@ -10,7 +9,6 @@ import {
     Card,
     Grid,
     CardContent,
-    CardHeader,
     CardMedia,
     Typography,
     makeStyles,
@@ -22,32 +20,67 @@ import {
 } from "@material-ui/core";
 import Loading from "../components/Loading";
 import EateryDisplay from "../components/EateryDisplay";
+import RatingWithNum from "../components/RatingWithNum";
+import DinerLandingImage from "../assets/DinerLandingImage.png";
 
 const useStyles = makeStyles({
     card: {
         color: "black",
         borderRadius: "0px",
         transition: "transform 0.15s ease-in-out",
+        maxHeight: "250px",
         "&:hover": {
             transform: "scale3d(1.02, 1.02, 1)",
-            maxHeight: "none",
             cursor: "pointer",
         },
-        maxHeight: "300px",
+        position: "relative",
+        margin: "1%",
     },
-    wideCard: {
-        marginTop: "20px",
-        transition: "transform 0.15s ease-in-out",
-        "&:hover": {
-            transform: "scale3d(1.02, 1.02, 1)",
-            cursor: "pointer",
-        },
+    stars: {
+        position: "absolute",
+        right: "10%",
+        bottom: "5%",
+    },
+    overlay: {
+        position: "absolute",
+        bottom: "0px",
+        left: "0px",
+        width: "100%",
+        height: "21%",
+        color: "white",
+        backgroundColor: "rgba(0,0,0,0.5)",
+    },
+    media: {
+        height: 0,
+        paddingTop: "80%",
+    },
+    dinerLandingImage: {
+        objectFit: "cover",
+        height: "auto",
+        width: "100%",
+    },
+    dinerNameText: {
+        position: "absolute",
+        bottom: "6%",
+        left: "5%",
+        fontSize: "1.7vw",
+        textTransform: "uppercase",
+        color: "#FF855B",
+        fontWeight: "bold",
+        letterSpacing: "0.1em",
+    },
+    text: {
+        fontSize: "1.7vw",
+        textTransform: "uppercase",
+        color: "#FF855B",
+        fontWeight: "bold",
+        letterSpacing: "0.1em",
+        marginBottom: "1%",
     },
 });
 
 export default function DinerLanding({ token }) {
     const [eateryList, setEateryList] = useState([]);
-    const [hover, setHover] = useState(true);
     const classes = useStyles();
     const history = useHistory();
     const context = useContext(StoreContext);
@@ -139,10 +172,8 @@ export default function DinerLanding({ token }) {
     if (isDiner === "false") return <Redirect to="/EateryLanding" />;
 
     const getCuisineList = (cuisines) => {
-        let cuisineString = cuisines.join(", ");
-        if (cuisineString.length > 25) {
-            cuisineString = cuisineString.substring(0, 24) + "...";
-        }
+        if (cuisines.length < 3) return cuisines.join(", ");
+        let cuisineString = cuisines.slice(0, 2).join(", ") + "..";
         return cuisineString;
     };
 
@@ -176,52 +207,41 @@ export default function DinerLanding({ token }) {
                                                 pathname: `/EateryProfile/${item[i].name}/${item[i].id}`,
                                             })
                                         }
-                                        onMouseLeave={() => setHover(true)}
-                                        onMouseEnter={() => setHover(false)}
                                     >
-                                        <CardHeader
-                                            title={
-                                                "UP TO " +
-                                                item[i].discount +
-                                                " OFF"
-                                            }
-                                        />
                                         <CardMedia
-                                            style={{
-                                                height: "150px",
-                                            }}
-                                            image={
-                                                "https://i.pinimg.com/originals/b8/e1/4a/b8e14a14af9434aa5ccc0376a47a5237.jpg"
-                                            }
+                                            className={classes.media}
+                                            image={item[i].profilePic}
                                         />
-                                        <CardContent>
+                                        <CardContent
+                                            className={classes.overlay}
+                                        >
                                             <Grid
                                                 container
                                                 justify="space-between"
                                                 alignItems="flex-end"
                                             >
-                                                <Grid item xs={8}>
+                                                <Grid item xs={6}>
+                                                    <div>
+                                                        {"UP TO " +
+                                                            item[i].discount +
+                                                            " OFF"}
+                                                    </div>
                                                     <Typography variant="h5">
                                                         {item[i].name}
                                                     </Typography>
                                                     <Typography variant="subtitle2">
-                                                        {hover
-                                                            ? getCuisineList(
-                                                                  item[i]
-                                                                      .cuisines
-                                                              )
-                                                            : item[
-                                                                  i
-                                                              ].cuisines.join(
-                                                                  ", "
-                                                              )}
+                                                        {getCuisineList(
+                                                            item[i].cuisines
+                                                        )}
                                                     </Typography>
                                                 </Grid>
-                                                <Grid item xs={4}>
-                                                    <StarRating
-                                                        rating={parseFloat(
-                                                            item[i].rating
-                                                        )}
+                                                <Grid
+                                                    item
+                                                    xs={6}
+                                                    className={classes.stars}
+                                                >
+                                                    <RatingWithNum
+                                                        rating={item[i].rating}
                                                     />
                                                 </Grid>
                                             </Grid>
@@ -247,6 +267,7 @@ export default function DinerLanding({ token }) {
                     discount={item.discount}
                     cuisines={item.cuisines}
                     rating={item.rating}
+                    image={item.profilePic}
                 />
             );
         });
@@ -256,7 +277,14 @@ export default function DinerLanding({ token }) {
             <NavBar isDiner={isDiner} />
             <MainContainer>
                 <Box py={4}>
-                    <Typography variant="h5">Hi {name},</Typography>
+                    <Box style={{ marginBottom: "20px", position: "relative" }}>
+                        <img
+                            className={classes.dinerLandingImage}
+                            alt="welcome banner with diner's username"
+                            src={DinerLandingImage}
+                        />
+                        <div className={classes.dinerNameText}>{name}</div>
+                    </Box>
                     <Box textAlign="right">
                         <FormControl
                             variant="filled"
@@ -276,11 +304,28 @@ export default function DinerLanding({ token }) {
                         </FormControl>
                     </Box>
 
-                    <Typography variant="h6">
-                        Restaurants we think you would like
-                    </Typography>
+                    <div className={classes.text}>
+                        {recommendationList.length === 0
+                            ? ""
+                            : "Restaurants we think you would like"}
+                    </div>
 
-                    <Carousel>{getSlides()}</Carousel>
+                    <Carousel
+                        fullHeightHover={false}
+                        navButtonsProps={{
+                            style: {
+                                opacity: "50%",
+                            },
+                        }}
+                        navButtonsWrapperProps={{
+                            style: {
+                                bottom: "40%",
+                                top: "unset",
+                            },
+                        }}
+                    >
+                        {getSlides()}
+                    </Carousel>
                     {getEateries()}
                 </Box>
                 <Loading isLoading={loading} />
