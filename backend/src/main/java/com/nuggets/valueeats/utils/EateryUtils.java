@@ -35,6 +35,7 @@ public class EateryUtils {
         eatery.put("discount", discount);
         eatery.put("rating", df.format(averageRating));
         eatery.put("id", e.getId());
+        eatery.put("profilePic", e.getProfilePic());
         eatery.put("cuisines", e.getCuisines());
 
         return eatery;
