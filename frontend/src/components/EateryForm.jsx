@@ -20,6 +20,8 @@ import { FileUpload } from "../styles/FileUpload";
 import { ProfilePhoto } from "../styles/ProfilePhoto";
 import { fileToDataUrl } from "../utils/helpers";
 import { Label } from "../styles/Label";
+import DinerLandingImage from "../assets/DinerLandingImage.png";
+import { BannerPhoto } from "../styles/BannerPhoto";
 
 export default function EateryForm({
     email,
@@ -41,7 +43,7 @@ export default function EateryForm({
     submitForm,
     removeBg = false,
     setTmpProfilePic,
-    tmpProfilePic
+    tmpProfilePic,
 }) {
     const context = useContext(StoreContext);
     const setAlertOptions = context.alert[1];
@@ -113,25 +115,9 @@ export default function EateryForm({
                             : "Update Eatery"}
                     </Subtitle>
                 </Box>
-                {!isRegister && (
-                    <Box pt={1} display="flex">
-                        <ProfilePhoto
-                            size={70}
-                            src={tmpProfilePic}
-                        ></ProfilePhoto>
-                        <Box pt={2}>
-                            <Label>
-                                <FileUpload
-                                    type="file"
-                                    onChange={(e) =>
-                                        handleImage(e.target.files)
-                                    }
-                                />
-                                {<AddAPhoto />} Change Profile Picture
-                            </Label>
-                        </Box>
-                    </Box>
-                )}
+
+        
+
                 <Box pt={2} width="60%">
                     <TextField
                         id="outlined-basic"
@@ -271,12 +257,30 @@ export default function EateryForm({
                         )}
                     />
                 </Box>
+             
+                <Box pt={2}>
+                    <Label>
+                        <FileUpload
+                            type="file"
+                            onChange={(e) => handleImage(e.target.files)}
+                        />
+                        {<AddAPhoto />}{" "}
+                        {isRegister
+                            ? "Upload Display Photo"
+                            : "Change Profile Picture"}
+                    </Label>
+                </Box>
+                <Box pt={2} display="flex" justifyContent="center">
+                    <BannerPhoto height={50} src={tmpProfilePic} />
+                </Box>
+
                 <UploadPhotos
                     setImages={setImages}
                     previewImages={previewImages}
                     setPreviewImages={setPreviewImages}
-                    uploadDescription={"Upload a Photo"}
+                    uploadDescription={"Upload Menu Photos"}
                 />
+              
 
                 <Box pt={3} pb={3}>
                     <ButtonStyled

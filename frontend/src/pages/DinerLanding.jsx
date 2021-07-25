@@ -37,6 +37,7 @@ const useStyles = makeStyles({
             cursor: "pointer",
         },
         position: "relative",
+        margin: "1%"
     },
     stars: {
         position: "absolute",
@@ -70,6 +71,14 @@ const useStyles = makeStyles({
         color: "#FF855B",
         fontWeight: "bold",
         letterSpacing: "0.1em",
+    },
+    text: {
+        fontSize: "1.7vw",
+        textTransform: "uppercase",
+        color: "#FF855B",
+        fontWeight: "bold",
+        letterSpacing: "0.1em",
+        marginBottom: "1%"
     }
 });
 
@@ -294,9 +303,9 @@ export default function DinerLanding({ token }) {
                         </FormControl>
                     </Box>
 
-                    <Typography variant="h6">
+                    <div className={classes.text}>
                         {recommendationList.length === 0 ? "" : "Restaurants we think you would like"}
-                    </Typography>
+                    </div>
 
                     <Carousel
                         fullHeightHover={false}

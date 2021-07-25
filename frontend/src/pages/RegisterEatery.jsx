@@ -16,6 +16,7 @@ export default function RegisterEatery() {
     const [eateryName, setEateryName] = useState(defaultState);
     const [address, setAddress] = useState(defaultState);
     const [cuisines, setCuisines] = useState({ value: [], valid: true });
+    const [tmpProfilePic, setTmpProfilePic] = useState(EateryTempPic);
     const history = useHistory();
 
     const context = useContext(StoreContext);
@@ -73,7 +74,7 @@ export default function RegisterEatery() {
                 password: password.value,
                 cuisines: cuisines.value,
                 menuPhotos: images, // array of data urls
-                profilePic: EateryTempPic,
+                profilePic: tmpProfilePic ? tmpProfilePic : EateryTempPic ,
             }),
         });
         console.log(response);
@@ -122,6 +123,8 @@ export default function RegisterEatery() {
             setPreviewImages={setPreviewImages}
             isRegister={true}
             submitForm={registerUser}
+            tmpProfilePic={tmpProfilePic}
+            setTmpProfilePic={setTmpProfilePic}
         />
     );
 }
