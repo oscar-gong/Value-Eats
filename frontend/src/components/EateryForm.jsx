@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import UploadPhotos from "./UploadPhotos";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
@@ -12,15 +12,12 @@ import {
 } from "../utils/helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { StoreContext } from "../utils/store";
 import { validRequired } from "../utils/helpers";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import { FileUpload } from "../styles/FileUpload";
-import { ProfilePhoto } from "../styles/ProfilePhoto";
-import { fileToDataUrl } from "../utils/helpers";
+import { handleImage } from "../utils/helpers";
 import { Label } from "../styles/Label";
-import DinerLandingImage from "../assets/DinerLandingImage.png";
 import { BannerPhoto } from "../styles/BannerPhoto";
 
 export default function EateryForm({
@@ -45,9 +42,6 @@ export default function EateryForm({
     setTmpProfilePic,
     tmpProfilePic,
 }) {
-    const context = useContext(StoreContext);
-    const setAlertOptions = context.alert[1];
-    const token = context.auth[0];
     const [cuisineList, setCuisineList] = useState([]);
     //set true for demos
     const useGoogleAPI = false;
@@ -95,15 +89,6 @@ export default function EateryForm({
         };
         listOfCuisines();
     }, []);
-
-    const handleImage = (data) => {
-        Array.from(data).forEach((file) => {
-            fileToDataUrl(file).then((url) => {
-                setTmpProfilePic(url);
-                // setImages((prevArray) => [...prevArray, url]);
-            });
-        });
-    };
 
     return (
         <AlignCenter removeBg={removeBg}>
@@ -262,7 +247,7 @@ export default function EateryForm({
                     <Label>
                         <FileUpload
                             type="file"
-                            onChange={(e) => handleImage(e.target.files)}
+                            onChange={(e) => handleImage(e.target.files, setTmpProfilePic)}
                         />
                         {<AddAPhoto />}{" "}
                         {isRegister

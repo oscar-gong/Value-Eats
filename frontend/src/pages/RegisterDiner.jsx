@@ -17,7 +17,7 @@ import { ButtonStyled } from "../styles/ButtonStyle";
 import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import { FileUpload } from "../styles/FileUpload";
 import { ProfilePhoto } from "../styles/ProfilePhoto";
-import { fileToDataUrl } from "../utils/helpers";
+import { handleImage } from "../utils/helpers";
 import { Label } from "../styles/Label";
 // set to true for real demos
 const useGoogleAPI = false;
@@ -34,8 +34,9 @@ export default function RegisterDiner({ setToken }) {
     const setAlertOptions = context.alert[1];
     const [auth, setAuth] = context.auth;
     const [isDiner, setIsDiner] = context.isDiner;
-    const [tmpProfilePic, setTmpProfilePic] = useState("https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg");
-
+    const [tmpProfilePic, setTmpProfilePic] = useState(
+        "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+    );
 
     const validAddress = () => {
         if (address.value === "") {
@@ -127,15 +128,6 @@ export default function RegisterDiner({ setToken }) {
         },
     });
 
-    const handleImage = (data) => {
-        Array.from(data).forEach((file) => {
-            fileToDataUrl(file).then((url) => {
-                setTmpProfilePic(url);
-                // setImages((prevArray) => [...prevArray, url]);
-            });
-        });
-    };
-
     if (isDiner === "true" && auth !== null)
         return <Redirect to="/DinerLanding" />;
     if (isDiner === "false" && auth !== null)
@@ -153,7 +145,12 @@ export default function RegisterDiner({ setToken }) {
                         <Label>
                             <FileUpload
                                 type="file"
-                                onChange={(e) => handleImage(e.target.files)}
+                                onChange={(e) =>
+                                    handleImage(
+                                        e.target.files,
+                                        setTmpProfilePic
+                                    )
+                                }
                             />
                             {<AddAPhoto />} Upload Profile Picture
                         </Label>

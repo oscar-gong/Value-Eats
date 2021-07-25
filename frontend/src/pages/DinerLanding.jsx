@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
-import StarRating from "../components/StarRating";
 import { MainContainer } from "../styles/MainContainer";
 import Carousel from "react-material-ui-carousel";
 import { useHistory, Redirect } from "react-router";
@@ -10,7 +9,6 @@ import {
     Card,
     Grid,
     CardContent,
-    CardHeader,
     CardMedia,
     Typography,
     makeStyles,
@@ -24,7 +22,6 @@ import Loading from "../components/Loading";
 import EateryDisplay from "../components/EateryDisplay";
 import RatingWithNum from "../components/RatingWithNum";
 import DinerLandingImage from "../assets/DinerLandingImage.png";
-import EateryTempPic from "../assets/EateryTempPic.jpg";
 
 const useStyles = makeStyles({
     card: {
@@ -37,7 +34,7 @@ const useStyles = makeStyles({
             cursor: "pointer",
         },
         position: "relative",
-        margin: "1%"
+        margin: "1%",
     },
     stars: {
         position: "absolute",
@@ -78,8 +75,8 @@ const useStyles = makeStyles({
         color: "#FF855B",
         fontWeight: "bold",
         letterSpacing: "0.1em",
-        marginBottom: "1%"
-    }
+        marginBottom: "1%",
+    },
 });
 
 export default function DinerLanding({ token }) {
@@ -176,7 +173,7 @@ export default function DinerLanding({ token }) {
 
     const getCuisineList = (cuisines) => {
         if (cuisines.length < 3) return cuisines.join(", ");
-        let cuisineString = cuisines.slice(0, 2).join(", ") + ".."; 
+        let cuisineString = cuisines.slice(0, 2).join(", ") + "..";
         return cuisineString;
     };
 
@@ -280,8 +277,12 @@ export default function DinerLanding({ token }) {
             <NavBar isDiner={isDiner} />
             <MainContainer>
                 <Box py={4}>
-                    <Box style={{marginBottom: "20px", position: "relative"}}>
-                        <img className={classes.dinerLandingImage} src={DinerLandingImage}/>
+                    <Box style={{ marginBottom: "20px", position: "relative" }}>
+                        <img
+                            className={classes.dinerLandingImage}
+                            alt="welcome banner with diner's username"
+                            src={DinerLandingImage}
+                        />
                         <div className={classes.dinerNameText}>{name}</div>
                     </Box>
                     <Box textAlign="right">
@@ -304,7 +305,9 @@ export default function DinerLanding({ token }) {
                     </Box>
 
                     <div className={classes.text}>
-                        {recommendationList.length === 0 ? "" : "Restaurants we think you would like"}
+                        {recommendationList.length === 0
+                            ? ""
+                            : "Restaurants we think you would like"}
                     </div>
 
                     <Carousel
