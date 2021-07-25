@@ -30,20 +30,20 @@ function App () {
   return (
     <>
       <Snackbar
-          open={alertOptions.showAlert}
-          autoHideDuration={6000}
+        open={alertOptions.showAlert}
+        autoHideDuration={6000}
+        onClose={() =>
+          setAlertOptions({ ...alertOptions, showAlert: false })
+        }
+      >
+        <Alert
           onClose={() =>
             setAlertOptions({ ...alertOptions, showAlert: false })
           }
-      >
-          <Alert
-              onClose={() =>
-                setAlertOptions({ ...alertOptions, showAlert: false })
-              }
-              severity={alertOptions.variant}
-          >
-              {alertOptions.message}
-          </Alert>
+          severity={alertOptions.variant}
+        >
+          {alertOptions.message}
+        </Alert>
       </Snackbar>
       <Main>
         <Router>
