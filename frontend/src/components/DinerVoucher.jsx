@@ -42,31 +42,31 @@ export default function DinerVoucher ({
         alignItems="center"
       >
         <Grid item display="flex" flexDirection="column" xs={2}>
-            <Box display="flex" flexDirection="column" alignItems="center">
-                <h1>
-                    {isActive
-                      ? used
-                        ? "USED"
-                        : "ACTIVE"
-                      : used
-                        ? "USED"
-                        : "EXPIRED"}
-                </h1>
-            </Box>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <h1>
+              {isActive
+                ? used
+                  ? "USED"
+                  : "ACTIVE"
+                : used
+                  ? "USED"
+                  : "EXPIRED"}
+            </h1>
+          </Box>
         </Grid>
         <Grid item display="flex" justifyContent="center" xs={3}>
-            <Box display="flex" flexDirection="column" alignItems="center" flexWrap="nowrap">
-                <h2>
-                    {discount}% off - {eatingStyle}
-                </h2>
-            </Box>
+          <Box display="flex" flexDirection="column" alignItems="center" flexWrap="nowrap">
+            <h2>
+              {discount}% off - {eatingStyle}
+            </h2>
+          </Box>
         </Grid>
         <Grid
-            item
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            xs={4}
+          item
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          xs={4}
         >
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center">
             {!isRedeemable && !used && (

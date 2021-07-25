@@ -32,37 +32,37 @@ export default function EateryDisplay ({
   const classes = useStyles();
   const history = useHistory();
   return (
-        <Card
-            className={classes.wideCard}
-            onClick={(e) =>
-              history.push({
-                pathname: `/EateryProfile/${name}/${id}`,
-              })
-            }
-        >
-            <CardHeader title={"UP TO " + discount + " OFF"} />
-            <CardMedia
-                style={{
-                  height: "150px",
-                }}
-                // TODO change display image for restaurant
-                image={
-                    "https://i.pinimg.com/originals/b8/e1/4a/b8e14a14af9434aa5ccc0376a47a5237.jpg"
-                }
-            />
-            <CardContent>
-                <Grid container justify="space-between" alignItems="flex-end">
-                    <Grid item xs={8}>
-                        <Typography variant="h5">{name}</Typography>
-                        <Typography variant="subtitle2">
-                            {cuisines.join(", ")}
-                        </Typography>
-                    </Grid>
-                    <Grid item>
-                        <RatingWithNum rating={rating} />
-                    </Grid>
-                </Grid>
-            </CardContent>
-        </Card>
+    <Card
+        className={classes.wideCard}
+        onClick={(e) =>
+          history.push({
+            pathname: `/EateryProfile/${name}/${id}`,
+          })
+        }
+    >
+      <CardHeader title={"UP TO " + discount + " OFF"} />
+      <CardMedia
+        style={{
+          height: "150px",
+        }}
+        // TODO change display image for restaurant
+        image={
+          "https://i.pinimg.com/originals/b8/e1/4a/b8e14a14af9434aa5ccc0376a47a5237.jpg"
+        }
+      />
+      <CardContent>
+        <Grid container justify="space-between" alignItems="flex-end">
+          <Grid item xs={8}>
+            <Typography variant="h5">{name}</Typography>
+            <Typography variant="subtitle2">
+              {cuisines.join(", ")}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <RatingWithNum rating={rating} />
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
   );
 }

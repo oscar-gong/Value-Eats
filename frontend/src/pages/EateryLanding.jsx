@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { MainContent } from "../styles/MainContent";
 import { StoreContext } from "../utils/store";
@@ -11,7 +11,7 @@ import { logUserOut } from "../utils/logoutHelper";
 import { VoucherContainer } from "../styles/VoucherContainer";
 import { Subtitle } from "../styles/Subtitle";
 
-export default function EateryLanding() {
+export default function EateryLanding () {
   const context = useContext(StoreContext);
   const [auth, setAuth] = context.auth;
   const [isDiner, setIsDiner] = context.isDiner;
@@ -23,7 +23,7 @@ export default function EateryLanding() {
 
   const getEateryDetails = async () => {
     const response = await fetch(
-      `http://localhost:8080/eatery/profile/details`,
+      "http://localhost:8080/eatery/profile/details",
       {
         method: "GET",
         headers: {
@@ -54,16 +54,15 @@ export default function EateryLanding() {
   if (isDiner === "true") return <Redirect to="/DinerLanding" />;
   console.log(isDiner);
 
-
   return (
     <>
       <NavBar isDiner={isDiner}/>
       <MainContent>
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Subtitle>{eateryDetails.name}'s Discounts</Subtitle>
+          <Subtitle>{eateryDetails.name}&apos;s Discounts</Subtitle>
           <VoucherContainer>
             {
-              eateryDetails.vouchers && (eateryDetails.vouchers.map((v,key) => {
+              eateryDetails.vouchers && (eateryDetails.vouchers.map((v, key) => {
                 return (
                   ((v.nextUpdate !== "Deleted" && v.isRecurring === true) || v.isRecurring === false) &&
                   <EateryVoucher voucherId={v.id}
@@ -71,16 +70,17 @@ export default function EateryLanding() {
                     eateryId={v.eateryId}
                     discount={v.discount}
                     isOneOff={!v.isRecurring}
-                    isDineIn={v.eatingStyle === "DineIn" ? true : false}
+                    isDineIn={v.eatingStyle === "DineIn"}
                     vouchersLeft={v.quantity}
-                    date={v.date} 
+                    date={v.date}
                     startTime={v.startTime}
                     endTime={v.endTime}
                     timeRemaining={v.duration}
                     nextUpdate={v.nextUpdate ? v.nextUpdate : null}
                     isActive={v.isActive}
                     isRedeemable={v.isRedeemable}
-                    refreshList={() => getEateryDetails()}></EateryVoucher>
+                    refreshList={() => getEateryDetails()}
+                  ></EateryVoucher>
                 );
               }))
             }
@@ -91,7 +91,7 @@ export default function EateryLanding() {
                 minHeight="100%"
                 justifyContent="center"
                 alignItems="center">
-                <h1 style={{marginTop: "0px"}}>
+                <h1 style={{ marginTop: "0px" }}>
                   No active discounts!
                 </h1>
                 <ButtonStyled widthPercentage={25}

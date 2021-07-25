@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { MainContent } from "../styles/MainContent";
 import { StoreContext } from "../utils/store";
@@ -8,41 +8,40 @@ import { ButtonStyled } from "../styles/ButtonStyle";
 import { Title } from "../styles/Title";
 import { logUserOut } from "../utils/logoutHelper";
 import ConfirmModal from "../components/ConfirmModal";
-import Confetti from 'react-confetti';
+import Confetti from "react-confetti";
 import { ShakeHead } from "../styles/ShakeHead";
 
-export default function RedeemVoucher() {
+export default function RedeemVoucher () {
   const context = useContext(StoreContext);
   const [auth, setAuth] = context.auth;
   const [isDiner, setIsDiner] = context.isDiner;
   const setAlertOptions = context.alert[1];
   const history = useHistory();
-  const [code, setCode] = useState({value: "", valid: true});
+  const [code, setCode] = useState({ value: "", valid: true });
   const [openRedeemed, setOpenRedeemed] = useState(false);
   console.log(auth);
   console.log(isDiner);
-  
+
   // Window resize boiler plate code adapted from: https://www.codegrepper.com/code-examples/javascript/react+js+get+window+height
   const getWindowDimensions = () => {
     return {
       width: window.innerWidth,
       height: window.innerHeight
-    }
-  }
-  
-  const {width, height} = useWindowDimensions();
-  function useWindowDimensions() {
-    
+    };
+  };
+
+  const { width, height } = useWindowDimensions();
+  function useWindowDimensions () {
     const [windowDim, setWindowDim] = useState(getWindowDimensions());
     useEffect(() => {
-      function handleResize() {
+      function handleResize () {
         setWindowDim(getWindowDimensions());
       }
-  
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
     }, []);
-  
+
     return windowDim;
   }
 
@@ -65,7 +64,7 @@ export default function RedeemVoucher() {
   //     const responseData = await response.json();
   //     if (response.status === 401) {
   //         logUserOut();
-  //     } 
+  //     }
   //   };
   //   checkAuth();
   // }, [auth]);
@@ -78,24 +77,24 @@ export default function RedeemVoucher() {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: auth,
-      }});
+      }
+    });
 
     const responseData = await response.json();
     if (response.status === 200) {
-      setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+      setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });
       setOpenRedeemed(true);
     } else if (response.status === 401) {
       logUserOut(setAuth, setIsDiner);
     } else {
-      setCode({...code, valid: false});
-      setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
+      setCode({ ...code, valid: false });
+      setAlertOptions({ showAlert: true, variant: "error", message: responseData.message });
     }
   };
 
   if (auth === null) return <Redirect to="/" />;
   if (isDiner === "true") return <Redirect to="/DinerLanding" />;
   console.log(isDiner);
-
 
   return (
     <>
@@ -119,7 +118,7 @@ export default function RedeemVoucher() {
                 })
               }
               error={!code.valid}
-              helperText={code.valid ? "" :"Please try again"}
+              helperText={code.valid ? "" : "Please try again"}
               value={code.value}
               variant="filled"
               fullWidth
@@ -138,7 +137,7 @@ export default function RedeemVoucher() {
       <ConfirmModal open={openRedeemed}
         handleClose={() => setOpenRedeemed(false)}
         title={"Voucher Redeemed!!!"}
-        message={`Would you like to redeem another?`}
+        message={"Would you like to redeem another?"}
         confirmText={"Redeem again"}
         handleConfirm={() => setOpenRedeemed(false)}
         denyText={"Back to Vouchers"}

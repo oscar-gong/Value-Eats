@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
 import { MainContent } from "../styles/MainContent";
-import { ProfilePhoto } from '../styles/ProfilePhoto'
-import { Box, Button, Divider, Dialog, DialogTitle, DialogContent, DialogActions, TextField} from "@material-ui/core";
+import { ProfilePhoto } from "../styles/ProfilePhoto";
+import { Box, Button, Divider, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@material-ui/core";
 import { Label } from "../styles/Label";
 import { FileUpload } from "../styles/FileUpload";
 import { StatBox } from "../styles/StatBox";
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from "@material-ui/icons/Edit";
 import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import Review from "../components/Review";
 import { fileToDataUrl, validRequired, validEmail, validPassword, validConfirmPassword } from "../utils/helpers";
@@ -16,7 +16,7 @@ import { Title } from "../styles/Title";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import { useHistory } from "react-router";
 
-export default function DinerProfile() {
+export default function DinerProfile () {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
   const [token, setAuth] = context.auth;
@@ -26,7 +26,7 @@ export default function DinerProfile() {
   const [openProfile, setOpenProfile] = useState(false);
 
   const defaultState = (initialValue = "") => {
-    return { value: initialValue, valid: true }
+    return { value: initialValue, valid: true };
   };
 
   const [username, setUsername] = useState(defaultState);
@@ -53,10 +53,10 @@ export default function DinerProfile() {
     if (response.status === 200) {
       console.log(responseData);
       setUser({
-        "username": responseData.name,
-        "email": responseData.email,
-        "profilePic": responseData["profile picture"],
-      })
+        username: responseData.name,
+        email: responseData.email,
+        profilePic: responseData["profile picture"],
+      });
       console.log("reviews: ");
       console.log(responseData.reviews);
       setReviews(responseData.reviews);
@@ -77,16 +77,16 @@ export default function DinerProfile() {
   const handleClose = () => {
     setOpenProfile(false);
     setEmail(user.email);
-    setUsername({...username, value: user.username});
-    setEmail({...email, value: user.email});
+    setUsername({ ...username, value: user.username });
+    setEmail({ ...email, value: user.email });
     setTmpProfilePic(user.profilePic);
-  }
+  };
 
   const saveChanges = async () => {
     console.log("changes are going");
     // Ideally this form should be validated when a form is submitted
-    if (user.username.value === "") setUsername({value: "", valid: false});
-    if (user.email.value === "") setEmail({value: "", valid: false});
+    if (user.username.value === "") setUsername({ value: "", valid: false });
+    if (user.email.value === "") setEmail({ value: "", valid: false });
     // check that all fields are valid and not empty before registering
     if (
       !username.valid ||
@@ -106,36 +106,37 @@ export default function DinerProfile() {
           Authorization: token,
         },
         body: JSON.stringify({
-          "email": email.value,
-          "password": (password.value.length !== 0 ? password.value : null),
-          "alias": username.value,
-          "profilePic": tmpProfilePic
+          email: email.value,
+          password: (password.value.length !== 0 ? password.value : null),
+          alias: username.value,
+          profilePic: tmpProfilePic
         })
       }
     );
     const responseData = await response.json();
     if (response.status === 200) {
-        console.log(responseData);
-        setUser({ ...user,
-          "username": username.value,
-          "email": email.value,
-          "profilePic": tmpProfilePic,
-        })
-        setOpenProfile(false);
-        setAlertOptions({ showAlert: true, variant: 'success', message: responseData.message });
+      console.log(responseData);
+      setUser({
+        ...user,
+        username: username.value,
+        email: email.value,
+        profilePic: tmpProfilePic,
+      });
+      setOpenProfile(false);
+      setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });
     } else if (response.status === 401) {
-        logUserOut(setAuth, setIsDiner);
+      logUserOut(setAuth, setIsDiner);
     } else {
-      setAlertOptions({ showAlert: true, variant: 'error', message: responseData.message });
+      setAlertOptions({ showAlert: true, variant: "error", message: responseData.message });
     }
-  }
+  };
 
   const handleImage = (data) => {
     Array.from(data).forEach((file) => {
-        fileToDataUrl(file).then((url) => {
-          setTmpProfilePic(url);
-            // setImages((prevArray) => [...prevArray, url]);
-        });
+      fileToDataUrl(file).then((url) => {
+        setTmpProfilePic(url);
+        // setImages((prevArray) => [...prevArray, url]);
+      });
     });
   };
 
@@ -145,7 +146,7 @@ export default function DinerProfile() {
       total += review.reviewPhotos.length;
     }
     return total;
-  }
+  };
 
   return (
     <>
@@ -154,7 +155,7 @@ export default function DinerProfile() {
         <Box display="flex" justifyContent="center" alignItems="center" paddingTop="10px">
           <ProfilePhoto size={150} src={user.profilePic} />
           <Box display="flex" flexDirection="column" alignItems="center" paddingX="20px">
-            <Box style={{color: "#FF845B", fontSize: "1.5em"}}>{user.username}</Box>
+            <Box style={{ color: "#FF845B", fontSize: "1.5em" }}>{user.username}</Box>
             <ButtonStyled variant="contained"
               color="primary"
               startIcon={<EditIcon />}
@@ -175,13 +176,14 @@ export default function DinerProfile() {
           <Divider variant="middle" />
         </Box>
         {/* Reviews would be mapped here... */}
-        <Box display="flex" flexDirection="column" flex="1" alignItems="center" style={{overflowY: 'auto', height: "100%"}}>
+        <Box display="flex" flexDirection="column" flex="1" alignItems="center" style={{ overflowY: "auto", height: "100%" }}>
           {
             reviews.length > 0 &&
             reviews.map((r) => {
               console.log(r);
               return (
-                <Review id={r.reviewId}
+                <Review key={r.reviewId}
+                id={r.reviewId}
                 eateryId={r.eateryId}
                 username={r.name}
                 profilePic={r.profilePic}

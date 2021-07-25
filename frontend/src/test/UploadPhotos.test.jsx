@@ -1,6 +1,5 @@
 import { shallow } from "enzyme";
 import React from "react";
-import "./setupTests.js";
 import renderer from "react-test-renderer";
 import UploadPhotos from "../components/UploadPhotos";
 
