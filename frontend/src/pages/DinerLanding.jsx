@@ -23,6 +23,7 @@ import {
 import Loading from "../components/Loading";
 import EateryDisplay from "../components/EateryDisplay";
 import RatingWithNum from "../components/RatingWithNum";
+import DinerLandingImage from "../assets/DinerLandingImage.png";
 
 const useStyles = makeStyles({
     card: {
@@ -48,12 +49,27 @@ const useStyles = makeStyles({
         width: "100%",
         height: "21%",
         color: "white",
-        backgroundColor: "rgba(0,0,0,0.6)",
+        backgroundColor: "rgba(0,0,0,0.5)",
     },
     media: {
         height: 0,
         paddingTop: "80%",
     },
+    dinerLandingImage: {
+        objectFit: "cover",
+        height: "auto",
+        width: "100%",
+    },
+    dinerNameText: {
+        position: "absolute",
+        bottom: "5%",
+        left: "5%",
+        fontSize: "2vw",
+        textTransform: "uppercase",
+        color: "#FF855B",
+        fontWeight: "bold",
+        letterSpacing: "5px",
+    }
 });
 
 export default function DinerLanding({ token }) {
@@ -258,7 +274,10 @@ export default function DinerLanding({ token }) {
             <NavBar isDiner={isDiner} />
             <MainContainer>
                 <Box py={4}>
-                    <Typography variant="h5">Hi {name},</Typography>
+                    <Box style={{marginBottom: "20px", position: "relative"}}>
+                        <img className={classes.dinerLandingImage} src={DinerLandingImage}/>
+                        <div className={classes.dinerNameText}>{name}</div>
+                    </Box>
                     <Box textAlign="right">
                         <FormControl
                             variant="filled"
