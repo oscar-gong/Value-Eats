@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmModal renders correctly when open is false 1`] = `null`;
+
+exports[`ConfirmModal renders with custom confirm and deny text 1`] = `null`;
+
+exports[`ConfirmModal renders with minimal props 1`] = `null`;

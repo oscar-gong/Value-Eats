@@ -3,16 +3,14 @@ import React from "react";
 import renderer from "react-test-renderer";
 import Loading from "../components/Loading";
 
-describe("StarRating", () => {
+describe("Loading", () => {
   it("can work in the base case", () => {
     const loading = shallow(<Loading isLoading={true}/>);
-    console.log(loading.debug({ verbose: true }));
     expect(loading.get(0)).toBeTruthy();
   });
 
   it("is not shown when asked not to be", () => {
     const loading = shallow(<Loading isLoading={false}/>);
-    console.log(loading.debug({ verbose: true }));
     expect(loading.get(0)).toBeFalsy();
   });
 

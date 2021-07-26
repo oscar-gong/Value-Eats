@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StarRating does not render when asked not to 1`] = `null`;
+exports[`Loading does not render when asked not to 1`] = `null`;
 
-exports[`StarRating renders with minimal props 1`] = `
+exports[`Loading renders with minimal props 1`] = `
 <div
   className="MuiBox-root MuiBox-root-1"
 >
