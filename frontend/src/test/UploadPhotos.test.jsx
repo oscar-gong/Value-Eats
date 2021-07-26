@@ -14,9 +14,23 @@ describe("UploadPhotos", () => {
 
   it("text is on the upload element", () => {
     const upload = shallow(<UploadPhotos setImages={noop} previewImages={[]} setPreviewImages={noop} uploadDescription={"Upload"}/>);
-    console.log(upload.debug({ verbose: true }));
     expect(upload.text()).toBe("Upload");
+    const uploadImages = shallow(<UploadPhotos setImages={noop} previewImages={[]} setPreviewImages={noop} uploadDescription={"Upload Images"}/>);
+    expect(uploadImages.text()).toBe("Upload Images");
   });
+
+  //   it("can handle the preview images being changed", () => {
+  //     const onClick = jest.fn();
+  //     const upload = shallow(<UploadPhotos setImages={onClick} previewImages={[]} setPreviewImages={onClick} uploadDescription={"Upload"}/>);
+  //     upload.simulate("change", {
+  //       target: {
+  //         files: [
+  //           "dummyValue.something"
+  //         ]
+  //       }
+  //     });
+  //     expect(onClick).toHaveBeenCalledTimes(1);
+  //   });
 
   // Snapshot tests
   it("renders with minimal props", () => {

@@ -20,6 +20,14 @@ describe("StarRating", () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
+  it("can handle clicks correctly when not editable", () => {
+    const onClick = jest.fn();
+    const rating = shallow(<StarRating rating={5} isEditable={false} setRating={onClick}/>);
+    // console.log(rating.debug({ verbose: true }));
+    rating.simulate("click");
+    expect(onClick).toHaveBeenCalledTimes(0);
+  });
+
   it("can handle isEditable true correctly", () => {
     const rating = render(<StarRating rating={5} isEditable={false} setRating={noop}/>);
     expect(rating.hasClass("MuiRating-readOnly")).toBeTruthy();
