@@ -27,7 +27,7 @@ export default function EateryDisplay ({
   id,
   discount,
   cuisines,
-  rating,
+  rating
 }) {
   const classes = useStyles();
   const history = useHistory();
