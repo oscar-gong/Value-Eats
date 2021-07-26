@@ -157,8 +157,8 @@ Week6:
 
 Week7:
   What was planned for the period since the last work diary entry:
-    - We planned to finish the other features for vouchers
-    - We planned to start implementing the search algorithms
+    - We planned to finish the other features for vouchers.
+    - We planned to start implementing the search algorithms.
 
   What was finished:
     - We have finished all of the voucher features, sprint 4 is successfully completed
@@ -179,7 +179,33 @@ Week7:
   progress and what adjustments (if any) are needed so the success of the project is
     not endangered:
     
-    - All stuffs in the backend are done in the backend, we have finished sprint 4.
+    - All stuffs in the backend are done, we have finished sprint 4.
     
   What is planned for the next period:
     - I will implement more tests and write them in JUint. I will also implement the search and recommend algorithms for the diner and eatery.
+
+Week8:
+  What was planned for the period since the last work diary entry:
+    - We planned to implement more tests and write them in JUint.
+    - We planned to implement the search and recommend algorithms for the diner and eatery.
+
+  What was finished:
+    - We have implemented the recommended system.
+    - We have implemented search algorithm based on eateries' new, distance and custom rating.
+    - We added restriction for creating review, a user can not write a review until he make a booking.
+    - I have created JUint tests for the backend, for create/upadte users, create/delete/update reviews, 
+      create/update/verify one-off and repeated vouchers.
+    
+  What were the main technical and non-technical obstacles and how they were
+  overcome:
+    - The obstacles is the JUint test does not accept passing object to the controller directly.
+    - I overcame it by creating a Mocmvc and pass the object through a rest call to the controller.
+
+  What was not finished, why this happened, how this affects the overall project
+  progress and what adjustments (if any) are needed so the success of the project is
+    not endangered:
+    
+    - All stuffs in the backend are finished, we completed everything in sprint 5.
+    
+  What is planned for the next period:
+    - I will implement more tests and write them in JUint. I will test the booking functionality, listing functionality and recommendation system.
