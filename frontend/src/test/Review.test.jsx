@@ -1,6 +1,5 @@
 import React from "react";
 import { shallow } from "enzyme";
-import renderer from "react-test-renderer";
 import StoreProvider from "../utils/store";
 import Review from "../components/Review";
 
