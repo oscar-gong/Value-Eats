@@ -33,6 +33,15 @@ describe("EateryDisplay", () => {
     expect(display.text().includes("Chinese, Japanese")).toBe(true);
   });
 
+  it("displays the eatery name correctly", () => {
+    const display = shallow(<EateryDisplay name={"Test Eatery"}
+      id={0}
+      discount={"50%"}
+      cuisines={["Chinese", "Japanese"]}
+      rating={2.5}/>);
+    expect(display.text().includes("Test Eatery")).toBe(true);
+  });
+
   /* Snapshot tests - creates snapshots for new tests, otherwise will check the existing tests. To update existing tests,
   follow the prompts on the screen after running test. Done to avoid regression. */
 
