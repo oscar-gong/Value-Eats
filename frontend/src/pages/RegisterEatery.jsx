@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
 import EateryForm from "../components/EateryForm";
+import EateryTempPic from "../assets/EateryTempPic.jpg";
 
 export default function RegisterEatery () {
   const defaultState = { value: "", valid: true };
@@ -15,6 +16,7 @@ export default function RegisterEatery () {
   const [eateryName, setEateryName] = useState(defaultState);
   const [address, setAddress] = useState(defaultState);
   const [cuisines, setCuisines] = useState({ value: [], valid: true });
+  const [tmpProfilePic, setTmpProfilePic] = useState(EateryTempPic);
   const history = useHistory();
 
   const context = useContext(StoreContext);
@@ -68,8 +70,7 @@ export default function RegisterEatery () {
         password: password.value,
         cuisines: cuisines.value,
         menuPhotos: images, // array of data urls
-        profilePic:
-                    "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+        profilePic: tmpProfilePic || EateryTempPic,
       }),
     });
     console.log(response);
@@ -116,6 +117,8 @@ export default function RegisterEatery () {
       setPreviewImages={setPreviewImages}
       isRegister={true}
       submitForm={registerUser}
+      tmpProfilePic={tmpProfilePic}
+      setTmpProfilePic={setTmpProfilePic}
     />
   );
 }

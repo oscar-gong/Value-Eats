@@ -132,3 +132,27 @@ What is planned for next sprint
  - Next sprint will be our last real application functionality sprint. In this our plan is to implement the recommendation algorithm and the search functionality
  parts of the application. This will definitely be challenging, and we will ensure that everyone is active and working consistently throughout the next week in order to 
  get everything done. However, as a result of having already started on some of the implementation, we should hopefully be able to finish all user stories by next Sunday. 
+
+Week 8
+-What was planned for the period since the last work diary
+We planned to finish off the functionality of our program last week by including recommendation and search functionality.
+
+-What was finished
+We were able to finish off all of the stories required within the time constraints of the sprint. Furthermore, as we had not done much testing, we decided to split our team 
+so half of us would work on testing and other style fixes whilst the other half worked on functionality. This allowed us to efficiently finish both testing and the remaining 
+functionality required for our application. I was primarily focused on the frontend testing and linting for our application, which went smoothly.
+
+- What were the main technical and non-technical obstacles and how they were overcome.
+Personally, when setting up the testing and linting, it is always difficult to get the configuration just to our teams personal liking so it perfectly suites our situation. 
+Needed to learn how to change the properties of the .eslintrc.json file in order to make the linter bypass or enforce certain things that we had been trying to uphold throughout 
+creating our applications frontend. Another issue that our team faced was working out how we wanted to implement the recommendation feature and also how we were going to make use 
+of the google maps API in order to implement the find by distance feature. These were more technical problems and required input from the team, in retrospective meeting on 
+Wednesday, the topic came up as we predicted it’s difficulty in user stories to be a 5. So we discussed a range of ideas regarding how to implement it to get the best possible 
+user experience for the customer and then from there, Ash implemented the frontend for the feature whilst Oscar and William implemented the backend.
+
+-What was not finished
+Everything we planned to finish was able to be finished. 
+
+- What is planned for next sprint
+From here, we plan to further refine our frontend as well as our backend design and potentially add more testing. Then once that is done, our application will be complete. 
+We will then focus on writing up our final report and prepare our structure for final demonstration.

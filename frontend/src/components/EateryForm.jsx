@@ -10,11 +10,16 @@ import {
   validConfirmPassword,
   validPassword,
   validRequired
+  , handleImage
 } from "../utils/helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-// import { StoreContext } from "../utils/store";
 import { ButtonStyled } from "../styles/ButtonStyle";
+import AddAPhoto from "@material-ui/icons/AddAPhoto";
+import { FileUpload } from "../styles/FileUpload";
+
+import { Label } from "../styles/Label";
+import { BannerPhoto } from "../styles/BannerPhoto";
 
 export default function EateryForm ({
   email,
@@ -34,11 +39,10 @@ export default function EateryForm ({
   setPreviewImages,
   isRegister,
   submitForm,
-  removeBg = false
+  removeBg = false,
+  setTmpProfilePic,
+  tmpProfilePic,
 }) {
-  // const context = useContext(StoreContext);
-  // const setAlertOptions = context.alert[1];
-  // const token = context.auth[0];
   const [cuisineList, setCuisineList] = useState([]);
   // set true for demos
   const useGoogleAPI = false;
@@ -116,21 +120,26 @@ export default function EateryForm ({
         </Box>
         <Box pt={2} width="60%">
           <TextField
-            id="outlined-basic"
-            label="Password"
-            type="password"
-            onBlur={() => validPassword(password, setPassword)}
-            onChange={(e) =>
-              setPassword({ value: e.target.value, valid: true })
-            }
-            error={(!password.valid && isRegister) || (!isRegister && !password.valid && password.value.length !== 0)}
-            helperText={
-              password.valid
-                ? ""
-                : "Please enter a valid password with 1 lowercase, 1 upper case, 1 number with at least 8 characters"
-            }
-            variant="outlined"
-            fullWidth
+              id="outlined-basic"
+              label="Password"
+              type="password"
+              onBlur={() => validPassword(password, setPassword)}
+              onChange={(e) =>
+                setPassword({ value: e.target.value, valid: true })
+              }
+              error={
+                (!password.valid && isRegister) ||
+                (!isRegister &&
+                  !password.valid &&
+                  password.value.length !== 0)
+              }
+              helperText={
+                password.valid
+                  ? ""
+                  : "Please enter a valid password with 1 lowercase, 1 upper case, 1 number with at least 8 characters"
+              }
+              variant="outlined"
+              fullWidth
           />
         </Box>
         <Box pt={2} width="60%">
@@ -216,28 +225,42 @@ export default function EateryForm ({
             filterSelectedOptions
             renderInput={(params) => (
               <TextField
-                id="outlined-basic"
-                {...params}
-                variant="outlined"
-                placeholder="Select Cuisines"
-                error={!cuisines.valid}
-                helperText={
-                  cuisines.valid
-                    ? ""
-                    : "Please select cuisines"
-                }
-                fullWidth
+                  id="outlined-basic"
+                  {...params}
+                  variant="outlined"
+                  placeholder="Select Cuisines"
+                  error={!cuisines.valid}
+                  helperText={
+                    cuisines.valid
+                      ? ""
+                      : "Please select cuisines"
+                  }
+                  fullWidth
               />
             )}
           />
+        </Box>
+        <Box pt={2}>
+          <Label>
+            <FileUpload
+              type="file"
+              onChange={(e) => handleImage(e.target.files, setTmpProfilePic)}
+            />
+            {<AddAPhoto />}{" "}
+            {isRegister
+              ? "Upload Display Photo"
+              : "Change Profile Picture"}
+          </Label>
+        </Box>
+        <Box pt={2} display="flex" justifyContent="center">
+          <BannerPhoto height={50} src={tmpProfilePic} />
         </Box>
         <UploadPhotos
           setImages={setImages}
           previewImages={previewImages}
           setPreviewImages={setPreviewImages}
-          uploadDescription={"Upload a Photo"}
+          uploadDescription={"Upload Menu Photos"}
         />
-
         <Box pt={3} pb={3}>
           <ButtonStyled
             variant="contained"

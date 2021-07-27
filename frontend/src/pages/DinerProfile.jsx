@@ -9,7 +9,7 @@ import { StatBox } from "../styles/StatBox";
 import EditIcon from "@material-ui/icons/Edit";
 import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import Review from "../components/Review";
-import { fileToDataUrl, validRequired, validEmail, validPassword, validConfirmPassword } from "../utils/helpers";
+import { validRequired, validEmail, validPassword, validConfirmPassword, handleImage } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 import { logUserOut } from "../utils/logoutHelper";
 import { Title } from "../styles/Title";
@@ -131,15 +131,6 @@ export default function DinerProfile () {
     }
   };
 
-  const handleImage = (data) => {
-    Array.from(data).forEach((file) => {
-      fileToDataUrl(file).then((url) => {
-        setTmpProfilePic(url);
-        // setImages((prevArray) => [...prevArray, url]);
-      });
-    });
-  };
-
   const getNumPhotos = () => {
     let total = 0;
     for (const review of reviews) {
@@ -225,7 +216,7 @@ export default function DinerProfile () {
                 <Label>
                   <FileUpload
                     type="file"
-                    onChange={(e) => handleImage(e.target.files)}
+                    onChange={(e) => handleImage(e.target.files, setTmpProfilePic)}
                   />
                   {<AddAPhoto />} Change Profile Picture
                 </Label>

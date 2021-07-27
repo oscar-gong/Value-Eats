@@ -233,7 +233,7 @@ Week 6
             - More error checks
             - Better error messages
 
-Week 6
+Week 7
     - What was planned for the period since the last work diary entry
         - Further address tech debt as there has been a focus on feature implementation
             - Improve code design
@@ -262,3 +262,41 @@ Week 6
     - What is planned for the next period (e.g., next week)
         - To finalise the recommendation sprint
         - Start finalising the project including creating unit tests
+
+Week 8
+    - What was planned for the period since the last work diary entry
+        - To finalise the recommendation sprint
+        - Start finalising the project including creating unit tests
+    - What was finished
+        - Sprint tickets
+            - Finished project feature set
+            - Finished final week
+        - Continued progress to finalise project
+            - Cleaning up code
+            - Removing repetitiveness
+        - Demonstration B
+            - Prepared for demonstration and presented our product
+            - Listened to feedback and made plans to address
+        - Retrospective B
+            - Collated our progress
+            - Discussed how we worked as a team
+        - CI/CD Pipeline
+            - Generated a suite to run tests automatically and to check code quality
+    - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
+        - There were no significant obstacles as it was primarily just getting stuff done
+        - Setting up test framework
+            - Setting up and using the right tools required a lot of research
+            - There was a lot of configuration changes and testing to ensure that it was set up properly
+    - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
+        - Everything that was planned was accomplished
+        - There is still a continued effort to improve code quality
+            - This will not endanger the project, but we are climbing the S-curve
+    - What is planned for the next period (e.g., next week)
+        - Finalise project for the final week
+            - Clean up code
+            - Test features, especially with regression
+            - Discuss how things could be improved
+            - Front end accessibility and design
+        - Project Report
+            - Start writing the report and submit it for next week
+        - Submission of Retrospective B

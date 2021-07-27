@@ -21,8 +21,7 @@ export default function SearchResults () {
     const getResultEateries = async () => {
       setLoading(true);
       console.log(`this is being searched ${search}`);
-      const response = await fetch(
-        `http://localhost:8080/recommendation/eatery/fuzzy_search/${search}`,
+      const response = await fetch(`http://localhost:8080/recommendation/eatery/fuzzy_search/${search}`,
         {
           method: "GET",
           headers: {
@@ -57,6 +56,7 @@ export default function SearchResults () {
           discount={item.discount}
           cuisines={item.cuisines}
           rating={item.rating}
+          image={item.profilePic}
         />
       );
     });
