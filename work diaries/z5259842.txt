@@ -136,3 +136,28 @@ Week 7
 - What is planned for the next period:
     - Implement search for a restaurant based on various factors and recommendation algorithm
     - Continue to fix up UI design + responsiveness + accessibility
+
+Week 8
+- What was planned for the period since the last work diary entry:
+    - The completion of Sprint 5 was planned for this week which focused upon the Recommendation algorithm and sorting eateries based upon ratings, distance and new.
+    - Continual improvements to the UI design 
+    - Conduct testing
+
+- What we finished:
+    - Sprint 5 was successfully completed  and users are able to be provided with recommendations of restaurants that they have not been too, as well as sort the eateries.
+    - Frontend wise, most of the code was already set up so it was easily integrated with the backend.
+    - I added a search page to display results, registering users and eateries with respective profile pictures/banners and sorting on the frontend
+    - I also worked on improving the visual design, still a work in progress 
+    - Tests were added for both the frontend and backend, also still a work in progress  
+    - We also completed our retrospective shortly after our demonstration, discussing things that worked out well from the last retrospective, as well as things that we could potentially improve on in the future
+
+- Obstacles that we faced:
+    - The main issue this sprint was on backend implementation of sorting eateries by distance from the diner which was resolved through experimentation of the distance matrix. 
+    - At the frontend, the diner's location is requested for and if granted permissions, their geolocation coordations (longitutde, latitude) would be provided to the backend and compared with the location of the eateries.
+
+- What was not finished:
+    - The functionalities have all been completed, however, the visual design could definitely be further improved. 
+
+- What is planned for the next period:
+    - As the project will be due rather soon, we will need to finalise everything in terms of code quality, visual design, testing etc.
+    - We also will need to begin our final report and hopefully get it finalised by the end of the week 
