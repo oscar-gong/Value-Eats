@@ -9,4 +9,4 @@ export const VoucherContainer = styled(Box)`
     overflow: auto;
     border-radius: 5px;
     color:  #FF845B;
-`
+`;

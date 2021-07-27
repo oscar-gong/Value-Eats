@@ -1,5 +1,5 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const FileUpload = styled.input`
     display:none;
-`
+`;
