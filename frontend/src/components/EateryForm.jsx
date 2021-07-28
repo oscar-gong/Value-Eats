@@ -17,6 +17,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import { FileUpload } from "../styles/FileUpload";
+import { LinkStyled } from "../styles/LinkStyled";
 
 import { Label } from "../styles/Label";
 import { BannerPhoto } from "../styles/BannerPhoto";
@@ -104,6 +105,28 @@ export default function EateryForm ({
         <Box pt={2} width="60%">
           <TextField
             id="outlined-basic"
+            label="Eatery Name"
+            value={eateryName.value}
+            onChange={(e) =>
+              setEateryName({
+                value: e.target.value,
+                valid: true,
+              })
+            }
+            onBlur={() => validRequired(eateryName, setEateryName)}
+            error={!eateryName.valid}
+            helperText={
+              eateryName.valid
+                ? ""
+                : "Please enter the name of your eatery"
+            }
+            variant="outlined"
+            fullWidth
+          />
+        </Box>
+        <Box pt={2} width="60%">
+          <TextField
+            id="outlined-basic"
             label="Email Address"
             value={email.value}
             onChange={(e) =>
@@ -165,28 +188,6 @@ export default function EateryForm ({
               confirmPassword.valid
                 ? ""
                 : "Please make sure your passwords match"
-            }
-            variant="outlined"
-            fullWidth
-          />
-        </Box>
-        <Box pt={2} width="60%">
-          <TextField
-            id="outlined-basic"
-            label="Eatery Name"
-            value={eateryName.value}
-            onChange={(e) =>
-              setEateryName({
-                value: e.target.value,
-                valid: true,
-              })
-            }
-            onBlur={() => validRequired(eateryName, setEateryName)}
-            error={!eateryName.valid}
-            helperText={
-              eateryName.valid
-                ? ""
-                : "Please enter the name of your eatery"
             }
             variant="outlined"
             fullWidth
@@ -261,8 +262,8 @@ export default function EateryForm ({
           setPreviewImages={setPreviewImages}
           uploadDescription={"Upload Menu Photos"}
         />
-        <Box pt={3} pb={3}>
-          <ButtonStyled
+        <Box pt={2} display="flex" justifyContent="center" width="100%">
+          <ButtonStyled widthPercentage={60}
             variant="contained"
             color="primary"
             endIcon={<SendIcon />}
@@ -271,6 +272,13 @@ export default function EateryForm ({
             {isRegister ? "Register" : "Update"}
           </ButtonStyled>
         </Box>
+        {isRegister &&
+          <Box pt={2} pb={4}>
+            <LinkStyled to="/">
+              Back to Login
+            </LinkStyled>
+          </Box>
+        }
       </FloatBox>
     </AlignCenter>
   );

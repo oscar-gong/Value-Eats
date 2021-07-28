@@ -7,7 +7,7 @@ import { Label } from "../styles/Label";
 import { FileUpload } from "../styles/FileUpload";
 import { StatBox } from "../styles/StatBox";
 import EditIcon from "@material-ui/icons/Edit";
-import AddAPhoto from "@material-ui/icons/AddAPhoto";
+import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import Review from "../components/Review";
 import { validRequired, validEmail, validPassword, validConfirmPassword, handleImage } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
@@ -144,7 +144,7 @@ export default function DinerProfile () {
       <NavBar isDiner={true}/>
       <MainContent>
         <Box display="flex" justifyContent="center" alignItems="center" paddingTop="10px">
-          <ProfilePhoto size={150} src={user.profilePic} />
+          <ProfilePhoto hover={false} size={150} src={user.profilePic} />
           <Box display="flex" flexDirection="column" alignItems="center" paddingX="20px">
             <Box style={{ color: "#FF845B", fontSize: "1.5em" }}>{user.username}</Box>
             <ButtonStyled variant="contained"
@@ -210,19 +210,19 @@ export default function DinerProfile () {
             Update Profile
           </DialogTitle>
           <DialogContent dividers>
-            <Box pt={1} display="flex">
-              <ProfilePhoto size={70} src={tmpProfilePic}></ProfilePhoto>
-              <Box pt={2}>
-                <Label>
+            <Box pt={1} display="flex" alignItems="center">
+              <Box>
+                <Label style={{ border: "0px", padding: "0px" }}>
                   <FileUpload
                     type="file"
                     onChange={(e) => handleImage(e.target.files, setTmpProfilePic)}
                   />
-                  {<AddAPhoto />} Change Profile Picture
+                  <Box position="relative" p={1}>
+                    <AddPhotoAlternateIcon style={{ position: "absolute", left: "65px", bottom: "65px", backgroundColor: "white", zIndex: 5 }}/>
+                    <ProfilePhoto hover={true} size={70} src={tmpProfilePic}/>
+                  </Box>
                 </Label>
-                </Box>
-            </Box>
-            <Box pt={1}>
+              </Box>
               <TextField
                   id="outlined-basic"
                   label="Username"
@@ -239,7 +239,7 @@ export default function DinerProfile () {
                   fullWidth
               />
             </Box>
-            <Box pt={2}>
+            <Box pt={0.5}>
                 <TextField
                     id="outlined-basic"
                     label="Email Address"

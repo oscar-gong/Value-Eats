@@ -3,9 +3,9 @@ import { Title } from "../styles/Title";
 import { AlignCenter } from "../styles/AlignCenter";
 import { Box, TextField, Button, Grid, makeStyles } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
-import { Link } from "react-router-dom";
 import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
+import { LinkStyled } from "../styles/LinkStyled";
 import loginImage from "../assets/loginImage.jpeg";
 
 const useStyles = makeStyles({
@@ -44,12 +44,7 @@ const useStyles = makeStyles({
   },
   mainContainer: {
     color: "#ff855b",
-  },
-  link: {
-    textDecoation: "none",
-    color: "#96AE33",
-    background: "off-white",
-  },
+  }
 });
 
 export default function Login () {
@@ -166,14 +161,14 @@ export default function Login () {
               alignItems="center"
             >
               <h3>New to ValueEats?</h3>
-              <Link to="/RegisterDiner" className={classes.link}>
+              <LinkStyled to="/RegisterDiner">
                 Sign up here
-              </Link>
+              </LinkStyled>
             </Box>
             <Box pb={4}>
-              <Link to="/RegisterEatery" className={classes.link}>
+              <LinkStyled to="/RegisterEatery">
                 Register as an eatery
-              </Link>
+              </LinkStyled>
             </Box>
           </div>
         </Grid>

@@ -4,6 +4,7 @@ import { Subtitle } from "../styles/Subtitle";
 import { AlignCenter } from "../styles/AlignCenter";
 import { Box, TextField } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
+import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory, Redirect } from "react-router";
 import {
@@ -15,9 +16,9 @@ import {
 } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 import { ButtonStyled } from "../styles/ButtonStyle";
-import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import { FileUpload } from "../styles/FileUpload";
 import { ProfilePhoto } from "../styles/ProfilePhoto";
+import { LinkStyled } from "../styles/LinkStyled";
 
 import { Label } from "../styles/Label";
 // set to true for real demos
@@ -135,24 +136,23 @@ export default function RegisterDiner ({ setToken }) {
         <Box pt={2}>
             <Subtitle>Create Account</Subtitle>
         </Box>
-        <Box pt={1} display="flex">
-          <ProfilePhoto size={70} src={tmpProfilePic}></ProfilePhoto>
-          <Box pt={2}>
-            <Label>
+        <Box pt={1} display="flex" width="70%" alignItems="center">
+          <Box pr={1}>
+            <Label style={{ border: "0px", padding: "0px" }}>
               <FileUpload
                 type="file"
                 onChange={(e) =>
                   handleImage(
                     e.target.files,
                     setTmpProfilePic
-                  )
-                }
+                  )}
               />
-              {<AddAPhoto />} Upload Profile Picture
+              <Box position="relative" p={1}>
+                <AddPhotoAlternateIcon style={{ position: "absolute", left: "65px", bottom: "65px", backgroundColor: "white", zIndex: 5 }}/>
+                <ProfilePhoto hover={true} size={70} src={tmpProfilePic}/>
+              </Box>
             </Label>
           </Box>
-        </Box>
-        <Box pt={1} width="60%">
           <TextField
             id="outlined-basic"
             label="Username"
@@ -168,7 +168,10 @@ export default function RegisterDiner ({ setToken }) {
             fullWidth
           />
         </Box>
-        <Box pt={2} width="60%">
+        {/* <Box pt={1} width="60%">
+
+        </Box> */}
+        <Box width="70%">
           <TextField
             id="outlined-basic"
             label="Email Address"
@@ -188,7 +191,7 @@ export default function RegisterDiner ({ setToken }) {
           />
         </Box>
         {useGoogleAPI && (
-          <Box pt={2} width="60%">
+          <Box pt={2} width="70%">
             <TextField
               id="outlined-basic"
               disabled={!useGoogleAPI}
@@ -210,7 +213,7 @@ export default function RegisterDiner ({ setToken }) {
             />
           </Box>
         )}
-        <Box pt={2} width="60%">
+        <Box pt={2} width="70%">
           <TextField
             id="outlined-basic"
             label="Password"
@@ -229,7 +232,7 @@ export default function RegisterDiner ({ setToken }) {
             fullWidth
           />
         </Box>
-        <Box pt={2} width="60%">
+        <Box py={2} width="70%">
           <TextField
             id="outlined-basic"
             label="Confirm Password"
@@ -257,16 +260,19 @@ export default function RegisterDiner ({ setToken }) {
             fullWidth
           />
         </Box>
-        <Box pt={4} pb={4}>
-          <ButtonStyled
-            variant="contained"
-            color="primary"
-            endIcon={<SendIcon />}
-            onKeyPress={handleKeyPress}
-            onClick={registerDiner}
-          >
-            Sign Up
-          </ButtonStyled>
+        <ButtonStyled widthPercentage={70}
+          variant="contained"
+          color="primary"
+          endIcon={<SendIcon />}
+          onKeyPress={handleKeyPress}
+          onClick={registerDiner}
+        >
+          Sign Up
+        </ButtonStyled>
+        <Box pt={2} pb={4}>
+          <LinkStyled to="/">
+            Back to Login
+          </LinkStyled>
         </Box>
       </FloatBox>
     </AlignCenter>
