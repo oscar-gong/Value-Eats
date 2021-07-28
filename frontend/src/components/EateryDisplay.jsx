@@ -20,6 +20,24 @@ const useStyles = makeStyles({
       boxShadow: "0px 10px 20px rgb(0 0 0 / 0.2)",
     },
   },
+  profile: {
+    marginTop: "40px",
+    color: "white",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    position: "relative",
+  },
+  overlay: {
+    position: "absolute",
+    bottom: "0px",
+    left: "0px",
+    width: "100%",
+    color: "white",
+    maxHeight: "30%",
+    "@media (max-width: 600px)": {
+      maxHeight: "40%",
+    },
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
 });
 
 export default function EateryDisplay ({
@@ -28,36 +46,41 @@ export default function EateryDisplay ({
   discount,
   cuisines,
   rating,
-  image
+  image,
+  onProfile = false,
+  address,
 }) {
   const classes = useStyles();
   const history = useHistory();
   return (
     <Card
-      className={classes.wideCard}
-      onClick={(e) =>
-        history.push({
-          pathname: `/EateryProfile/${name}/${id}`,
-        })
+      className={onProfile ? classes.profile : classes.wideCard}
+      onClick={
+        !onProfile
+          ? (e) =>
+              history.push({
+                pathname: `/EateryProfile/${name}/${id}`,
+              })
+          : "undefined"
       }
     >
       <CardMedia
         style={{
           height: "200px",
         }}
-        image={image
-        }
+        image={image}
       />
-      <CardContent style={{ minHeight: "60px", maxHeight: "70px" }}>
+      <CardContent className={onProfile && classes.overlay}>
         <Grid container justify="space-between" alignItems="flex-end">
-          <Grid item xs={8}>
-            <div>{`UP TO  ${discount} OFF`}</div>
+          <Grid item xs={10}>
+            <div>{!onProfile && `UP TO  ${discount} OFF`}</div>
             <Typography variant="h5">{name}</Typography>
             <Typography variant="subtitle2">
-              {cuisines.join(", ")}
+              {cuisines && cuisines.join(", ")}
             </Typography>
+            <Typography variant="subtitle2">{onProfile && address}</Typography>
           </Grid>
-          <Grid item>
+          <Grid item xs={onProfile ? 2 : 0}>
             <RatingWithNum rating={rating} />
           </Grid>
         </Grid>
