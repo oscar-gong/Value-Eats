@@ -347,6 +347,7 @@ export default function EateryProfile () {
                         <Typography variant="h5" className={classes.subtitle}>
                             Menu Photos
                         </Typography>
+                        <img src={eateryDetails.profilePic} width="60%"/>
                         <Box>{getSingleImage()}</Box>
                         <Box>{getNumberOfImages()}</Box>
                         <Typography className={classes.subtitle} variant="h5">

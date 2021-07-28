@@ -3,7 +3,6 @@ import {
   Card,
   Grid,
   CardContent,
-  CardHeader,
   CardMedia,
   Typography,
   makeStyles,
@@ -13,11 +12,12 @@ import RatingWithNum from "../components/RatingWithNum";
 
 const useStyles = makeStyles({
   wideCard: {
-    marginTop: "20px",
+    marginTop: "50px",
     transition: "transform 0.15s ease-in-out",
     "&:hover": {
-      transform: "scale3d(1.02, 1.02, 1)",
+      transform: "scale3d(1.01, 1.01, 1)",
       cursor: "pointer",
+      boxShadow: "0px 10px 20px rgb(0 0 0 / 0.2)",
     },
   },
 });
@@ -41,18 +41,17 @@ export default function EateryDisplay ({
         })
       }
     >
-      <CardHeader title={"UP TO " + discount + " OFF"} />
       <CardMedia
         style={{
-          height: "150px",
+          height: "200px",
         }}
-        // TODO change display image for restaurant
         image={image
         }
       />
-      <CardContent>
+      <CardContent style={{ minHeight: "60px", maxHeight: "70px" }}>
         <Grid container justify="space-between" alignItems="flex-end">
           <Grid item xs={8}>
+            <div>{`UP TO  ${discount} OFF`}</div>
             <Typography variant="h5">{name}</Typography>
             <Typography variant="subtitle2">
               {cuisines.join(", ")}

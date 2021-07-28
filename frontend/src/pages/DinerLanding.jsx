@@ -26,7 +26,7 @@ import DinerLandingImage from "../assets/DinerLandingImage.png";
 
 const useStyles = makeStyles({
   card: {
-    color: "black",
+    color: "white",
     borderRadius: "0px",
     transition: "transform 0.15s ease-in-out",
     maxHeight: "250px",
@@ -166,11 +166,6 @@ export default function DinerLanding ({ token }) {
         logUserOut(setAuth, setIsDiner);
       }
     };
-    // const getCuisineList = (cuisines) => {
-    //     if (cuisines.length < 3) return cuisines.join(", ");
-    //     let cuisineString = cuisines.slice(0, 2).join(", ") + "..";
-    //     return cuisineString;
-    // };
     getRecommendationList();
   }, [auth, setAuth, setIsDiner]);
 
@@ -178,10 +173,8 @@ export default function DinerLanding ({ token }) {
   if (isDiner === "false") return <Redirect to="/EateryLanding" />;
 
   const getCuisineList = (cuisines) => {
-    let cuisineString = cuisines.join(", ");
-    if (cuisineString.length > 25) {
-      cuisineString = cuisineString.substring(0, 24) + "...";
-    }
+    if (cuisines.length < 3) return cuisines.join(", ");
+    const cuisineString = cuisines.slice(0, 2).join(", ") + "..";
     return cuisineString;
   };
 
@@ -229,9 +222,7 @@ export default function DinerLanding ({ token }) {
                       >
                         <Grid item xs={6}>
                             <div>
-                                {"UP TO " +
-                                    item[i].discount +
-                                    " OFF"}
+                                {`UP TO ${item[i].discount} OFF`}
                             </div>
                             <Typography variant="h5">
                                 {item[i].name}
