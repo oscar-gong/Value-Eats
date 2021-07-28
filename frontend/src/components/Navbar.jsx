@@ -3,7 +3,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { NavbarStyled } from "../styles/NavbarStyled";
 import { useHistory } from "react-router";
 import { StoreContext } from "../utils/store";
@@ -14,7 +14,7 @@ import { IconButtonShowSmall } from "../styles/IconButtonShowSmall";
 import IconButton from "@material-ui/core/IconButton";
 // import logo from "../assets/logo.png";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => createStyles({
   searchContainer: {
     // border: "1px solid #FF855B",
     borderRadius: 10,
@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 10,
     backgroundColor: "transparent",
     borderBottom: "1px solid rgba(255, 132, 91, 0.5)",
+    "&.Mui-focused": {
+      borderBottom: "3px solid #FF855B !important"
+    }
   },
   menu: {
     flex: 0,
