@@ -199,7 +199,7 @@ export default function Navbar () {
           }}
           color="inherit"
         >
-          <AccountCircle style={{ fontSize: "50px" }} />
+          <AccountCircle style={{ fontSize: "50px", color: "#FF855B" }} />
         </IconButtonShowSmall>
         <Menu
           className={classes.menu}
