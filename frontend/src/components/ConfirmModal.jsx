@@ -3,17 +3,13 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-  Box,
-  Slide,
+  Box
 } from "@material-ui/core";
 import { DialogTitleStyled } from "../styles/DialogTitleStyled";
 import { ModalButton } from "../styles/ModalButton";
 import { CloseIconStyled } from "../styles/CloseIconStyled";
 import CloseIcon from "@material-ui/icons/Close";
-
-const Transition = React.forwardRef(function Transition (props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { Transition } from "../utils/helpers";
 
 export default function ConfirmModal ({
   open,

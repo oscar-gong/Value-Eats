@@ -5,7 +5,6 @@ import {
   Box,
   DialogActions,
   makeStyles,
-  Slide,
 } from "@material-ui/core";
 import { ProfilePhoto } from "../styles/ProfilePhoto";
 import UploadPhotos from "./UploadPhotos";
@@ -16,6 +15,7 @@ import { ModalButton } from "../styles/ModalButton";
 import { TextFieldStyled } from "../styles/TextFieldStyled";
 import { CloseIconStyled } from "../styles/CloseIconStyled";
 import { DialogTitleStyled } from "../styles/DialogTitleStyled";
+import { Transition } from "../utils/helpers";
 const useStyles = makeStyles({
   paper: {
     minWidth: "30vw",
@@ -23,10 +23,6 @@ const useStyles = makeStyles({
     animationDuration: "0.3s",
     animationTimingFunction: "ease-in-out",
   },
-});
-
-const Transition = React.forwardRef(function Transition (props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function EditCreateReview ({

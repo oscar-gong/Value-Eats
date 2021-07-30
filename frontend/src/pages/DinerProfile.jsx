@@ -21,6 +21,7 @@ import {
   validPassword,
   validConfirmPassword,
   handleImage,
+  Transition
 } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 import { logUserOut } from "../utils/logoutHelper";
@@ -32,6 +33,7 @@ import { ModalButton } from "../styles/ModalButton";
 import { TextFieldStyled } from "../styles/TextFieldStyled";
 import { CloseIconStyled } from "../styles/CloseIconStyled";
 import CloseIcon from "@material-ui/icons/Close";
+
 export default function DinerProfile () {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
@@ -247,7 +249,9 @@ export default function DinerProfile () {
             </Box>
           )}
         </Box>
-        <Dialog aria-labelledby="customized-dialog-title" open={openProfile}>
+        <Dialog aria-labelledby="customized-dialog-title" open={openProfile} onClose={() => setOpenProfile(false)}
+        TransitionComponent={Transition}
+        keepMounted>
           <DialogTitleStyled id="customized-dialog-title">
             Update Profile
           </DialogTitleStyled>

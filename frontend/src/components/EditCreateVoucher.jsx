@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Dialog, DialogContent, Box, TextField, DialogActions, Tabs, Tab, Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 import { StoreContext } from "../utils/store";
-import { validRequired } from "../utils/helpers";
+import { validRequired, Transition } from "../utils/helpers";
 import { ModalButton } from "../styles/ModalButton";
 import { DialogTitleStyled } from "../styles/DialogTitleStyled";
 
@@ -105,7 +105,9 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
 
   return (
     <>
-      <Dialog aria-labelledby="customized-dialog-title" open={open}>
+      <Dialog aria-labelledby="customized-dialog-title" open={open} onClose={() => setOpen(false)}
+        TransitionComponent={Transition}
+        keepMounted>
         <DialogTitleStyled>
           {isEdit ? "Edit Voucher" : "Create Voucher"}
         </DialogTitleStyled>
