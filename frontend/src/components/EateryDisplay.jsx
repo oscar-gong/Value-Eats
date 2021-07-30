@@ -33,11 +33,16 @@ const useStyles = makeStyles({
     width: "100%",
     color: "white",
     maxHeight: "30%",
-    "@media (max-width: 600px)": {
-      maxHeight: "40%",
-    },
     backgroundColor: "rgba(0,0,0,0.5)",
   },
+  stars: {
+    position: "absolute",
+    bottom: "8%",
+    right: "6%",
+    "@media (max-width: 600px)": {
+      right: "10%"
+    },
+  }
 });
 
 export default function EateryDisplay ({
@@ -80,8 +85,8 @@ export default function EateryDisplay ({
             </Typography>
             <Typography variant="subtitle2">{onProfile && address}</Typography>
           </Grid>
-          <Grid item xs={onProfile ? 2 : 0}>
-            <RatingWithNum rating={rating} />
+          <Grid item className={onProfile ? classes.stars : "none"}>
+            <RatingWithNum className={classes.stars} rating={rating} />
           </Grid>
         </Grid>
       </CardContent>
