@@ -2,12 +2,10 @@ package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
-import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.repository.BookingRecordRepository;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.ReviewRepository;
-import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 import com.nuggets.valueeats.utils.EateryUtils;
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 

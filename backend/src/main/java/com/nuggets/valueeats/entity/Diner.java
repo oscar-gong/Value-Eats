@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.junit.experimental.theories.suppliers.TestedOn;
 
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
