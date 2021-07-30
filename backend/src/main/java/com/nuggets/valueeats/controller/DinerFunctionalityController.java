@@ -2,7 +2,6 @@ package com.nuggets.valueeats.controller;
 
 import com.nuggets.valueeats.controller.decorator.token.CheckUserToken;
 import com.nuggets.valueeats.entity.Review;
-import com.nuggets.valueeats.service.VoucherService;
 import com.nuggets.valueeats.service.DinerFunctionalityService;
 
 import org.json.simple.JSONObject;
@@ -19,9 +18,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
 public class DinerFunctionalityController {
-
-    @Autowired
-    private VoucherService voucherService;
 
     @Autowired
     private DinerFunctionalityService dinerFunctionalityService;
@@ -54,12 +50,12 @@ public class DinerFunctionalityController {
     @RequestMapping(value = "diner/book", method = RequestMethod.POST)
     @CheckUserToken
     public ResponseEntity<JSONObject> bookVoucher(@RequestHeader (name="Authorization") String token, @RequestParam Long id){
-        return voucherService.bookVoucher(id, token);
+        return dinerFunctionalityService.bookVoucher(id, token);
     }
 
     @RequestMapping(value = "diner/voucher", method = RequestMethod.GET)
     @CheckUserToken
     public ResponseEntity<JSONObject> dinerListVouchers(@RequestHeader (name="Authorization") String token) {
-        return voucherService.dinerListVouchers(token);
+        return dinerFunctionalityService.dinerListVouchers(token);
     }
 }
