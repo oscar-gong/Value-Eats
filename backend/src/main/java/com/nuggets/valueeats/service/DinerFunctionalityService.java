@@ -211,7 +211,7 @@ public class DinerFunctionalityService {
         ArrayList<Object> list = new ArrayList<Object>();
 
         for(Eatery e : eateryList){
-            HashMap<String, Object> map = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, reviewRepository, e, distanceFromDiner);
+            HashMap<String, Object> map = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, e, distanceFromDiner);
             list.add(map);
         }
 

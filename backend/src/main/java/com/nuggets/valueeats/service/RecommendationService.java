@@ -57,7 +57,7 @@ public class RecommendationService {
             AbstractMap.SimpleImmutableEntry<Integer, Eatery> poll = pq.poll();
             if (poll.getKey() > 70 ){
                 Eatery newEatery = poll.getValue();
-                HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, reviewRepository, newEatery, null);
+                HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, newEatery, null);
                 result.add(eatery);
             }
         }
@@ -98,7 +98,7 @@ public class RecommendationService {
         List<Object> result = new ArrayList<Object>();
         while (!pq.isEmpty() && result.size() <= 10) {
             Eatery newEatery = pq.poll().getValue();
-            HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, reviewRepository, newEatery, null);
+            HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, newEatery, null);
             result.add(eatery);
         }
 
