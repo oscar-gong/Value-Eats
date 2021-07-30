@@ -15,7 +15,7 @@ export default function SearchResults () {
   const [loading, setLoading] = useState(false);
   const [eateryList, setEateryList] = useState([]);
   const location = useLocation();
-  const search = location.state.search;
+  const search = location.state ? location.state.search : "";
 
   useEffect(() => {
     const getResultEateries = async () => {
