@@ -23,6 +23,9 @@ const useStyles = makeStyles({
     animationDuration: "0.3s",
     animationTimingFunction: "ease-in-out",
   },
+  helperText: {
+    textAlign: "right"
+  }
 });
 
 export default function EditCreateReview ({
@@ -171,6 +174,10 @@ export default function EditCreateReview ({
               rows={3}
               fullWidth
               inputProps={{ maxLength: 280 }}
+              helperText={`${reviewText.length}/${280}`}
+              FormHelperTextProps={{
+                className: classes.helperText
+              }}
             />
           </Box>
         </DialogContent>
