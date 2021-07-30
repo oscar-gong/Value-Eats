@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
-import { Dialog, DialogTitle, DialogContent, Box, TextField, DialogActions, Button, Tabs, Tab, Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
+import { Dialog, DialogContent, Box, TextField, DialogActions, Tabs, Tab, Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 import { StoreContext } from "../utils/store";
-import { validRequired } from "../utils/helpers";
+import { validRequired, Transition } from "../utils/helpers";
+import { ModalButton } from "../styles/ModalButton";
+import { DialogTitleStyled } from "../styles/DialogTitleStyled";
 
 export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen, initOneOff = 0, initDineIn = "true", initDiscount = "", initQuantity = "", initStartTime = "", initEndTime = "", isEdit, refreshList }) {
   const date = new Date();
@@ -103,10 +105,12 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
 
   return (
     <>
-      <Dialog aria-labelledby="customized-dialog-title" open={open}>
-        <DialogTitle>
+      <Dialog aria-labelledby="customized-dialog-title" open={open} onClose={() => setOpen(false)}
+        TransitionComponent={Transition}
+        keepMounted>
+        <DialogTitleStyled>
           {isEdit ? "Edit Voucher" : "Create Voucher"}
-        </DialogTitle>
+        </DialogTitleStyled>
         <DialogContent dividers>
           <Box>
             <Tabs value={isOneOff} aria-label="simple tabs example">
@@ -230,12 +234,12 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
         </DialogContent>
         <DialogActions>
           {/* Set the things below back to their default states here */}
-          <Button autoFocus onClick={() => { setOpen(false); }} color="primary">
+          <ModalButton autoFocus onClick={() => { setOpen(false); }} color="primary">
             Cancel
-          </Button>
-          <Button autoFocus onClick={() => handleEditCreateVoucher(isEdit)} color="primary">
+          </ModalButton>
+          <ModalButton autoFocus onClick={() => handleEditCreateVoucher(isEdit)} color="primary">
             {isEdit ? "Save changes" : "Create voucher"}
-          </Button>
+          </ModalButton>
         </DialogActions>
       </Dialog>
     </>

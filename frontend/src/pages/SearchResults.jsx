@@ -21,7 +21,8 @@ export default function SearchResults () {
     const getResultEateries = async () => {
       setLoading(true);
       console.log(`this is being searched ${search}`);
-      const response = await fetch(`http://localhost:8080/recommendation/eatery/fuzzy_search/${search}`,
+      const searchFiltered = search.replace("%", "");
+      const response = await fetch(`http://localhost:8080/recommendation/eatery/fuzzy_search/${searchFiltered}`,
         {
           method: "GET",
           headers: {

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { AppBar } from "@material-ui/core";
 
 export const NavbarStyled = styled(AppBar)`
-    background-color: rgba(255, 132, 91, 0.1);
+    background-color: rgba(255, 132, 91, 0.05);
     //background-color: transparent;
     boxshadow: none;
     display: flex;

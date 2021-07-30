@@ -2,19 +2,37 @@ import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
 import { MainContent } from "../styles/MainContent";
 import { ProfilePhoto } from "../styles/ProfilePhoto";
-import { Box, Button, Divider, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@material-ui/core";
+import {
+  Box,
+  Divider,
+  Dialog,
+  DialogContent,
+  DialogActions,
+} from "@material-ui/core";
 import { Label } from "../styles/Label";
 import { FileUpload } from "../styles/FileUpload";
 import { StatBox } from "../styles/StatBox";
 import EditIcon from "@material-ui/icons/Edit";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import Review from "../components/Review";
-import { validRequired, validEmail, validPassword, validConfirmPassword, handleImage } from "../utils/helpers";
+import {
+  validRequired,
+  validEmail,
+  validPassword,
+  validConfirmPassword,
+  handleImage,
+  Transition
+} from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 import { logUserOut } from "../utils/logoutHelper";
 import { Title } from "../styles/Title";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import { useHistory } from "react-router";
+import { DialogTitleStyled } from "../styles/DialogTitleStyled";
+import { ModalButton } from "../styles/ModalButton";
+import { TextFieldStyled } from "../styles/TextFieldStyled";
+import { CloseIconStyled } from "../styles/CloseIconStyled";
+import CloseIcon from "@material-ui/icons/Close";
 
 export default function DinerProfile () {
   const context = useContext(StoreContext);
@@ -96,23 +114,20 @@ export default function DinerProfile () {
       username.value === "" ||
       email.value === ""
     ) return;
-    const response = await fetch(
-      "http://localhost:8080/update/diner",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          email: email.value,
-          password: (password.value.length !== 0 ? password.value : null),
-          alias: username.value,
-          profilePic: tmpProfilePic
-        })
-      }
-    );
+    const response = await fetch("http://localhost:8080/update/diner", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value.length !== 0 ? password.value : null,
+        alias: username.value,
+        profilePic: tmpProfilePic,
+      }),
+    });
     const responseData = await response.json();
     if (response.status === 200) {
       console.log(responseData);
@@ -123,11 +138,19 @@ export default function DinerProfile () {
         profilePic: tmpProfilePic,
       });
       setOpenProfile(false);
-      setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });
+      setAlertOptions({
+        showAlert: true,
+        variant: "success",
+        message: responseData.message,
+      });
     } else if (response.status === 401) {
       logUserOut(setAuth, setIsDiner);
     } else {
-      setAlertOptions({ showAlert: true, variant: "error", message: responseData.message });
+      setAlertOptions({
+        showAlert: true,
+        variant: "error",
+        message: responseData.message,
+      });
     }
   };
 
@@ -141,16 +164,31 @@ export default function DinerProfile () {
 
   return (
     <>
-      <NavBar isDiner={true}/>
+      <NavBar isDiner={true} />
       <MainContent>
-        <Box display="flex" justifyContent="center" alignItems="center" paddingTop="10px">
-          <ProfilePhoto hover={false} size={150} src={user.profilePic} />
-          <Box display="flex" flexDirection="column" alignItems="center" paddingX="20px">
-            <Box style={{ color: "#FF845B", fontSize: "1.5em" }}>{user.username}</Box>
+        <Box display="flex"
+          justifyContent="center"
+          alignItems="center"
+          paddingTop="10px"
+        >
+          <ProfilePhoto hover={false}
+            size={150}
+            src={user.profilePic}
+          />
+          <Box display="flex"
+            flexDirection="column"
+            alignItems="center"
+            paddingX="20px"
+          >
+            <Box style={{
+              color: "#FF845B",
+              fontSize: "1.5em"
+            }}>{user.username}</Box>
             <ButtonStyled variant="contained"
               color="primary"
               startIcon={<EditIcon />}
-              onClick={() => setOpenProfile(true)}>
+              onClick={() => setOpenProfile(true)}
+            >
               Edit profile
             </ButtonStyled>
           </Box>
@@ -167,55 +205,72 @@ export default function DinerProfile () {
           <Divider variant="middle" />
         </Box>
         {/* Reviews would be mapped here... */}
-        <Box display="flex" flexDirection="column" flex="1" alignItems="center" style={{ overflowY: "auto", height: "100%" }}>
-          {
-            reviews.length > 0 &&
+        <Box
+          display="flex"
+          flexDirection="column"
+          flex="1"
+          alignItems="center"
+          style={{ overflowY: "auto", height: "100%" }}
+        >
+          {reviews.length > 0 &&
             reviews.map((r) => {
               console.log(r);
               return (
-                <Review key={r.reviewId}
-                id={r.reviewId}
-                eateryId={r.eateryId}
-                username={r.name}
-                profilePic={r.profilePic}
-                eateryName={r.eateryName}
-                review={r.message}
-                rating={r.rating}
-                images={r.reviewPhotos ? r.reviewPhotos : []}
-                isOwner={true}
-                onEateryProfile={false}
-                refreshList={() => getUser()}></Review>
+                <Review
+                  key={r.reviewId}
+                  id={r.reviewId}
+                  eateryId={r.eateryId}
+                  username={r.name}
+                  profilePic={r.profilePic}
+                  eateryName={r.eateryName}
+                  review={r.message}
+                  rating={r.rating}
+                  images={r.reviewPhotos ? r.reviewPhotos : []}
+                  isOwner={true}
+                  onEateryProfile={false}
+                  refreshList={() => getUser()}
+                ></Review>
               );
-            })
-          }
-          {
-            reviews.length === 0 &&
-            <Box display="flex"
-            flexDirection="column"
-            alignItems="center"
-            height="70vh"
-            pt={2}
+            })}
+          {reviews.length === 0 && (
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              height="70vh"
+              pt={2}
             >
               <Title>No Reviews made yet...</Title>
-              <ButtonStyled widthPercentage={50}
+              <ButtonStyled
+                widthPercentage={50}
                 onClick={() => history.push("/DinerLanding")}
               >
                 Find restaurants
               </ButtonStyled>
             </Box>
-          }
+          )}
         </Box>
-        <Dialog aria-labelledby="customized-dialog-title" open={openProfile}>
-          <DialogTitle id="customized-dialog-title">
+        <Dialog aria-labelledby="customized-dialog-title" open={openProfile} onClose={() => setOpenProfile(false)}
+        TransitionComponent={Transition}
+        keepMounted>
+          <DialogTitleStyled id="customized-dialog-title">
             Update Profile
-          </DialogTitle>
+          </DialogTitleStyled>
+          <CloseIconStyled
+            aria-label="close"
+            onClick={() => setOpenProfile(false)}
+          >
+            <CloseIcon />
+          </CloseIconStyled>
           <DialogContent dividers>
             <Box pt={1} display="flex" alignItems="center">
               <Box>
                 <Label style={{ border: "0px", padding: "0px" }}>
                   <FileUpload
                     type="file"
-                    onChange={(e) => handleImage(e.target.files, setTmpProfilePic)}
+                    onChange={(e) =>
+                      handleImage(e.target.files, setTmpProfilePic)
+                    }
                   />
                   <Box position="relative" p={1}>
                     <AddPhotoAlternateIcon style={{ position: "absolute", left: "65px", bottom: "65px", backgroundColor: "white", zIndex: 5 }}/>
@@ -223,7 +278,7 @@ export default function DinerProfile () {
                   </Box>
                 </Label>
               </Box>
-              <TextField
+              <TextFieldStyled
                   id="outlined-basic"
                   label="Username"
                   onChange={(e) =>
@@ -240,7 +295,7 @@ export default function DinerProfile () {
               />
             </Box>
             <Box pt={0.5}>
-                <TextField
+                <TextFieldStyled
                     id="outlined-basic"
                     label="Email Address"
                     onChange={(e) =>
@@ -257,7 +312,7 @@ export default function DinerProfile () {
                 />
             </Box>
             <Box pt={2}>
-              <TextField
+              <TextFieldStyled
                 id="outlined-basic"
                 label="Password"
                 type="password"
@@ -267,7 +322,7 @@ export default function DinerProfile () {
                 onBlur={() => validPassword(password, setPassword)}
                 error={!password.valid && password.value.length !== 0}
                 helperText={
-                  (password.valid || password.value.length === 0)
+                  password.valid || password.value.length === 0
                     ? ""
                     : "Please enter a valid password with 1 lowercase, 1 upper case, 1 number with at least 8 characters"
                 }
@@ -276,7 +331,7 @@ export default function DinerProfile () {
               />
             </Box>
             <Box pt={2}>
-              <TextField
+              <TextFieldStyled
                 id="outlined-basic"
                 label="Confirm Password"
                 type="password"
@@ -286,7 +341,13 @@ export default function DinerProfile () {
                     valid: true,
                   })
                 }
-                onBlur={() => validConfirmPassword(password, confirmpassword, setConfirmpassword)}
+                onBlur={() =>
+                  validConfirmPassword(
+                    password,
+                    confirmpassword,
+                    setConfirmpassword
+                  )
+                }
                 error={!confirmpassword.valid}
                 helperText={
                   confirmpassword.valid
@@ -299,12 +360,12 @@ export default function DinerProfile () {
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={handleClose} color="primary">
+            <ModalButton autoFocus onClick={handleClose} color="primary">
               Cancel
-            </Button>
-            <Button autoFocus onClick={saveChanges} color="primary">
+            </ModalButton>
+            <ModalButton autoFocus onClick={saveChanges} color="primary">
               Save changes
-            </Button>
+            </ModalButton>
           </DialogActions>
         </Dialog>
       </MainContent>

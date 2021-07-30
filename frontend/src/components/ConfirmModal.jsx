@@ -1,12 +1,15 @@
 import React from "react";
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogActions,
-  Button,
-  Box,
+  Box
 } from "@material-ui/core";
+import { DialogTitleStyled } from "../styles/DialogTitleStyled";
+import { ModalButton } from "../styles/ModalButton";
+import { CloseIconStyled } from "../styles/CloseIconStyled";
+import CloseIcon from "@material-ui/icons/Close";
+import { Transition } from "../utils/helpers";
 
 export default function ConfirmModal ({
   open,
@@ -23,14 +26,19 @@ export default function ConfirmModal ({
       onClose={handleClose}
       aria-labelledby="customized-dialog-title"
       open={open}
+      TransitionComponent={Transition}
+      keepMounted
     >
-      <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {title}
-      </DialogTitle>
+      <DialogTitleStyled id="customized-dialog-title" onClose={handleClose}>
+        {title}
+      </DialogTitleStyled>
+      <CloseIconStyled aria-label="close" onClick={handleClose}>
+        <CloseIcon />
+      </CloseIconStyled>
       <DialogContent dividers>{message}</DialogContent>
       <DialogActions>
         <Box>
-          <Button
+          <ModalButton
             autoFocus
             onClick={() => {
               if (handleDeny) {
@@ -40,15 +48,11 @@ export default function ConfirmModal ({
             }}
             color="primary"
           >
-              {denyText}
-          </Button>
-          <Button
-            autoFocus
-            onClick={handleConfirm}
-            color="primary"
-          >
+            {denyText}
+          </ModalButton>
+          <ModalButton autoFocus onClick={handleConfirm} color="primary">
             {confirmText}
-          </Button>
+          </ModalButton>
         </Box>
       </DialogActions>
     </Dialog>

@@ -18,8 +18,8 @@ import EditCreateReview from "../components/EditCreateReview";
 import ConfirmModal from "../components/ConfirmModal";
 import { logUserOut } from "../utils/logoutHelper";
 import { handleTimeNextDay } from "../utils/helpers";
-import RatingWithNum from "../components/RatingWithNum";
 import Loading from "../components/Loading";
+import EateryDisplay from "../components/EateryDisplay";
 
 const useStyles = makeStyles({
   photo: {
@@ -327,23 +327,18 @@ export default function EateryProfile () {
     });
   };
 
-  const getCuisines = () => {
-    if (!eateryDetails.cuisines) return;
-    return eateryDetails.cuisines.join(", ");
-  };
+  // const getCuisines = () => {
+  //   if (!eateryDetails.cuisines) return;
+  //   return eateryDetails.cuisines.join(", ");
+  // };
 
   return (
         <>
             <NavBar isDiner={isDiner} />
             <MainContainer>
+            <EateryDisplay onProfile={true} name={eateryDetails.name} cuisines={eateryDetails.cuisines} rating={eateryDetails.rating} image={eateryDetails.profilePic} address={eateryDetails.address}></EateryDisplay>
                 <Grid container spacing={5} className={classes.gridContainer}>
                     <Grid item xs={6}>
-                        <Box className={classes.title}>
-                            {eateryDetails.name}
-                        </Box>
-                        <RatingWithNum rating={eateryDetails.rating} />
-                        <Box>{eateryDetails.address}</Box>
-                        <Box>{getCuisines()}</Box>
                         <Typography variant="h5" className={classes.subtitle}>
                             Menu Photos
                         </Typography>
