@@ -11,10 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: ansible check with debian:latest
-      uses: roles-ansible/check-ansible-debian-latest-action@master
-      with:
-        targets: "./"
     - name: Set up Node.js 12.x
       uses: actions/setup-node@v1
       with:
