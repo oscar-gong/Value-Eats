@@ -23,6 +23,9 @@ public interface BookingRecordRepository extends JpaRepository<BookingRecord, Lo
   @Query(value = "select exists(select * from booking_record where diner_id = ?1 and voucher_id = ?2)", nativeQuery = true)
   int existsByDinerIdAndVoucherId (Long dinerId, Long voucherId);
 
+  @Query(value = "select exists(select * from booking_record where diner_id = ?1 and eatery_id = ?2)", nativeQuery = true)
+  int existsByDinerIdAndEateryId (Long dinerId, Long eateryId);
+
   @Query(value = "select * from booking_record where diner_id = ?1 order by id desc", nativeQuery = true)
   ArrayList<BookingRecord> findAllByDinerId (Long dinerId);
 

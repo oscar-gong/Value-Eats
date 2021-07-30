@@ -2,12 +2,10 @@ package com.nuggets.valueeats.service;
 
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
-import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.repository.BookingRecordRepository;
 import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.ReviewRepository;
-import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 import com.nuggets.valueeats.utils.EateryUtils;
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
@@ -57,9 +54,12 @@ public class RecommendationService {
 
         List<Object> result = new ArrayList<Object>();
         while (!pq.isEmpty() && result.size() <= 10) {
-            Eatery newEatery = pq.poll().getValue();
-            HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, reviewRepository, newEatery);
-            result.add(eatery);
+            AbstractMap.SimpleImmutableEntry<Integer, Eatery> poll = pq.poll();
+            if (poll.getKey() > 70 ){
+                Eatery newEatery = poll.getValue();
+                HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, newEatery, null);
+                result.add(eatery);
+            }
         }
 
         Map<String, Object> dataMedium = new HashMap<>();
@@ -98,7 +98,7 @@ public class RecommendationService {
         List<Object> result = new ArrayList<Object>();
         while (!pq.isEmpty() && result.size() <= 10) {
             Eatery newEatery = pq.poll().getValue();
-            HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, reviewRepository, newEatery);
+            HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, newEatery, null);
             result.add(eatery);
         }
 

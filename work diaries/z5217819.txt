@@ -68,3 +68,19 @@ Week 7
 - We did not face any obstacles this week as it mostly involved code cleaning around already functional features.
 - Everything that we had planned to finish was essentially completed on time.
 - Next week, we plan to finalise recommendation and search features and also create some unit tests.
+
+Week 8
+- Last week, we have planned to implement and finalise both recommendation and search features in Sprint 5. We have also planned to create some unit tests using JUnit5.
+- This week, I have managed to implement a recommendation system.
+- I have also touched up on the response data returned for both search and eatery details so that required data is given for the view.
+- Create review was updated so that it better match what is required in the project objectives i.e. diners cannot create reviews until they have a discount voucher.
+- I have implemented sorting of eateries by new, rating and distance.
+- William had created some unit tests for our backend features.
+- Some of the obstacles we've faced included:
+	- Object mapper/gson seemed to not work when mapping the JSON response to a JAVA model class. Kept having NPE. As a substitute, I used a JSON parser to process
+	the response.
+	- Slow response speed for distance sorting. As I was sending a new API request for each eatery, this made it extremely slow as each request would normally take
+	400ms for this API. After realising the speed, I sought ways to perhaps make it faster such as using parallel HTTP connections or some sort of caching system.
+	Soon later, I found out that I could pass multiple addresses in a single request. This had improved the response speed greatly.
+- We had completed everything we planned to do in Sprint 5 on time.
+- Next week, we plan to work on our final report and prepare for our presentation.

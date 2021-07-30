@@ -14,4 +14,4 @@ export const StatBox = styled(Box)`
     font-weight: bold;
     color: #FF845B;
     margin: 0px 2%;
-`
+`;

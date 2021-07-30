@@ -4,7 +4,6 @@ import com.nuggets.valueeats.entity.User;
 import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
 
-import java.text.DecimalFormat;
 import java.util.*;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
@@ -72,6 +71,7 @@ public class UserManagementService {
 
     @Transactional
     public ResponseEntity<JSONObject> registerDiner(Diner diner) {
+        System.out.println(diner.getEmail());
         ResponseEntity<JSONObject> result = register(diner);
         if (result.getStatusCode().is2xxSuccessful()) {
             dinerRepository.save(diner);
@@ -339,10 +339,6 @@ public class UserManagementService {
             dinerDb = dinerRepository.findByToken(token);
         }
 
-        List<Float> ratings= reviewRepository.listReviewRatingsOfEatery(eateryDb.getId());
-        Double averageRating = ratings.stream().mapToDouble(i -> i).average().orElse(0);
-        DecimalFormat df = new DecimalFormat("#.0"); 
-
         List<Review> reviews= reviewRepository.listReviewsOfEatery(eateryDb.getId());
         ArrayList<Object> reviewsList = new ArrayList<Object>();
         for(Review r:reviews){
@@ -392,7 +388,12 @@ public class UserManagementService {
         map.put("id", eateryDb.getId());
         map.put("name", eateryDb.getAlias());
         map.put("email", eateryDb.getEmail());
-        map.put("rating", df.format(averageRating));
+        map.put("profilePic", eateryDb.getProfilePic());
+        if (eateryDb.getLazyRating() != null) {
+            map.put("rating", String.format("%.1f", eateryDb.getLazyRating()));
+        } else {
+            map.put("rating", "0.0");
+        }
         map.put("address", eateryDb.getAddress());
         map.put("menuPhotos", eateryDb.getMenuPhotos());
         map.put("reviews", reviewsList);
