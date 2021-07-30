@@ -8,8 +8,9 @@ on:
 
 jobs:
   Build:
-    runs-on: ubuntu-latest
     steps:
+    - name: Build Debian package
+      uses: dawidd6/action-debian-package@v1
     - uses: actions/checkout@v2
     - name: Set up Node.js 12.x
       uses: actions/setup-node@v1
