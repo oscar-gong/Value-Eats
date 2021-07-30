@@ -17,7 +17,7 @@ export default function RatingWithNum ({ rating }) {
             marginTop: "4px",
           }}
         >
-          {rating === ".0" ? 0 : rating}
+          {rating}
         </Grid>
       </Grid>
     </>
