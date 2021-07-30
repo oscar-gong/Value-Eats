@@ -1,7 +1,6 @@
 package com.nuggets.valueeats.service;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,16 +8,13 @@ import java.util.Optional;
 
 import com.nuggets.valueeats.controller.model.VoucherInput;
 import com.nuggets.valueeats.entity.BookingRecord;
-import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
 import com.nuggets.valueeats.repository.BookingRecordRepository;
-import com.nuggets.valueeats.repository.DinerRepository;
 import com.nuggets.valueeats.repository.EateryRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
-import com.nuggets.valueeats.utils.BookingUtils;
 import com.nuggets.valueeats.utils.JwtUtils;
 import com.nuggets.valueeats.utils.ResponseUtils;
 import com.nuggets.valueeats.utils.VoucherUtils;
@@ -32,14 +28,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class VoucherService {
+public class EateryService {
     @Autowired
     private RepeatVoucherRepository repeatVoucherRepository;
-    @Autowired
-    private VoucherRepository voucherRepository;
 
     @Autowired
-    private DinerRepository dinerRepository;
+    private VoucherRepository voucherRepository;
 
     @Autowired
     private EateryRepository eateryRepository;
@@ -146,60 +140,6 @@ public class VoucherService {
         voucherRepository.save(newVoucher);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully created voucher"));
-    }
-
-    public ResponseEntity<JSONObject> dinerListVouchers(String token) {
-
-        String id = jwtUtils.decode(token);
-
-        if (id == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
-        }
-        Long dinerId;
-        try{
-            dinerId = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid ID format"));
-        }
-
-        Boolean isDinerExist = dinerRepository.existsById(dinerId);
-
-        if (isDinerExist == false) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Diner does not exist, check your token please"));
-        }
-
-
-
-        ArrayList<BookingRecord> dinerBookings = new ArrayList<BookingRecord>();
-        ArrayList<Object> bookingData = new ArrayList<Object>();
-        dinerBookings = bookingRecordRepository.findAllByDinerId(dinerId);
-
-        for (BookingRecord booking:dinerBookings) {
-            boolean voucherExists = voucherRepository.existsById(booking.getVoucherId());
-            boolean repeatVoucherExists = repeatVoucherRepository.existsById(booking.getVoucherId());
-
-            if (voucherExists || repeatVoucherExists) {
-                Optional<Eatery> eatery = eateryRepository.findById(booking.getEateryId());
-                if (!eatery.isPresent()) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery ID is booking is invalid."));
-                }
-                Eatery eateryDb = eatery.get();
-
-                HashMap<String, Object> dinerBooking = BookingUtils.createBooking(booking.getId(), booking.getCode(), booking.getDate(), booking.getStart(),
-                                                                                booking.getEnd(), booking.getEatingStyle(), booking.getDiscount(), booking.getEateryId(),
-                                                                                booking.isRedeemed(), eateryDb.getAlias());
-
-                if (VoucherUtils.isInTimeRange(booking.getDate(), booking.getStart(), booking.getEnd()))
-                    dinerBooking.put("duration", VoucherUtils.getDuration(booking.getDate(), booking.getEnd()));
-
-                bookingData.add(dinerBooking);
-            }
-        }
-        Map<String, Object> dataMedium = new HashMap<>();
-        dataMedium.put("vouchers", bookingData);
-        JSONObject data = new JSONObject(dataMedium);
-
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 
     public ResponseEntity<JSONObject> editVoucher(VoucherInput voucher, String token) {
@@ -423,101 +363,6 @@ public class VoucherService {
 
         voucherRepository.save(newVoucher);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher was edited successfully.")); 
-    }
-
-    // Input: voucher id && diner token.
-    public ResponseEntity<JSONObject> bookVoucher (Long voucherId, String token) {
-        
-        String decodedToken = jwtUtils.decode(token);
-
-        if (decodedToken == null) {
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
-
-        }
-
-        Diner dinerInDb = dinerRepository.findByToken(token);
-
-        if (dinerInDb == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
-        }
-        
-        Long dinerId = dinerInDb.getId();
-
-        if (!voucherRepository.existsById(voucherId) && !repeatVoucherRepository.existsById(voucherId)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher does not exist"));
-        }
-
-        if(bookingRecordRepository.existsByDinerIdAndVoucherId(dinerId, voucherId) != 0){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("You cannot book more than one of the same voucher."));
-        }
-    
-
-
-        BookingRecord bookingRecord = new BookingRecord();
-
-        if (repeatVoucherRepository.existsById(voucherId)) {
-            RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
-
-            if (!repeatedVoucher.isActive()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher is no longer active."));
-            }
-
-            if (repeatedVoucher.getQuantity() < 1) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enough voucher for booking"));
-            
-            } else {
-                repeatedVoucher.setQuantity(repeatedVoucher.getQuantity() - 1);
-                repeatVoucherRepository.save(repeatedVoucher);
-            }
-
-            BookingUtils.setVoucherDetails(bookingRecord, repeatedVoucher);
-            bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);
-            bookingRecord.setDinerId(dinerId);
-            bookingRecord.setEateryId(repeatedVoucher.getEateryId());
-            bookingRecord.setCode(BookingUtils.generateRandomCode(bookingRecordRepository));
-            bookingRecord.setVoucherId(voucherId);
-
-        } else if (voucherRepository.existsById(voucherId)) {
-            Voucher voucher = voucherRepository.getById(voucherId);
-
-            if (!voucher.isActive()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher is no longer active."));
-            }
-
-            if (voucher.getQuantity() < 1) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("No enough voucher for booking"));
-            
-            } else {
-                voucher.setQuantity(voucher.getQuantity() - 1);
-                voucherRepository.save(voucher);
-            }
-
-            if (voucher.getQuantity() == 0) {
-                voucher.setActive(false);
-            }
-
-            BookingUtils.setVoucherDetails(bookingRecord, voucher);
-            bookingRecord.setId(bookingRecordRepository.findMaxId() == null ? 0 : bookingRecordRepository.findMaxId() + 1);
-            bookingRecord.setDinerId(dinerId);
-            bookingRecord.setEateryId(voucher.getEateryId());
-            bookingRecord.setCode(BookingUtils.generateRandomCode(bookingRecordRepository));
-            bookingRecord.setVoucherId(voucherId);
-        }
-
-        bookingRecord.setRedeemed(false);
-        bookingRecordRepository.save(bookingRecord);
-
-        Map<String,String> dataMedium = new HashMap<>();
-
-        dataMedium.put("id",String.valueOf(bookingRecord.getId()));
-        dataMedium.put("dinerId",String.valueOf(bookingRecord.getDinerId()));
-        dataMedium.put("eateryId",String.valueOf(bookingRecord.getEateryId()));
-        dataMedium.put("code", bookingRecord.getCode());
-
-        JSONObject data = new JSONObject(dataMedium);
-
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully booked", data));
     }
 
     public ResponseEntity<JSONObject> deleteVoucher (Long voucherId, String token) {
