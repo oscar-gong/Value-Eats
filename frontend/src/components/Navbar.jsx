@@ -71,7 +71,7 @@ export default function Navbar () {
   const anchorElement = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(localStorage.getItem("searchTerm") ? localStorage.getItem("searchTerm") : "");
 
   const handleLogout = async () => {
     console.log("You are getting logged out");
@@ -120,6 +120,7 @@ export default function Navbar () {
   const handleSearch = () => {
     // move to search page only if there is a search term
     if (search !== "") {
+      localStorage.setItem("searchTerm", search);
       history.push({
         pathname: "/SearchResults",
         search: `?query=${search}`,

@@ -70,7 +70,10 @@ export default function SearchResults () {
             <h4>{`Found ${eateryList.length} Result${
                 eateryList.length === 1 ? "" : "s"
             } for "${search}"`}</h4>
-            {displayEateryList()}
+            {
+              !loading &&
+              displayEateryList()
+            }
         </Box>
         <Loading isLoading={loading} />
       </MainContainer>
