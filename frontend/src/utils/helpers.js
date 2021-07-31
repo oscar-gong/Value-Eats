@@ -8,7 +8,7 @@ export const checkValidEmail = (email) => {
 };
 
 export const validRequired = (state, setState) => {
-  if (state.value === "") {
+  if (state.value === "" || state.value.length > 12) {
     setState({ value: "", valid: false });
   }
 };

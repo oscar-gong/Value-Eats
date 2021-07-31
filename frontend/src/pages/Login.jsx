@@ -8,6 +8,7 @@ import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
 import { LinkStyled } from "../styles/LinkStyled";
 import loginImage from "../assets/loginImage.jpeg";
+import request from "../utils/request";
 
 const useStyles = makeStyles({
   root: {
@@ -35,8 +36,6 @@ const useStyles = makeStyles({
     backgroundColor: "white",
     borderRadius: "0% 4% 4% 0%",
     boxShadow: "6px 0 10px rgb(0 0 0 / 0.1)",
-
-    /* in order: x offset, y offset, blur size, spread size, color */
   },
   image: {
     objectFit: "cover",
@@ -45,7 +44,7 @@ const useStyles = makeStyles({
   },
   mainContainer: {
     color: "#ff855b",
-  }
+  },
 });
 
 export default function Login () {
@@ -59,22 +58,19 @@ export default function Login () {
 
   const classes = useStyles();
 
-  if (isDiner === "true" && auth !== null) { return <Redirect to="/DinerLanding" />; }
-  if (isDiner === "false" && auth !== null) { return <Redirect to="/EateryLanding" />; }
+  if (isDiner === "true" && auth !== null) {
+    return <Redirect to="/DinerLanding" />;
+  }
+  if (isDiner === "false" && auth !== null) {
+    return <Redirect to="/EateryLanding" />;
+  }
 
   const handleLogin = async () => {
-    const loginResponse = await fetch("http://localhost:8080/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-    // const ans = await loginResult.json();
+    const payload = {
+      email: email,
+      password: password,
+    };
+    const loginResponse = await request.post("login", payload);
     const loginData = await loginResponse.json();
     if (loginResponse.status === 200) {
       setAlertOptions({
@@ -162,9 +158,7 @@ export default function Login () {
               alignItems="center"
             >
               <h3>New to ValueEats?</h3>
-              <LinkStyled to="/RegisterDiner">
-                Sign up here
-              </LinkStyled>
+              <LinkStyled to="/RegisterDiner">Sign up here</LinkStyled>
             </Box>
             <Box pb={4}>
               <LinkStyled to="/RegisterEatery">

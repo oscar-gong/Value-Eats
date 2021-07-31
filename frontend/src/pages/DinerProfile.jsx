@@ -21,7 +21,7 @@ import {
   validPassword,
   validConfirmPassword,
   handleImage,
-  Transition
+  Transition,
 } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 import { logUserOut } from "../utils/logoutHelper";
@@ -33,6 +33,7 @@ import { ModalButton } from "../styles/ModalButton";
 import { TextFieldStyled } from "../styles/TextFieldStyled";
 import { CloseIconStyled } from "../styles/CloseIconStyled";
 import CloseIcon from "@material-ui/icons/Close";
+import request from "../utils/request";
 
 export default function DinerProfile () {
   const context = useContext(StoreContext);
@@ -56,17 +57,7 @@ export default function DinerProfile () {
   const [reviews, setReviews] = useState([]);
 
   const getUser = async () => {
-    const response = await fetch(
-      "http://localhost:8080/diner/profile/details",
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      }
-    );
+    const response = await request.get("/diner/profile/details", token);
     const responseData = await response.json();
     if (response.status === 200) {
       console.log(responseData);
@@ -113,21 +104,16 @@ export default function DinerProfile () {
       !confirmpassword.valid ||
       username.value === "" ||
       email.value === ""
-    ) return;
-    const response = await fetch("http://localhost:8080/update/diner", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({
-        email: email.value,
-        password: password.value.length !== 0 ? password.value : null,
-        alias: username.value,
-        profilePic: tmpProfilePic,
-      }),
-    });
+    ) {
+      return;
+    }
+    const payload = {
+      email: email.value,
+      password: password.value.length !== 0 ? password.value : null,
+      alias: username.value,
+      profilePic: tmpProfilePic,
+    };
+    const response = await request.post("/update/diner", payload, token);
     const responseData = await response.json();
     if (response.status === 200) {
       console.log(responseData);
@@ -166,25 +152,29 @@ export default function DinerProfile () {
     <>
       <NavBar isDiner={true} />
       <MainContent>
-        <Box display="flex"
+        <Box
+          display="flex"
           justifyContent="center"
           alignItems="center"
           paddingTop="10px"
         >
-          <ProfilePhoto hover={false}
-            size={150}
-            src={user.profilePic}
-          />
-          <Box display="flex"
+          <ProfilePhoto hover={false} size={150} src={user.profilePic} />
+          <Box
+            display="flex"
             flexDirection="column"
             alignItems="center"
             paddingX="20px"
           >
-            <Box style={{
-              color: "#FF845B",
-              fontSize: "1.5em"
-            }}>{user.username}</Box>
-            <ButtonStyled variant="contained"
+            <Box
+              style={{
+                color: "#FF845B",
+                fontSize: "1.5em",
+              }}
+            >
+              {user.username}
+            </Box>
+            <ButtonStyled
+              variant="contained"
               color="primary"
               startIcon={<EditIcon />}
               onClick={() => setOpenProfile(true)}
@@ -250,12 +240,14 @@ export default function DinerProfile () {
             </Box>
           )}
         </Box>
-        <Dialog aria-labelledby="customized-dialog-title" open={openProfile} onClose={() => setOpenProfile(false)}
-        TransitionComponent={Transition}
-        keepMounted>
-          <DialogTitleStyled>
-            Update Profile
-          </DialogTitleStyled>
+        <Dialog
+          aria-labelledby="customized-dialog-title"
+          open={openProfile}
+          onClose={() => setOpenProfile(false)}
+          TransitionComponent={Transition}
+          keepMounted
+        >
+          <DialogTitleStyled>Update Profile</DialogTitleStyled>
           <CloseIconStyled
             aria-label="close"
             onClick={() => setOpenProfile(false)}
@@ -274,41 +266,45 @@ export default function DinerProfile () {
                     }
                   />
                   <Box position="relative" p={1}>
-                    <AddPhotoAlternateIcon style={{ position: "absolute", left: "65px", bottom: "65px", backgroundColor: "white", zIndex: 5 }}/>
-                    <ProfilePhoto hover={true} size={70} src={tmpProfilePic}/>
+                    <AddPhotoAlternateIcon
+                      style={{
+                        position: "absolute",
+                        left: "65px",
+                        bottom: "65px",
+                        backgroundColor: "white",
+                        zIndex: 5,
+                      }}
+                    />
+                    <ProfilePhoto hover={true} size={70} src={tmpProfilePic} />
                   </Box>
                 </Label>
               </Box>
               <TextFieldStyled
-                  label="Username"
-                  onChange={(e) =>
-                    setUsername({ value: e.target.value, valid: true })
-                  }
-                  onBlur={() => validRequired(username, setUsername)}
-                  error={!username.valid}
-                  helperText={
-                      username.valid ? "" : "Please enter a username"
-                  }
-                  value={username.value}
-                  variant="outlined"
-                  fullWidth
+                label="Username"
+                onChange={(e) =>
+                  setUsername({ value: e.target.value, valid: true })
+                }
+                onBlur={() => validRequired(username, setUsername)}
+                error={!username.valid}
+                helperText={username.valid ? "" : "Please enter a username"}
+                value={username.value}
+                variant="outlined"
+                fullWidth
               />
             </Box>
             <Box pt={0.5}>
-                <TextFieldStyled
-                    label="Email Address"
-                    onChange={(e) =>
-                      setEmail({ value: e.target.value, valid: true })
-                    }
-                    onBlur={() => validEmail(email, setEmail)}
-                    error={!email.valid}
-                    helperText={
-                        email.valid ? "" : "Please enter a valid email"
-                    }
-                    value={email.value}
-                    variant="outlined"
-                    fullWidth
-                />
+              <TextFieldStyled
+                label="Email Address"
+                onChange={(e) =>
+                  setEmail({ value: e.target.value, valid: true })
+                }
+                onBlur={() => validEmail(email, setEmail)}
+                error={!email.valid}
+                helperText={email.valid ? "" : "Please enter a valid email"}
+                value={email.value}
+                variant="outlined"
+                fullWidth
+              />
             </Box>
             <Box pt={2}>
               <TextFieldStyled

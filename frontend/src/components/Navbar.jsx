@@ -12,51 +12,53 @@ import { Menu, MenuItem } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { IconButtonShowSmall } from "../styles/IconButtonShowSmall";
 import IconButton from "@material-ui/core/IconButton";
-// import logo from "../assets/logo.png";
+import request from "../utils/request";
 
-const useStyles = makeStyles((theme) => createStyles({
-  searchContainer: {
-    // border: "1px solid #FF855B",
-    borderRadius: 10,
-    whiteSpace: "nowrap",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingLeft: 10,
-    color: "#FF855B",
-  },
-  logo: {
-    fontSize: "2em",
-    fontWeight: "bold",
-    color: "#FF855B",
-    maxWidth: "50%",
-    "&:hover": {
-      cursor: "pointer",
-      color: "#e06543",
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    searchContainer: {
+      // border: "1px solid #FF855B",
+      borderRadius: 10,
+      whiteSpace: "nowrap",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingLeft: 10,
+      color: "#FF855B",
     },
-  },
-  barSize: {
-    flex: 1,
-  },
-  searchBar: {
-    fontSize: "1em",
-    color: "#FF855B",
-    width: "25vw",
-    paddingRight: 10,
-    backgroundColor: "transparent",
-    borderBottom: "1px solid rgba(255, 132, 91, 0.5)",
-    "&.Mui-focused": {
-      borderBottom: "3px solid #FF855B !important"
-    }
-  },
-  menu: {
-    flex: 0,
-  },
-  singleLine: {
-    whiteSpace: "nowrap",
-    padding: "0px",
-  },
-}));
+    logo: {
+      fontSize: "2em",
+      fontWeight: "bold",
+      color: "#FF855B",
+      maxWidth: "50%",
+      "&:hover": {
+        cursor: "pointer",
+        color: "#e06543",
+      },
+    },
+    barSize: {
+      flex: 1,
+    },
+    searchBar: {
+      fontSize: "1em",
+      color: "#FF855B",
+      width: "25vw",
+      paddingRight: 10,
+      backgroundColor: "transparent",
+      borderBottom: "1px solid rgba(255, 132, 91, 0.5)",
+      "&.Mui-focused": {
+        borderBottom: "3px solid #FF855B !important",
+      },
+    },
+    menu: {
+      flex: 0,
+    },
+    singleLine: {
+      whiteSpace: "nowrap",
+      padding: "0px",
+    },
+  })
+);
 
 export default function Navbar () {
   const classes = useStyles();
@@ -71,19 +73,13 @@ export default function Navbar () {
   const anchorElement = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const [search, setSearch] = useState(localStorage.getItem("searchTerm") ? localStorage.getItem("searchTerm") : "");
+  const [search, setSearch] = useState(
+    localStorage.getItem("searchTerm") ? localStorage.getItem("searchTerm") : ""
+  );
 
   const handleLogout = async () => {
     console.log("You are getting logged out");
-    const logoutResponse = await fetch("http://localhost:8080/logout", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: auth,
-      },
-    });
-    // const ans = await logoutResult.json();
+    const logoutResponse = await request.post("logout", {}, auth);
     const logoutData = await logoutResponse.json();
     if (logoutResponse.status === 200) {
       setAlertOptions({

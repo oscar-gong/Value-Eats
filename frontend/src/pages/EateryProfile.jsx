@@ -8,7 +8,7 @@ import {
   Box,
   Card,
   Modal,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 import Review from "../components/Review";
 import { useLocation, Redirect, useHistory } from "react-router-dom";
@@ -20,6 +20,7 @@ import { logUserOut } from "../utils/logoutHelper";
 import { handleTimeNextDay } from "../utils/helpers";
 import Loading from "../components/Loading";
 import EateryDisplay from "../components/EateryDisplay";
+import request from "../utils/request";
 
 const useStyles = makeStyles({
   photo: {
@@ -91,17 +92,7 @@ export default function EateryProfile () {
   useEffect(() => {
     // on page init, load the users details
     const getUser = async () => {
-      const response = await fetch(
-        "http://localhost:8080/diner/profile/details",
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: auth,
-          },
-        }
-      );
+      const response = await request.get("/diner/profile/details", auth);
       const responseData = await response.json();
       if (response.status === 200) {
         console.log(responseData);
@@ -122,25 +113,16 @@ export default function EateryProfile () {
 
   const getEateryDetails = async () => {
     setLoading(true);
-    const response = await fetch(
-      `http://localhost:8080/eatery/profile/details?id=${eateryId}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: auth,
-        },
-      }
+    const response = await request.get(
+      `/eatery/profile/details?id=${eateryId}`,
+      auth
     );
     setLoading(false);
     const responseData = await response.json();
     if (response.status === 200) {
       console.log(responseData);
       if (responseData.vouchers.length > 0) {
-        responseData.vouchers = responseData.vouchers.filter(
-          (v) => v.isActive
-        );
+        responseData.vouchers = responseData.vouchers.filter((v) => v.isActive);
       }
       setEateryDetails(responseData);
     } else if (response.status === 401) {
@@ -206,10 +188,10 @@ export default function EateryProfile () {
     }
     return (
       <img
-          className={classes.photo}
-          src={eateryDetails.menuPhotos[0]}
-          alt="eatery menu"
-          onClick={handleOpen}
+        className={classes.photo}
+        src={eateryDetails.menuPhotos[0]}
+        alt="eatery menu"
+        onClick={handleOpen}
       />
     );
   };
@@ -223,18 +205,11 @@ export default function EateryProfile () {
   };
 
   const handleBooking = async () => {
-    const response = await fetch(
-      `http://localhost:8080/diner/book?id=${voucherDetails.voucherID}`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: auth,
-        },
-      }
+    const response = await request.post(
+      `/diner/book?id=${voucherDetails.voucherID}`,
+      {},
+      auth
     );
-    console.log(response);
     const responseData = await response.json();
     if (response.status === 200) {
       console.log(responseData);
@@ -279,50 +254,55 @@ export default function EateryProfile () {
     }
     return eateryDetails.vouchers.map((item, key) => {
       return (
-        ((item.nextUpdate !== "Deleted" && item.isRecurring === true) || item.isRecurring === false) && item.quantity !== 0 &&
-        <Card
-          style={{
-            paddingTop: "25px",
-            paddingBottom: "25px",
-            borderRadius: "0px",
-          }}
-          key={key}
-        >
-          <Grid container justify="space-around" alignItems="center">
-            <Grid item xs={4}style={{ alignItems: "center" }}>
-              <ButtonStyled
-                variant="contained"
-                color="primary"
-                style={{ display: "block", width: "15vw" }}
-                disabled={
+        ((item.nextUpdate !== "Deleted" && item.isRecurring === true) ||
+          item.isRecurring === false) &&
+        item.quantity !== 0 && (
+          <Card
+            style={{
+              paddingTop: "25px",
+              paddingBottom: "25px",
+              borderRadius: "0px",
+            }}
+            key={key}
+          >
+            <Grid container justify="space-around" alignItems="center">
+              <Grid item xs={4} style={{ alignItems: "center" }}>
+                <ButtonStyled
+                  variant="contained"
+                  color="primary"
+                  style={{ display: "block", width: "15vw" }}
+                  disabled={
                     !!(item.disableButton === true || item.quantity === 0)
-                }
-                onClick={() =>
-                  handleVoucher(
-                    item.startTime,
-                    item.endTime,
-                    item.discount,
-                    item.id,
-                    item.date
-                  )
-                }
-              >
-                {`${item.discount}% OFF - ${item.eatingStyle}`}
-              </ButtonStyled>
+                  }
+                  onClick={() =>
+                    handleVoucher(
+                      item.startTime,
+                      item.endTime,
+                      item.discount,
+                      item.id,
+                      item.date
+                    )
+                  }
+                >
+                  {`${item.discount}% OFF - ${item.eatingStyle}`}
+                </ButtonStyled>
+              </Grid>
+              <Grid item xs={4}>
+                <Box style={{ margin: "10px" }}>
+                  {`${item.quantity} Voucher${
+                    item.quantity === 1 ? "" : "s"
+                  } Left`}
+                </Box>
+                <Box style={{ margin: "10px" }}>{`${item.date}`}</Box>
+                <Box style={{ margin: "10px" }}>
+                  {`Valid ${item.startTime} - ${handleTimeNextDay(
+                    item.endTime
+                  )}`}
+                </Box>
+              </Grid>
             </Grid>
-            <Grid item xs={4}>
-              <Box style={{ margin: "10px" }}>
-                {`${item.quantity} Voucher${item.quantity === 1 ? "" : "s"} Left`}
-              </Box>
-              <Box style={{ margin: "10px" }}>
-                {`${item.date}`}
-              </Box>
-              <Box style={{ margin: "10px" }}>
-                {`Valid ${item.startTime} - ${handleTimeNextDay(item.endTime)}`}
-              </Box>
-            </Grid>
-          </Grid>
-        </Card>
+          </Card>
+        )
       );
     });
   };
@@ -333,99 +313,122 @@ export default function EateryProfile () {
   // };
 
   return (
-        <>
-            <NavBar isDiner={isDiner} />
-            <MainContainer>
-            <EateryDisplay onProfile={true} name={eateryDetails.name} cuisines={eateryDetails.cuisines} rating={eateryDetails.rating} image={eateryDetails.profilePic} address={eateryDetails.address}></EateryDisplay>
-                <Grid container spacing={5} className={classes.gridContainer}>
-                    <Grid item xs={6}>
-                        <Typography variant="h5" className={classes.subtitle}>
-                            Menu Photos
-                        </Typography>
-                        <Box>{getSingleImage()}</Box>
-                        <Box>{getNumberOfImages()}</Box>
-                        <Typography className={classes.subtitle} variant="h5">
-                            Reviews
-                        </Typography>
-                        <ButtonStyled
-                            variant="contained"
-                            color="primary"
-                            onClick={() => setOpenCreateReview(true)}
-                            disabled={isDiner !== "true"}
-                        >
-                            Write a Review
-                        </ButtonStyled>
-                        <Box>{getReviews()}</Box>
-                        <Loading isLoading={loading}/>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Box className={classes.title}>Discounts</Box>
-                        {getVouchers()}
-                        <div>
-                            <Modal
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                                open={open}
-                                onClose={handleClose}
-                            >
-                                {
-                                    <div
-                                        style={{
-                                          top: "25%",
-                                          margin: "auto",
-                                          outline: "none",
-                                        }}
-                                    >
-                                        <Carousel
-                                            navButtonsProps={{
-                                              style: {
-                                                opacity: "50%",
-                                              },
-                                            }}
-                                            navButtonsAlwaysVisible={true}
-                                            autoPlay={false}
-                                        >
-                                            {getImages()}
-                                        </Carousel>
-                                    </div>
-                                }
-                            </Modal>
-                        </div>
-                        <Loading isLoading={loading}/>
-                    </Grid>
-                </Grid>
-                <EditCreateReview
-                    id={-1}
-                    eateryId={parseInt(eateryId)}
-                    open={openCreateReview}
-                    setOpen={setOpenCreateReview}
-                    username={user.name}
-                    profilePic={user.profilePic}
-                    reviewTextState={["", null]}
-                    ratingState={["", null]}
-                    reviewImagesState={[[], null]}
-                    isEdit={false}
-                    refreshList={() => getEateryDetails()}
-                />
-                {openConfirmModal && <ConfirmModal
-                    open={openConfirmModal}
-                    handleClose={handleCloseModal}
-                    // eateryId={eateryId}
-                    title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
-                    message={
-                        !isConfirmed
-                          ? `Purchase for ${eateryDetails.name}, valid for use between ${voucherDetails.startTime} - ${handleTimeNextDay(voucherDetails.endTime)} on ${voucherDetails.date}`
-                          : `${voucherDetails.discount}% off at ${eateryDetails.name}, CODE: ${code}, Valid between ${voucherDetails.startTime} - ${handleTimeNextDay(voucherDetails.endTime)} on ${voucherDetails.date}.`
-                    }
-                    denyText={isConfirmed ? "View Vouchers" : "Cancel"}
-                    handleDeny={isConfirmed ? () => history.push("/DinerVouchers") : null}
-                    handleConfirm={isConfirmed ? () => handleCloseModal() : () => handleBooking()}
-                    confirmText={isConfirmed ? "Ok" : "Confirm"}
-                ></ConfirmModal>}
-            </MainContainer>
-        </>
+    <>
+      <NavBar isDiner={isDiner} />
+      <MainContainer>
+        <EateryDisplay
+          onProfile={true}
+          name={eateryDetails.name}
+          cuisines={eateryDetails.cuisines}
+          rating={eateryDetails.rating}
+          image={eateryDetails.profilePic}
+          address={eateryDetails.address}
+        ></EateryDisplay>
+        <Grid container spacing={5} className={classes.gridContainer}>
+          <Grid item xs={6}>
+            <Typography variant="h5" className={classes.subtitle}>
+              Menu Photos
+            </Typography>
+            <Box>{getSingleImage()}</Box>
+            <Box>{getNumberOfImages()}</Box>
+            <Typography className={classes.subtitle} variant="h5">
+              Reviews
+            </Typography>
+            <ButtonStyled
+              variant="contained"
+              color="primary"
+              onClick={() => setOpenCreateReview(true)}
+              disabled={isDiner !== "true"}
+            >
+              Write a Review
+            </ButtonStyled>
+            <Box>{getReviews()}</Box>
+            <Loading isLoading={loading} />
+          </Grid>
+          <Grid item xs={6}>
+            <Box className={classes.title}>Discounts</Box>
+            {getVouchers()}
+            <div>
+              <Modal
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                {
+                  <div
+                    style={{
+                      top: "25%",
+                      margin: "auto",
+                      outline: "none",
+                    }}
+                  >
+                    <Carousel
+                      navButtonsProps={{
+                        style: {
+                          opacity: "50%",
+                        },
+                      }}
+                      navButtonsAlwaysVisible={true}
+                      autoPlay={false}
+                    >
+                      {getImages()}
+                    </Carousel>
+                  </div>
+                }
+              </Modal>
+            </div>
+            <Loading isLoading={loading} />
+          </Grid>
+        </Grid>
+        <EditCreateReview
+          id={-1}
+          eateryId={parseInt(eateryId)}
+          open={openCreateReview}
+          setOpen={setOpenCreateReview}
+          username={user.name}
+          profilePic={user.profilePic}
+          reviewTextState={["", null]}
+          ratingState={["", null]}
+          reviewImagesState={[[], null]}
+          isEdit={false}
+          refreshList={() => getEateryDetails()}
+        />
+        {openConfirmModal && (
+          <ConfirmModal
+            open={openConfirmModal}
+            handleClose={handleCloseModal}
+            // eateryId={eateryId}
+            title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
+            message={
+              !isConfirmed
+                ? `Purchase for ${eateryDetails.name}, valid for use between ${
+                    voucherDetails.startTime
+                  } - ${handleTimeNextDay(voucherDetails.endTime)} on ${
+                    voucherDetails.date
+                  }`
+                : `${voucherDetails.discount}% off at ${
+                    eateryDetails.name
+                  }, CODE: ${code}, Valid between ${
+                    voucherDetails.startTime
+                  } - ${handleTimeNextDay(voucherDetails.endTime)} on ${
+                    voucherDetails.date
+                  }.`
+            }
+            denyText={isConfirmed ? "View Vouchers" : "Cancel"}
+            handleDeny={
+              isConfirmed ? () => history.push("/DinerVouchers") : null
+            }
+            handleConfirm={
+              isConfirmed ? () => handleCloseModal() : () => handleBooking()
+            }
+            confirmText={isConfirmed ? "Ok" : "Confirm"}
+          ></ConfirmModal>
+        )}
+      </MainContainer>
+    </>
   );
 }

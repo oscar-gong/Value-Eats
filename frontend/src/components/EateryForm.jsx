@@ -9,8 +9,8 @@ import {
   validEmail,
   validConfirmPassword,
   validPassword,
-  validRequired
-  , handleImage
+  validRequired,
+  handleImage,
 } from "../utils/helpers";
 import { usePlacesWidget } from "react-google-autocomplete";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -21,6 +21,8 @@ import { LinkStyled } from "../styles/LinkStyled";
 import { TextFieldStyled } from "../styles/TextFieldStyled";
 import { Label } from "../styles/Label";
 import { BannerPhoto } from "../styles/BannerPhoto";
+import { API_KEY } from "../utils/constants";
+import request from "../utils/request";
 
 export default function EateryForm ({
   email,
@@ -62,7 +64,7 @@ export default function EateryForm ({
   };
 
   const { ref } = usePlacesWidget({
-    apiKey: "AIzaSyCG80LxbPTd4MNoZuPdzbF-aQA_DcCAGVQ",
+    apiKey: API_KEY,
     onPlaceSelected: (place) =>
       setAddress({ value: place.formatted_address, valid: true }),
     options: {
@@ -73,17 +75,7 @@ export default function EateryForm ({
 
   useEffect(() => {
     const listOfCuisines = async () => {
-      const response = await fetch(
-        "http://localhost:8080/list/cuisines",
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
+      const response = await request.get("list/cuisines");
       const responseData = await response.json();
       if (response.status === 200) {
         setCuisineList(responseData.cuisines);
@@ -97,13 +89,12 @@ export default function EateryForm ({
       <FloatBox display="flex" flexDirection="column" alignItems="center">
         <Box pt={2}>
           <Subtitle>
-            {isRegister === true
-              ? "Register Eatery"
-              : "Update Eatery"}
+            {isRegister === true ? "Register Eatery" : "Update Eatery"}
           </Subtitle>
         </Box>
         <Box pt={2} width="60%">
-          <TextFieldStyled aria-label="outlined-basic"
+          <TextFieldStyled
+            aria-label="outlined-basic"
             label="Eatery Name"
             value={eateryName.value}
             onChange={(e) =>
@@ -115,32 +106,28 @@ export default function EateryForm ({
             onBlur={() => validRequired(eateryName, setEateryName)}
             error={!eateryName.valid}
             helperText={
-              eateryName.valid
-                ? ""
-                : "Please enter the name of your eatery"
+              eateryName.valid ? "" : "Please enter the name of your eatery"
             }
             variant="outlined"
             fullWidth
           />
         </Box>
         <Box pt={2} width="60%">
-          <TextFieldStyled aria-label="outlined-basic"
+          <TextFieldStyled
+            aria-label="outlined-basic"
             label="Email Address"
             value={email.value}
-            onChange={(e) =>
-              setEmail({ value: e.target.value, valid: true })
-            }
+            onChange={(e) => setEmail({ value: e.target.value, valid: true })}
             onBlur={() => validEmail(email, setEmail)}
             error={!email.valid}
-            helperText={
-              email.valid ? "" : "Please enter a valid email"
-            }
+            helperText={email.valid ? "" : "Please enter a valid email"}
             variant="outlined"
             fullWidth
           />
         </Box>
         <Box pt={2} width="60%">
-          <TextFieldStyled aria-label="outlined-basic"
+          <TextFieldStyled
+            aria-label="outlined-basic"
             label="Password"
             type="password"
             onBlur={() => validPassword(password, setPassword)}
@@ -149,9 +136,7 @@ export default function EateryForm ({
             }
             error={
               (!password.valid && isRegister) ||
-              (!isRegister &&
-                !password.valid &&
-                password.value.length !== 0)
+              (!isRegister && !password.valid && password.value.length !== 0)
             }
             helperText={
               password.valid
@@ -163,7 +148,8 @@ export default function EateryForm ({
           />
         </Box>
         <Box pt={2} width="60%">
-          <TextFieldStyled aria-label="outlined-basic"
+          <TextFieldStyled
+            aria-label="outlined-basic"
             label="Confirm Password"
             type="password"
             onChange={(e) =>
@@ -195,14 +181,10 @@ export default function EateryForm ({
             disabled={!useGoogleAPI}
             value={address.value}
             onBlur={validAddress}
-            onChange={(e) =>
-              setAddress({ value: e.target.value, valid: true })
-            }
+            onChange={(e) => setAddress({ value: e.target.value, valid: true })}
             error={!address.valid}
             helperText={
-              address.valid
-                ? ""
-                : "Please enter the address of your eatery"
+              address.valid ? "" : "Please enter the address of your eatery"
             }
             fullWidth
             variant="outlined"
@@ -222,16 +204,12 @@ export default function EateryForm ({
             filterSelectedOptions
             renderInput={(params) => (
               <TextFieldStyled
-                  {...params}
-                  variant="outlined"
-                  placeholder="Select Cuisines"
-                  error={!cuisines.valid}
-                  helperText={
-                    cuisines.valid
-                      ? ""
-                      : "Please select cuisines"
-                  }
-                  fullWidth
+                {...params}
+                variant="outlined"
+                placeholder="Select Cuisines"
+                error={!cuisines.valid}
+                helperText={cuisines.valid ? "" : "Please select cuisines"}
+                fullWidth
               />
             )}
           />
@@ -244,9 +222,7 @@ export default function EateryForm ({
               onChange={(e) => handleImage(e.target.files, setTmpProfilePic)}
             />
             {<AddAPhoto />}{" "}
-            {isRegister
-              ? "Upload Display Photo"
-              : "Change Profile Picture"}
+            {isRegister ? "Upload Display Photo" : "Change Profile Picture"}
           </Label>
         </Box>
         <Box pt={2} display="flex" justifyContent="center">
@@ -259,7 +235,8 @@ export default function EateryForm ({
           uploadDescription={"Upload Menu Photos"}
         />
         <Box pt={2} display="flex" justifyContent="center" width="100%">
-          <ButtonStyled widthPercentage={60}
+          <ButtonStyled
+            widthPercentage={60}
             variant="contained"
             color="primary"
             endIcon={<SendIcon />}
@@ -268,13 +245,11 @@ export default function EateryForm ({
             {isRegister ? "Register" : "Update"}
           </ButtonStyled>
         </Box>
-        {isRegister &&
+        {isRegister && (
           <Box pt={2} pb={4}>
-            <LinkStyled to="/">
-              Back to Login
-            </LinkStyled>
+            <LinkStyled to="/">Back to Login</LinkStyled>
           </Box>
-        }
+        )}
       </FloatBox>
     </AlignCenter>
   );
