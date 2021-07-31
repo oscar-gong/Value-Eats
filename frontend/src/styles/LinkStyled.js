@@ -5,4 +5,7 @@ export const LinkStyled = styled(Link)`
   textDecoation: none;
   color: #96AE33;
   background: off-white;
+  &:hover {
+    color: darkgreen;
+  }
 `;

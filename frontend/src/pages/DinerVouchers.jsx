@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
-import { MainContent } from "../styles/MainContent";
-import { Box, Checkbox, FormControlLabel, makeStyles } from "@material-ui/core";
+import { Box, Tabs, Tab, makeStyles } from "@material-ui/core";
 import { Redirect } from "react-router";
 import DinerVoucher from "../components/DinerVoucher";
 import { VoucherContainer } from "../styles/VoucherContainer";
@@ -32,7 +31,7 @@ export default function DinerVouchers () {
   const context = useContext(StoreContext);
   const [token, setAuth] = context.auth;
   const setIsDiner = context.isDiner[1];
-  const [showHistory, setShowHistory] = useState(false);
+  const [showHistory, setShowHistory] = useState(0);
   const [vouchers, setVouchers] = useState(null);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -69,9 +68,9 @@ export default function DinerVouchers () {
   if (token === null) return <Redirect to="/" />;
 
   // when show historical checkbox is clicked
-  const handleHistory = (event) => {
-    setShowHistory(event.target.checked);
-  };
+  // const handleHistory = (event) => {
+  //   setShowHistory(event.target.checked);
+  // };
 
   const getCurrentVouchers = () => {
     if (!vouchers) return;
@@ -94,7 +93,7 @@ export default function DinerVouchers () {
     }
     if (vouchers.reduce((total, voucher) => {
       return total + (voucher.isActive ? 1 : 0);
-    }, 0) === 0 && !showHistory) {
+    }, 0) === 0 && showHistory === 0) {
       return (
         <Box display="flex"
           flexDirection="column"
@@ -161,7 +160,6 @@ export default function DinerVouchers () {
     <>
       <NavBar isDiner={true} />
       <MainContainer>
-      <MainContent>
         <Box
           display="flex"
           flexDirection="column"
@@ -169,22 +167,18 @@ export default function DinerVouchers () {
           alignItems="center"
         >
           <Box className={classes.voucherTitle}>My Vouchers</Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={showHistory}
-                onChange={handleHistory}
-              />
-            }
-            label="Show Historical"
-          />
+          <Box>
+            <Tabs value={showHistory} aria-label="simple tabs example">
+              <Tab label="Active" onClick={() => setShowHistory(0)} />
+              <Tab label="Historical" onClick={() => setShowHistory(1)} />
+            </Tabs>
+          </Box>
           <VoucherContainer>
             {getCurrentVouchers()}
-            {showHistory && getPastVouchers()}
+            {showHistory === 1 && getPastVouchers()}
             <Loading isLoading={loading} />
           </VoucherContainer>
         </Box>
-      </MainContent>
       </MainContainer>
     </>
   );

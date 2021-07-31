@@ -3,7 +3,10 @@ import { Box, Grid } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Countdown from "react-countdown";
 import { handleTimeNextDay } from "../utils/helpers";
-import { ButtonStyled } from "../styles/ButtonStyle";
+import { Trapezium } from "../styles/Trapezium";
+import { LinkStyled } from "../styles/LinkStyled";
+import { Title } from "../styles/Title";
+
 export default function DinerVoucher ({
   duration,
   code,
@@ -29,47 +32,54 @@ export default function DinerVoucher ({
     <Box
       display="flex"
       justifyContent="space-around"
-      alignItems="center"
       style={{ border: "2px dotted #FF845B" }}
-      bgcolor={used || !isActive ? "#d6d6d6" : "white"}
+      bgcolor={used || !isActive ? "#d6d6d6" : "#FFF9F7"}
+      opacity="0.1"
       margin="20px"
     >
+      <Trapezium
+      >
+        <h1 style={{
+          paddingLeft: "15px",
+          marginTop: "25px",
+          zIndex: 1,
+          color: "white",
+          fontSize: "300%"
+        }}>
+            {discount}%
+            {/* - {eatingStyle} */}
+        </h1>
+      </Trapezium>
       <Grid
         container
         direction="row"
         justifyContent="center"
         alignItems="center"
       >
-        <Grid item display="flex" flexDirection="column" xs={2}>
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <h1>
-              {isActive
-                ? used
-                  ? "USED"
-                  : "ACTIVE"
-                : used
-                  ? "USED"
-                  : "EXPIRED"}
-            </h1>
-          </Box>
-        </Grid>
-        <Grid item display="flex" justifyContent="center" xs={3}>
-          <Box display="flex" flexDirection="column" alignItems="center" flexWrap="nowrap">
-            <h2>
-              {discount}% off - {eatingStyle}
-            </h2>
-          </Box>
-        </Grid>
-        <Grid
+        <Box
           item
           display="flex"
           flexDirection="column"
           justifyContent="center"
           xs={4}
+          mx={12}
         >
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center">
-            <h3 style={{ margin: "5px 0px" }}>{eateryName}</h3>
-
+            <LinkStyled onClick={handleViewEateryClick}
+              style={{
+                textDecoration: "underline",
+                fontSize: "150%",
+                margin: "5px 0px",
+              }}
+            >
+              {eateryName}
+            </LinkStyled>
+            <h3 style={{
+              margin: "0px"
+            }}
+            >
+              {eatingStyle} deal
+            </h3>
             {!isRedeemable && !used && (
               <h3 style={{ margin: "5px 0px" }}>
                 Use on {date} between {startTime} -
@@ -85,9 +95,26 @@ export default function DinerVoucher ({
                 />
               </h3>
             )}
-
+          </Box>
+        </Box>
+        <Box item display="flex" justifyContent="center" xs={3}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+          >
             {!used && (
-              <h3 style={{ margin: "5px 0px" }}>Code: {code}</h3>
+              <Box display="flex"
+              justifyContent="center"
+              border="2px solid #FF845B"
+              borderRadius="10%">
+                <Title style={{
+                  margin: "0px",
+                  padding: "0px 10px"
+                }}>
+                  {code}
+                </Title>
+              </Box>
             )}
             {used && (
               <h3 style={{ margin: "5px 0px" }}>
@@ -95,23 +122,7 @@ export default function DinerVoucher ({
               </h3>
             )}
           </Box>
-        </Grid>
-        <Grid item display="flex" justifyContent="center" xs={3}>
-          <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-          >
-            <Box display="flex" justifyContent="center">
-              <ButtonStyled
-                onClick={handleViewEateryClick}
-                variant="contained"
-              >
-                View restaurant
-              </ButtonStyled>
-            </Box>
-          </Box>
-        </Grid>
+        </Box>
       </Grid>
     </Box>
   );
