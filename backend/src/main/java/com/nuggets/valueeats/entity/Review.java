@@ -1,13 +1,12 @@
 package com.nuggets.valueeats.entity;
 
-import java.util.ArrayList;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-
-import lombok.Data;
+import java.util.ArrayList;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -15,18 +14,13 @@ import lombok.Data;
 public class Review {
     @Id
     private Long id;
-
     private Long dinerId;
-
     private Long eateryId;
-
     private String message;
-
     private Float rating;
-
     private ArrayList<String> reviewPhotos;
 
-    public Review(){
-        this.message="";
+    public Review() {
+        this.message = "";
     }
 }

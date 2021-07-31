@@ -2,7 +2,6 @@ package com.nuggets.valueeats.controller;
 
 import com.nuggets.valueeats.controller.decorator.token.CheckDinerToken;
 import com.nuggets.valueeats.service.RecommendationService;
-
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

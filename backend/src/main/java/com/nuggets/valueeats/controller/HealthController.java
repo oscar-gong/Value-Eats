@@ -62,7 +62,7 @@ public class HealthController {
 
     @RequestMapping(value = "test/checktoken", method = RequestMethod.POST)
     @CheckUserToken
-    public String testAuth(@RequestHeader (name="Authorization") String token, @RequestBody final Diner diner) {
+    public String testAuth(@RequestHeader(name = "Authorization") String token, @RequestBody final Diner diner) {
         return token;
     }
 
