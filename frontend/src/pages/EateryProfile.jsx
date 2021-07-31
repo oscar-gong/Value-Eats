@@ -92,7 +92,7 @@ export default function EateryProfile () {
   useEffect(() => {
     // on page init, load the users details
     const getUser = async () => {
-      const response = await request.get("/diner/profile/details", auth);
+      const response = await request.get("diner/profile/details", auth);
       const responseData = await response.json();
       if (response.status === 200) {
         console.log(responseData);
@@ -114,7 +114,7 @@ export default function EateryProfile () {
   const getEateryDetails = async () => {
     setLoading(true);
     const response = await request.get(
-      `/eatery/profile/details?id=${eateryId}`,
+      `eatery/profile/details?id=${eateryId}`,
       auth
     );
     setLoading(false);
@@ -206,7 +206,7 @@ export default function EateryProfile () {
 
   const handleBooking = async () => {
     const response = await request.post(
-      `/diner/book?id=${voucherDetails.voucherID}`,
+      `diner/book?id=${voucherDetails.voucherID}`,
       {},
       auth
     );

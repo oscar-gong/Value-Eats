@@ -32,7 +32,7 @@ export default function EditEateryLanding () {
   useEffect(() => {
     // on page init, load the users details
     const getEatery = async () => {
-      const response = await request.get("/eatery/profile/details", auth);
+      const response = await request.get("eatery/profile/details", auth);
       const responseData = await response.json();
       if (response.status === 200) {
         console.log(responseData);
@@ -90,7 +90,7 @@ export default function EditEateryLanding () {
     if (password.value.length > 0) {
       payload.password = password.value;
     }
-    const response = await request.post("/update/eatery", payload, auth);
+    const response = await request.post("update/eatery", payload, auth);
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({
