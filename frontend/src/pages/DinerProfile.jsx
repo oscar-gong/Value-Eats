@@ -57,7 +57,17 @@ export default function DinerProfile () {
   const [reviews, setReviews] = useState([]);
 
   const getUser = async () => {
-    const response = await request.get("/diner/profile/details", token);
+    const response = await fetch(
+      "http://localhost:8080/diner/profile/details",
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
     const responseData = await response.json();
     if (response.status === 200) {
       console.log(responseData);
@@ -113,7 +123,7 @@ export default function DinerProfile () {
       alias: username.value,
       profilePic: tmpProfilePic,
     };
-    const response = await request.post("/update/diner", payload, token);
+    const response = await request.post("update/diner", payload, token);
     const responseData = await response.json();
     if (response.status === 200) {
       console.log(responseData);

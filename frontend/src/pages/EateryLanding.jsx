@@ -24,7 +24,7 @@ export default function EateryLanding () {
 
   const getEateryDetails = async () => {
     setLoading(true);
-    const response = await request.get("/eatery/profile/details", auth);
+    const response = await request.get("eatery/profile/details", auth);
     const responseData = await response.json();
     setLoading(false);
     if (response.status === 200) {

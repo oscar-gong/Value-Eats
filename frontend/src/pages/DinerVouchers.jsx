@@ -24,7 +24,7 @@ export default function DinerVouchers () {
 
   const getVouchers = async () => {
     setLoading(true);
-    const response = await request.get("/diner/voucher", token);
+    const response = await request.get("diner/voucher", token);
     const responseData = await response.json();
     if (response.status === 200) {
       console.log(responseData.vouchers);
