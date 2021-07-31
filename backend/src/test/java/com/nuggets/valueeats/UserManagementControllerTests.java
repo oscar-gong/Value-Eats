@@ -26,7 +26,7 @@ class UserManagementControllerTests {
 	private UserRepository<User> userRepository;
 
 	@Test
-	void testRegisterDiner_validDiner() throws Exception {
+	public void testRegisterDiner_validDiner() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner1");
@@ -44,7 +44,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testRegisterDiner_aliasAlreadyExists() throws Exception {
+	public void testRegisterDiner_aliasAlreadyExists() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner1");
@@ -68,7 +68,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testRegisterDiner_invalidEmail() throws Exception {
+	public void testRegisterDiner_invalidEmail() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner2");
@@ -86,7 +86,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testRegisterDiner() throws Exception {
+	public void testRegisterDiner() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner2");
@@ -104,7 +104,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testRegisterEatery_success() throws Exception {
+	public void testRegisterEatery_success() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery1");
@@ -122,7 +122,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testRegisterEatery_aliasExists() throws Exception {
+	public void testRegisterEatery_aliasExists() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery1");
@@ -146,7 +146,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testRegisterEatery_invalidEmail() throws Exception {
+	public void testRegisterEatery_invalidEmail() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery2");
@@ -164,7 +164,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testRegisterEatery_invalidPassword() throws Exception {
+	public void testRegisterEatery_invalidPassword() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery2");
@@ -182,7 +182,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testDinerLogin_success() throws Exception {
+	public void testDinerLogin_success() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner1");
@@ -206,7 +206,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testDinerLogin_invalidDetails() throws Exception {
+	public void testDinerLogin_invalidDetails() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner1");
@@ -235,7 +235,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testEateryLogin_success() throws Exception {
+	public void testEateryLogin_success() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery1");
@@ -259,7 +259,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testEateryLogin_invalidDetails() throws Exception {
+	public void testEateryLogin_invalidDetails() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery1");
@@ -288,7 +288,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testUpdateDiner_success() throws Exception {
+	public void testUpdateDiner_success() throws Exception {
 		this.userRepository.deleteAll();
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
@@ -323,7 +323,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testUpdateDiner_invalidInformation() throws Exception {
+	public void testUpdateDiner_invalidInformation() throws Exception {
 		this.userRepository.deleteAll();
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
@@ -357,7 +357,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testUpdateEatery_validInformation() throws Exception {
+	public void testUpdateEatery_validInformation() throws Exception {
 		this.userRepository.deleteAll();
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
@@ -392,7 +392,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testUpdateEatery_invalidInformation() throws Exception {
+	public void testUpdateEatery_invalidInformation() throws Exception {
 		this.userRepository.deleteAll();
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
@@ -426,7 +426,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testDinerLogout_activeToken() throws Exception {
+	public void testDinerLogout_activeToken() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner1");
@@ -466,7 +466,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testDinerLogout_invalidToken() throws Exception {
+	public void testDinerLogout_invalidToken() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "diner1");
@@ -502,7 +502,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testEateryLogout_validToken() throws Exception {
+	public void testEateryLogout_validToken() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery1");
@@ -542,7 +542,7 @@ class UserManagementControllerTests {
 	}
 
 	@Test
-	void testEateryLogout_invalidToken() throws Exception {
+	public void testEateryLogout_invalidToken() throws Exception {
 		this.userRepository.deleteAll();
 		Map<String, String> body = new HashMap<>();
 		body.put("alias", "eatery1");
