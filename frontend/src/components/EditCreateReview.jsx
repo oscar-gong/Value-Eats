@@ -93,7 +93,7 @@ export default function EditCreateReview ({
       message: reviewText,
       reviewPhotos: images,
     };
-    const response = request.post("diner/createreview", payload, token);
+    const response = await request.post("diner/createreview", payload, token);
     const responseData = await response.json();
     if (response.status === 200) {
       refreshList();
