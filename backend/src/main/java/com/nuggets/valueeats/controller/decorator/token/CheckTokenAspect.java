@@ -39,7 +39,7 @@ class CheckTokenAspect<T extends User> {
         checkXSession(joinPoint, dinerRepository);
     }
 
-    private <U extends UserRepository<V>, V extends User>  void checkXSession(final JoinPoint joinPoint, final U repository) {
+    private <U extends UserRepository<V>, V extends User> void checkXSession(final JoinPoint joinPoint, final U repository) {
         if (joinPoint.getArgs().length == 2) {
             if (jwtUtils.decode((String) joinPoint.getArgs()[0]) == null || !repository.existsByToken((String) joinPoint.getArgs()[0])) {
                 throw new InvalidTokenException("Token is invalid");
