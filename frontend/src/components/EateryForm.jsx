@@ -91,8 +91,14 @@ export default function EateryForm ({
     listOfCuisines();
   }, []);
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      submitForm();
+    }
+  };
+
   return (
-    <AlignCenter removeBg={removeBg} isEateryForm={true} style={{ overflowY: "visible", padding: "2% 0" }}>
+    <AlignCenter removeBg={removeBg} isEateryForm={true} style={{ padding: "2% 0" }}>
       <FloatBox display="flex" flexDirection="column" alignItems="center">
         <Box pt={2}>
           <Subtitle>
@@ -116,6 +122,7 @@ export default function EateryForm ({
             }
             variant="outlined"
             fullWidth
+            onKeyPress={handleKeyPress}
           />
         </Box>
         <Box pt={2} width="60%">
@@ -140,6 +147,7 @@ export default function EateryForm ({
               }
               variant="outlined"
               fullWidth
+              onKeyPress={handleKeyPress}
           />
         </Box>
         <Box pt={2} width="60%">
@@ -168,6 +176,7 @@ export default function EateryForm ({
             }
             variant="outlined"
             fullWidth
+            onKeyPress={handleKeyPress}
           />
         </Box>
         <Box pt={2} width="60%">
@@ -190,6 +199,7 @@ export default function EateryForm ({
             }
             variant="outlined"
             fullWidth
+            onKeyPress={handleKeyPress}
           />
         </Box>
         <Box pt={2} width="60%">
@@ -210,6 +220,7 @@ export default function EateryForm ({
             fullWidth
             variant="outlined"
             inputRef={ref}
+            onKeyPress={handleKeyPress}
           />
         </Box>
         <Box pt={2} width="60%">
