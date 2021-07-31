@@ -108,7 +108,7 @@ export default function RedeemVoucher () {
           <Title>Redeem Voucher</Title>
           <Box pt={2} width="50vw" display="flex" flexDirection="column" justifyContent="center">
             <ShakeHead
-              id="outlined-basic"
+              aria-label="outlined-basic"
               label="Enter code here to redeem your voucher"
               animate={ !code.valid ? "shake-head" : ""}
               onChange={(e) =>

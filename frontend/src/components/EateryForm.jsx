@@ -3,7 +3,7 @@ import UploadPhotos from "./UploadPhotos";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
 import { AlignCenter } from "../styles/AlignCenter";
-import { Box, TextField } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import {
   validEmail,
@@ -18,7 +18,7 @@ import { ButtonStyled } from "../styles/ButtonStyle";
 import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import { FileUpload } from "../styles/FileUpload";
 import { LinkStyled } from "../styles/LinkStyled";
-
+import { TextFieldStyled } from "../styles/TextFieldStyled";
 import { Label } from "../styles/Label";
 import { BannerPhoto } from "../styles/BannerPhoto";
 
@@ -103,8 +103,7 @@ export default function EateryForm ({
           </Subtitle>
         </Box>
         <Box pt={2} width="60%">
-          <TextField
-            id="outlined-basic"
+          <TextFieldStyled aria-label="outlined-basic"
             label="Eatery Name"
             value={eateryName.value}
             onChange={(e) =>
@@ -125,8 +124,7 @@ export default function EateryForm ({
           />
         </Box>
         <Box pt={2} width="60%">
-          <TextField
-            id="outlined-basic"
+          <TextFieldStyled aria-label="outlined-basic"
             label="Email Address"
             value={email.value}
             onChange={(e) =>
@@ -142,32 +140,30 @@ export default function EateryForm ({
           />
         </Box>
         <Box pt={2} width="60%">
-          <TextField
-              id="outlined-basic"
-              label="Password"
-              type="password"
-              onBlur={() => validPassword(password, setPassword)}
-              onChange={(e) =>
-                setPassword({ value: e.target.value, valid: true })
-              }
-              error={
-                (!password.valid && isRegister) ||
-                (!isRegister &&
-                  !password.valid &&
-                  password.value.length !== 0)
-              }
-              helperText={
-                password.valid
-                  ? ""
-                  : "Please enter a valid password with 1 lowercase, 1 upper case, 1 number with at least 8 characters"
-              }
-              variant="outlined"
-              fullWidth
+          <TextFieldStyled aria-label="outlined-basic"
+            label="Password"
+            type="password"
+            onBlur={() => validPassword(password, setPassword)}
+            onChange={(e) =>
+              setPassword({ value: e.target.value, valid: true })
+            }
+            error={
+              (!password.valid && isRegister) ||
+              (!isRegister &&
+                !password.valid &&
+                password.value.length !== 0)
+            }
+            helperText={
+              password.valid
+                ? ""
+                : "Please enter a valid password with 1 lowercase, 1 upper case, 1 number with at least 8 characters"
+            }
+            variant="outlined"
+            fullWidth
           />
         </Box>
         <Box pt={2} width="60%">
-          <TextField
-            id="outlined-basic"
+          <TextFieldStyled aria-label="outlined-basic"
             label="Confirm Password"
             type="password"
             onChange={(e) =>
@@ -194,8 +190,8 @@ export default function EateryForm ({
           />
         </Box>
         <Box pt={2} width="60%">
-          <TextField
-            id="outlined-basic"
+          <TextFieldStyled
+            aria-label="outlined-basic"
             disabled={!useGoogleAPI}
             value={address.value}
             onBlur={validAddress}
@@ -216,7 +212,7 @@ export default function EateryForm ({
         <Box pt={2} width="60%">
           <Autocomplete
             multiple
-            id="tags-outlined"
+            aria-label="tags-outlined"
             options={cuisineList}
             value={cuisines.value ? cuisines.value : []}
             onChange={(e, allOptions) =>
@@ -225,8 +221,7 @@ export default function EateryForm ({
             onBlur={validCuisine}
             filterSelectedOptions
             renderInput={(params) => (
-              <TextField
-                  id="outlined-basic"
+              <TextFieldStyled
                   {...params}
                   variant="outlined"
                   placeholder="Select Cuisines"
@@ -245,6 +240,7 @@ export default function EateryForm ({
           <Label>
             <FileUpload
               type="file"
+              accept="image/png, image/jpg, image/jpeg"
               onChange={(e) => handleImage(e.target.files, setTmpProfilePic)}
             />
             {<AddAPhoto />}{" "}

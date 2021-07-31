@@ -253,7 +253,7 @@ export default function DinerProfile () {
         <Dialog aria-labelledby="customized-dialog-title" open={openProfile} onClose={() => setOpenProfile(false)}
         TransitionComponent={Transition}
         keepMounted>
-          <DialogTitleStyled id="customized-dialog-title">
+          <DialogTitleStyled>
             Update Profile
           </DialogTitleStyled>
           <CloseIconStyled
@@ -268,6 +268,7 @@ export default function DinerProfile () {
                 <Label style={{ border: "0px", padding: "0px" }}>
                   <FileUpload
                     type="file"
+                    accept="image/png, image/jpg, image/jpeg"
                     onChange={(e) =>
                       handleImage(e.target.files, setTmpProfilePic)
                     }
@@ -279,7 +280,6 @@ export default function DinerProfile () {
                 </Label>
               </Box>
               <TextFieldStyled
-                  id="outlined-basic"
                   label="Username"
                   onChange={(e) =>
                     setUsername({ value: e.target.value, valid: true })
@@ -296,7 +296,6 @@ export default function DinerProfile () {
             </Box>
             <Box pt={0.5}>
                 <TextFieldStyled
-                    id="outlined-basic"
                     label="Email Address"
                     onChange={(e) =>
                       setEmail({ value: e.target.value, valid: true })
@@ -313,7 +312,7 @@ export default function DinerProfile () {
             </Box>
             <Box pt={2}>
               <TextFieldStyled
-                id="outlined-basic"
+                aria-label="outlined-basic"
                 label="Password"
                 type="password"
                 onChange={(e) =>
@@ -332,7 +331,7 @@ export default function DinerProfile () {
             </Box>
             <Box pt={2}>
               <TextFieldStyled
-                id="outlined-basic"
+                aria-label="outlined-basic"
                 label="Confirm Password"
                 type="password"
                 onChange={(e) =>

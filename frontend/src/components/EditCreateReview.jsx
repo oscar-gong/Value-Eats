@@ -135,7 +135,7 @@ export default function EditCreateReview ({
         keepMounted
       >
         <DialogTitleStyled
-          id="customized-dialog-title"
+          aria-label="customized-dialog-title"
         >
           {isEdit ? "Edit Review" : "Create Review"}
         </DialogTitleStyled>
@@ -165,7 +165,7 @@ export default function EditCreateReview ({
           />
           <Box pt={2}>
             <TextFieldStyled
-              id="outlined-basic"
+              aria-label="outlined-basic"
               label="Let us know what you think..."
               onChange={(e) => setReviewText(e.target.value)}
               value={reviewText}

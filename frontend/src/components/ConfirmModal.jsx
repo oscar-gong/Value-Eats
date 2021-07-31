@@ -29,7 +29,7 @@ export default function ConfirmModal ({
       TransitionComponent={Transition}
       keepMounted
     >
-      <DialogTitleStyled id="customized-dialog-title" onClose={handleClose}>
+      <DialogTitleStyled aria-label="customized-dialog-title" onClose={handleClose}>
         {title}
       </DialogTitleStyled>
       <CloseIconStyled aria-label="close" onClick={handleClose}>

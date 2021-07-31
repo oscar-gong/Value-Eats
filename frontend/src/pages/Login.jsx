@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Title } from "../styles/Title";
 import { AlignCenter } from "../styles/AlignCenter";
-import { Box, TextField, Button, Grid, makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, makeStyles } from "@material-ui/core";
+import { TextFieldStyled } from "../styles/TextFieldStyled";
 import SendIcon from "@material-ui/icons/Send";
 import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
@@ -122,8 +123,8 @@ export default function Login () {
             </Box>
             {/* <p>Disrupting the intersection between discount and advertising through centralisation</p> */}
             <Box pt={1} width="60%">
-              <TextField
-                id="outlined-basic"
+              <TextFieldStyled
+                aria-label="outlined-basic"
                 label="Email address"
                 variant="outlined"
                 onChange={(e) => setEmail(e.target.value)}
@@ -132,9 +133,9 @@ export default function Login () {
               />
             </Box>
             <Box pt={2} width="60%">
-              <TextField
+              <TextFieldStyled
+                aria-label="outlined-basic"
                 type="password"
-                id="outlined-basic"
                 label="Password"
                 variant="outlined"
                 onChange={(e) => setPassword(e.target.value)}
