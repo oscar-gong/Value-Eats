@@ -30,7 +30,7 @@ public class DatabaseCleaner {
 
         if (repeatedVouchers != null) {
             for (RepeatedVoucher repeatedVoucher : repeatedVouchers) {
-                if (repeatedVoucher.getNextUpdate() != null && repeatedVoucher.getNextUpdate().compareTo(timeNow) < 0){
+                if (repeatedVoucher.getNextUpdate() != null && repeatedVoucher.getNextUpdate().compareTo(timeNow) < 0) {
                     System.out.println("Updated Voucher " + repeatedVoucher.getId());
                     repeatedVoucher.setQuantity(repeatedVoucher.getRestockTo());
                     repeatedVoucher.setActive(true);
@@ -53,8 +53,9 @@ public class DatabaseCleaner {
         if (repeatedVouchers != null) {
             for (RepeatedVoucher repeatedVoucher : repeatedVouchers) {
                 Date endTime = new Date();
-                endTime = Date.from(repeatedVoucher.getDate().toInstant().plus(Duration.ofMinutes(repeatedVoucher.getEnd())));;
-                if (endTime.compareTo(timeNow) < 0){
+                endTime = Date.from(repeatedVoucher.getDate().toInstant().plus(Duration.ofMinutes(repeatedVoucher.getEnd())));
+                ;
+                if (endTime.compareTo(timeNow) < 0) {
                     System.out.println("Voucher " + repeatedVoucher.getId() + " has expired.");
                     repeatedVoucher.setActive(false);
                     repeatVoucherRepository.save(repeatedVoucher);
@@ -64,8 +65,9 @@ public class DatabaseCleaner {
         if (vouchers != null) {
             for (Voucher voucher : vouchers) {
                 Date endTime = new Date();
-                endTime = Date.from(voucher.getDate().toInstant().plus(Duration.ofMinutes(voucher.getEnd())));;
-                if (endTime.compareTo(timeNow) < 0){
+                endTime = Date.from(voucher.getDate().toInstant().plus(Duration.ofMinutes(voucher.getEnd())));
+                ;
+                if (endTime.compareTo(timeNow) < 0) {
                     System.out.println("Voucher " + voucher.getId() + " has expired.");
                     voucher.setActive(false);
                     voucherRepository.save(voucher);
@@ -73,5 +75,4 @@ public class DatabaseCleaner {
             }
         }
     }
-
 }

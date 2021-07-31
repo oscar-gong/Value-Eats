@@ -12,7 +12,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @Entity
 @NoArgsConstructor
 @Data
-@ToString(callSuper =  true)
+@ToString(callSuper = true)
 @PrimaryKeyJoinColumn(name = "id")
 public final class Diner extends User {
 }

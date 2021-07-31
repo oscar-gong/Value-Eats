@@ -1,13 +1,12 @@
 package com.nuggets.valueeats.utils;
 
-import java.util.HashMap;
-
 import com.nuggets.valueeats.entity.Eatery;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 
-public class EateryUtils {
+import java.util.HashMap;
 
+public class EateryUtils {
     public static HashMap<String, Object> createEatery(VoucherRepository voucherRepository, RepeatVoucherRepository repeatVoucherRepository, Eatery e, HashMap<String, Integer> distanceFromDiner) {
         HashMap<String, Object> eatery = new HashMap<String, Object>();
 
@@ -24,7 +23,7 @@ public class EateryUtils {
         }
 
         String discount = maxDiscount.toString() + "%";
-        
+
         eatery.put("name", e.getAlias());
         eatery.put("discount", discount);
         if (e.getLazyRating() != null) {
@@ -45,5 +44,4 @@ public class EateryUtils {
 
         return eatery;
     }
-    
 }

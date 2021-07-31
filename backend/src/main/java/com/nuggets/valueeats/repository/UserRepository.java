@@ -14,11 +14,9 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
 
     T findByEmail(String email);
 
-    
     T findById(int id);
 
     boolean existsById(Long id);
-
 
     T findByToken(String token);
 

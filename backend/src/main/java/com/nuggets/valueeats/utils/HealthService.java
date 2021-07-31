@@ -12,7 +12,6 @@ import com.nuggets.valueeats.repository.ReviewRepository;
 import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,5 +59,4 @@ public final class HealthService {
     public List<Voucher> listVoucher() {
         return voucherRepository.findAll();
     }
-    
 }

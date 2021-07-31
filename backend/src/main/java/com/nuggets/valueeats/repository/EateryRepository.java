@@ -22,9 +22,10 @@ public interface EateryRepository extends UserRepository<Eatery> {
     List<Eatery> findAllEateriesNotInList(@Param("list") List<Long> list);
 
     List<Eatery> findAllByOrderByIdDesc();
-    
+
     List<Eatery> findAllByOrderByLazyRatingDesc();
 
-    @Query(value = "select count(*) from (select * from Cuisines where eatery_id = ?1 and cuisine in (select cuisine from Cuisines where eatery_id in ?2))", nativeQuery = true)
+    @Query(value = "select count(*) from (select * from Cuisines where eatery_id = ?1 and cuisine in (select cuisine from Cuisines where eatery_id in ?2))",
+            nativeQuery = true)
     Integer dinerHadCuisineBefore(Long eateryId, List<Long> list);
 }

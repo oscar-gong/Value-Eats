@@ -1,18 +1,17 @@
 package com.nuggets.valueeats.utils;
 
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.util.Date;
-import java.util.HashMap;
-
 import com.nuggets.valueeats.entity.Diner;
 import com.nuggets.valueeats.entity.voucher.VoucherEatingStyle;
 import com.nuggets.valueeats.repository.BookingRecordRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.Date;
+import java.util.HashMap;
+
 public class VoucherUtils {
-    
     public static Long getDuration(Date date, Integer end) {
         Date endTime = Date.from(date.toInstant().plus(Duration.ofMinutes(end)));
         Date timeNow = new Date(System.currentTimeMillis());
@@ -21,10 +20,11 @@ public class VoucherUtils {
         return Duration.between(timeNow.toInstant(), endTime.toInstant()).toMillis();
     }
 
-    public static boolean checkActive (Date date, Integer end) {
+    public static boolean checkActive(Date date, Integer end) {
         Date timeNow = new Date(System.currentTimeMillis());
         timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
-        Date endTime = Date.from(date.toInstant().plus(Duration.ofMinutes(end)));;
+        Date endTime = Date.from(date.toInstant().plus(Duration.ofMinutes(end)));
+        ;
         return (endTime.compareTo(timeNow) > 0);
     }
 
@@ -40,7 +40,7 @@ public class VoucherUtils {
         return false;
     }
 
-    public static boolean isValidTime(Date date, Integer minutes){
+    public static boolean isValidTime(Date date, Integer minutes) {
         Date time = new Date();
         time = Date.from(date.toInstant().plus(Duration.ofMinutes(minutes)));
         Date timeNow = new Date(System.currentTimeMillis());
@@ -51,8 +51,8 @@ public class VoucherUtils {
     }
 
     public static HashMap<String, Object> createVoucher(Long id, Double discount, Long eateryId, VoucherEatingStyle voucherEatingStyle,
-                                        Integer quantity, Date date, Integer startTime, Integer endTime, Diner dinerDb,
-                                        boolean isRecurring, Date getNextUpdate, BookingRecordRepository bookingRecordRepository) {
+            Integer quantity, Date date, Integer startTime, Integer endTime, Diner dinerDb,
+            boolean isRecurring, Date getNextUpdate, BookingRecordRepository bookingRecordRepository) {
 
         HashMap<String, Object> voucher = new HashMap<String, Object>();
 
@@ -76,7 +76,7 @@ public class VoucherUtils {
         voucher.put("endTime", String.format("%d:%02d", endHour, endMinute));
         voucher.put("isRecurring", isRecurring);
 
-        if(dinerDb != null){
+        if (dinerDb != null) {
             voucher.put("disableButton", (bookingRecordRepository.existsByDinerIdAndVoucherId(dinerDb.getId(), id)) != 0);
         } else {
             voucher.put("disableButton", true);
@@ -92,18 +92,17 @@ public class VoucherUtils {
         return voucher;
     }
 
-    public static Long getNextVoucherId(RepeatVoucherRepository repeatVoucherRepository, VoucherRepository voucherRepository){
+    public static Long getNextVoucherId(RepeatVoucherRepository repeatVoucherRepository, VoucherRepository voucherRepository) {
         Long newId;
-        if (repeatVoucherRepository.findMaxId() != null && voucherRepository.findMaxId() != null){
-            newId = Math.max((repeatVoucherRepository.findMaxId()+1), (voucherRepository.findMaxId()+1));
+        if (repeatVoucherRepository.findMaxId() != null && voucherRepository.findMaxId() != null) {
+            newId = Math.max((repeatVoucherRepository.findMaxId() + 1), (voucherRepository.findMaxId() + 1));
         } else if (repeatVoucherRepository.findMaxId() != null) {
-            newId = repeatVoucherRepository.findMaxId()+1;
+            newId = repeatVoucherRepository.findMaxId() + 1;
         } else if (voucherRepository.findMaxId() != null) {
-            newId = voucherRepository.findMaxId()+1;
+            newId = voucherRepository.findMaxId() + 1;
         } else {
             newId = (long) 0;
         }
         return newId;
     }
-
 }

@@ -1,18 +1,17 @@
 package com.nuggets.valueeats.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
-
 import com.nuggets.valueeats.entity.BookingRecord;
 import com.nuggets.valueeats.entity.voucher.RepeatedVoucher;
 import com.nuggets.valueeats.entity.voucher.Voucher;
 import com.nuggets.valueeats.entity.voucher.VoucherEatingStyle;
 import com.nuggets.valueeats.repository.BookingRecordRepository;
 
-public class BookingUtils {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.UUID;
 
+public class BookingUtils {
     public static BookingRecord setVoucherDetails(BookingRecord bookingRecord, Voucher voucher) {
         bookingRecord.setEatingStyle(voucher.getEatingStyle());
         bookingRecord.setDiscount(voucher.getDiscount());
