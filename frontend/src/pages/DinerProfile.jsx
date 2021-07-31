@@ -63,6 +63,13 @@ const useStyles = makeStyles({
       minWidth: "42vw",
     },
   },
+  reviewTitle: {
+    fontSize: "1.5vw",
+    textTransform: "uppercase",
+    color: "#96ae33",
+    fontWeight: "bold",
+    letterSpacing: "0.1em",
+  },
 });
 
 export default function DinerProfile () {
@@ -272,6 +279,9 @@ export default function DinerProfile () {
           <Divider variant="middle" />
         </Box>
         {/* Reviews would be mapped here... */}
+        <Box align="center" className={classes.reviewTitle}>
+          Past Reviews
+        </Box>
         <Box
           display="flex"
           flexDirection="column"

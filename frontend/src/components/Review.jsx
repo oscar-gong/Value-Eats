@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     transition: "transform 0.15s ease-in-out",
     boxShadow: "0px 2px 5px rgb(0 0 0 / 0.1)",
     "&:hover": {
-      transform: "scale3d(1.01, 1.00, 1)",
+      transform: "scale3d(1.01, 1.01, 1)",
       cursor: "pointer",
       boxShadow: "0px 5px 10px rgb(0 0 0 / 0.1)",
     },
@@ -97,7 +97,7 @@ export default function Review ({
 
   return (
     <>
-      <Box display="flex" className={classes.reviewContainer} flexDirection="column" border="1px solid #96ae33" borderRadius="20px" padding="10px 0" bgcolor="#fafffa" minWidth="97%" maxWidth="65vw" margin="10px 0">
+      <Box display="flex" className={classes.reviewContainer} flexDirection="column" border="1px solid #96ae33" padding="10px 0" bgcolor="#fafffa" minWidth="98%" maxWidth="65vw" margin="10px 0">
         <ReviewInfoBox>
           <Box display="flex" flexDirection="column" style={{ margin: "0px 2%" }}>
             <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
