@@ -5,8 +5,9 @@ export const VoucherContainer = styled(Box)`
     width: 80vw;
     height: 60vh;
     border: 2px solid #FF845B;
-    background-color: white;
+    background-color: #ffd2bf;
+    // background-color: white;
     overflow: auto;
-    border-radius: 5px;
+    border-radius: 20px;
     color:  #FF845B;
 `;

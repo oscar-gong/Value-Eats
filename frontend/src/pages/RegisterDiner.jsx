@@ -2,8 +2,9 @@ import React, { useState, useContext } from "react";
 import { FloatBox } from "../styles/FloatBox";
 import { Subtitle } from "../styles/Subtitle";
 import { AlignCenter } from "../styles/AlignCenter";
-import { Box, TextField } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
+import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useHistory, Redirect } from "react-router";
 import {
@@ -15,9 +16,10 @@ import {
 } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 import { ButtonStyled } from "../styles/ButtonStyle";
-import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import { FileUpload } from "../styles/FileUpload";
 import { ProfilePhoto } from "../styles/ProfilePhoto";
+import { LinkStyled } from "../styles/LinkStyled";
+import { TextFieldStyled } from "../styles/TextFieldStyled";
 
 import { Label } from "../styles/Label";
 // set to true for real demos
@@ -135,26 +137,26 @@ export default function RegisterDiner ({ setToken }) {
         <Box pt={2}>
             <Subtitle>Create Account</Subtitle>
         </Box>
-        <Box pt={1} display="flex">
-          <ProfilePhoto size={70} src={tmpProfilePic}></ProfilePhoto>
-          <Box pt={2}>
-            <Label>
+        <Box pt={1} display="flex" width="70%" alignItems="center">
+          <Box pr={1}>
+            <Label style={{ border: "0px", padding: "0px" }}>
               <FileUpload
                 type="file"
+                accept="image/png, image/jpg, image/jpeg"
                 onChange={(e) =>
                   handleImage(
                     e.target.files,
                     setTmpProfilePic
-                  )
-                }
+                  )}
               />
-              {<AddAPhoto />} Upload Profile Picture
+              <Box position="relative" p={1}>
+                <AddPhotoAlternateIcon style={{ position: "absolute", left: "65px", bottom: "65px", backgroundColor: "white", zIndex: 5 }}/>
+                <ProfilePhoto hover={true} size={70} src={tmpProfilePic}/>
+              </Box>
             </Label>
           </Box>
-        </Box>
-        <Box pt={1} width="60%">
-          <TextField
-            id="outlined-basic"
+          <TextFieldStyled
+            aria-label="outlined-basic"
             label="Username"
             onChange={(e) =>
               setUsername({ value: e.target.value, valid: true })
@@ -168,9 +170,12 @@ export default function RegisterDiner ({ setToken }) {
             fullWidth
           />
         </Box>
-        <Box pt={2} width="60%">
-          <TextField
-            id="outlined-basic"
+        {/* <Box pt={1} width="60%">
+
+        </Box> */}
+        <Box width="70%">
+          <TextFieldStyled
+            aria-label="outlined-basic"
             label="Email Address"
             onChange={(e) =>
               setEmail({ value: e.target.value, valid: true })
@@ -188,9 +193,9 @@ export default function RegisterDiner ({ setToken }) {
           />
         </Box>
         {useGoogleAPI && (
-          <Box pt={2} width="60%">
-            <TextField
-              id="outlined-basic"
+          <Box pt={2} width="70%">
+            <TextFieldStyled
+              aria-label="outlined-basic"
               disabled={!useGoogleAPI}
               onBlur={validAddress}
               onChange={(e) =>
@@ -210,9 +215,9 @@ export default function RegisterDiner ({ setToken }) {
             />
           </Box>
         )}
-        <Box pt={2} width="60%">
-          <TextField
-            id="outlined-basic"
+        <Box pt={2} width="70%">
+          <TextFieldStyled
+            aria-label="outlined-basic"
             label="Password"
             type="password"
             onChange={(e) =>
@@ -229,9 +234,9 @@ export default function RegisterDiner ({ setToken }) {
             fullWidth
           />
         </Box>
-        <Box pt={2} width="60%">
-          <TextField
-            id="outlined-basic"
+        <Box py={2} width="70%">
+          <TextFieldStyled
+            aria-label="outlined-basic"
             label="Confirm Password"
             type="password"
             onChange={(e) =>
@@ -257,16 +262,19 @@ export default function RegisterDiner ({ setToken }) {
             fullWidth
           />
         </Box>
-        <Box pt={4} pb={4}>
-          <ButtonStyled
-            variant="contained"
-            color="primary"
-            endIcon={<SendIcon />}
-            onKeyPress={handleKeyPress}
-            onClick={registerDiner}
-          >
-            Sign Up
-          </ButtonStyled>
+        <ButtonStyled widthPercentage={70}
+          variant="contained"
+          color="primary"
+          endIcon={<SendIcon />}
+          onKeyPress={handleKeyPress}
+          onClick={registerDiner}
+        >
+          Sign Up
+        </ButtonStyled>
+        <Box pt={2} pb={4}>
+          <LinkStyled to="/">
+            Back to Login
+          </LinkStyled>
         </Box>
       </FloatBox>
     </AlignCenter>

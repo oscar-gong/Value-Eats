@@ -6,9 +6,10 @@ Array [
     className="MuiBox-root MuiBox-root-3"
   >
     <label
-      className="sc-gtsrHT TwYAi"
+      className="sc-gtsrHT kWETdg"
     >
       <input
+        accept="image/png, image/jpg, image/jpeg"
         className="sc-dlnjwi gVzoKn"
         multiple={true}
         onChange={[Function]}
@@ -146,9 +147,10 @@ Array [
     className="MuiBox-root MuiBox-root-1"
   >
     <label
-      className="sc-gtsrHT TwYAi"
+      className="sc-gtsrHT kWETdg"
     >
       <input
+        accept="image/png, image/jpg, image/jpeg"
         className="sc-dlnjwi gVzoKn"
         multiple={true}
         onChange={[Function]}

@@ -13,7 +13,7 @@ import {
 import { Label } from "../styles/Label";
 import { FileUpload } from "../styles/FileUpload";
 import EditIcon from "@material-ui/icons/Edit";
-import AddAPhoto from "@material-ui/icons/AddAPhoto";
+import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import Review from "../components/Review";
 import {
   validRequired,
@@ -334,7 +334,7 @@ export default function DinerProfile () {
           TransitionComponent={Transition}
           keepMounted
         >
-          <DialogTitleStyled id="customized-dialog-title">
+          <DialogTitleStyled aria-label="customized-dialog-title">
             Update Profile
           </DialogTitleStyled>
           <CloseIconStyled
@@ -344,53 +344,56 @@ export default function DinerProfile () {
             <CloseIcon />
           </CloseIconStyled>
           <DialogContent dividers>
-            <Box pt={1} display="flex">
-              <ProfilePhoto size={70} src={tmpProfilePic}></ProfilePhoto>
-              <Box pt={2}>
-                <Label>
+            <Box pt={1} display="flex" alignItems="center">
+              <Box>
+                <Label style={{ border: "0px", padding: "0px" }}>
                   <FileUpload
                     type="file"
+                    accept="image/png, image/jpg, image/jpeg"
                     onChange={(e) =>
                       handleImage(e.target.files, setTmpProfilePic)
                     }
                   />
-                  {<AddAPhoto />} Change Profile Picture
+                  <Box position="relative" p={1}>
+                    <AddPhotoAlternateIcon style={{ position: "absolute", left: "65px", bottom: "65px", backgroundColor: "white", zIndex: 5 }}/>
+                    <ProfilePhoto hover={true} size={70} src={tmpProfilePic}/>
+                  </Box>
                 </Label>
               </Box>
-            </Box>
-            <Box pt={1}>
               <TextFieldStyled
-                id="outlined-basic"
-                label="Username"
-                onChange={(e) =>
-                  setUsername({ value: e.target.value, valid: true })
-                }
-                onBlur={() => validRequired(username, setUsername)}
-                error={!username.valid}
-                helperText={username.valid ? "" : "Please enter a username"}
-                value={username.value}
-                variant="outlined"
-                fullWidth
+                  label="Username"
+                  onChange={(e) =>
+                    setUsername({ value: e.target.value, valid: true })
+                  }
+                  onBlur={() => validRequired(username, setUsername)}
+                  error={!username.valid}
+                  helperText={
+                      username.valid ? "" : "Please enter a username"
+                  }
+                  value={username.value}
+                  variant="outlined"
+                  fullWidth
               />
+            </Box>
+            <Box pt={0.5}>
+                <TextFieldStyled
+                    label="Email Address"
+                    onChange={(e) =>
+                      setEmail({ value: e.target.value, valid: true })
+                    }
+                    onBlur={() => validEmail(email, setEmail)}
+                    error={!email.valid}
+                    helperText={
+                        email.valid ? "" : "Please enter a valid email"
+                    }
+                    value={email.value}
+                    variant="outlined"
+                    fullWidth
+                />
             </Box>
             <Box pt={2}>
               <TextFieldStyled
-                id="outlined-basic"
-                label="Email Address"
-                onChange={(e) =>
-                  setEmail({ value: e.target.value, valid: true })
-                }
-                onBlur={() => validEmail(email, setEmail)}
-                error={!email.valid}
-                helperText={email.valid ? "" : "Please enter a valid email"}
-                value={email.value}
-                variant="outlined"
-                fullWidth
-              />
-            </Box>
-            <Box pt={2}>
-              <TextFieldStyled
-                id="outlined-basic"
+                aria-label="outlined-basic"
                 label="Password"
                 type="password"
                 onChange={(e) =>
@@ -409,7 +412,7 @@ export default function DinerProfile () {
             </Box>
             <Box pt={2}>
               <TextFieldStyled
-                id="outlined-basic"
+                aria-label="outlined-basic"
                 label="Confirm Password"
                 type="password"
                 onChange={(e) =>

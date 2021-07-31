@@ -100,7 +100,7 @@ export default function Review ({
       <Box display="flex" className={classes.reviewContainer} flexDirection="column" border="1px solid #96ae33" padding="10px 0" bgcolor="#fafffa" minWidth="98%" maxWidth="65vw" margin="10px 0">
         <ReviewInfoBox>
           <Box display="flex" flexDirection="column" style={{ margin: "0px 2%" }}>
-            <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
+            <ProfilePhoto hover={false} size={50} src={profilePic}></ProfilePhoto>
             <StarRating rating={editRating}></StarRating>
           </Box>
           <Box display="flex" flexDirection="column" flex="1" style={{ margin: "0px 2%" }}>
