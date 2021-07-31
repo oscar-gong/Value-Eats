@@ -7,7 +7,7 @@ export default function RatingWithNum ({ rating }) {
     <>
       <Grid item container>
         <Grid item>
-            <StarRating rating={parseFloat(rating)} />
+          <StarRating rating={parseFloat(rating)} />
         </Grid>
         {/* aligns the rating text with the stars */}
         <Grid

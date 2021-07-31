@@ -12,6 +12,7 @@ import Carousel from "react-material-ui-carousel";
 import { useHistory } from "react-router-dom";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import { ReviewInfoBox } from "../styles/ReviewInfoBox";
+import request from "../utils/request";
 
 const useStyles = makeStyles({
   photoCarousel: {
@@ -19,15 +20,14 @@ const useStyles = makeStyles({
     width: "35vw",
     height: "200px",
     objectFit: "contain",
-    padding: "10px"
+    padding: "10px",
   },
   name: {
     fontSize: "1em",
     fontWeight: "bold",
-    padding: "5px 0"
-  }
+    padding: "5px 0",
+  },
 });
-// export default function Review ({ token, review }) {
 export default function Review ({
   id,
   eateryId,
@@ -39,7 +39,7 @@ export default function Review ({
   images,
   onEateryProfile,
   isOwner,
-  refreshList
+  refreshList,
 }) {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
@@ -57,25 +57,25 @@ export default function Review ({
     console.log("This will be called when a review is deleted");
     console.log(token);
     console.log(id);
-    const response = await fetch("http://localhost:8080/diner/removereview",
-      {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          id: id,
-          eateryId: eateryId
-        })
-      });
+    const payload = {
+      id: id,
+      eateryId: eateryId,
+    };
+    const response = await request.delete("diner/removereview", payload, token);
     const responseData = await response.json();
     if (response.status === 200) {
-      setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });
+      setAlertOptions({
+        showAlert: true,
+        variant: "success",
+        message: responseData.message,
+      });
       refreshList();
     } else {
-      setAlertOptions({ showAlert: true, variant: "error", message: responseData.message });
+      setAlertOptions({
+        showAlert: true,
+        variant: "error",
+        message: responseData.message,
+      });
     }
     setDeleteModal(false);
   };
@@ -88,50 +88,72 @@ export default function Review ({
 
   return (
     <>
-      <Box display="flex" flexDirection="column" border="2px solid #ffcc94" borderRadius="20px" padding="10px" bgcolor="white" minWidth={onEateryProfile ? "90%" : "65vw"} maxWidth="70vw" margin="10px 0">
+      <Box
+        display="flex"
+        flexDirection="column"
+        border="2px solid #ffcc94"
+        borderRadius="20px"
+        padding="10px"
+        bgcolor="white"
+        minWidth={onEateryProfile ? "90%" : "65vw"}
+        maxWidth="70vw"
+        margin="10px 0"
+      >
         <ReviewInfoBox>
           <Box display="flex" flexDirection="column">
-            <ProfilePhoto hover={false} size={50} src={profilePic}></ProfilePhoto>
+            <ProfilePhoto
+              hover={false}
+              size={50}
+              src={profilePic}
+            ></ProfilePhoto>
             <StarRating rating={editRating}></StarRating>
           </Box>
           <div style={{ margin: "0px 5%", flexGrow: 1 }}>
-            <Box className={classes.name}>{onEateryProfile ? username : eateryName}</Box>
+            <Box className={classes.name}>
+              {onEateryProfile ? username : eateryName}
+            </Box>
             <Box>{editCreateReview}</Box>
           </div>
           <Box display="flex" flexDirection="column" justifyContent="center">
             <Box display="flex" justifyContent="center">
-            {
-              !onEateryProfile &&
-              <ButtonStyled variant="contained"
-                color="primary" onClick={() => handleEatery(eateryId)}>
-                View Restaurant
-              </ButtonStyled>
-            }
-            {/* TODO FIX THIS BELOW */}
-            {
-              isOwner &&
-              <IconButton onClick={() => setOpenEditCreateReview(true)}>
-                <EditIcon fontSize="large" />
-              </IconButton>
-            }
-            {
-              isOwner &&
-              <IconButton onClick={() => setDeleteModal(true)}>
-                <DeleteIcon fontSize="large" />
-              </IconButton>
-            }
+              {!onEateryProfile && (
+                <ButtonStyled
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleEatery(eateryId)}
+                >
+                  View Restaurant
+                </ButtonStyled>
+              )}
+              {/* TODO FIX THIS BELOW */}
+              {isOwner && (
+                <IconButton onClick={() => setOpenEditCreateReview(true)}>
+                  <EditIcon fontSize="large" />
+                </IconButton>
+              )}
+              {isOwner && (
+                <IconButton onClick={() => setDeleteModal(true)}>
+                  <DeleteIcon fontSize="large" />
+                </IconButton>
+              )}
             </Box>
           </Box>
         </ReviewInfoBox>
-        {
-          editCreateReviewImages.length !== 0 &&
+        {editCreateReviewImages.length !== 0 && (
           <Box paddingY="30px">
             <Divider variant="middle" />
           </Box>
-        }
-        {
-          editCreateReviewImages.length !== 0 && (
-          <div style={{ top: "25%", margin: "auto", outline: "none", display: "flex", justifyContent: "center" }}>
+        )}
+        {editCreateReviewImages.length !== 0 && (
+          <div
+            style={{
+              top: "25%",
+              margin: "auto",
+              outline: "none",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Carousel
               navButtonsProps={{
                 style: {
@@ -141,30 +163,31 @@ export default function Review ({
               navButtonsAlwaysVisible={false}
               autoPlay={false}
             >
-              {
-                editCreateReviewImages.map((imgdata, idx) => {
-                  return (
-                    <img key={idx}
+              {editCreateReviewImages.map((imgdata, idx) => {
+                return (
+                  <img
+                    key={idx}
                     alt="review photos"
                     src={imgdata}
-                    className={classes.photoCarousel}></img>
-                  );
-                })
-              }
+                    className={classes.photoCarousel}
+                  ></img>
+                );
+              })}
             </Carousel>
           </div>
-          )
-        }
+        )}
       </Box>
-      <ConfirmModal open={openDeleteModal}
+      <ConfirmModal
+        open={openDeleteModal}
         handleClose={handleCloseModal}
         eateryId={eateryId}
         title={"Delete review?"}
         message={"Are you sure you want to delete this review?"}
-        handleConfirm={() => handleDelete(token, id, eateryId)}>
-      </ConfirmModal>
+        handleConfirm={() => handleDelete(token, id, eateryId)}
+      ></ConfirmModal>
       {/* put a carousel here */}
-      <EditCreateReview id={id}
+      <EditCreateReview
+        id={id}
         eateryId={eateryId}
         open={openEditCreateReview}
         setOpen={setOpenEditCreateReview}
@@ -174,7 +197,8 @@ export default function Review ({
         ratingState={[editRating, setEditRating]}
         reviewImagesState={[editCreateReviewImages, setEditCreateReviewImages]}
         isEdit={true}
-        refreshList={refreshList}/>
+        refreshList={refreshList}
+      />
     </>
   );
 }
