@@ -1,6 +1,6 @@
+/* eslint-disable */
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
-import { MainContent } from "../styles/MainContent";
 import { ProfilePhoto } from "../styles/ProfilePhoto";
 import {
   Box,
@@ -8,6 +8,8 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
+  Grid,
+  makeStyles,
 } from "@material-ui/core";
 import { Label } from "../styles/Label";
 import { FileUpload } from "../styles/FileUpload";
@@ -21,7 +23,7 @@ import {
   validPassword,
   validConfirmPassword,
   handleImage,
-  Transition
+  Transition,
 } from "../utils/helpers";
 import { StoreContext } from "../utils/store";
 import { logUserOut } from "../utils/logoutHelper";
@@ -33,14 +35,27 @@ import { ModalButton } from "../styles/ModalButton";
 import { TextFieldStyled } from "../styles/TextFieldStyled";
 import { CloseIconStyled } from "../styles/CloseIconStyled";
 import CloseIcon from "@material-ui/icons/Close";
+import { MainContainer } from "../styles/MainContainer";
+const useStyles = makeStyles({
+  containers: {
+    flexDirection: "row",
+    background: "rgba(0,0,0,0.4)",
+    padding: "2% 0",
+    "@media (max-width: 800px)": {
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  },
+});
 
-export default function DinerProfile () {
+export default function DinerProfile() {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
   const [token, setAuth] = context.auth;
   const setIsDiner = context.isDiner[1];
   const history = useHistory();
-
+  const classes = useStyles();
   const [openProfile, setOpenProfile] = useState(false);
 
   const defaultState = (initialValue = "") => {
@@ -113,7 +128,8 @@ export default function DinerProfile () {
       !confirmpassword.valid ||
       username.value === "" ||
       email.value === ""
-    ) return;
+    )
+      return;
     const response = await fetch("http://localhost:8080/update/diner", {
       method: "POST",
       headers: {
@@ -165,42 +181,87 @@ export default function DinerProfile () {
   return (
     <>
       <NavBar isDiner={true} />
-      <MainContent>
-        <Box
-          display="flex"
+      <MainContainer>
+        <Grid
+          container
           justifyContent="center"
-          alignItems="center"
-          paddingTop="10px"
+          style={{
+            backgroundImage: `url("${tmpProfilePic}")`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            marginTop: "3%",
+          }}
         >
-          <ProfilePhoto size={150} src={user.profilePic} />
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            paddingX="20px"
+          <Grid
+            item
+            container
+            justifyContent="center"
+            className={classes.containers}
           >
-            <Box style={{ color: "#FF845B", fontSize: "1.5em" }}>
-              {user.username}
-            </Box>
-            <ButtonStyled
-              variant="contained"
-              color="primary"
-              startIcon={<EditIcon />}
-              onClick={() => setOpenProfile(true)}
+            <Grid
+              item
+              justifyContent="center"
+              align="center"
+              xs={3}
+              className={classes.profilePic}
             >
-              Edit profile
-            </ButtonStyled>
-          </Box>
-          <StatBox>
-            <Box>{reviews.length}</Box>
-            <Box>review{reviews.length === 1 ? "" : "s"}</Box>
-          </StatBox>
-          <StatBox>
-            <Box>{getNumPhotos()}</Box>
-            <Box>photos</Box>
-          </StatBox>
-        </Box>
-        <Box paddingY="30px">
+              <ProfilePhoto size={150} src={user.profilePic} />
+            </Grid>
+            <Grid
+              item
+              justifyContent="center"
+              xs={4}
+              align="center"
+              direction="column"
+              container
+            >
+              <Grid
+                item
+                container
+                alignItems="center"
+                style={{ paddingLeft: "18%", paddingBottom: "5%" }}
+                justifyContent="flex-start"
+              >
+                <Grid
+                  item
+                  style={{
+                    color: "#FF845B",
+                    fontSize: "2em",
+                    textShadow: "1px 1px 5px black",
+                  }}
+                >
+                  <span style={{ padding: "0 10px" }}> {user.username}</span>
+                  <ButtonStyled
+                    variant="contained"
+                    color="primary"
+                    startIcon={<EditIcon />}
+                    onClick={() => setOpenProfile(true)}
+                  >
+                    Edit
+                  </ButtonStyled>
+                </Grid>
+              </Grid>
+              <Grid
+                item
+                justifyContent="center"
+                alignItems="center"
+                direction="row"
+                container
+              >
+                <StatBox>
+                  <Box>{reviews.length}</Box>
+                  <Box>review{reviews.length === 1 ? "" : "s"}</Box>
+                </StatBox>
+                <StatBox>
+                  <Box>{getNumPhotos()}</Box>
+                  <Box>photos</Box>
+                </StatBox>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Box paddingTop="20px" paddingBottom="10px">
           <Divider variant="middle" />
         </Box>
         {/* Reviews would be mapped here... */}
@@ -249,9 +310,13 @@ export default function DinerProfile () {
             </Box>
           )}
         </Box>
-        <Dialog aria-labelledby="customized-dialog-title" open={openProfile} onClose={() => setOpenProfile(false)}
-        TransitionComponent={Transition}
-        keepMounted>
+        <Dialog
+          aria-labelledby="customized-dialog-title"
+          open={openProfile}
+          onClose={() => setOpenProfile(false)}
+          TransitionComponent={Transition}
+          keepMounted
+        >
           <DialogTitleStyled id="customized-dialog-title">
             Update Profile
           </DialogTitleStyled>
@@ -363,7 +428,7 @@ export default function DinerProfile () {
             </ModalButton>
           </DialogActions>
         </Dialog>
-      </MainContent>
+      </MainContainer>
     </>
   );
 }

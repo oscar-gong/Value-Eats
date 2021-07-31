@@ -88,16 +88,16 @@ export default function Review ({
 
   return (
     <>
-      <Box display="flex" flexDirection="column" border="2px solid #ffcc94" borderRadius="20px" padding="10px" bgcolor="#fffaf5" minWidth={onEateryProfile ? "90%" : "65vw"} maxWidth="70vw" margin="10px 0">
+      <Box display="flex" flexDirection="column" border="1px solid #96ae33" boxShadow="0px 2px 10px rgb(0 0 0 / 0.1)" borderRadius="20px" padding="10px" bgcolor="#fafffa" minWidth="90%" maxWidth="65vw" margin="10px 0">
         <ReviewInfoBox>
-          <Box display="flex" flexDirection="column">
+          <Box display="flex" flexDirection="column" style={{ margin: "0px 2%" }}>
             <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
             <StarRating rating={editRating}></StarRating>
           </Box>
-          <div style={{ margin: "0px 5%", flexGrow: 1 }}>
+          <Box display="flex" flexDirection="column" flex="1" style={{ margin: "0px 2%" }}>
             <Box className={classes.name}>{onEateryProfile ? username : eateryName}</Box>
             <Box>{editCreateReview}</Box>
-          </div>
+          </Box>
           <Box display="flex" flexDirection="column" justifyContent="center">
             <Box display="flex" justifyContent="center">
             {
