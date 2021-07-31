@@ -97,7 +97,7 @@ export default function Review ({
 
   return (
     <>
-      <Box display="flex" className={classes.reviewContainer} flexDirection="column" border="1px solid #96ae33" borderRadius="20px" padding="10px" bgcolor="#fafffa" minWidth="90%" maxWidth="65vw" margin="10px 0">
+      <Box display="flex" className={classes.reviewContainer} flexDirection="column" border="1px solid #96ae33" borderRadius="20px" padding="10px 0" bgcolor="#fafffa" minWidth="97%" maxWidth="65vw" margin="10px 0">
         <ReviewInfoBox>
           <Box display="flex" flexDirection="column" style={{ margin: "0px 2%" }}>
             <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
