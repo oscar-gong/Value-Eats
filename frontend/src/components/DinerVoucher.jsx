@@ -69,6 +69,8 @@ export default function DinerVoucher ({
           xs={4}
         >
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center">
+            <h3 style={{ margin: "5px 0px" }}>{eateryName}</h3>
+
             {!isRedeemable && !used && (
               <h3 style={{ margin: "5px 0px" }}>
                 Use on {date} between {startTime} -
