@@ -68,6 +68,7 @@ export default function DinerProfile () {
   const [tmpProfilePic, setTmpProfilePic] = useState(defaultState);
   const [user, setUser] = useState({});
   const [reviews, setReviews] = useState([]);
+  const [bgImage, setBgImage] = useState("");
 
   const getUser = async () => {
     const response = await fetch(
@@ -89,6 +90,7 @@ export default function DinerProfile () {
         email: responseData.email,
         profilePic: responseData["profile picture"],
       });
+      setBgImage(responseData["profile picture"]);
       console.log("reviews: ");
       console.log(responseData.reviews);
       setReviews(responseData.reviews);
@@ -152,12 +154,14 @@ export default function DinerProfile () {
         email: email.value,
         profilePic: tmpProfilePic,
       });
+      setBgImage(tmpProfilePic);
       setOpenProfile(false);
       setAlertOptions({
         showAlert: true,
         variant: "success",
         message: responseData.message,
       });
+      getUser();
     } else if (response.status === 401) {
       logUserOut(setAuth, setIsDiner);
     } else {
@@ -185,7 +189,7 @@ export default function DinerProfile () {
           container
           justifyContent="center"
           style={{
-            backgroundImage: `url("${tmpProfilePic}")`,
+            backgroundImage: `url("${bgImage}")`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
