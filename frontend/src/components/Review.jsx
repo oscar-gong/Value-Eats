@@ -88,10 +88,10 @@ export default function Review ({
 
   return (
     <>
-      <Box display="flex" flexDirection="column" border="2px solid #ffcc94" borderRadius="20px" padding="10px" bgcolor="#fffaf5" minWidth={onEateryProfile ? "90%" : "65vw"} maxWidth="70vw" margin="10px 0">
+      <Box display="flex" flexDirection="column" border="2px solid #ffcc94" borderRadius="20px" padding="10px" bgcolor="white" minWidth={onEateryProfile ? "90%" : "65vw"} maxWidth="70vw" margin="10px 0">
         <ReviewInfoBox>
           <Box display="flex" flexDirection="column">
-            <ProfilePhoto size={50} src={profilePic}></ProfilePhoto>
+            <ProfilePhoto hover={false} size={50} src={profilePic}></ProfilePhoto>
             <StarRating rating={editRating}></StarRating>
           </Box>
           <div style={{ margin: "0px 5%", flexGrow: 1 }}>
