@@ -30,8 +30,7 @@ export default function DinerVoucher ({
       display="flex"
       justifyContent="space-around"
       alignItems="center"
-      border="2px solid #FF845B"
-      borderRadius="20px"
+      style={{ border: "2px dotted #FF845B" }}
       bgcolor={used || !isActive ? "#d6d6d6" : "white"}
       margin="20px"
     >

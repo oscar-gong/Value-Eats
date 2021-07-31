@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
 import { MainContent } from "../styles/MainContent";
-import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel, makeStyles } from "@material-ui/core";
 import { Redirect } from "react-router";
 import DinerVoucher from "../components/DinerVoucher";
 import { VoucherContainer } from "../styles/VoucherContainer";
@@ -11,6 +11,22 @@ import { logUserOut } from "../utils/logoutHelper";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import { useHistory } from "react-router-dom";
 import Loading from "../components/Loading";
+import { MainContainer } from "../styles/MainContainer";
+
+const useStyles = makeStyles({
+  voucherTitle: {
+    fontSize: "2vw",
+    textTransform: "uppercase",
+    color: "#96ae33",
+    fontWeight: "bold",
+    letterSpacing: "0.1em",
+    padding: "3% 0",
+    backgroundColor: "#FFF9F7",
+    width: "100%",
+    marginTop: "3%",
+    textAlign: "center"
+  },
+});
 
 export default function DinerVouchers () {
   const context = useContext(StoreContext);
@@ -20,7 +36,7 @@ export default function DinerVouchers () {
   const [vouchers, setVouchers] = useState(null);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-
+  const classes = useStyles();
   const getVouchers = async () => {
     setLoading(true);
     const response = await fetch(
@@ -144,6 +160,7 @@ export default function DinerVouchers () {
   return (
     <>
       <NavBar isDiner={true} />
+      <MainContainer>
       <MainContent>
         <Box
           display="flex"
@@ -151,7 +168,7 @@ export default function DinerVouchers () {
           justifyContent="center"
           alignItems="center"
         >
-          <Subtitle>My Vouchers</Subtitle>
+          <Box className={classes.voucherTitle}>My Vouchers</Box>
           <FormControlLabel
             control={
               <Checkbox
@@ -168,6 +185,7 @@ export default function DinerVouchers () {
           </VoucherContainer>
         </Box>
       </MainContent>
+      </MainContainer>
     </>
   );
 }
