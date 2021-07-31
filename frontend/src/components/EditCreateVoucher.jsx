@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
-import { Dialog, DialogContent, Box, TextField, DialogActions, Tabs, Tab, Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
+import { Dialog, DialogContent, Box, DialogActions, Tabs, Tab, Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 import { StoreContext } from "../utils/store";
 import { validRequired, Transition } from "../utils/helpers";
 import { ModalButton } from "../styles/ModalButton";
 import { DialogTitleStyled } from "../styles/DialogTitleStyled";
+import { TextFieldStyled } from "../styles/TextFieldStyled";
 
 export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen, initOneOff = 0, initDineIn = "true", initDiscount = "", initQuantity = "", initStartTime = "", initEndTime = "", isEdit, refreshList }) {
   const date = new Date();
@@ -126,7 +127,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
               </RadioGroup>
             </Box>
             <Box py={2} width="270px">
-              <TextField
+              <TextFieldStyled aria-label="outlined-basic"
                 label="Discount (%)"
                 type="number"
                 onChange={(e) => e.target.value > 0 && e.target.value <= 100
@@ -155,7 +156,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
               />
             </Box>
             <Box py={2} width="270px">
-              <TextField
+              <TextFieldStyled aria-label="outlined-basic"
                 label="Quantity"
                 type="number"
                 onChange={(e) => e.target.value > 0
@@ -183,7 +184,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
             </Box>
             <Box py={2}>
               {/* Making use of datetime local type does not work well for all browsers */}
-              <TextField
+              <TextFieldStyled aria-label="outlined-basic"
                 label="Start at:"
                 type="datetime-local"
                 onChange={(e) => {
@@ -207,7 +208,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
               />
             </Box>
             <Box py={2}>
-              <TextField
+              <TextFieldStyled aria-label="outlined-basic"
                 label="End at:"
                 type="datetime-local"
                 onChange={(e) => {

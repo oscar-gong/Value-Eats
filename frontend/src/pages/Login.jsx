@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Title } from "../styles/Title";
 import { AlignCenter } from "../styles/AlignCenter";
-import { Box, TextField, Button, Grid, makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, makeStyles } from "@material-ui/core";
+import { TextFieldStyled } from "../styles/TextFieldStyled";
 import SendIcon from "@material-ui/icons/Send";
-import { Link } from "react-router-dom";
 import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
+import { LinkStyled } from "../styles/LinkStyled";
 import loginImage from "../assets/loginImage.jpeg";
 
 const useStyles = makeStyles({
@@ -44,12 +45,7 @@ const useStyles = makeStyles({
   },
   mainContainer: {
     color: "#ff855b",
-  },
-  link: {
-    textDecoation: "none",
-    color: "#96AE33",
-    background: "off-white",
-  },
+  }
 });
 
 export default function Login () {
@@ -127,8 +123,8 @@ export default function Login () {
             </Box>
             {/* <p>Disrupting the intersection between discount and advertising through centralisation</p> */}
             <Box pt={1} width="60%">
-              <TextField
-                id="outlined-basic"
+              <TextFieldStyled
+                aria-label="outlined-basic"
                 label="Email address"
                 variant="outlined"
                 onChange={(e) => setEmail(e.target.value)}
@@ -137,9 +133,9 @@ export default function Login () {
               />
             </Box>
             <Box pt={2} width="60%">
-              <TextField
+              <TextFieldStyled
+                aria-label="outlined-basic"
                 type="password"
-                id="outlined-basic"
                 label="Password"
                 variant="outlined"
                 onChange={(e) => setPassword(e.target.value)}
@@ -166,14 +162,14 @@ export default function Login () {
               alignItems="center"
             >
               <h3>New to ValueEats?</h3>
-              <Link to="/RegisterDiner" className={classes.link}>
+              <LinkStyled to="/RegisterDiner">
                 Sign up here
-              </Link>
+              </LinkStyled>
             </Box>
             <Box pb={4}>
-              <Link to="/RegisterEatery" className={classes.link}>
+              <LinkStyled to="/RegisterEatery">
                 Register as an eatery
-              </Link>
+              </LinkStyled>
             </Box>
           </div>
         </Grid>

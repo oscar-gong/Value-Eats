@@ -45,6 +45,7 @@ export default function UploadPhotos ({ setImages, previewImages, setPreviewImag
             <FileUpload
                 type="file"
                 multiple
+                accept="image/png, image/jpg, image/jpeg"
                 onChange={(e) => handleImages(e.target.files)}
             />
             {<AddAPhotoIcon />}{uploadDescription}

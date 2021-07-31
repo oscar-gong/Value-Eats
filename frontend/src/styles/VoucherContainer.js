@@ -4,9 +4,9 @@ import { Box } from "@material-ui/core";
 export const VoucherContainer = styled(Box)`
     width: 80vw;
     height: 60vh;
-    border: 2px solid white;
+    border: 2px solid #FF845B;
     background-color: #ffd2bf;
     overflow: auto;
-    border-radius: 5px;
+    border-radius: 20px;
     color:  #FF845B;
 `;

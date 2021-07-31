@@ -3,11 +3,11 @@ import { TextField } from "@material-ui/core";
 
 export const TextFieldStyled = styled(TextField)`
   & label.Mui-focused {
-    color: #ff8e53;
+    color: #96ae33;
   }
   & .MuiOutlinedInput-root {
     &.Mui-focused fieldset {
-      border-color: #ff8e53;
+      border-color: #96ae33;
     }
   }
 `;

@@ -1,7 +1,152 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ConfirmModal renders correctly when open is false 1`] = `null`;
+exports[`ConfirmModal renders correctly when open is false 1`] = `
+<WithStyles(ForwardRef(Dialog))
+  TransitionComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    }
+  }
+  aria-labelledby="customized-dialog-title"
+  keepMounted={true}
+  onClose={[Function]}
+  open={false}
+>
+  <Styled(WithStyles(ForwardRef(DialogTitle)))
+    aria-label="customized-dialog-title"
+    onClose={[Function]}
+  >
+    Test title
+  </Styled(WithStyles(ForwardRef(DialogTitle)))>
+  <Styled(WithStyles(ForwardRef(IconButton)))
+    aria-label="close"
+    onClick={[Function]}
+  >
+    <Memo(ForwardRef(CloseIcon)) />
+  </Styled(WithStyles(ForwardRef(IconButton)))>
+  <WithStyles(ForwardRef(DialogContent))
+    dividers={true}
+  >
+    Test description
+  </WithStyles(ForwardRef(DialogContent))>
+  <WithStyles(ForwardRef(DialogActions))>
+    <Styled(MuiBox)>
+      <Styled(WithStyles(ForwardRef(Button)))
+        autoFocus={true}
+        color="primary"
+        onClick={[Function]}
+      >
+        Cancel
+      </Styled(WithStyles(ForwardRef(Button)))>
+      <Styled(WithStyles(ForwardRef(Button)))
+        autoFocus={true}
+        color="primary"
+        onClick={[Function]}
+      >
+        Confirm
+      </Styled(WithStyles(ForwardRef(Button)))>
+    </Styled(MuiBox)>
+  </WithStyles(ForwardRef(DialogActions))>
+</WithStyles(ForwardRef(Dialog))>
+`;
 
-exports[`ConfirmModal renders with custom confirm and deny text 1`] = `null`;
+exports[`ConfirmModal renders with custom confirm and deny text 1`] = `
+<WithStyles(ForwardRef(Dialog))
+  TransitionComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    }
+  }
+  aria-labelledby="customized-dialog-title"
+  keepMounted={true}
+  onClose={[Function]}
+>
+  <Styled(WithStyles(ForwardRef(DialogTitle)))
+    aria-label="customized-dialog-title"
+    onClose={[Function]}
+  >
+    Test title
+  </Styled(WithStyles(ForwardRef(DialogTitle)))>
+  <Styled(WithStyles(ForwardRef(IconButton)))
+    aria-label="close"
+    onClick={[Function]}
+  >
+    <Memo(ForwardRef(CloseIcon)) />
+  </Styled(WithStyles(ForwardRef(IconButton)))>
+  <WithStyles(ForwardRef(DialogContent))
+    dividers={true}
+  >
+    Test description
+  </WithStyles(ForwardRef(DialogContent))>
+  <WithStyles(ForwardRef(DialogActions))>
+    <Styled(MuiBox)>
+      <Styled(WithStyles(ForwardRef(Button)))
+        autoFocus={true}
+        color="primary"
+        onClick={[Function]}
+      >
+        Stop
+      </Styled(WithStyles(ForwardRef(Button)))>
+      <Styled(WithStyles(ForwardRef(Button)))
+        autoFocus={true}
+        color="primary"
+        onClick={[Function]}
+      >
+        Continue
+      </Styled(WithStyles(ForwardRef(Button)))>
+    </Styled(MuiBox)>
+  </WithStyles(ForwardRef(DialogActions))>
+</WithStyles(ForwardRef(Dialog))>
+`;
 
-exports[`ConfirmModal renders with minimal props 1`] = `null`;
+exports[`ConfirmModal renders with minimal props 1`] = `
+<WithStyles(ForwardRef(Dialog))
+  TransitionComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    }
+  }
+  aria-labelledby="customized-dialog-title"
+  keepMounted={true}
+  onClose={[Function]}
+>
+  <Styled(WithStyles(ForwardRef(DialogTitle)))
+    aria-label="customized-dialog-title"
+    onClose={[Function]}
+  >
+    Test title
+  </Styled(WithStyles(ForwardRef(DialogTitle)))>
+  <Styled(WithStyles(ForwardRef(IconButton)))
+    aria-label="close"
+    onClick={[Function]}
+  >
+    <Memo(ForwardRef(CloseIcon)) />
+  </Styled(WithStyles(ForwardRef(IconButton)))>
+  <WithStyles(ForwardRef(DialogContent))
+    dividers={true}
+  >
+    Test description
+  </WithStyles(ForwardRef(DialogContent))>
+  <WithStyles(ForwardRef(DialogActions))>
+    <Styled(MuiBox)>
+      <Styled(WithStyles(ForwardRef(Button)))
+        autoFocus={true}
+        color="primary"
+        onClick={[Function]}
+      >
+        Cancel
+      </Styled(WithStyles(ForwardRef(Button)))>
+      <Styled(WithStyles(ForwardRef(Button)))
+        autoFocus={true}
+        color="primary"
+        onClick={[Function]}
+      >
+        Confirm
+      </Styled(WithStyles(ForwardRef(Button)))>
+    </Styled(MuiBox)>
+  </WithStyles(ForwardRef(DialogActions))>
+</WithStyles(ForwardRef(Dialog))>
+`;

@@ -1,7 +1,7 @@
 import { shallow } from "enzyme";
 import React from "react";
-import renderer from "react-test-renderer";
 import ConfirmModal from "../components/ConfirmModal";
+import EnzymeToJson from "enzyme-to-json";
 
 describe("ConfirmModal", () => {
   const noop = () => {};
@@ -104,7 +104,7 @@ describe("ConfirmModal", () => {
       handleConfirm={noop}
       denyText={"This will cancel"}
     />);
-    const buttons = confirmWrapper.children().at(2).children().children();
+    const buttons = confirmWrapper.children().at(3).children().children();
     buttons.at(0).simulate("click");
     expect(onClick).toHaveBeenCalledTimes(1);
   });
@@ -119,7 +119,7 @@ describe("ConfirmModal", () => {
       handleDeny={onClick}
       denyText={"This will cancel"}
     />);
-    const buttons = confirmWrapper.children().at(2).children().children();
+    const buttons = confirmWrapper.children().at(3).children().children();
     buttons.at(0).simulate("click");
     expect(onClick).toHaveBeenCalledTimes(1);
   });
@@ -133,7 +133,7 @@ describe("ConfirmModal", () => {
       handleConfirm={onClick}
       denyText={"This will cancel"}
     />);
-    const buttons = confirmWrapper.children().at(2).children().children();
+    const buttons = confirmWrapper.children().at(3).children().children();
     buttons.at(1).simulate("click");
     expect(onClick).toHaveBeenCalledTimes(1);
   });
@@ -142,32 +142,32 @@ describe("ConfirmModal", () => {
   follow the prompts on the screen after running test. Done to avoid regression. */
 
   it("renders with minimal props", () => {
-    const confirmWrapper = renderer.create(<ConfirmModal handleClose={noop}
+    const confirmWrapper = shallow(<ConfirmModal handleClose={noop}
       title={"Test title"}
       message={"Test description"}
       handleConfirm={noop}
     />);
-    expect(confirmWrapper).toMatchSnapshot();
+    expect(EnzymeToJson(confirmWrapper)).toMatchSnapshot();
   });
 
   it("renders with custom confirm and deny text", () => {
-    const confirmWrapper = renderer.create(<ConfirmModal handleClose={noop}
+    const confirmWrapper = shallow(<ConfirmModal handleClose={noop}
       title={"Test title"}
       message={"Test description"}
       handleConfirm={noop}
       confirmText={"Continue"}
       denyText={"Stop"}
     />);
-    expect(confirmWrapper).toMatchSnapshot();
+    expect(EnzymeToJson(confirmWrapper)).toMatchSnapshot();
   });
 
   it("renders correctly when open is false", () => {
-    const confirmWrapper = renderer.create(<ConfirmModal open={false}
+    const confirmWrapper = shallow(<ConfirmModal open={false}
       handleClose={noop}
       title={"Test title"}
       message={"Test description"}
       handleConfirm={noop}
     />);
-    expect(confirmWrapper).toMatchSnapshot();
+    expect(EnzymeToJson(confirmWrapper)).toMatchSnapshot();
   });
 });

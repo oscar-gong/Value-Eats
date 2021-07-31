@@ -10,6 +10,7 @@ import EditCreateVoucher from "../components/EditCreateVoucher";
 import { logUserOut } from "../utils/logoutHelper";
 import { VoucherContainer } from "../styles/VoucherContainer";
 import { Subtitle } from "../styles/Subtitle";
+import Loading from "../components/Loading";
 
 export default function EateryLanding () {
   const context = useContext(StoreContext);
@@ -20,8 +21,10 @@ export default function EateryLanding () {
   console.log(isDiner);
   const [eateryDetails, setEateryDetails] = useState({});
   const [openCreateDiscount, setOpenCreateDiscount] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const getEateryDetails = async () => {
+    setLoading(true);
     const response = await fetch(
       "http://localhost:8080/eatery/profile/details",
       {
@@ -33,8 +36,8 @@ export default function EateryLanding () {
         },
       }
     );
-
     const responseData = await response.json();
+    setLoading(false);
     if (response.status === 200) {
       console.log(responseData);
       setEateryDetails(responseData);
@@ -100,6 +103,7 @@ export default function EateryLanding () {
               </Box>
 
             }
+            <Loading isLoading={loading} />
           </VoucherContainer>
         </Box>
         <Box display="flex" flexDirection="column" height="30vh">
@@ -111,7 +115,7 @@ export default function EateryLanding () {
               color="primary"
               onClick={() => history.push("/RedeemVoucher")}
             >
-              Verify Voucher
+              Redeem Voucher
             </ButtonStyled>
             <ButtonStyled variant="contained"
               color="primary"
