@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
 import { ProfilePhoto } from "../styles/ProfilePhoto";
@@ -49,7 +48,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function DinerProfile() {
+export default function DinerProfile () {
   const context = useContext(StoreContext);
   const setAlertOptions = context.alert[1];
   const [token, setAuth] = context.auth;
@@ -128,8 +127,8 @@ export default function DinerProfile() {
       !confirmpassword.valid ||
       username.value === "" ||
       email.value === ""
-    )
-      return;
+    ) return;
+
     const response = await fetch("http://localhost:8080/update/diner", {
       method: "POST",
       headers: {

@@ -92,7 +92,7 @@ export default function EateryForm ({
   }, []);
 
   return (
-    <AlignCenter removeBg={removeBg}>
+    <AlignCenter removeBg={removeBg} isEateryForm={true} style={{ overflowY: "visible", padding: "2% 0" }}>
       <FloatBox display="flex" flexDirection="column" alignItems="center">
         <Box pt={2}>
           <Subtitle>
