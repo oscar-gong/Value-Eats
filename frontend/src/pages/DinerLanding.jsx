@@ -18,6 +18,7 @@ import {
   InputLabel,
   Box,
   FormControl,
+  Divider
 } from "@material-ui/core";
 import Loading from "../components/Loading";
 import EateryDisplay from "../components/EateryDisplay";
@@ -78,6 +79,10 @@ const useStyles = makeStyles({
     letterSpacing: "0.1em",
     marginBottom: "1%",
   },
+  bannerBox: {
+    marginBottom: "40px",
+    position: "relative"
+  }
 });
 
 export default function DinerLanding ({ token }) {
@@ -274,31 +279,13 @@ export default function DinerLanding ({ token }) {
       <NavBar isDiner={isDiner} />
       <MainContainer>
         <Box py={4}>
-          <Box style={{ marginBottom: "20px", position: "relative" }}>
+          <Box className={classes.bannerBox}>
             <img
               className={classes.dinerLandingImage}
               alt="welcome banner with diner's username"
               src={DinerLandingImage}
             />
             <div className={classes.dinerNameText}>{name}</div>
-          </Box>
-          <Box textAlign="right">
-            <FormControl
-                variant="filled"
-                style={{ minWidth: "100px" }}
-            >
-              <InputLabel>Sort By</InputLabel>
-              <Select
-                defaultValue={"Rating"}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <MenuItem value={"Rating"}>Rating</MenuItem>
-                <MenuItem selected value={"Distance"}>
-                    Distance
-                </MenuItem>
-                <MenuItem value={"New"}>New</MenuItem>
-              </Select>
-            </FormControl>
           </Box>
 
           <div className={classes.text}>
@@ -321,6 +308,36 @@ export default function DinerLanding ({ token }) {
             }}>
             {getSlides()}
           </Carousel>
+          <Box paddingTop="40px" paddingBottom="40px">
+          <Divider variant="middle" />
+        </Box>
+        <Grid container justifyContent="space-between" alignItems="flex-end" style={{ paddingBottom: "20px" }}>
+          <Grid item>
+          <div className={classes.text}>
+              {eateryList.length === 0
+                ? ""
+                : `Restaurants Sorted By ${sortBy}`}
+          </div>
+          </Grid>
+          <Grid item>
+            <FormControl
+                variant="filled"
+                style={{ minWidth: "100px" }}
+            >
+              <InputLabel>Sort By</InputLabel>
+              <Select
+                defaultValue={"Rating"}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <MenuItem value={"Rating"}>Rating</MenuItem>
+                <MenuItem selected value={"Distance"}>
+                    Distance
+                </MenuItem>
+                <MenuItem value={"New"}>New</MenuItem>
+              </Select>
+            </FormControl>
+            </Grid>
+          </Grid>
           {getEateries()}
         </Box>
         <Loading isLoading={loading} />
