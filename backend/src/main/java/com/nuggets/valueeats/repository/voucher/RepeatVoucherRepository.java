@@ -11,9 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface RepeatVoucherRepository extends JpaRepository<RepeatedVoucher, Long> {
-    @Query("select e from RepeatedVoucher e where e.nextUpdate < CURRENT_DATE")
-    List<RepeatedVoucher> findOverdueRepeatVouchers();
-
     @Query("select max(id) from RepeatedVoucher")
     Long findMaxId();
 
@@ -24,9 +21,6 @@ public interface RepeatVoucherRepository extends JpaRepository<RepeatedVoucher, 
     void deleteById(Long id);
 
     ArrayList<RepeatedVoucher> findByEateryId(Long eateryId);
-
-    // @Query(value = "select * from repeated_voucher where eatery_id = ?1 and is_active = true", nativeQuery = true)
-    // ArrayList<RepeatedVoucher> findActiveByEateryId (Long eateryId);
 
     @Query(value = "select * from repeated_voucher where is_active = true", nativeQuery = true)
     ArrayList<RepeatedVoucher> findAllActive();

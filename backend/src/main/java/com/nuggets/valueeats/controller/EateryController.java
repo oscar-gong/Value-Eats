@@ -6,6 +6,7 @@ import com.nuggets.valueeats.service.EateryService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
@@ -41,15 +42,3 @@ public class EateryController {
         return eateryService.verifyVoucher(code, token);
     }
 }
-
-/*
-{
-  "eatingStyle":"DineIn",
-  "discount":"0.8",
-  "quantity":"1",
-  "isRecurring":"false",
-  "day":"1",
-  "startMinute":"10",
-  "endMinute":"20"
-}
-*/

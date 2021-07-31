@@ -3,6 +3,8 @@ package com.nuggets.valueeats.entity.voucher;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
 @NoArgsConstructor

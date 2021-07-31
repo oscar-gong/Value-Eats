@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
+import java.util.*;
 
 @Service
 public class UserManagementService {
@@ -71,17 +72,13 @@ public class UserManagementService {
         }
 
         String result = validInputChecker(user);
-
         if (result != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(result));
         }
 
         user.setId(userRepository.findMaxId() == null ? 0 : userRepository.findMaxId() + 1);
-
         user.setPassword(EncryptionUtils.encrypt(user.getPassword(), String.valueOf(user.getId())));
-
         String userToken = jwtUtils.encode(String.valueOf(user.getId()));
-
         user.setToken(userToken);
 
         Map<String, String> dataMedium = new HashMap<>();
@@ -267,8 +264,9 @@ public class UserManagementService {
         if (diner == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Diner does not exist"));
         }
+
         List<Review> reviews = reviewRepository.findByDinerId(diner.getId());
-        ArrayList<Object> reviewsList = new ArrayList<Object>();
+        ArrayList<Object> reviewsList = new ArrayList<>();
         Map<String, Object> result = new HashMap<>();
         result.put("name", diner.getAlias());
         result.put("email", diner.getEmail());
@@ -278,6 +276,7 @@ public class UserManagementService {
             if (!db.isPresent()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
             }
+
             Eatery e = db.get();
             HashMap<String, Object> review = ReviewUtils.createReview(r.getId(), diner.getProfilePic(), diner.getAlias(),
                     r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos(), e.getAlias());
@@ -290,11 +289,10 @@ public class UserManagementService {
 
     public ResponseEntity<JSONObject> getEateryProfile(Long id, String token) {
         String decodedToken = jwtUtils.decode(token);
-
         if (decodedToken == null) {
-
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
+
         Eatery eateryDb;
         Diner dinerDb = null;
         if (eateryRepository.existsByToken(token) && !token.isEmpty()) {
@@ -310,12 +308,13 @@ public class UserManagementService {
             if (!eateryInDb.isPresent()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Eatery does not exist"));
             }
+
             eateryDb = eateryInDb.get();
             dinerDb = dinerRepository.findByToken(token);
         }
 
         List<Review> reviews = reviewRepository.listReviewsOfEatery(eateryDb.getId());
-        ArrayList<Object> reviewsList = new ArrayList<Object>();
+        ArrayList<Object> reviewsList = new ArrayList<>();
         for (Review r : reviews) {
             Long reviewDinerId = r.getDinerId();
 
@@ -330,20 +329,14 @@ public class UserManagementService {
             HashMap<String, Object> review = ReviewUtils.createReview(r.getId(), reviewDinerDb.getProfilePic(), reviewDinerDb.getAlias(),
                     r.getMessage(), r.getRating(), r.getEateryId(), r.getReviewPhotos(), eateryDb.getAlias());
             if (dinerDb != null) {
-                if (dinerDb.getId() == reviewDinerDb.getId()) {
-                    review.put("isOwner", true);
-                } else {
-                    review.put("isOwner", false);
-                }
+                review.put("isOwner", dinerDb.getId().equals(reviewDinerDb.getId()));
             }
             reviewsList.add(review);
         }
 
         ArrayList<RepeatedVoucher> repeatVouchersList = repeatVoucherRepository.findByEateryId(eateryDb.getId());
         ArrayList<Voucher> vouchersList = voucherRepository.findActiveByEateryId(eateryDb.getId());
-
-        ArrayList<Object> combinedVoucherList = new ArrayList<Object>();
-
+        ArrayList<Object> combinedVoucherList = new ArrayList<>();
         for (RepeatedVoucher v : repeatVouchersList) {
             HashMap<String, Object> voucher = VoucherUtils.createVoucher(v.getId(), v.getDiscount(), v.getEateryId(), v.getEatingStyle(),
                     v.getQuantity(), v.getDate(), v.getStart(), v.getEnd(), dinerDb, true,

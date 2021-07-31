@@ -11,12 +11,8 @@ import java.util.List;
 public interface EateryRepository extends UserRepository<Eatery> {
     boolean existsById(Long id);
 
-    boolean existsByIdAndToken(Long id, String token);
-
     @Query(value = "select * from Cuisines", nativeQuery = true)
     List<Object> findAllCuisines();
-
-    List<Eatery> findAllByCuisinesLike(String string);
 
     @Query("select e from Eatery e where e.id not in (:list) order by id")
     List<Eatery> findAllEateriesNotInList(@Param("list") List<Long> list);

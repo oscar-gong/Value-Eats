@@ -39,7 +39,6 @@ public class BookingUtils {
     }
 
     public static HashMap<String, Object> createBooking(Long id, String code, Date date, Integer start, Integer end, VoucherEatingStyle eatingStyle, Double discount, Long eateryId, boolean isRedeemed, String alias) {
-
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
         String strDate = formatter.format(date);
         int startHour = start / 60; //since both are ints, you get an int
@@ -47,7 +46,7 @@ public class BookingUtils {
         int endHour = end / 60; //since both are ints, you get an int
         int endMinute = end % 60;
 
-        HashMap<String, Object> dinerBooking = new HashMap<String, Object>();
+        HashMap<String, Object> dinerBooking = new HashMap<>();
 
         dinerBooking.put("bookingId", id);
         dinerBooking.put("code", code);

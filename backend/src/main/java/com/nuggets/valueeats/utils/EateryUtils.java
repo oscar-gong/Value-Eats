@@ -8,11 +8,11 @@ import java.util.HashMap;
 
 public class EateryUtils {
     public static HashMap<String, Object> createEatery(VoucherRepository voucherRepository, RepeatVoucherRepository repeatVoucherRepository, Eatery e, HashMap<String, Integer> distanceFromDiner) {
-        HashMap<String, Object> eatery = new HashMap<String, Object>();
+        HashMap<String, Object> eatery = new HashMap<>();
 
         Long maxDiscountVoucher = voucherRepository.findMaxDiscountFromEatery(e.getId());
         Long maxDiscountRepeatVoucher = repeatVoucherRepository.findMaxDiscountFromEatery(e.getId());
-        Long maxDiscount = (long) 0;
+        long maxDiscount = 0;
 
         if (maxDiscountVoucher != null && maxDiscountRepeatVoucher != null) {
             maxDiscount = Math.max(maxDiscountVoucher, maxDiscountRepeatVoucher);
@@ -22,10 +22,8 @@ public class EateryUtils {
             maxDiscount = maxDiscountRepeatVoucher;
         }
 
-        String discount = maxDiscount.toString() + "%";
-
         eatery.put("name", e.getAlias());
-        eatery.put("discount", discount);
+        eatery.put("discount", maxDiscount + "%");
         if (e.getLazyRating() != null) {
             eatery.put("rating", String.format("%.1f", e.getLazyRating()));
         } else {
@@ -34,6 +32,7 @@ public class EateryUtils {
         eatery.put("id", e.getId());
         eatery.put("profilePic", e.getProfilePic());
         eatery.put("cuisines", e.getCuisines());
+
         if (distanceFromDiner != null && distanceFromDiner.containsKey(e.getAddress())) {
             if (distanceFromDiner.get(e.getAddress()) != Integer.MAX_VALUE) {
                 eatery.put("distance", DistanceUtils.convertDistanceToString(distanceFromDiner.get(e.getAddress())));

@@ -20,9 +20,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             nativeQuery = true)
     int existsByDinerIdAndEateryIdAndReviewId(Long dinerId, Long eateryId, Long reviewId);
 
-    @Query(value = "select rating from Review where eatery_id = ?1", nativeQuery = true)
-    List<Float> listReviewRatingsOfEatery(Long eateryId);
-
     @Query(value = "select * from Review where eatery_id = ?1", nativeQuery = true)
     List<Review> listReviewsOfEatery(Long eateryId);
 

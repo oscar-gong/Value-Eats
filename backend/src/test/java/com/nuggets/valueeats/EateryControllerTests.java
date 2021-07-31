@@ -1,6 +1,7 @@
 package com.nuggets.valueeats;
 
 import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.repository.UserRepository;
 import com.nuggets.valueeats.repository.voucher.RepeatVoucherRepository;
 import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 import org.json.JSONObject;
@@ -30,12 +31,10 @@ public class EateryControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-    // Test create a one-off voucher with valid input.
     @Test
-    void eateryCreateVoucherTest1() throws Exception {
+    public void testCreateVoucher_oneOff_validInput() throws Exception {
         this.userRepository.deleteAll();
         this.voucherRepository.deleteAll();
-        ;
         this.repeatVoucherRepository.deleteAll();
         Map<String, String> eatery = new HashMap<>();
         eatery.put("alias", "eatery1");
@@ -75,12 +74,10 @@ public class EateryControllerTests {
                 .andExpect(status().isOk());
     }
 
-    // Test create a repeated voucher with valid input.
     @Test
-    void eateryCreateVoucherTest2() throws Exception {
+    public void testCreateVoucher_reapetedVoucher_validInput() throws Exception {
         this.userRepository.deleteAll();
         this.voucherRepository.deleteAll();
-        ;
         this.repeatVoucherRepository.deleteAll();
         Map<String, String> eatery = new HashMap<>();
         eatery.put("alias", "eatery1");
@@ -120,12 +117,10 @@ public class EateryControllerTests {
                 .andExpect(status().isOk());
     }
 
-    // Test create a voucher with invalid date.
     @Test
-    void eateryCreateVoucherTest3() throws Exception {
+    public void testCreateVoucher_invalidDate() throws Exception {
         this.userRepository.deleteAll();
         this.voucherRepository.deleteAll();
-        ;
         this.repeatVoucherRepository.deleteAll();
         Map<String, String> eatery = new HashMap<>();
         eatery.put("alias", "eatery1");
@@ -165,12 +160,10 @@ public class EateryControllerTests {
                 .andExpect(status().is4xxClientError());
     }
 
-    // Test create a voucher with invalid duration.
     @Test
-    void eateryCreateVoucherTest4() throws Exception {
+    public void testCreateVoucher_invalidDuration() throws Exception {
         this.userRepository.deleteAll();
         this.voucherRepository.deleteAll();
-        ;
         this.repeatVoucherRepository.deleteAll();
         Map<String, String> eatery = new HashMap<>();
         eatery.put("alias", "eatery1");
@@ -210,12 +203,10 @@ public class EateryControllerTests {
                 .andExpect(status().is4xxClientError());
     }
 
-    // Test delete a voucher with valid input.
     @Test
-    void eateryDeleteVoucherTest1() throws Exception {
+    public void testDeleteVoucher_validInput() throws Exception {
         this.userRepository.deleteAll();
         this.voucherRepository.deleteAll();
-        ;
         this.repeatVoucherRepository.deleteAll();
         Map<String, String> eatery = new HashMap<>();
         eatery.put("alias", "eatery1");
@@ -241,7 +232,7 @@ public class EateryControllerTests {
         voucher1.put("discount", "0.8");
         voucher1.put("quantity", "15");
         voucher1.put("isRecurring", "true");
-        long currenttime = System.currentTimeMillis() + Long.valueOf(36000000);
+        long currenttime = System.currentTimeMillis() + 36000000L;
         voucher1.put("date", Long.toString(currenttime));
         voucher1.put("startMinute", "10");
         voucher1.put("endMinute", "40");
@@ -263,12 +254,10 @@ public class EateryControllerTests {
                 .andExpect(status().isOk());
     }
 
-    // Test delete a voucher with invalid token.
     @Test
-    void eateryDeleteVoucherTest2() throws Exception {
+    public void testDeleteVoucher_invalidToken() throws Exception {
         this.userRepository.deleteAll();
         this.voucherRepository.deleteAll();
-        ;
         this.repeatVoucherRepository.deleteAll();
         Map<String, String> eatery = new HashMap<>();
         eatery.put("alias", "eatery1");
@@ -294,7 +283,7 @@ public class EateryControllerTests {
         voucher1.put("discount", "0.8");
         voucher1.put("quantity", "15");
         voucher1.put("isRecurring", "true");
-        long currenttime = System.currentTimeMillis() + Long.valueOf(36000000);
+        long currenttime = System.currentTimeMillis() + 36000000L;
         voucher1.put("date", Long.toString(currenttime));
         voucher1.put("startMinute", "10");
         voucher1.put("endMinute", "40");
@@ -316,12 +305,10 @@ public class EateryControllerTests {
                 .andExpect(status().is4xxClientError());
     }
 
-    // Test delete a voucher with invalid voucher id.
     @Test
-    void eateryDeleteVoucherTest3() throws Exception {
+    public void testDeleteVoucher_invalidVoucherId() throws Exception {
         this.userRepository.deleteAll();
         this.voucherRepository.deleteAll();
-        ;
         this.repeatVoucherRepository.deleteAll();
         Map<String, String> eatery = new HashMap<>();
         eatery.put("alias", "eatery1");
@@ -347,7 +334,7 @@ public class EateryControllerTests {
         voucher1.put("discount", "0.8");
         voucher1.put("quantity", "15");
         voucher1.put("isRecurring", "true");
-        long currenttime = System.currentTimeMillis() + Long.valueOf(36000000);
+        long currenttime = System.currentTimeMillis() + 36000000L;
         voucher1.put("date", Long.toString(currenttime));
         voucher1.put("startMinute", "10");
         voucher1.put("endMinute", "40");

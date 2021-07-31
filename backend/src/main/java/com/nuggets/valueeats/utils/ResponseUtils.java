@@ -13,10 +13,6 @@ public final class ResponseUtils {
         return new JSONObject(response);
     }
 
-    public static JSONObject createResponse(final Exception exception) {
-        return createResponse(exception.getMessage());
-    }
-
     public static JSONObject createResponse(final String message, final JSONObject result) {
         Map<String, Object> response = new HashMap<>();
         response.put("message", message);
@@ -26,9 +22,6 @@ public final class ResponseUtils {
     }
 
     public static JSONObject createResponse(final JSONObject result) {
-        // Map<String, Object> response = new HashMap<>();
-        // response.put("data", result);
-
         return new JSONObject(result);
     }
 }

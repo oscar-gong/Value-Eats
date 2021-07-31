@@ -47,7 +47,6 @@ public class DinerFunctionalityService {
 
     public ResponseEntity<JSONObject> createReview(Review review, String token) {
         try {
-
             // Check if token is valid
             if (!dinerRepository.existsByToken(token)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
@@ -108,7 +107,6 @@ public class DinerFunctionalityService {
 
     public ResponseEntity<JSONObject> removeReview(Review review, String token) {
         try {
-
             // Check if token is valid
             if (!dinerRepository.existsByToken(token)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid diner token"));
@@ -142,6 +140,7 @@ public class DinerFunctionalityService {
         if (!dinerRepository.existsByToken(token) || token.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
         }
+
         Diner diner = dinerRepository.findByToken(token);
         List<Eatery> eateryList = eateryRepository.findAll();
         HashMap<String, Integer> distanceFromDiner = null;
@@ -161,22 +160,25 @@ public class DinerFunctionalityService {
             for (Eatery e : eateryList) {
                 addresses.add(e.getAddress());
             }
+
             try {
                 String addressesURLString = URLEncoder.encode(String.join("|", addresses), "UTF-8");
                 distanceFromDiner = distanceUtils.findDistanceFromDiner(latitude, longitude, addressesURLString, addresses);
                 if (distanceFromDiner == null) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Unable to retrieve distance data at the moment."));
                 }
+
                 final HashMap<String, Integer> distanceFromDinerFinal = distanceFromDiner;
                 final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateryList.stream()
                         .map(a -> new AbstractMap.SimpleImmutableEntry<>(distanceFromDinerFinal.get(a.getAddress()), a))
                         .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
 
-                List<Eatery> result = new ArrayList<Eatery>();
+                List<Eatery> result = new ArrayList<>();
                 while (!pq.isEmpty()) {
                     Eatery newEatery = pq.poll().getValue();
                     result.add(0, newEatery);
                 }
+
                 eateryList = result;
             } catch (UnsupportedEncodingException e1) {
                 e1.printStackTrace();
@@ -184,8 +186,7 @@ public class DinerFunctionalityService {
             }
         }
 
-        ArrayList<Object> list = new ArrayList<Object>();
-
+        ArrayList<Object> list = new ArrayList<>();
         for (Eatery e : eateryList) {
             HashMap<String, Object> map = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, e, distanceFromDiner);
             list.add(map);
@@ -201,7 +202,6 @@ public class DinerFunctionalityService {
 
     public ResponseEntity<JSONObject> editReview(Review review, String token) {
         try {
-
             // Check if token is valid
             if (!dinerRepository.existsByToken(token)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
@@ -270,7 +270,6 @@ public class DinerFunctionalityService {
     }
 
     public ResponseEntity<JSONObject> dinerListVouchers(String token) {
-
         String id = jwtUtils.decode(token);
 
         if (id == null) {
@@ -283,15 +282,12 @@ public class DinerFunctionalityService {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid ID format"));
         }
 
-        Boolean isDinerExist = dinerRepository.existsById(dinerId);
-
-        if (isDinerExist == false) {
+        if (!dinerRepository.existsById(dinerId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Diner does not exist, check your token please"));
         }
 
-        ArrayList<BookingRecord> dinerBookings = new ArrayList<BookingRecord>();
-        ArrayList<Object> bookingData = new ArrayList<Object>();
-        dinerBookings = bookingRecordRepository.findAllByDinerId(dinerId);
+        ArrayList<Object> bookingData = new ArrayList<>();
+        ArrayList<BookingRecord>  dinerBookings = bookingRecordRepository.findAllByDinerId(dinerId);
 
         for (BookingRecord booking : dinerBookings) {
             boolean voucherExists = voucherRepository.existsById(booking.getVoucherId());
@@ -315,6 +311,7 @@ public class DinerFunctionalityService {
                 bookingData.add(dinerBooking);
             }
         }
+
         Map<String, Object> dataMedium = new HashMap<>();
         dataMedium.put("vouchers", bookingData);
         JSONObject data = new JSONObject(dataMedium);
@@ -322,24 +319,18 @@ public class DinerFunctionalityService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 
-    // Input: voucher id && diner token.
     public ResponseEntity<JSONObject> bookVoucher(Long voucherId, String token) {
-
         String decodedToken = jwtUtils.decode(token);
-
         if (decodedToken == null) {
-
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
 
         Diner dinerInDb = dinerRepository.findByToken(token);
-
         if (dinerInDb == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
 
         Long dinerId = dinerInDb.getId();
-
         if (!voucherRepository.existsById(voucherId) && !repeatVoucherRepository.existsById(voucherId)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher does not exist"));
         }
@@ -349,7 +340,6 @@ public class DinerFunctionalityService {
         }
 
         BookingRecord bookingRecord = new BookingRecord();
-
         if (repeatVoucherRepository.existsById(voucherId)) {
             RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
 

@@ -14,8 +14,6 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
 
     T findByEmail(String email);
 
-    T findById(int id);
-
     boolean existsById(Long id);
 
     T findByToken(String token);
@@ -24,12 +22,4 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
 
     @Query("select max(id) from User")
     Long findMaxId();
-
-    @Modifying
-    @Query("update User u set u.email = ?1, u.password = ?2, u.alias = ?3, u.address = ?4 where u.id = ?5")
-    void updateUserById(String email, String password, String alias, String address, Long userId);
-
-    @Modifying
-    @Query("update User u set u.email = ?1, u.password = ?2, u.alias = ?3, u.address = ?4 where u.id = ?5")
-    void updateUserByToken(String email, String password, String alias, String address, String token);
 }

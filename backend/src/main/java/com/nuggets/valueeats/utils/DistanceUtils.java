@@ -62,6 +62,7 @@ public class DistanceUtils {
             System.out.println("Distance retrieval failed due to: " + e);
             return null;
         }
+
         return addressDistanceFromDiner;
     }
 }

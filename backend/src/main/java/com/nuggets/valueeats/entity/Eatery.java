@@ -2,8 +2,13 @@ package com.nuggets.valueeats.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Formula;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

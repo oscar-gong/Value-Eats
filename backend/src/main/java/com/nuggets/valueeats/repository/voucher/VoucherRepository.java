@@ -10,8 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Long> {
-    ArrayList<Voucher> findByEateryId(Long eateryId);
-
     boolean existsById(Long id);
 
     Optional<Voucher> findById(Long id);

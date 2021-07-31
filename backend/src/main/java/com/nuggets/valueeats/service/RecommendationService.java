@@ -40,7 +40,7 @@ public class RecommendationService {
                 .map(a -> new AbstractMap.SimpleImmutableEntry<>(FuzzySearch.weightedRatio(search, a.getCuisines().toString() + "|" + a.getAlias() + "|" + a.getAddress()), a))
                 .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
 
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         while (!pq.isEmpty() && result.size() <= 10) {
             AbstractMap.SimpleImmutableEntry<Integer, Eatery> poll = pq.poll();
             if (poll.getKey() > 70) {
@@ -70,9 +70,7 @@ public class RecommendationService {
         }
 
         Diner diner = dinerRepository.findByToken(token);
-
         List<Long> eateriesDinerBeenTo = bookingRecordRepository.findEateriesDinerBeenTo(diner.getId());
-        ;
 
         // Sort these eateries based on diner interests.
         List<Eatery> eateriesDinerNotBeenTo = eateryRepository.findAllEateriesNotInList(eateriesDinerBeenTo);
@@ -81,7 +79,7 @@ public class RecommendationService {
                 .map(a -> new AbstractMap.SimpleImmutableEntry<>(getWeight(diner, a, eateriesDinerBeenTo), a))
                 .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
 
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         while (!pq.isEmpty() && result.size() <= 10) {
             Eatery newEatery = pq.poll().getValue();
             HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, newEatery, null);

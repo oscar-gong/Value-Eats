@@ -1,6 +1,8 @@
 package com.nuggets.valueeats;
 
 import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.repository.ReviewRepository;
+import com.nuggets.valueeats.repository.UserRepository;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,8 @@ public class DinerFunctionalityControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-    // Test create a review with valid input.
     @Test
-    void dinerCreateReviewTest1() throws Exception {
+    public void testCreateReview_validInput() throws Exception {
         this.userRepository.deleteAll();
         this.reviewRepository.deleteAll();
         Map<String, String> diner = new HashMap<>();
@@ -76,9 +77,8 @@ public class DinerFunctionalityControllerTests {
                 .andExpect(status().isOk());
     }
 
-    // Test create a review with invalid eatery id.
     @Test
-    void dinerCreateReviewTest2() throws Exception {
+    public void testCreateReview_invalidEateryId() throws Exception {
         this.userRepository.deleteAll();
         this.reviewRepository.deleteAll();
         Map<String, String> diner = new HashMap<>();
@@ -126,9 +126,8 @@ public class DinerFunctionalityControllerTests {
                 .andExpect(status().is4xxClientError());
     }
 
-    // Test create a review with invalid rating.
     @Test
-    void dinerCreateReviewTest3() throws Exception {
+    public void testCreateReview_invalidRating() throws Exception {
         this.userRepository.deleteAll();
         this.reviewRepository.deleteAll();
         Map<String, String> diner = new HashMap<>();
@@ -176,9 +175,8 @@ public class DinerFunctionalityControllerTests {
                 .andExpect(status().is4xxClientError());
     }
 
-    // Test remove a review with valid input.
     @Test
-    void dinerRemoveReviewTest1() throws Exception {
+    public void testRemoveReview_invalidInput() throws Exception {
         this.userRepository.deleteAll();
         this.reviewRepository.deleteAll();
         Map<String, String> diner = new HashMap<>();
@@ -235,9 +233,8 @@ public class DinerFunctionalityControllerTests {
                 .andExpect(status().isOk());
     }
 
-    // Test remove a review with invalid token.
     @Test
-    void dinerRemoveReviewTest2() throws Exception {
+    public void testRemoveReview_invalidToken() throws Exception {
         this.userRepository.deleteAll();
         this.reviewRepository.deleteAll();
         Map<String, String> diner = new HashMap<>();
@@ -294,9 +291,8 @@ public class DinerFunctionalityControllerTests {
                 .andExpect(status().is4xxClientError());
     }
 
-    // Test remove a review with invalid message id.
     @Test
-    void dinerRemoveReviewTest3() throws Exception {
+    public void testRemoveReview_invalidMessageId() throws Exception {
         this.userRepository.deleteAll();
         this.reviewRepository.deleteAll();
         Map<String, String> diner = new HashMap<>();
@@ -353,9 +349,8 @@ public class DinerFunctionalityControllerTests {
                 .andExpect(status().is4xxClientError());
     }
 
-    // Test edit a review with valid input.
     @Test
-    void dinerEditReviewTest1() throws Exception {
+    public void testEditReview_validInput() throws Exception {
         this.userRepository.deleteAll();
         this.reviewRepository.deleteAll();
         Map<String, String> diner = new HashMap<>();
@@ -421,7 +416,7 @@ public class DinerFunctionalityControllerTests {
 
     // Test edit a review with invalid token.
     @Test
-    void dinerEditReviewTest2() throws Exception {
+    public void testEditReview_invalidToken() throws Exception {
         this.userRepository.deleteAll();
         this.reviewRepository.deleteAll();
         Map<String, String> diner = new HashMap<>();
@@ -485,9 +480,8 @@ public class DinerFunctionalityControllerTests {
                 .andExpect(status().is4xxClientError());
     }
 
-    // Test edit a review with invalid eatery id.
     @Test
-    void dinerEditReviewTest3() throws Exception {
+    public void testEditReview_invalidEateryId() throws Exception {
         this.userRepository.deleteAll();
         this.reviewRepository.deleteAll();
         Map<String, String> diner = new HashMap<>();
@@ -553,7 +547,7 @@ public class DinerFunctionalityControllerTests {
 
     // Test edit a review with invalid rating.
     @Test
-    void dinerEditReviewTest4() throws Exception {
+    public void testEditReview_invalidRating() throws Exception {
         this.userRepository.deleteAll();
         this.reviewRepository.deleteAll();
         Map<String, String> diner = new HashMap<>();

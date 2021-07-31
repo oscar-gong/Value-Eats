@@ -11,22 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/* Code for testing for convenience.
-{
-  "alias":"diner1",
-  "email":"diner1@gmail.com",
-  "password":"Abcd1234",
-  "address":"sydney"
-}
-
-{
-  "alias":"eatery1",
-  "email":"eatery1@gmail.com",
-  "password":"Abcd1234",
-  "address":"sydney"
-}
-*/
-
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
 public class UserManagementController {

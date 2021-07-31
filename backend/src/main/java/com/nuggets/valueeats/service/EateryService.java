@@ -149,13 +149,12 @@ public class EateryService {
         }
 
         Long eateryId = Long.valueOf(decodedToken);
-        Boolean isEateryExist = eateryRepository.existsById(eateryId);
 
-        if (isEateryExist == false) {
+        if (!eateryRepository.existsById(eateryId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Eatery does not exist, check your token again"));
         }
 
-        if (voucher.getEateryId() != eateryId) {
+        if (!voucher.getEateryId().equals(eateryId)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher and eatery does not match, check again"));
         }
 
@@ -172,23 +171,20 @@ public class EateryService {
             System.out.println(voucherInDb.get());
             Voucher voucherDb = voucherInDb.get();
             // Convert it to recurring and delete old voucher
-            if (voucher.getIsRecurring() != null && voucher.getIsRecurring() == true) {
+            if (voucher.getIsRecurring() != null && voucher.getIsRecurring()) {
                 return editRepeatedVoucher(voucher, voucherDb, null);
             } else { // Do normal updates
                 return editVoucher(voucher, null, voucherDb);
             }
         }
 
-        if (repeatedVoucherInDb.isPresent()) {
-            RepeatedVoucher repeatedVoucherDb = repeatedVoucherInDb.get();
-            // Convert to a one-time voucher and delete old one
-            if (voucher.getIsRecurring() != null && voucher.getIsRecurring() == false) {
-                return editVoucher(voucher, repeatedVoucherDb, null);
-            } else { // Edit existing recurring voucher
-                return editRepeatedVoucher(voucher, null, repeatedVoucherDb);
-            }
+        RepeatedVoucher repeatedVoucherDb = repeatedVoucherInDb.get();
+        // Convert to a one-time voucher and delete old one
+        if (voucher.getIsRecurring() != null && !voucher.getIsRecurring()) {
+            return editVoucher(voucher, repeatedVoucherDb, null);
+        } else { // Edit existing recurring voucher
+            return editRepeatedVoucher(voucher, null, repeatedVoucherDb);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher was edited successfully."));
     }
 
     public ResponseEntity<JSONObject> editRepeatedVoucher(VoucherInput voucher, Voucher oldVoucher, RepeatedVoucher existingVoucher) {
@@ -392,7 +388,6 @@ public class EateryService {
 
     public ResponseEntity<JSONObject> verifyVoucher(String code, String token) {
         String decodedToken = jwtUtils.decode(token);
-
         if (decodedToken == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Token is not valid or expired"));
         }
@@ -432,7 +427,6 @@ public class EateryService {
 
         // If voucher is, set booking to redeemed.
         booking.setRedeemed(true);
-
         bookingRecordRepository.save(booking);
 
         HashMap<String, Object> dinerBooking = new HashMap<String, Object>();

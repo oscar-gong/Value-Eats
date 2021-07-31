@@ -52,9 +52,8 @@ public class DatabaseCleaner {
 
         if (repeatedVouchers != null) {
             for (RepeatedVoucher repeatedVoucher : repeatedVouchers) {
-                Date endTime = new Date();
-                endTime = Date.from(repeatedVoucher.getDate().toInstant().plus(Duration.ofMinutes(repeatedVoucher.getEnd())));
-                ;
+                Date endTime = Date.from(repeatedVoucher.getDate().toInstant().plus(Duration.ofMinutes(repeatedVoucher.getEnd())));
+
                 if (endTime.compareTo(timeNow) < 0) {
                     System.out.println("Voucher " + repeatedVoucher.getId() + " has expired.");
                     repeatedVoucher.setActive(false);
@@ -64,9 +63,8 @@ public class DatabaseCleaner {
         }
         if (vouchers != null) {
             for (Voucher voucher : vouchers) {
-                Date endTime = new Date();
-                endTime = Date.from(voucher.getDate().toInstant().plus(Duration.ofMinutes(voucher.getEnd())));
-                ;
+                Date endTime = Date.from(voucher.getDate().toInstant().plus(Duration.ofMinutes(voucher.getEnd())));
+
                 if (endTime.compareTo(timeNow) < 0) {
                     System.out.println("Voucher " + voucher.getId() + " has expired.");
                     voucher.setActive(false);

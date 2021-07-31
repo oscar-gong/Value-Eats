@@ -24,7 +24,6 @@ public class VoucherUtils {
         Date timeNow = new Date(System.currentTimeMillis());
         timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
         Date endTime = Date.from(date.toInstant().plus(Duration.ofMinutes(end)));
-        ;
         return (endTime.compareTo(timeNow) > 0);
     }
 
@@ -34,10 +33,7 @@ public class VoucherUtils {
         Date startTime = Date.from(date.toInstant().plus(Duration.ofMinutes(start)));
         Date endTime = Date.from(date.toInstant().plus(Duration.ofMinutes(end)));
         // Check if start time before timeNow, endTime after timeNow
-        if (startTime.compareTo(timeNow) <= 0 && endTime.compareTo(timeNow) > 0) {
-            return true;
-        }
-        return false;
+        return startTime.compareTo(timeNow) <= 0 && endTime.compareTo(timeNow) > 0;
     }
 
     public static boolean isValidTime(Date date, Integer minutes) {
@@ -93,7 +89,7 @@ public class VoucherUtils {
     }
 
     public static Long getNextVoucherId(RepeatVoucherRepository repeatVoucherRepository, VoucherRepository voucherRepository) {
-        Long newId;
+        long newId;
         if (repeatVoucherRepository.findMaxId() != null && voucherRepository.findMaxId() != null) {
             newId = Math.max((repeatVoucherRepository.findMaxId() + 1), (voucherRepository.findMaxId() + 1));
         } else if (repeatVoucherRepository.findMaxId() != null) {
