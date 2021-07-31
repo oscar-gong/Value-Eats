@@ -12,7 +12,6 @@ import {
 } from "@material-ui/core";
 import { Label } from "../styles/Label";
 import { FileUpload } from "../styles/FileUpload";
-import { StatBox } from "../styles/StatBox";
 import EditIcon from "@material-ui/icons/Edit";
 import AddAPhoto from "@material-ui/icons/AddAPhoto";
 import Review from "../components/Review";
@@ -38,12 +37,30 @@ import { MainContainer } from "../styles/MainContainer";
 const useStyles = makeStyles({
   containers: {
     flexDirection: "row",
-    background: "rgba(0,0,0,0.4)",
+    background: "rgba(0,0,0,0.1)",
     padding: "2% 0",
-    "@media (max-width: 800px)": {
+    "@media (max-width: 1100px)": {
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
+    },
+  },
+  dinerNameText: {
+    fontSize: "3vw",
+    textTransform: "uppercase",
+    color: "#FF855B",
+    fontWeight: "bold",
+    letterSpacing: "0.1em",
+  },
+  overlay: {
+    background: "rgba(250,255,249,0.9)",
+    padding: "20px",
+    minWidth: "20vw",
+    "@media (max-width: 1100px)": {
+      minWidth: "30vw",
+    },
+    "@media (max-width: 1400px)": {
+      minWidth: "42vw",
     },
   },
 });
@@ -195,6 +212,7 @@ export default function DinerProfile () {
             backgroundPosition: "center",
             marginTop: "3%",
           }}
+          direction="column"
         >
           <Grid
             item
@@ -207,9 +225,9 @@ export default function DinerProfile () {
               justifyContent="center"
               align="center"
               xs={3}
-              className={classes.profilePic}
+              className={classes.overlay}
             >
-              <ProfilePhoto size={150} src={user.profilePic} />
+              <ProfilePhoto size={180} src={user.profilePic} />
             </Grid>
             <Grid
               item
@@ -218,31 +236,21 @@ export default function DinerProfile () {
               align="center"
               direction="column"
               container
+              className={classes.overlay}
             >
-              <Grid
-                item
-                container
-                alignItems="center"
-                style={{ paddingLeft: "18%", paddingBottom: "5%" }}
-                justifyContent="flex-start"
-              >
-                <Grid
-                  item
-                  style={{
-                    color: "#FF845B",
-                    fontSize: "2em",
-                    textShadow: "1px 1px 5px black",
-                  }}
-                >
-                  <span style={{ padding: "0 10px" }}> {user.username}</span>
-                  <ButtonStyled
-                    variant="contained"
-                    color="primary"
-                    startIcon={<EditIcon />}
-                    onClick={() => setOpenProfile(true)}
-                  >
-                    Edit
-                  </ButtonStyled>
+              <Grid item container alignItems="center" justifyContent="center">
+                <Grid item className={classes.dinerNameText}>
+                  <Box>{user.username}</Box>
+                  <Box>
+                    <ButtonStyled
+                      variant="contained"
+                      color="primary"
+                      startIcon={<EditIcon />}
+                      onClick={() => setOpenProfile(true)}
+                    >
+                      Edit Profile
+                    </ButtonStyled>
+                  </Box>
                 </Grid>
               </Grid>
               <Grid
@@ -251,15 +259,11 @@ export default function DinerProfile () {
                 alignItems="center"
                 direction="row"
                 container
+                style={{ color: "black" }}
               >
-                <StatBox>
-                  <Box>{reviews.length}</Box>
-                  <Box>review{reviews.length === 1 ? "" : "s"}</Box>
-                </StatBox>
-                <StatBox>
-                  <Box>{getNumPhotos()}</Box>
-                  <Box>photos</Box>
-                </StatBox>
+                {`${reviews.length} review${
+                  reviews.length === 1 ? "" : "s"
+                } | ${getNumPhotos()} photo${getNumPhotos() === 1 ? "" : "s"}`}
               </Grid>
             </Grid>
           </Grid>
