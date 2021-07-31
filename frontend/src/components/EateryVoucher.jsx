@@ -82,8 +82,8 @@ export default function EateryVoucher ({
   };
 
   return (
-    <Box bgcolor="white" margin="20px" border="2px solid #FF845B" borderRadius="20px">
-      <Grid container direction="row" justifyContent="center" alignItems="center" border="3px solid #4F4846" bgcolor="#E8CEBF" margin="20px">
+    <Box bgcolor="white" margin="20px" border="2px solid #FF845B" borderRadius="20px" style={{ backgroundColor: "#FFF9F7" }}>
+      <Grid container direction="row" justifyContent="center" alignItems="center" border="3px solid #4F4846" margin="20px">
         <Grid item display="flex" flexDirection="column" xs={4}>
           <Box display="flex" justifyContent="center" alignItems="center">
             <h1>{discount}% off - {isDineIn ? "Dine in" : "Takeaway"}</h1>

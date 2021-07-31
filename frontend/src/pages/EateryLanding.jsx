@@ -3,14 +3,16 @@ import NavBar from "../components/Navbar";
 import { MainContent } from "../styles/MainContent";
 import { StoreContext } from "../utils/store";
 import { Redirect, useHistory } from "react-router-dom";
-import { Box } from "@material-ui/core";
+import { Box, Fab } from "@material-ui/core";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import EateryVoucher from "../components/EateryVoucher";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 import { logUserOut } from "../utils/logoutHelper";
 import { VoucherContainer } from "../styles/VoucherContainer";
-import { Subtitle } from "../styles/Subtitle";
+// import { Subtitle } from "../styles/Subtitle";
 import Loading from "../components/Loading";
+import { PageTitle } from "../styles/PageTitle";
+import AddIcon from "@material-ui/icons/Add";
 
 export default function EateryLanding () {
   const context = useContext(StoreContext);
@@ -62,7 +64,28 @@ export default function EateryLanding () {
       <NavBar isDiner={isDiner}/>
       <MainContent>
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Subtitle>{eateryDetails.name}&apos;s Discounts</Subtitle>
+          <PageTitle>{eateryDetails.name}&apos;s Discounts</PageTitle>
+          {/* <Subtitle>{eateryDetails.name}&apos;s Discounts</Subtitle> */}
+          <Box display="flex"
+          justifyContent="flex-end"
+          width="80%"
+          >
+            <Fab color="secondary"
+              aria-label="add"
+              style={{
+                top: "auto",
+                right: "30px",
+                bottom: "20px",
+                left: "auto",
+                position: "fixed",
+              }}
+              onClick={() => setOpenCreateDiscount(true)}
+            >
+              <AddIcon style={{
+                position: "absolute !important"
+              }}/>
+            </Fab>
+          </Box>
           <VoucherContainer>
             {
               eateryDetails.vouchers && (eateryDetails.vouchers.map((v, key) => {
@@ -117,10 +140,10 @@ export default function EateryLanding () {
             >
               Redeem Voucher
             </ButtonStyled>
-            <ButtonStyled variant="contained"
+            {/* <ButtonStyled variant="contained"
               color="primary"
               onClick={() => setOpenCreateDiscount(true)}
-            >Create Discount</ButtonStyled>
+            >Create Discount</ButtonStyled> */}
           </Box>
         </Box>
       </MainContent>

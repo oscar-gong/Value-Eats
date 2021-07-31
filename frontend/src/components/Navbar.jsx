@@ -175,6 +175,11 @@ export default function Navbar () {
         >
           HOME
         </NavLink>
+        {isDiner === "false" && (
+          <NavLink isDiner={isDiner} to="/RedeemVoucher">
+            REDEEM
+          </NavLink>
+        )}
         <NavLink
           isDiner={isDiner}
           to={isDiner === "true" ? "/DinerProfile" : "/EateryProfile"}
