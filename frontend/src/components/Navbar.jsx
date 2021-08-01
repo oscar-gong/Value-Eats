@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
@@ -12,7 +11,7 @@ import { Menu, MenuItem } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { IconButtonShowSmall } from "../styles/IconButtonShowSmall";
 import IconButton from "@material-ui/core/IconButton";
-// import logo from "../assets/logo.png";
+import logo from "../assets/valueEatsLogo.png";
 
 const useStyles = makeStyles((theme) => createStyles({
   searchContainer: {
@@ -26,10 +25,7 @@ const useStyles = makeStyles((theme) => createStyles({
     color: "#FF855B",
   },
   logo: {
-    fontSize: "2em",
-    fontWeight: "bold",
-    color: "#FF855B",
-    maxWidth: "50%",
+    maxWidth: "17%",
     "&:hover": {
       cursor: "pointer",
       color: "#e06543",
@@ -41,12 +37,12 @@ const useStyles = makeStyles((theme) => createStyles({
   searchBar: {
     fontSize: "1em",
     color: "#FF855B",
-    width: "25vw",
+    width: "22vw",
     paddingRight: 10,
     backgroundColor: "transparent",
     borderBottom: "1px solid rgba(255, 132, 91, 0.5)",
     "&.Mui-focused": {
-      borderBottom: "3px solid #FF855B !important"
+      borderBottom: "2px solid #FF855B !important"
     }
   },
   menu: {
@@ -138,9 +134,7 @@ export default function Navbar () {
   return (
     <NavbarStyled isDiner={isDiner} elevation={0}>
       <Toolbar className={classes.singleLine}>
-        <Typography className={classes.logo} onClick={handleLogoClick}>
-          Value Eats
-        </Typography>
+        <img src={logo} alt="Value Eats logo" className={classes.logo} onClick={handleLogoClick} />
         {isDiner === "true" && (
           <Toolbar className={classes.barSize}>
             <div className={classes.searchContainer}>
