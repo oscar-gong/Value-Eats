@@ -16,7 +16,7 @@ export default function RegisterEatery () {
   const [eateryName, setEateryName] = useState(defaultState);
   const [address, setAddress] = useState(defaultState);
   const [cuisines, setCuisines] = useState({ value: [], valid: true });
-  const [tmpProfilePic, setTmpProfilePic] = useState(EateryTempPic);
+  const [tmpProfilePic, setTmpProfilePic] = useState(null);
   const history = useHistory();
 
   const context = useContext(StoreContext);

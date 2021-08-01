@@ -234,8 +234,8 @@ export default function EateryForm ({
             {"Display Photo"}
           </Label>
         </Box>
-        <Box pt={2} display="flex" justifyContent="center">
-          <BannerPhoto height={50} src={tmpProfilePic} />
+        <Box pt={1} display="flex" justifyContent="center">
+          {tmpProfilePic !== null && <BannerPhoto height={50} src={tmpProfilePic} />}
         </Box>
         <UploadPhotos
           setImages={setImages}
