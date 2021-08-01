@@ -5,7 +5,7 @@ import { StoreContext } from "../utils/store";
 import { Redirect, useHistory } from "react-router-dom";
 import { Box } from "@material-ui/core";
 import { ButtonStyled } from "../styles/ButtonStyle";
-import { Title } from "../styles/Title";
+import { PageTitle } from "../styles/PageTitle";
 import { logUserOut } from "../utils/logoutHelper";
 import ConfirmModal from "../components/ConfirmModal";
 import Confetti from "react-confetti";
@@ -45,30 +45,6 @@ export default function RedeemVoucher () {
     return windowDim;
   }
 
-  // Want to call an endpoint which just checks if the token is valid!!!!!
-
-  // useEffect(() => {
-  //   const checkAuth = async () => {
-  //     const response = await fetch(
-  //         `http://localhost:8080/test/checktoken`,
-  //         {
-  //             method: "POST",
-  //             headers: {
-  //                 Accept: "application/json",
-  //                 "Content-Type": "application/json",
-  //                 Authorization: auth,
-  //             },
-  //         }
-  //     );
-
-  //     const responseData = await response.json();
-  //     if (response.status === 401) {
-  //         logUserOut();
-  //     }
-  //   };
-  //   checkAuth();
-  // }, [auth]);
-
   const handleRedeem = async () => {
     console.log("This will call the redeem voucher endpoint");
     const response = await fetch(`http://localhost:8080/eatery/verify/voucher?code=${code.value}`, {
@@ -105,7 +81,7 @@ export default function RedeemVoucher () {
       <NavBar isDiner={isDiner}/>
       <MainContent>
         <Box display="flex" flexDirection="column" justifyContent="space-evenly" alignItems="center" height="90vh">
-          <Title>Redeem Voucher</Title>
+          <PageTitle>Redeem Voucher</PageTitle>
           <Box pt={2} width="50vw" display="flex" flexDirection="column" justifyContent="center">
             <ShakeHead
               aria-label="outlined-basic"
@@ -120,7 +96,7 @@ export default function RedeemVoucher () {
               error={!code.valid}
               helperText={code.valid ? "" : "Please try again"}
               value={code.value}
-              variant="filled"
+              variant="outlined"
               fullWidth
             />
             <Box py={2} display="flex" justifyContent="center">

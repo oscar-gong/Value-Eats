@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
-import { MainContent } from "../styles/MainContent";
 import { StoreContext } from "../utils/store";
+import { MainContainer } from "../styles/MainContainer";
 import { Redirect, useHistory } from "react-router-dom";
 import { Box, Fab } from "@material-ui/core";
 import { ButtonStyled } from "../styles/ButtonStyle";
@@ -62,7 +62,7 @@ export default function EateryLanding () {
   return (
     <>
       <NavBar isDiner={isDiner}/>
-      <MainContent>
+      <MainContainer>
         <Box display="flex" flexDirection="column" alignItems="center">
           <PageTitle>{eateryDetails.name}&apos;s Discounts</PageTitle>
           {/* <Subtitle>{eateryDetails.name}&apos;s Discounts</Subtitle> */}
@@ -129,7 +129,7 @@ export default function EateryLanding () {
             <Loading isLoading={loading} />
           </VoucherContainer>
         </Box>
-        <Box display="flex" flexDirection="column" height="30vh">
+        <Box display="flex" flexDirection="column">
           <Box
             display="flex"
             justifyContent="space-evenly"
@@ -146,7 +146,7 @@ export default function EateryLanding () {
             >Create Discount</ButtonStyled> */}
           </Box>
         </Box>
-      </MainContent>
+      </MainContainer>
       <EditCreateVoucher eateryId={eateryDetails.id} voucherId={-1}
         open={openCreateDiscount}
         setOpen={setOpenCreateDiscount}
