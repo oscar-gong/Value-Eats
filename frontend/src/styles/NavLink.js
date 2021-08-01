@@ -12,7 +12,7 @@ export const NavLink = styled(Link)`
     text-decoration: none;
     &:hover {
         background: white;
-        color: #fe6b8b;
+        color: #96AE33;
     }
 
     width: ${(props) => props.widthPercentage}%;
