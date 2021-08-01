@@ -13,31 +13,20 @@ import { VoucherContainer } from "../styles/VoucherContainer";
 import Loading from "../components/Loading";
 import { PageTitle } from "../styles/PageTitle";
 import AddIcon from "@material-ui/icons/Add";
+import request from "../utils/request";
 
 export default function EateryLanding () {
   const context = useContext(StoreContext);
   const [auth, setAuth] = context.auth;
   const [isDiner, setIsDiner] = context.isDiner;
   const history = useHistory();
-  console.log(auth);
-  console.log(isDiner);
   const [eateryDetails, setEateryDetails] = useState({});
   const [openCreateDiscount, setOpenCreateDiscount] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const getEateryDetails = async () => {
     setLoading(true);
-    const response = await fetch(
-      "http://localhost:8080/eatery/profile/details",
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: auth,
-        },
-      }
-    );
+    const response = await request.get("eatery/profile/details", auth);
     const responseData = await response.json();
     setLoading(false);
     if (response.status === 200) {
@@ -87,45 +76,48 @@ export default function EateryLanding () {
             </Fab>
           </Box>
           <VoucherContainer>
-            {
-              eateryDetails.vouchers && (eateryDetails.vouchers.map((v, key) => {
+            {eateryDetails.vouchers &&
+              eateryDetails.vouchers.map((v, key) => {
                 return (
-                  ((v.nextUpdate !== "Deleted" && v.isRecurring === true) || v.isRecurring === false) &&
-                  <EateryVoucher voucherId={v.id}
-                    key={key}
-                    eateryId={v.eateryId}
-                    discount={v.discount}
-                    isOneOff={!v.isRecurring}
-                    isDineIn={v.eatingStyle === "DineIn"}
-                    vouchersLeft={v.quantity}
-                    date={v.date}
-                    startTime={v.startTime}
-                    endTime={v.endTime}
-                    timeRemaining={v.duration}
-                    nextUpdate={v.nextUpdate ? v.nextUpdate : null}
-                    isActive={v.isActive}
-                    isRedeemable={v.isRedeemable}
-                    refreshList={() => getEateryDetails()}
-                  ></EateryVoucher>
+                  ((v.nextUpdate !== "Deleted" && v.isRecurring === true) ||
+                    v.isRecurring === false) && (
+                    <EateryVoucher
+                      voucherId={v.id}
+                      key={key}
+                      eateryId={v.eateryId}
+                      discount={v.discount}
+                      isOneOff={!v.isRecurring}
+                      isDineIn={v.eatingStyle === "DineIn"}
+                      vouchersLeft={v.quantity}
+                      date={v.date}
+                      startTime={v.startTime}
+                      endTime={v.endTime}
+                      timeRemaining={v.duration}
+                      nextUpdate={v.nextUpdate ? v.nextUpdate : null}
+                      isActive={v.isActive}
+                      isRedeemable={v.isRedeemable}
+                      refreshList={() => getEateryDetails()}
+                    ></EateryVoucher>
+                  )
                 );
-              }))
-            }
-            {
-              eateryDetails.vouchers && eateryDetails.vouchers.length === 0 &&
-              <Box display="flex"
+              })}
+            {eateryDetails.vouchers && eateryDetails.vouchers.length === 0 && (
+              <Box
+                display="flex"
                 flexDirection="column"
                 minHeight="100%"
                 justifyContent="center"
-                alignItems="center">
-                <h1 style={{ marginTop: "0px" }}>
-                  No active discounts!
-                </h1>
-                <ButtonStyled widthPercentage={25}
+                alignItems="center"
+              >
+                <h1 style={{ marginTop: "0px" }}>No active discounts!</h1>
+                <ButtonStyled
+                  widthPercentage={25}
                   onClick={() => setOpenCreateDiscount(true)}
-                >Get started!</ButtonStyled>
+                >
+                  Get started!
+                </ButtonStyled>
               </Box>
-
-            }
+            )}
             <Loading isLoading={loading} />
           </VoucherContainer>
         </Box>
@@ -140,10 +132,6 @@ export default function EateryLanding () {
             >
               Redeem Voucher
             </ButtonStyled>
-            {/* <ButtonStyled variant="contained"
-              color="primary"
-              onClick={() => setOpenCreateDiscount(true)}
-            >Create Discount</ButtonStyled> */}
           </Box>
         </Box>
       </MainContainer>

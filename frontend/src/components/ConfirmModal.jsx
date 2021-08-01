@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogActions,
-  Box
-} from "@material-ui/core";
+import { Dialog, DialogContent, DialogActions, Box } from "@material-ui/core";
 import { DialogTitleStyled } from "../styles/DialogTitleStyled";
 import { ModalButton } from "../styles/ModalButton";
 import { CloseIconStyled } from "../styles/CloseIconStyled";
@@ -29,7 +24,10 @@ export default function ConfirmModal ({
       TransitionComponent={Transition}
       keepMounted
     >
-      <DialogTitleStyled aria-label="customized-dialog-title" onClose={handleClose}>
+      <DialogTitleStyled
+        aria-label="customized-dialog-title"
+        onClose={handleClose}
+      >
         {title}
       </DialogTitleStyled>
       <CloseIconStyled aria-label="close" onClick={handleClose}>

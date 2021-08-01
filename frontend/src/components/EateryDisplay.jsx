@@ -40,9 +40,9 @@ const useStyles = makeStyles({
     bottom: "8%",
     right: "6%",
     "@media (max-width: 600px)": {
-      right: "10%"
+      right: "10%",
     },
-  }
+  },
 });
 
 export default function EateryDisplay ({

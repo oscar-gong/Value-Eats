@@ -16,6 +16,8 @@ import { TextFieldStyled } from "../styles/TextFieldStyled";
 import { CloseIconStyled } from "../styles/CloseIconStyled";
 import { DialogTitleStyled } from "../styles/DialogTitleStyled";
 import { Transition } from "../utils/helpers";
+import request from "../utils/request";
+
 const useStyles = makeStyles({
   paper: {
     minWidth: "30vw",
@@ -24,8 +26,8 @@ const useStyles = makeStyles({
     animationTimingFunction: "ease-in-out",
   },
   helperText: {
-    textAlign: "right"
-  }
+    textAlign: "right",
+  },
 });
 
 export default function EditCreateReview ({
@@ -55,21 +57,14 @@ export default function EditCreateReview ({
     console.log(
       "Make the API call here that will save this particular review for a particular restaurant"
     );
-    const response = await fetch("http://localhost:8080/diner/editreview", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({
-        id: id,
-        eateryId: eateryId,
-        rating: rating,
-        message: reviewText,
-        reviewPhotos: images,
-      }),
-    });
+    const payload = {
+      id: id,
+      eateryId: eateryId,
+      rating: rating,
+      message: reviewText,
+      reviewPhotos: images,
+    };
+    const response = await request.post("diner/editreview", payload, token);
     const responseData = await response.json();
     if (response.status === 200) {
       refreshList();
@@ -92,20 +87,13 @@ export default function EditCreateReview ({
   };
 
   const handleCreateReview = async () => {
-    const response = await fetch("http://localhost:8080/diner/createreview", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({
-        eateryId: eateryId,
-        rating: rating,
-        message: reviewText,
-        reviewPhotos: images,
-      }),
-    });
+    const payload = {
+      eateryId: eateryId,
+      rating: rating,
+      message: reviewText,
+      reviewPhotos: images,
+    };
+    const response = await request.post("diner/createreview", payload, token);
     const responseData = await response.json();
     if (response.status === 200) {
       refreshList();
@@ -134,15 +122,10 @@ export default function EditCreateReview ({
         TransitionComponent={Transition}
         keepMounted
       >
-        <DialogTitleStyled
-          aria-label="customized-dialog-title"
-        >
+        <DialogTitleStyled aria-label="customized-dialog-title">
           {isEdit ? "Edit Review" : "Create Review"}
         </DialogTitleStyled>
-        <CloseIconStyled
-          aria-label="close"
-          onClick={() => setOpen(false)}
-        >
+        <CloseIconStyled aria-label="close" onClick={() => setOpen(false)}>
           <CloseIcon />
         </CloseIconStyled>
         <DialogContent dividers>
@@ -176,7 +159,7 @@ export default function EditCreateReview ({
               inputProps={{ maxLength: 280 }}
               helperText={`${reviewText.length}/${280}`}
               FormHelperTextProps={{
-                className: classes.helperText
+                className: classes.helperText,
               }}
             />
           </Box>

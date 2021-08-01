@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
 import EateryForm from "../components/EateryForm";
-import EateryTempPic from "../assets/EateryTempPic.jpeg";
-
+import EateryTempPic from "../assets/EateryTempPic.jpg";
+import request from "../utils/request";
 export default function RegisterEatery () {
   const defaultState = { value: "", valid: true };
   const [previewImages, setPreviewImages] = useState([]);
@@ -55,25 +55,16 @@ export default function RegisterEatery () {
     if ((!address.valid || address.value === "") && useGoogleAPI) {
       return;
     }
-    console.log(images);
-    console.log(cuisines);
-    const response = await fetch("http://localhost:8080/register/eatery", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        alias: eateryName.value,
-        email: email.value,
-        address: useGoogleAPI ? address.value : "Sydney",
-        password: password.value,
-        cuisines: cuisines.value,
-        menuPhotos: images, // array of data urls
-        profilePic: tmpProfilePic || EateryTempPic,
-      }),
-    });
-    console.log(response);
+    const payload = {
+      alias: eateryName.value,
+      email: email.value,
+      address: useGoogleAPI ? address.value : "Sydney",
+      password: password.value,
+      cuisines: cuisines.value,
+      menuPhotos: images, // array of data urls
+      profilePic: tmpProfilePic || EateryTempPic,
+    };
+    const response = await request.post("register/eatery", payload);
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({

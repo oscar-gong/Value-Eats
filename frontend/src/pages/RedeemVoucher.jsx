@@ -10,6 +10,7 @@ import { logUserOut } from "../utils/logoutHelper";
 import ConfirmModal from "../components/ConfirmModal";
 import Confetti from "react-confetti";
 import { ShakeHead } from "../styles/ShakeHead";
+import request from "../utils/request";
 
 export default function RedeemVoucher () {
   const context = useContext(StoreContext);
@@ -47,15 +48,7 @@ export default function RedeemVoucher () {
 
   const handleRedeem = async () => {
     console.log("This will call the redeem voucher endpoint");
-    const response = await fetch(`http://localhost:8080/eatery/verify/voucher?code=${code.value}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: auth,
-      }
-    });
-
+    const response = await request.post(`eatery/verify/voucher?code=${code.value}`, {}, auth);
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });

@@ -82,8 +82,7 @@ export default function DinerVoucher ({
             </h3>
             {!isRedeemable && !used && (
               <h3 style={{ margin: "5px 0px" }}>
-                Use on {date} between {startTime} -
-                {handleTimeNextDay(endTime)}
+                Use on {date} between {startTime} -{handleTimeNextDay(endTime)}
               </h3>
             )}
             {isRedeemable && !used && (

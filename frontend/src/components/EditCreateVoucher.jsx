@@ -5,6 +5,7 @@ import { validRequired, Transition } from "../utils/helpers";
 import { ModalButton } from "../styles/ModalButton";
 import { DialogTitleStyled } from "../styles/DialogTitleStyled";
 import { TextFieldStyled } from "../styles/TextFieldStyled";
+import request from "../utils/request";
 
 export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen, initOneOff = 0, initDineIn = "true", initDiscount = "", initQuantity = "", initStartTime = "", initEndTime = "", isEdit, refreshList }) {
   const date = new Date();
@@ -64,16 +65,12 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
     if (isEdit) {
       body.id = voucherId;
     }
-    const response = await fetch("http://localhost:8080/eatery/voucher",
-      {
-        method: reqType,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: token
-        },
-        body: JSON.stringify(body)
-      });
+    let response;
+    if (reqType === "PUT") {
+      response = await request.put("eatery/voucher", body, token);
+    } else {
+      response = await request.post("eatery/voucher", body, token);
+    }
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });

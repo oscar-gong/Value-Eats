@@ -7,6 +7,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 import Countdown from "react-countdown";
+import request from "../utils/request";
 
 export default function EateryVoucher ({
   eateryId,
@@ -60,17 +61,7 @@ export default function EateryVoucher ({
   console.log(isDiner);
 
   const removeVoucher = async (id) => {
-    const response = await fetch(
-      "http://localhost:8080/eatery/voucher?id=" + voucherId,
-      {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: auth
-        }
-      }
-    );
+    const response = await request.delete(`eatery/voucher?id=${voucherId}`, {}, auth);
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });
