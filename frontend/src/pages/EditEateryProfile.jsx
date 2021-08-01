@@ -27,7 +27,7 @@ export default function EditEateryLanding () {
   const setAlertOptions = context.alert[1];
 
   // set to true for real demos
-  const useGoogleAPI = false;
+  const useGoogleAPI = true;
 
   useEffect(() => {
     // on page init, load the users details

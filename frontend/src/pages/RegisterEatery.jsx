@@ -25,7 +25,7 @@ export default function RegisterEatery () {
   const [isDiner, setIsDiner] = context.isDiner;
 
   // set to true for real demos
-  const useGoogleAPI = false;
+  const useGoogleAPI = true;
 
   const registerUser = async () => {
     // check register details

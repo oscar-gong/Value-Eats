@@ -47,8 +47,7 @@ export default function EateryForm ({
   tmpProfilePic,
 }) {
   const [cuisineList, setCuisineList] = useState([]);
-  // set true for demos
-  const useGoogleAPI = false;
+  const useGoogleAPI = true;
 
   const validAddress = () => {
     if (address.value === "") {
