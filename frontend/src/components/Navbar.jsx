@@ -39,12 +39,12 @@ const useStyles = makeStyles((theme) =>
     searchBar: {
       fontSize: "1em",
       color: "#FF855B",
-      width: "25vw",
+      width: "22vw",
       paddingRight: 10,
       backgroundColor: "transparent",
       borderBottom: "1px solid rgba(255, 132, 91, 0.5)",
       "&.Mui-focused": {
-        borderBottom: "3px solid #FF855B !important",
+        borderBottom: "2px solid #FF855B !important",
       },
     },
     menu: {
