@@ -10,7 +10,7 @@ export const Trapezium = styled.div`
     left: 100%;
     top: 0;
     border-right: 50px solid transparent;
-    border-top: 120px solid #ff8a00;
+    border-top: 116px solid #ff8a00;
     content: "";
   }
 `;
