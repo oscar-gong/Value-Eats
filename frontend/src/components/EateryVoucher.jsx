@@ -82,7 +82,7 @@ export default function EateryVoucher ({
   };
 
   return (
-    <Box bgcolor="#FFF9F7" margin="20px" border="2px solid #FF845B" >
+    <Box bgcolor="#FFF9F7" margin="20px" border="1px dotted #FF845B" >
       <Grid container direction="row" justifyContent="center" alignItems="center" border="3px solid #4F4846" margin="20px">
         <Grid item display="flex" flexDirection="column" xs={4}>
           <Box display="flex" justifyContent="center" alignItems="center">
@@ -92,8 +92,9 @@ export default function EateryVoucher ({
         <Grid item display="flex" justifyContent="center" xs={5}>
           <Box display="flex" flexDirection="column" pl={10}>
             {
-              !isOneOff &&
-              <h3 style={{ margin: "5px 0px", color: "#96AE33" }}>Weekly deal</h3>
+              !isOneOff
+                ? <h3 style={{ margin: "5px 0px", color: "#96AE33", textDecoration: "underline" }}>Weekly deal</h3>
+                : <h3 style={{ margin: "5px 0px", color: "#96AE33", textDecoration: "underline" }}>One Off deal</h3>
             }
             {
               (isRedeemable || isActive) &&
