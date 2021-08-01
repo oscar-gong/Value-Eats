@@ -159,7 +159,7 @@ export default function DinerVouchers () {
             </Tabs>
           </Box>
           <VoucherContainer>
-            {getCurrentVouchers()}
+            {showHistory === 0 && getCurrentVouchers()}
             {showHistory === 1 && getPastVouchers()}
             <Loading isLoading={loading} />
           </VoucherContainer>
