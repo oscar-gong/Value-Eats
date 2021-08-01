@@ -255,7 +255,7 @@ export default function EateryForm ({
             />
             {<AddAPhoto />}{" "}
             {isRegister
-              ? "Upload Display Photo"
+              ? "Display Photo"
               : "Change Profile Picture"}
           </Label>
         </Box>
@@ -266,7 +266,7 @@ export default function EateryForm ({
           setImages={setImages}
           previewImages={previewImages}
           setPreviewImages={setPreviewImages}
-          uploadDescription={"Upload Menu Photos"}
+          uploadDescription={"Menu Photos"}
         />
         <Box pt={2} display="flex" justifyContent="center" width="100%">
           <ButtonStyled widthPercentage={60}
