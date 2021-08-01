@@ -168,6 +168,7 @@ export default function RegisterDiner ({ setToken }) {
             }
             variant="outlined"
             fullWidth
+            onKeyPress={handleKeyPress}
           />
         </Box>
         {/* <Box pt={1} width="60%">
@@ -232,6 +233,7 @@ export default function RegisterDiner ({ setToken }) {
             }
             variant="outlined"
             fullWidth
+            onKeyPress={handleKeyPress}
           />
         </Box>
         <Box py={2} width="70%">
@@ -260,6 +262,7 @@ export default function RegisterDiner ({ setToken }) {
             }
             variant="outlined"
             fullWidth
+            onKeyPress={handleKeyPress}
           />
         </Box>
         <ButtonStyled widthPercentage={70}
