@@ -13,6 +13,7 @@ import { VoucherContainer } from "../styles/VoucherContainer";
 import Loading from "../components/Loading";
 import { PageTitle } from "../styles/PageTitle";
 import AddIcon from "@material-ui/icons/Add";
+import { MainContainer } from "../styles/MainContainer";
 
 export default function EateryLanding () {
   const context = useContext(StoreContext);
@@ -62,6 +63,7 @@ export default function EateryLanding () {
   return (
     <>
       <NavBar isDiner={isDiner}/>
+      <MainContainer>
       <MainContent>
         <Box display="flex" flexDirection="column" alignItems="center">
           <PageTitle>{eateryDetails.name}&apos;s Discounts</PageTitle>
@@ -147,6 +149,7 @@ export default function EateryLanding () {
           </Box>
         </Box>
       </MainContent>
+      </MainContainer>
       <EditCreateVoucher eateryId={eateryDetails.id} voucherId={-1}
         open={openCreateDiscount}
         setOpen={setOpenCreateDiscount}
