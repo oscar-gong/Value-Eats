@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
 import EateryForm from "../components/EateryForm";
-import EateryTempPic from "../assets/EateryTempPic.jpg";
+import EateryTempPic from "../assets/EateryTempPic.jpeg";
 import request from "../utils/request";
 export default function RegisterEatery () {
   const defaultState = { value: "", valid: true };
