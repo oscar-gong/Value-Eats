@@ -27,10 +27,7 @@ const useStyles = makeStyles((theme) =>
       color: "#FF855B",
     },
     logo: {
-      fontSize: "2em",
-      fontWeight: "bold",
-      color: "#FF855B",
-      maxWidth: "50%",
+      maxWidth: "17%",
       "&:hover": {
         cursor: "pointer",
         color: "#e06543",
