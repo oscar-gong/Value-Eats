@@ -159,6 +159,7 @@ export default function Navbar () {
                 type="submit"
                 aria-label="search"
                 onClick={handleSearch}
+                style={{ color: "#FF855B" }}
               >
                 <SearchIcon />
               </IconButton>

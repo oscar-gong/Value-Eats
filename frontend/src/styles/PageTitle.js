@@ -8,7 +8,7 @@ export const PageTitle = styled(Box)`
   font-weight: bold;
   letter-spacing: 0.1em;
   padding: 3% 0;
-  background-color: #FFF9F7;
+  background-color: #F7FCF6;
   width: 100%;
   margin: 1.5% 0px;
   text-align: center;
