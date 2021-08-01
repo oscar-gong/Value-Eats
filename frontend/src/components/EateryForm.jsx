@@ -232,7 +232,7 @@ export default function EateryForm ({
               onChange={(e) => handleImage(e.target.files, setTmpProfilePic)}
             />
             {<AddAPhoto />}{" "}
-            {isRegister ? "Upload Display Photo" : "Change Profile Picture"}
+            {"Display Photo"}
           </Label>
         </Box>
         <Box pt={2} display="flex" justifyContent="center">
