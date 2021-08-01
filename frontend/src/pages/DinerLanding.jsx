@@ -257,22 +257,6 @@ export default function DinerLanding ({ token }) {
             />
             <div className={classes.dinerNameText}>{name}</div>
           </Box>
-          <Box textAlign="right">
-            <FormControl variant="filled" style={{ minWidth: "100px" }}>
-              <InputLabel>Sort By</InputLabel>
-              <Select
-                defaultValue={"Rating"}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <MenuItem value={"Rating"}>Rating</MenuItem>
-                <MenuItem selected value={"Distance"}>
-                  Distance
-                </MenuItem>
-                <MenuItem value={"New"}>New</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-
           <div className={classes.text}>
             {recommendationList.length === 0
               ? ""
