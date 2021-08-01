@@ -133,6 +133,7 @@ export default function EditEateryLanding () {
     <>
       <NavBar isDiner={isDiner} />
       {console.log(eateryName)}
+      <div style={{ backgroundColor: "#F7FCF5" }}>
       <MainContainer>
         <EateryForm
           email={email}
@@ -157,6 +158,7 @@ export default function EditEateryLanding () {
           setTmpProfilePic={setTmpProfilePic}
         />
       </MainContainer>
+      </div>
     </>
   );
 }
