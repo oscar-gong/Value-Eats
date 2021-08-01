@@ -12,7 +12,7 @@ import RatingWithNum from "../components/RatingWithNum";
 
 const useStyles = makeStyles({
   wideCard: {
-    marginTop: "50px",
+    marginBottom: "50px",
     transition: "transform 0.15s ease-in-out",
     "&:hover": {
       transform: "scale3d(1.01, 1.01, 1)",

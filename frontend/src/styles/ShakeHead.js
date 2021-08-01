@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { TextField } from "@material-ui/core";
+import { TextFieldStyled } from "./TextFieldStyled";
 
 const shakeHeadAnimation = keyframes`
    0% { left: 0px; }
@@ -8,7 +8,8 @@ const shakeHeadAnimation = keyframes`
   75% { left: 0px; }
 `;
 
-export const ShakeHead = styled(TextField)`
+export const ShakeHead = styled(TextFieldStyled)`
     animation-name: ${props => props.animate ? shakeHeadAnimation : ""};
     animation-duration: 0.8s;
+    text-align: center;
 `;

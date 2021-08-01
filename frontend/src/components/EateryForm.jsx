@@ -47,8 +47,7 @@ export default function EateryForm ({
   tmpProfilePic,
 }) {
   const [cuisineList, setCuisineList] = useState([]);
-  // set true for demos
-  const useGoogleAPI = false;
+  const useGoogleAPI = true;
 
   const validAddress = () => {
     if (address.value === "") {
@@ -84,8 +83,14 @@ export default function EateryForm ({
     listOfCuisines();
   }, []);
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      submitForm();
+    }
+  };
+
   return (
-    <AlignCenter removeBg={removeBg}>
+    <AlignCenter removeBg={removeBg} isEateryForm={true} style={{ padding: "2% 0" }}>
       <FloatBox display="flex" flexDirection="column" alignItems="center">
         <Box pt={2}>
           <Subtitle>
@@ -123,6 +128,7 @@ export default function EateryForm ({
             helperText={email.valid ? "" : "Please enter a valid email"}
             variant="outlined"
             fullWidth
+            onKeyPress={handleKeyPress}
           />
         </Box>
         <Box pt={2} width="60%">
@@ -145,6 +151,7 @@ export default function EateryForm ({
             }
             variant="outlined"
             fullWidth
+            onKeyPress={handleKeyPress}
           />
         </Box>
         <Box pt={2} width="60%">
@@ -173,6 +180,7 @@ export default function EateryForm ({
             }
             variant="outlined"
             fullWidth
+            onKeyPress={handleKeyPress}
           />
         </Box>
         <Box pt={2} width="60%">
@@ -189,6 +197,7 @@ export default function EateryForm ({
             fullWidth
             variant="outlined"
             inputRef={ref}
+            onKeyPress={handleKeyPress}
           />
         </Box>
         <Box pt={2} width="60%">
@@ -222,17 +231,17 @@ export default function EateryForm ({
               onChange={(e) => handleImage(e.target.files, setTmpProfilePic)}
             />
             {<AddAPhoto />}{" "}
-            {isRegister ? "Upload Display Photo" : "Change Profile Picture"}
+            {"Display Photo"}
           </Label>
         </Box>
-        <Box pt={2} display="flex" justifyContent="center">
-          <BannerPhoto height={50} src={tmpProfilePic} />
+        <Box pt={1} display="flex" justifyContent="center">
+          {tmpProfilePic !== null && <BannerPhoto height={50} src={tmpProfilePic} />}
         </Box>
         <UploadPhotos
           setImages={setImages}
           previewImages={previewImages}
           setPreviewImages={setPreviewImages}
-          uploadDescription={"Upload Menu Photos"}
+          uploadDescription={"Menu Photos"}
         />
         <Box pt={2} display="flex" justifyContent="center" width="100%">
           <ButtonStyled

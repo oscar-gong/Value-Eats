@@ -100,6 +100,12 @@ export default function Login () {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <AlignCenter>
       <Grid container justify="center" className={classes.mainContainer}>
@@ -126,6 +132,7 @@ export default function Login () {
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 fullWidth
+                onKeyPress={handleKeyPress}
               />
             </Box>
             <Box pt={2} width="60%">
@@ -137,6 +144,7 @@ export default function Login () {
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 fullWidth
+                onKeyPress={handleKeyPress}
               />
             </Box>
             <Box pt={4} pb="8%">

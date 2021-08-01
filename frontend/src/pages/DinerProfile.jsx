@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
-import { MainContent } from "../styles/MainContent";
 import { ProfilePhoto } from "../styles/ProfilePhoto";
 import {
   Box,
@@ -8,10 +7,11 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
+  Grid,
+  makeStyles,
 } from "@material-ui/core";
 import { Label } from "../styles/Label";
 import { FileUpload } from "../styles/FileUpload";
-import { StatBox } from "../styles/StatBox";
 import EditIcon from "@material-ui/icons/Edit";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import Review from "../components/Review";
@@ -33,7 +33,46 @@ import { ModalButton } from "../styles/ModalButton";
 import { TextFieldStyled } from "../styles/TextFieldStyled";
 import { CloseIconStyled } from "../styles/CloseIconStyled";
 import CloseIcon from "@material-ui/icons/Close";
+import { MainContainer } from "../styles/MainContainer";
 import request from "../utils/request";
+
+const useStyles = makeStyles({
+  containers: {
+    flexDirection: "row",
+    background: "rgba(0,0,0,0.1)",
+    padding: "2% 0",
+    "@media (max-width: 1100px)": {
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  },
+  dinerNameText: {
+    fontSize: "3vw",
+    textTransform: "uppercase",
+    color: "#FF855B",
+    fontWeight: "bold",
+    letterSpacing: "0.1em",
+  },
+  overlay: {
+    background: "rgba(250,255,249,0.9)",
+    padding: "20px",
+    minWidth: "20vw",
+    "@media (max-width: 1100px)": {
+      minWidth: "30vw",
+    },
+    "@media (max-width: 1400px)": {
+      minWidth: "42vw",
+    },
+  },
+  reviewTitle: {
+    fontSize: "1.5vw",
+    textTransform: "uppercase",
+    color: "#96ae33",
+    fontWeight: "bold",
+    letterSpacing: "0.1em",
+  },
+});
 
 export default function DinerProfile () {
   const context = useContext(StoreContext);
@@ -41,7 +80,7 @@ export default function DinerProfile () {
   const [token, setAuth] = context.auth;
   const setIsDiner = context.isDiner[1];
   const history = useHistory();
-
+  const classes = useStyles();
   const [openProfile, setOpenProfile] = useState(false);
 
   const defaultState = (initialValue = "") => {
@@ -55,6 +94,7 @@ export default function DinerProfile () {
   const [tmpProfilePic, setTmpProfilePic] = useState(defaultState);
   const [user, setUser] = useState({});
   const [reviews, setReviews] = useState([]);
+  const [bgImage, setBgImage] = useState("");
 
   const getUser = async () => {
     const response = await request.get("diner/profile/details", token);
@@ -66,6 +106,7 @@ export default function DinerProfile () {
         email: responseData.email,
         profilePic: responseData["profile picture"],
       });
+      setBgImage(responseData["profile picture"]);
       console.log("reviews: ");
       console.log(responseData.reviews);
       setReviews(responseData.reviews);
@@ -123,12 +164,14 @@ export default function DinerProfile () {
         email: email.value,
         profilePic: tmpProfilePic,
       });
+      setBgImage(tmpProfilePic);
       setOpenProfile(false);
       setAlertOptions({
         showAlert: true,
         variant: "success",
         message: responseData.message,
       });
+      getUser();
     } else if (response.status === 401) {
       logUserOut(setAuth, setIsDiner);
     } else {
@@ -151,50 +194,80 @@ export default function DinerProfile () {
   return (
     <>
       <NavBar isDiner={true} />
-      <MainContent>
-        <Box
-          display="flex"
+      <MainContainer>
+        <Grid
+          container
           justifyContent="center"
-          alignItems="center"
-          paddingTop="10px"
+          style={{
+            backgroundImage: `url("${bgImage}")`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            marginTop: "3%",
+          }}
+          direction="column"
         >
-          <ProfilePhoto hover={false} size={150} src={user.profilePic} />
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            paddingX="20px"
+          <Grid
+            item
+            container
+            justifyContent="center"
+            className={classes.containers}
           >
-            <Box
-              style={{
-                color: "#FF845B",
-                fontSize: "1.5em",
-              }}
+            <Grid
+              item
+              justifyContent="center"
+              align="center"
+              xs={3}
+              className={classes.overlay}
             >
-              {user.username}
-            </Box>
-            <ButtonStyled
-              variant="contained"
-              color="primary"
-              startIcon={<EditIcon />}
-              onClick={() => setOpenProfile(true)}
+              <ProfilePhoto size={180} src={user.profilePic} />
+            </Grid>
+            <Grid
+              item
+              justifyContent="center"
+              xs={4}
+              align="center"
+              direction="column"
+              container
+              className={classes.overlay}
             >
-              Edit profile
-            </ButtonStyled>
-          </Box>
-          <StatBox>
-            <Box>{reviews.length}</Box>
-            <Box>review{reviews.length === 1 ? "" : "s"}</Box>
-          </StatBox>
-          <StatBox>
-            <Box>{getNumPhotos()}</Box>
-            <Box>photos</Box>
-          </StatBox>
-        </Box>
-        <Box paddingY="30px">
+              <Grid item container alignItems="center" justifyContent="center">
+                <Grid item className={classes.dinerNameText}>
+                  <Box>{user.username}</Box>
+                  <Box>
+                    <ButtonStyled
+                      variant="contained"
+                      color="primary"
+                      startIcon={<EditIcon />}
+                      onClick={() => setOpenProfile(true)}
+                    >
+                      Edit Profile
+                    </ButtonStyled>
+                  </Box>
+                </Grid>
+              </Grid>
+              <Grid
+                item
+                justifyContent="center"
+                alignItems="center"
+                direction="row"
+                container
+                style={{ color: "black" }}
+              >
+                {`${reviews.length} review${
+                  reviews.length === 1 ? "" : "s"
+                } | ${getNumPhotos()} photo${getNumPhotos() === 1 ? "" : "s"}`}
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Box paddingTop="20px" paddingBottom="10px">
           <Divider variant="middle" />
         </Box>
         {/* Reviews would be mapped here... */}
+        <Box align="center" className={classes.reviewTitle}>
+          Past Reviews
+        </Box>
         <Box
           display="flex"
           flexDirection="column"
@@ -247,7 +320,9 @@ export default function DinerProfile () {
           TransitionComponent={Transition}
           keepMounted
         >
-          <DialogTitleStyled>Update Profile</DialogTitleStyled>
+          <DialogTitleStyled aria-label="customized-dialog-title">
+            Update Profile
+          </DialogTitleStyled>
           <CloseIconStyled
             aria-label="close"
             onClick={() => setOpenProfile(false)}
@@ -363,7 +438,7 @@ export default function DinerProfile () {
             </ModalButton>
           </DialogActions>
         </Dialog>
-      </MainContent>
+      </MainContainer>
     </>
   );
 }

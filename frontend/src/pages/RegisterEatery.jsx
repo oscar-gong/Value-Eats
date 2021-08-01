@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
 import EateryForm from "../components/EateryForm";
-import EateryTempPic from "../assets/EateryTempPic.jpg";
+import EateryTempPic from "../assets/EateryTempPic.jpeg";
 import request from "../utils/request";
 export default function RegisterEatery () {
   const defaultState = { value: "", valid: true };
@@ -16,7 +16,7 @@ export default function RegisterEatery () {
   const [eateryName, setEateryName] = useState(defaultState);
   const [address, setAddress] = useState(defaultState);
   const [cuisines, setCuisines] = useState({ value: [], valid: true });
-  const [tmpProfilePic, setTmpProfilePic] = useState(EateryTempPic);
+  const [tmpProfilePic, setTmpProfilePic] = useState(null);
   const history = useHistory();
 
   const context = useContext(StoreContext);
@@ -25,7 +25,7 @@ export default function RegisterEatery () {
   const [isDiner, setIsDiner] = context.isDiner;
 
   // set to true for real demos
-  const useGoogleAPI = false;
+  const useGoogleAPI = true;
 
   const registerUser = async () => {
     // check register details

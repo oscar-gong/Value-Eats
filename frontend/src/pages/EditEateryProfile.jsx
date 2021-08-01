@@ -27,7 +27,7 @@ export default function EditEateryLanding () {
   const setAlertOptions = context.alert[1];
 
   // set to true for real demos
-  const useGoogleAPI = false;
+  const useGoogleAPI = true;
 
   useEffect(() => {
     // on page init, load the users details
@@ -114,6 +114,7 @@ export default function EditEateryLanding () {
     <>
       <NavBar isDiner={isDiner} />
       {console.log(eateryName)}
+      <div style={{ backgroundColor: "#F7FCF5" }}>
       <MainContainer>
         <EateryForm
           email={email}
@@ -138,6 +139,7 @@ export default function EditEateryLanding () {
           setTmpProfilePic={setTmpProfilePic}
         />
       </MainContainer>
+      </div>
     </>
   );
 }

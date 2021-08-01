@@ -1,16 +1,18 @@
 import React, { useContext, useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
-import { MainContent } from "../styles/MainContent";
 import { StoreContext } from "../utils/store";
+import { MainContainer } from "../styles/MainContainer";
 import { Redirect, useHistory } from "react-router-dom";
-import { Box } from "@material-ui/core";
+import { Box, Fab } from "@material-ui/core";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import EateryVoucher from "../components/EateryVoucher";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 import { logUserOut } from "../utils/logoutHelper";
 import { VoucherContainer } from "../styles/VoucherContainer";
-import { Subtitle } from "../styles/Subtitle";
+// import { Subtitle } from "../styles/Subtitle";
 import Loading from "../components/Loading";
+import { PageTitle } from "../styles/PageTitle";
+import AddIcon from "@material-ui/icons/Add";
 import request from "../utils/request";
 
 export default function EateryLanding () {
@@ -48,10 +50,31 @@ export default function EateryLanding () {
 
   return (
     <>
-      <NavBar isDiner={isDiner} />
-      <MainContent>
+      <NavBar isDiner={isDiner}/>
+      <MainContainer>
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Subtitle>{eateryDetails.name}&apos;s Discounts</Subtitle>
+          <PageTitle>{eateryDetails.name}&apos;s Discounts</PageTitle>
+          {/* <Subtitle>{eateryDetails.name}&apos;s Discounts</Subtitle> */}
+          <Box display="flex"
+          justifyContent="flex-end"
+          width="80%"
+          >
+            <Fab color="secondary"
+              aria-label="add"
+              style={{
+                top: "auto",
+                right: "30px",
+                bottom: "20px",
+                left: "auto",
+                position: "fixed",
+              }}
+              onClick={() => setOpenCreateDiscount(true)}
+            >
+              <AddIcon style={{
+                position: "absolute !important"
+              }}/>
+            </Fab>
+          </Box>
           <VoucherContainer>
             {eateryDetails.vouchers &&
               eateryDetails.vouchers.map((v, key) => {
@@ -98,28 +121,21 @@ export default function EateryLanding () {
             <Loading isLoading={loading} />
           </VoucherContainer>
         </Box>
-        <Box display="flex" flexDirection="column" height="30vh">
-          <Box display="flex" justifyContent="space-evenly">
-            <ButtonStyled
-              variant="contained"
+        <Box display="flex" flexDirection="column">
+          <Box
+            display="flex"
+            justifyContent="space-evenly"
+          >
+            <ButtonStyled variant="contained"
               color="primary"
               onClick={() => history.push("/RedeemVoucher")}
             >
               Redeem Voucher
             </ButtonStyled>
-            <ButtonStyled
-              variant="contained"
-              color="primary"
-              onClick={() => setOpenCreateDiscount(true)}
-            >
-              Create Discount
-            </ButtonStyled>
           </Box>
         </Box>
-      </MainContent>
-      <EditCreateVoucher
-        eateryId={eateryDetails.id}
-        voucherId={-1}
+      </MainContainer>
+      <EditCreateVoucher eateryId={eateryDetails.id} voucherId={-1}
         open={openCreateDiscount}
         setOpen={setOpenCreateDiscount}
         isEdit={false}

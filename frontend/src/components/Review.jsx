@@ -25,8 +25,17 @@ const useStyles = makeStyles({
   name: {
     fontSize: "1em",
     fontWeight: "bold",
-    padding: "5px 0",
+    padding: "5px 0"
   },
+  reviewContainer: {
+    transition: "transform 0.15s ease-in-out",
+    boxShadow: "0px 2px 5px rgb(0 0 0 / 0.1)",
+    "&:hover": {
+      transform: "scale3d(1.01, 1.01, 1)",
+      cursor: "pointer",
+      boxShadow: "0px 5px 10px rgb(0 0 0 / 0.1)",
+    },
+  }
 });
 export default function Review ({
   id,
