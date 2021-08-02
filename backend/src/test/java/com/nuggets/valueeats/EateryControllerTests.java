@@ -65,8 +65,8 @@ public class EateryControllerTests {
 
     String result = this.mockMvc.perform(
 			post("/register/eatery")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     )
     .andReturn()
     .getResponse()
@@ -88,9 +88,9 @@ public class EateryControllerTests {
 
     this.mockMvc.perform(
       post("/eatery/voucher")
-              .contentType(MediaType.APPLICATION_JSON)
-              .header("Authorization", token)
-              .content(String.valueOf(new JSONObject(voucher1)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(voucher1)))
     )
     .andExpect(status().isOk());
   }
@@ -109,8 +109,8 @@ public class EateryControllerTests {
 
     String result = this.mockMvc.perform(
 			post("/register/eatery")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     )
     .andReturn()
     .getResponse()
@@ -132,9 +132,9 @@ public class EateryControllerTests {
 
     this.mockMvc.perform(
       post("/eatery/voucher")
-              .contentType(MediaType.APPLICATION_JSON)
-              .header("Authorization", token)
-              .content(String.valueOf(new JSONObject(voucher1)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(voucher1)))
     )
     .andExpect(status().isOk());
   }
@@ -153,8 +153,8 @@ public class EateryControllerTests {
   
       String result = this.mockMvc.perform(
         post("/register/eatery")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(String.valueOf(new JSONObject(eatery)))
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(String.valueOf(new JSONObject(eatery)))
       )
       .andReturn()
       .getResponse()
@@ -176,9 +176,9 @@ public class EateryControllerTests {
   
       this.mockMvc.perform(
         post("/eatery/voucher")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", token)
-                .content(String.valueOf(new JSONObject(voucher1)))
+          .contentType(MediaType.APPLICATION_JSON)
+          .header("Authorization", token)
+          .content(String.valueOf(new JSONObject(voucher1)))
       )
       .andExpect(status().is4xxClientError());
     }
@@ -197,8 +197,8 @@ public class EateryControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     )
     .andReturn()
     .getResponse()
@@ -220,9 +220,9 @@ public class EateryControllerTests {
 
     this.mockMvc.perform(
       post("/eatery/voucher")
-              .contentType(MediaType.APPLICATION_JSON)
-              .header("Authorization", token)
-              .content(String.valueOf(new JSONObject(voucher1)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(voucher1)))
     )
     .andExpect(status().is4xxClientError());
   }
@@ -241,8 +241,8 @@ public class EateryControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     )
     .andReturn()
     .getResponse()
@@ -264,9 +264,9 @@ public class EateryControllerTests {
 
     this.mockMvc.perform(
       post("/eatery/voucher")
-              .contentType(MediaType.APPLICATION_JSON)
-              .header("Authorization", token)
-              .content(String.valueOf(new JSONObject(voucher1)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(voucher1)))
     );
 
     this.mockMvc.perform(
@@ -293,8 +293,8 @@ public class EateryControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     )
     .andReturn()
     .getResponse()
@@ -316,9 +316,9 @@ public class EateryControllerTests {
 
     this.mockMvc.perform(
       post("/eatery/voucher")
-              .contentType(MediaType.APPLICATION_JSON)
-              .header("Authorization", token)
-              .content(String.valueOf(new JSONObject(voucher1)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(voucher1)))
     );
 
     this.mockMvc.perform(
@@ -345,8 +345,8 @@ public class EateryControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     )
     .andReturn()
     .getResponse()
@@ -368,9 +368,9 @@ public class EateryControllerTests {
 
     this.mockMvc.perform(
       post("/eatery/voucher")
-              .contentType(MediaType.APPLICATION_JSON)
-              .header("Authorization", token)
-              .content(String.valueOf(new JSONObject(voucher1)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(voucher1)))
     );
 
     this.mockMvc.perform(
@@ -381,5 +381,137 @@ public class EateryControllerTests {
         .param("id", "10")
     )
     .andExpect(status().is4xxClientError());
+  }
+
+  @Test
+  void listRepeatedVouchersTest1() throws Exception {
+    this.userRepository.deleteAll();
+    this.voucherRepository.deleteAll();;
+    this.repeatVoucherRepository.deleteAll();
+    Map<String, String> eatery = new HashMap<>();
+    eatery.put("alias", "eatery1");
+    eatery.put("email", "eatery1@gmail.com");
+    eatery.put("address", "Sydney");
+    eatery.put("password", "12rwqeDsad@");
+
+    String result = this.mockMvc.perform(
+      post("/register/eatery")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
+    )
+    .andReturn()
+    .getResponse()
+    .getContentAsString();
+
+    JSONObject data = new JSONObject(result);
+    String token = data.getJSONObject("data").getString("token");
+
+    Map<String,String> voucher1 = new HashMap<>();
+    voucher1.put("eateryId","0");
+    voucher1.put("eatingStyle","DineIn");
+    voucher1.put("discount","0.7");
+    voucher1.put("quantity","15");
+    voucher1.put("isRecurring","true");
+    long currenttime = System.currentTimeMillis() + Long.valueOf(36000000);
+    voucher1.put("date", Long.toString(currenttime));
+    voucher1.put("startMinute","10");
+    voucher1.put("endMinute","40");
+
+    this.mockMvc.perform(
+      post("/eatery/voucher")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(voucher1)))
+    );
+
+    Map<String,String> voucher2 = new HashMap<>();
+    voucher2.put("eateryId","0");
+    voucher2.put("eatingStyle","DineIn");
+    voucher2.put("discount","0.8");
+    voucher2.put("quantity","15");
+    voucher2.put("isRecurring","true");
+    currenttime = System.currentTimeMillis() + Long.valueOf(36000000);
+    voucher2.put("date", Long.toString(currenttime));
+    voucher2.put("startMinute","10");
+    voucher2.put("endMinute","40");
+
+    this.mockMvc.perform(
+      post("/eatery/voucher")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(voucher1)))
+    );
+
+    this.mockMvc.perform(
+      get("/health/list/repeatVoucher")
+        .contentType(MediaType.APPLICATION_JSON)
+    )
+    .andExpect(status().isOk());
+  }
+
+  @Test
+  void listOneOffVouchersTest1() throws Exception {
+    this.userRepository.deleteAll();
+    this.voucherRepository.deleteAll();;
+    this.repeatVoucherRepository.deleteAll();
+    Map<String, String> eatery = new HashMap<>();
+    eatery.put("alias", "eatery1");
+    eatery.put("email", "eatery1@gmail.com");
+    eatery.put("address", "Sydney");
+    eatery.put("password", "12rwqeDsad@");
+
+    String result = this.mockMvc.perform(
+      post("/register/eatery")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
+    )
+    .andReturn()
+    .getResponse()
+    .getContentAsString();
+
+    JSONObject data = new JSONObject(result);
+    String token = data.getJSONObject("data").getString("token");
+
+    Map<String,String> voucher1 = new HashMap<>();
+    voucher1.put("eateryId","0");
+    voucher1.put("eatingStyle","DineIn");
+    voucher1.put("discount","0.7");
+    voucher1.put("quantity","15");
+    voucher1.put("isRecurring","true");
+    long currenttime = System.currentTimeMillis() + Long.valueOf(36000000);
+    voucher1.put("date", Long.toString(currenttime));
+    voucher1.put("startMinute","10");
+    voucher1.put("endMinute","40");
+
+    this.mockMvc.perform(
+      post("/eatery/voucher")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(voucher1)))
+    );
+
+    Map<String,String> voucher2 = new HashMap<>();
+    voucher2.put("eateryId","0");
+    voucher2.put("eatingStyle","DineIn");
+    voucher2.put("discount","0.8");
+    voucher2.put("quantity","15");
+    voucher2.put("isRecurring","true");
+    currenttime = System.currentTimeMillis() + Long.valueOf(36000000);
+    voucher2.put("date", Long.toString(currenttime));
+    voucher2.put("startMinute","10");
+    voucher2.put("endMinute","40");
+
+    this.mockMvc.perform(
+      post("/eatery/voucher")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(voucher1)))
+    );
+
+    this.mockMvc.perform(
+      get("/health/list/voucher")
+        .contentType(MediaType.APPLICATION_JSON)
+    )
+    .andExpect(status().isOk());
   }
 }
