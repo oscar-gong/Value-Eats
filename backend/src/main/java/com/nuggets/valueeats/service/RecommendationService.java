@@ -57,10 +57,17 @@ public class RecommendationService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 
-    private Integer getWeightRatio(String query, Eatery a) {
-        int aliasWeightRatio = FuzzySearch.weightedRatio(query, a.getAlias());
-        int cuisineWeightRatio = FuzzySearch.weightedRatio(query, a.getCuisines().toString());
-        int addressWeightRatio = FuzzySearch.weightedRatio(query, a.getAddress());
+    /**
+    * This method is used to calculate how well a query matches with an eatery
+    * 
+    * @param    query  A string containing search query.
+    * @param    eatery  An Eatery object that must contain an alias, a list of cuisines and address.
+    * @return   An integer of the weight ratio of the query and eatery.
+    */
+    private Integer getWeightRatio(String query, Eatery eatery) {
+        int aliasWeightRatio = FuzzySearch.weightedRatio(query, eatery.getAlias());
+        int cuisineWeightRatio = FuzzySearch.weightedRatio(query, eatery.getCuisines().toString());
+        int addressWeightRatio = FuzzySearch.weightedRatio(query, eatery.getAddress());
 
         return Math.max(aliasWeightRatio, Math.max(cuisineWeightRatio, addressWeightRatio));
     }
