@@ -222,3 +222,12 @@ Week9:
   What were the main technical and non-technical obstacles and how they were
   overcome:
     - The time management. We need to finish the report and our software. We split the tasks and completed them.
+
+What was not finished, why this happened, how this affects the overall project
+  progress and what adjustments (if any) are needed so the success of the project is
+    not endangered:
+    
+    - Everything is finished. The software works good and the report is finished.
+    
+  What is planned for the next period:
+    - We are going to submit our software and report.
