@@ -34,7 +34,6 @@ class UserManagementControllerTests {
 		body.put("email", "diner1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/diner")
@@ -52,7 +51,6 @@ class UserManagementControllerTests {
 		body.put("email", "diner1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/diner")
@@ -76,7 +74,6 @@ class UserManagementControllerTests {
 		body.put("email", "diner2");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/diner")
@@ -94,7 +91,6 @@ class UserManagementControllerTests {
 		body.put("email", "diner2@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "1234");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/diner")
@@ -112,7 +108,6 @@ class UserManagementControllerTests {
 		body.put("email", "eatery1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/eatery")
@@ -130,7 +125,6 @@ class UserManagementControllerTests {
 		body.put("email", "eatery1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/eatery")
@@ -154,7 +148,6 @@ class UserManagementControllerTests {
 		body.put("email", "eatery2");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/eatery")
@@ -172,7 +165,6 @@ class UserManagementControllerTests {
 		body.put("email", "eatery2@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "1234");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/eatery")
@@ -190,7 +182,6 @@ class UserManagementControllerTests {
 		body.put("email", "diner1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/diner")
@@ -243,7 +234,6 @@ class UserManagementControllerTests {
 		body.put("email", "eatery1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/eatery")
@@ -297,7 +287,6 @@ class UserManagementControllerTests {
 		body.put("email", "diner1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		String result = this.mockMvc.perform(
 		post("/register/diner")
@@ -312,7 +301,6 @@ class UserManagementControllerTests {
 
 		body = new HashMap<>();
 		body.put("alias", "superman");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/update/diner")
@@ -366,7 +354,6 @@ class UserManagementControllerTests {
 		body.put("email", "eatery1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		String result = this.mockMvc.perform(
 		post("/register/eatery")
@@ -381,7 +368,6 @@ class UserManagementControllerTests {
 
 		body = new HashMap<>();
 		body.put("alias", "superman");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 			post("/update/eatery")
@@ -434,7 +420,6 @@ class UserManagementControllerTests {
 		body.put("email", "diner1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/diner")
@@ -456,7 +441,6 @@ class UserManagementControllerTests {
 
 		body = new HashMap<>();
 		body.put("alias", "superman");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 			post("/logout")
@@ -474,7 +458,6 @@ class UserManagementControllerTests {
 		body.put("email", "diner1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/diner")
@@ -492,7 +475,6 @@ class UserManagementControllerTests {
 
 		body = new HashMap<>();
 		body.put("alias", "superman");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 			post("/logout")
@@ -510,7 +492,6 @@ class UserManagementControllerTests {
 		body.put("email", "eatery1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/eatery")
@@ -532,7 +513,6 @@ class UserManagementControllerTests {
 
 		body = new HashMap<>();
 		body.put("alias", "superman");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 			post("/logout")
@@ -550,7 +530,6 @@ class UserManagementControllerTests {
 		body.put("email", "eatery1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 				post("/register/eatery")
@@ -568,7 +547,6 @@ class UserManagementControllerTests {
 
 		body = new HashMap<>();
 		body.put("alias", "superman");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 			post("/logout")
@@ -586,7 +564,6 @@ class UserManagementControllerTests {
 		body.put("email", "diner1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 		post("/register/diner")
@@ -608,7 +585,6 @@ class UserManagementControllerTests {
 		
 		body = new HashMap<>();
 		body.put("alias", "superman");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
       MockMvcRequestBuilders
@@ -626,7 +602,6 @@ class UserManagementControllerTests {
 		body.put("email", "eatery1@gmail.com");
 		body.put("address", "Sydney");
 		body.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
 		post("/register/eatery")
@@ -648,7 +623,6 @@ class UserManagementControllerTests {
 		
 		body = new HashMap<>();
 		body.put("alias", "superman");
-		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
       MockMvcRequestBuilders
@@ -666,7 +640,6 @@ class UserManagementControllerTests {
 		body1.put("email", "eatery1@gmail.com");
 		body1.put("address", "Sydney");
 		body1.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body1));
 
 		this.mockMvc.perform(
 		post("/register/eatery")
@@ -688,7 +661,6 @@ class UserManagementControllerTests {
 		body2.put("email", "diner1@gmail.com");
 		body2.put("address", "Sydney");
 		body2.put("password", "12rwqeDsad@");
-		System.out.println(new JSONObject(body2));
 
 		this.mockMvc.perform(
 		post("/register/diner")
@@ -701,7 +673,6 @@ class UserManagementControllerTests {
 		
 		body2 = new HashMap<>();
 		body2.put("alias", "superman");
-		System.out.println(new JSONObject(body2));
 
 		this.mockMvc.perform(
       MockMvcRequestBuilders

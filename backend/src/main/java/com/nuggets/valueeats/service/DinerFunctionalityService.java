@@ -104,8 +104,6 @@ public class DinerFunctionalityService {
             dataMedium.put("reviewId", review.getId());
             JSONObject data = new JSONObject(dataMedium);
 
-            System.out.println(data);
-
             return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Review was created successfully", data));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseUtils.createResponse(e.toString()));
@@ -291,8 +289,6 @@ public class DinerFunctionalityService {
             Map<String, Long> dataMedium = new HashMap<>();
             dataMedium.put("reviewId", review.getId());
             JSONObject data = new JSONObject(dataMedium);
-
-            System.out.println(data);
 
             return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Review was edited successfully", data));
         } catch (Exception e) {
