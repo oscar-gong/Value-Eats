@@ -91,6 +91,12 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
       } else {
         return false;
       }
+    } else if ((end - start) > 86400000 || (end - start) < 1800000) {
+      if (setValue) {
+        setEndDateTime({ ...endDateTime, valid: false });
+      } else {
+        return false;
+      }
     }
     return true;
   };
