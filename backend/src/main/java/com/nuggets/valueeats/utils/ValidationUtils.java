@@ -14,4 +14,14 @@ public class ValidationUtils {
                 !password.toLowerCase().equals(password) &&
                 !password.toUpperCase().equals(password);
     }
+
+    /**
+    * This utility method is used to check if an alias is valid
+    * 
+    * @param    alias  A string containing alias.
+    * @return   A boolean of whether the alias is valid.
+    */
+    public static boolean isValidAlias(final String alias) {
+        return alias.length() > 0 && alias.length() <= 12;
+    }
 }

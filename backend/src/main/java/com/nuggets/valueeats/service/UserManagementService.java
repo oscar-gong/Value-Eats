@@ -197,6 +197,9 @@ public class UserManagementService {
         if (!ValidationUtils.isValidPassword(user.getPassword())) {
             return "Password must be between 8 to 32 characters long, and contain a lower and uppercase character.";
         }
+        if (!ValidationUtils.isValidAlias(user.getAlias())) {
+            return "Please enter a username with at most 12 characters.";
+        }
         return null;
     }
 
