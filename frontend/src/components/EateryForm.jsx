@@ -111,7 +111,7 @@ export default function EateryForm ({
             onBlur={() => validRequired(eateryName, setEateryName)}
             error={!eateryName.valid}
             helperText={
-              eateryName.valid ? "" : "Please enter the name of your eatery"
+              eateryName.valid ? "" : "Please enter the name of your eatery with less than 12 characters"
             }
             variant="outlined"
             fullWidth
