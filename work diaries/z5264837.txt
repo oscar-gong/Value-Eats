@@ -47,7 +47,7 @@ Week 2
             - Created acceptance criteria and reasonings for the user stories
             - Further discussed about user stories and ensured that it encompassed the entire feature set
         - Jira
-            - Placed user stories into Jira with appropriate title, description and story points
+            - Placed user stories into Jira with appropriate title, description, and story points
             - Prepared the first sprint which focuses on authentication
         - Proposal: Technical Depth, Scale, Reporting Format
             - Discussed about what were planning to use
@@ -62,7 +62,7 @@ Week 2
         - No issues as we achieved more than expected
     - What is planned for the next period (e.g., next week)
         - Proposal
-            - Finialise draft proposal before this week's lab
+            - Finalise draft proposal before this week's lab
                 - Finish writing out technical depth, scale, reporting format
             - Finalise proposal
             - Submit the proposal as the scrum master
@@ -73,7 +73,7 @@ Week 2
 Week 3
     - What was planned for the period since the last work diary entry
         - Proposal
-            - Finialise draft proposal before this week's lab
+            - Finalise draft proposal before this week's lab
                 - Finish writing out technical depth, scale, reporting format
             - Finalise proposal
             - Submit the proposal as the scrum master
@@ -92,13 +92,13 @@ Week 3
             - Made acceptance criteria more clear
     - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
         - Ensuring that the feature set is all contained within the user stories
-            - Required thorough abstract thinking in order to imagine what was required
+            - Required thorough abstract thinking to imagine what was required
             - Required drawing out potential issues within the given scope
     - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
         - Starting sprint 1
             - We planned to commence work on the project in advance to help us further understand the specifications and hence the proposal
             - We were unable to commence work as we were focused on improving the quality of the proposal directly rather than indirectly through development
-            - This will not impact our overall project progress as this was an extension goal which we would have liked to achieve in order to reduce future workload
+            - This will not impact our overall project progress as this was an extension goal which we would have liked to achieve to reduce future workload
     - What is planned for the next period (e.g., next week)
         - As it is the start of a project, there will be a lot of setting up of both environments and machines
         - Sprint 1
@@ -123,7 +123,7 @@ Week 4
             - Allowed health checking of service
         - Refactored
             - Cleaned up code
-            - Changed object oriented design
+            - Changed object-oriented design
             - Fixed code
         - Logout backend
             - Developed jwt token functionality
@@ -134,7 +134,7 @@ Week 4
             - Tokens: Many Tokens vs One Token Per User
                 - Chosen Design: One token per user as it was simpler
                 - Does not properly allow multiple sessions per user
-                    - Token is deactivated once a user logouts
+                    - Token is deactivated once a user is logged out
                     - Previous token is deactivated once a user logs in
             - User Id Generation: Race Condition
                 - Chosen Design: To ignore as we do not have a massive userbase
@@ -144,16 +144,16 @@ Week 4
                 - Database design
                 - Object oriented programming
                 - API design
-            - Caused issues as changes were made half way through which caused other edits to be required
+            - Caused issues as changes were made halfway through which caused other edits to be required
             - Through discussion and better planning, especially in the future we can avoid this issue
         - Branching
             - Base branch become a feature branch
-            - Caused issues as a lot of changes were occuring which created conflicts
+            - Caused issues as a lot of changes were occurring which created conflicts
             - We ended up merging core templates into master so we could have the template built
     - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
         - Sprint 1 was not finished
             - A lot of differing ideas of how to do a specific task, especially as it was the start where there was a lot of core development
-            - This is a small set back and we are able to catchup after finalising our core discussions, especially as the workload was purposefully small
+            - This is a small set back and we can catchup after finalising our core discussions, especially as the workload was purposefully small
             - We will complete the remaining tickets before the lab to ensure we meet client deadlines
             - Last sprint's tickets will be done in addition to the next sprint's planned goal
     - What is planned for the next period (e.g., next week)
@@ -173,7 +173,7 @@ Week 5
     - What was finished
         - Finalised sprint 1
         - Finished sprint 2
-            - Developed endpoints for getting diner details
+            - Developed endpoints for getting dinner details
             - Fixed bugs and other missing aspects of features
         - Planning for sprint 3
             - Mapped sprint 3 tickets into api endpoints
@@ -185,36 +185,36 @@ Week 5
             - Discussed about our good, bad and neutrals
             - Agreed to improve on the given to trys along with an owner who will take responsibility such as branch naming and api design documentation
     - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
-        - This sprint was able to move a lot more smoother after we were able to enforce better workflow such as less overlap and discussions before implementation
+        - This sprint was able to move a lot smoother after we were able to enforce better workflow such as less overlap and discussions before implementation
         - We did address some tech debt and some bad design practices which were used in previous iterations by further educating ourselves on what tools are at our disposals and standard methodologies
     - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
         - This week was our heaviest workload week in terms of the project's plan
-        - We were able to successfully complete most of the work except the update eatery front end and although we were unable to completely finish it, it was a good that we were able to finish most considering the load
+        - We were able to successfully complete most of the work except the update eatery front end and although we were unable to finish it, it was a good that we were able to finish most considering the load
         - As this is a relatively small feature which was primarily overlooked and forgotten by accident, we are able to come back from this early in the sprint
     - What is planned for the next period (e.g., next week)
         - Sprint 3: Voucher management
         - Further finalise the retrospective
         - Tech Debt
-            - Although from a feature standpoint we are meeting goals, we are definitely able to improve the code quality of our project
-            - We should try to improve readability and reduce reptitiveness
+            - Although from a feature standpoint we are meeting goals, we are able to improve the code quality of our project
+            - We should try to improve readability and reduce repetitiveness
 
 Week 6
     - What was planned for the period since the last work diary entry
         - Sprint 3: Voucher management
         - Further finalise the retrospective
         - Tech Debt
-            - Although from a feature standpoint we are meeting goals, we are definitely able to improve the code quality of our project
-            - We should try to improve readability and reduce reptitiveness
+            - Although from a feature standpoint we are meeting goals, we are able to improve the code quality of our project
+            - We should try to improve readability and reduce repetitiveness
     - What was finished
         - Finished sprint 3 which focused on vouchers such as their distribution and creation
         - Created the foundations of how the voucher schema would work with one off and weekly vouchers
         - Good UI/UX developments on the front end where it looks significantly more appealing
-        - The backend was ahead so we decided to accelerate into next sprint so that we can have more time to finialise the project near the end of term
+        - The backend was ahead so we decided to accelerate into next sprint so that we can have more time to finalise the project near the end of term
     - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
         - Edge Cases
             - There were a lot of edges cases considering the vouchers implementations which we did not initially consider
                 - For example, the voucher distribution could not be distributed starting at any date in the future
-                - As this is also a calendar problem, we had to manage timezone issues and efficient ways of creating new vouchers from repeating vouchers
+                - As this is also a calendar problem, we had to manage time zone issues and efficient ways of creating new vouchers from repeating vouchers
                     - In the end, we utilised a scheduler which would clean up the database at set times during the day
         - Broken Master
             - Master was broken due to different machines having different settings
@@ -255,8 +255,8 @@ Week 7
         - There were no new or recurring obstacles as it was primarily just getting stuff done
         - Cleaning up and managing an increasingly large codebase
         - Ensuring that changes don't break previously workings features
-            - We plan to create regression tests to ensure that we are able to solidify features
-            - This was done earlier due to the frequent changes occuring but we are now at a stage where we are finalising
+            - We plan to create regression tests to ensure that we can solidify features
+            - This was done earlier due to the frequent changes occurring but we are now at a stage where we are finalising
     - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
         - Everything that was planned was accomplished
     - What is planned for the next period (e.g., next week)
@@ -300,3 +300,30 @@ Week 8
         - Project Report
             - Start writing the report and submit it for next week
         - Submission of Retrospective B
+
+Week 9
+    - What was planned for the period since the last work diary entry
+        - Finalise project for the final week
+            - Clean up code
+            - Test features, especially with regression
+            - Discuss how things could be improved
+            - Front end accessibility and design
+        - Project Report
+            - Start writing the report and submit it for next week
+        - Submission of Retrospective B
+    - What was finished
+        - We were able to finalise the project albeit in a rush
+        - We added more tests
+        - Submitted retrospective
+        - Finished project proposal, ready for submission
+    - What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work)
+        - There were no significant challenges as it was primarily finalising
+        - We could have improved our time management skills rather than finalising it in the final few days of the project
+            - Overall, we were still able to complete the tasks, but maybe not as high of a quality
+    - What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered
+        - Everything planned was completed, albeit in a slight rush
+    - What is planned for the next period (e.g., next week)
+        - Prepare for final demonstration
+            - Prepare mock data for the application
+        - Submission of project proposal and source code
+        - Complete peer assessment
