@@ -80,6 +80,11 @@ export default function DinerVoucher ({
             >
               {eatingStyle} deal
             </h3>
+            {used && (
+              <h3 style={{ margin: "5px 0px" }}>
+                Redeemed on {date}
+              </h3>
+            )}
             {!isRedeemable && !used && (
               <h3 style={{ margin: "5px 0px" }}>
                 Use on {date} between {startTime} -{handleTimeNextDay(endTime)}
@@ -114,11 +119,6 @@ export default function DinerVoucher ({
                   {code}
                 </Title>
               </Box>
-            )}
-            {used && (
-              <h3 style={{ margin: "5px 0px" }}>
-                Redeemed on {date}
-              </h3>
             )}
           </Box>
         </Box>
