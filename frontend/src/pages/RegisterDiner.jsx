@@ -141,7 +141,7 @@ export default function RegisterDiner ({ setToken }) {
             helperText={
               username.valid
                 ? ""
-                : "Please enter a username with less than 12 characters"
+                : "Please enter a username with at most 12 characters"
             }
             variant="outlined"
             fullWidth
