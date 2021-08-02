@@ -37,13 +37,13 @@ public class RecommendationService {
 
     public ResponseEntity<JSONObject> fuzzySearch(final String search) {
         final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateryRepository.findAll().stream()
-                .map(a -> new AbstractMap.SimpleImmutableEntry<>(FuzzySearch.weightedRatio(search, a.getCuisines().toString() + "|" + a.getAlias() + "|" + a.getAddress()), a))
+                .map(a -> new AbstractMap.SimpleImmutableEntry<>(getWeightRatio(search, a), a))
                 .collect(Collectors.toCollection(() -> new PriorityQueue<>((a, b) -> b.getKey() - a.getKey())));
 
         List<Object> result = new ArrayList<>();
         while (!pq.isEmpty() && result.size() <= 10) {
             AbstractMap.SimpleImmutableEntry<Integer, Eatery> poll = pq.poll();
-            if (poll.getKey() > 70) {
+            if (poll.getKey() >= 80) {
                 Eatery newEatery = poll.getValue();
                 HashMap<String, Object> eatery = EateryUtils.createEatery(voucherRepository, repeatVoucherRepository, newEatery, null);
                 result.add(eatery);
@@ -55,6 +55,14 @@ public class RecommendationService {
         JSONObject data = new JSONObject(dataMedium);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
+    }
+
+    private Integer getWeightRatio(String query, Eatery a) {
+        int aliasWeightRatio = FuzzySearch.weightedRatio(query, a.getAlias());
+        int cuisineWeightRatio = FuzzySearch.weightedRatio(query, a.getCuisines().toString());
+        int addressWeightRatio = FuzzySearch.weightedRatio(query, a.getAddress());
+
+        return Math.max(aliasWeightRatio, Math.max(cuisineWeightRatio, addressWeightRatio));
     }
 
     public ResponseEntity<JSONObject> recommendation(String token) {
