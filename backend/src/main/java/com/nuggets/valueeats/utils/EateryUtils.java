@@ -7,6 +7,16 @@ import com.nuggets.valueeats.repository.voucher.VoucherRepository;
 import java.util.HashMap;
 
 public class EateryUtils {
+
+    /**
+    * This utility method is used for creating a HashMap containing eatery details.
+    * 
+    * @param    voucherRepository       A repository storing one-off vouchers.
+    * @param    repeatVoucherRepository A repository storing repeated vouchers.
+    * @param    e                       An Eatery object containing eatery details.
+    * @param    distanceFromDiner       A HashMap containing a diner's distance from each eatery address.
+    * @return   A HashMap of the eatery details.
+    */
     public static HashMap<String, Object> createEatery(VoucherRepository voucherRepository, RepeatVoucherRepository repeatVoucherRepository, Eatery e, HashMap<String, Integer> distanceFromDiner) {
         HashMap<String, Object> eatery = new HashMap<>();
 

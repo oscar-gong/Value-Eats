@@ -17,6 +17,12 @@ public class DistanceUtils {
     @Value("${security.google_api}")
     private String googleAPI;
 
+    /**
+    * This utility method is used for converting a distance to a distance string.
+    * 
+    * @param    distance   An integer containing distance in metres.
+    * @return   A string of the distance with units.
+    */
     public static String convertDistanceToString(Integer distance) {
         if (distance < 1000) {
             return distance + "m";
@@ -24,6 +30,15 @@ public class DistanceUtils {
         return String.format("%.2f", (float) distance / 1000) + "km";
     }
 
+    /**
+    * This utility method is used for obtaining the distance from a diner to a list of eateries.
+    * 
+    * @param    latitude        A double containing the diner's latitude location.
+    * @param    longitude       A double containing the diner's longitude location.
+    * @param    addressString   A string containing an combined and encoded list of eatery addresses.
+    * @param    addresses       A string list of eatery addresses.
+    * @return   A HashMap of eatery address and distance from diner.
+    */
     public HashMap<String, Integer> findDistanceFromDiner(Double latitude, Double longitude, String addressString, List<String> addresses) {
         HashMap<String, Integer> addressDistanceFromDiner = new HashMap<>();
 
@@ -48,10 +63,10 @@ public class DistanceUtils {
                     if (elementStatus.equals("OK")) {
                         JSONObject distanceObj = (JSONObject) elements.get("distance");
                         Integer distance = Integer.parseInt(distanceObj.get("value").toString());
-                        System.out.println("Distance between you and " + addresses.get(i) + " is " + distance + "m.");
+
                         addressDistanceFromDiner.put(addresses.get(i), distance);
                     } else {
-                        System.out.println("Distance not found for:" + addresses.get(i));
+
                         addressDistanceFromDiner.put(addresses.get(i), Integer.MAX_VALUE);
                     }
                 }
@@ -59,7 +74,7 @@ public class DistanceUtils {
                 return null;
             }
         } catch (Exception e) {
-            System.out.println("Distance retrieval failed due to: " + e);
+
             return null;
         }
 

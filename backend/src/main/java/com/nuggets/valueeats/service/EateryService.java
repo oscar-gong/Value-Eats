@@ -40,6 +40,15 @@ public class EateryService {
     @Autowired
     private JwtUtils jwtUtils;
 
+    /**
+    * This method is used to create an eatery voucher given a valid eatery token and also
+    * a valid voucherInput object with the required fields.
+    * @param    token           An authentication token that is unique to an eatery
+    * @param    voucherInput    A valid VoucherInput object consists of eatingStyle, discount, quantity,
+                                    isRecurring, date, startMinute and endMinute.
+    * @return   An appropriate error message or success message.
+    * @see      VoucherInput
+    */
     @Transactional
     public ResponseEntity<JSONObject> createVoucher(VoucherInput voucherInput, String token) {
 
@@ -98,6 +107,17 @@ public class EateryService {
         return handleOneOffCreateVoucher(voucherInput, eateryId);
     }
 
+    /**
+    * This method is invoked only using createVoucher() when isRecurring is true.
+    * It is used to handle creating a one-off eatery voucher given voucherInput and eateryId.
+    * 
+    * @param    voucherInput    A valid VoucherInput object consists of eatingStyle, discount, quantity,
+                                    isRecurring, date, startMinute and endMinute.
+    * @param    id              A unique id identifying an eatery.
+    * @return   A success message.
+    * @see      VoucherInput
+    * @see      #createVoucher(VoucherInput, String)
+    */
     private ResponseEntity<JSONObject> handleRecurringCreateVoucher(VoucherInput voucherInput, Long eateryId) {
         RepeatedVoucher repeatedVoucher = new RepeatedVoucher();
         repeatedVoucher.setId(VoucherUtils.getNextVoucherId(repeatVoucherRepository, voucherRepository));
@@ -118,6 +138,17 @@ public class EateryService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully created recurring voucher"));
     }
 
+    /**
+    * This method is invoked only using createVoucher() when isRecurring is false.
+    * It is used to handle creating a one-off eatery voucher given voucherInput and eateryId.
+    * 
+    * @param    voucherInput    A valid VoucherInput object consists of eatingStyle, discount, quantity,
+                                    isRecurring, date, startMinute and endMinute.
+    * @param    id              A unique id identifying an eatery.
+    * @return   A success message.
+    * @see      VoucherInput
+    * @see      #createVoucher(VoucherInput, String)
+    */
     private ResponseEntity<JSONObject> handleOneOffCreateVoucher(VoucherInput voucherInput, Long eateryId) {
         Voucher newVoucher = new Voucher();
         newVoucher.setId(VoucherUtils.getNextVoucherId(repeatVoucherRepository, voucherRepository));
@@ -134,6 +165,15 @@ public class EateryService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Successfully created voucher"));
     }
 
+    /**
+    * This method is used to edit an existing eatery voucher given a valid eatery token and also
+    * a valid voucherInput object with the required fields.
+    * @param    voucherInput    A Valid voucherInput object consists of id, eatingStyle, discount, quantity,
+                                    isRecurring, date, startMinute and endMinute.
+    * @param    token           An authentication token that is unique to an eatery.
+    * @return   An appropriate error message or success message.
+    * @see      VoucherInput
+    */
     public ResponseEntity<JSONObject> editVoucher(VoucherInput voucher, String token) {
         if (voucher == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Please enter the valid information of a voucher"));
@@ -168,7 +208,6 @@ public class EateryService {
         }
 
         if (voucherInDb.isPresent()) {
-            System.out.println(voucherInDb.get());
             Voucher voucherDb = voucherInDb.get();
             // Convert it to recurring and delete old voucher
             if (voucher.getIsRecurring() != null && voucher.getIsRecurring()) {
@@ -187,6 +226,17 @@ public class EateryService {
         }
     }
 
+    /**
+    * This method is invoked by editVoucher to edit a voucher to a repeated voucher given a valid one-off or
+    * repeated voucher and the fields to be updated in editVoucher.
+    * @param    voucher         A valid VoucherInput object consists of id, eatingStyle, discount, quantity,
+                                    isRecurring, date, startMinute and endMinute.
+    * @param    oldVoucher      A one-time voucher object to be converted to a repeating voucher and updated with VoucherInput values.
+    * @param    existingVoucher A RepeatedVoucher to be updated with VoucherInput values.
+    * @return   An appropriate error message or success message.
+    * @see      VoucherInput
+    * @see      #editVoucher(VoucherInput, String)
+    */
     public ResponseEntity<JSONObject> editRepeatedVoucher(VoucherInput voucher, Voucher oldVoucher, RepeatedVoucher existingVoucher) {
         RepeatedVoucher repeatedVoucher = new RepeatedVoucher();
         if (oldVoucher == null && existingVoucher != null) {
@@ -273,6 +323,18 @@ public class EateryService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher was edited successfully."));
     }
 
+    
+    /**
+    * This method is invoked by editVoucher to edit a voucher to a one-off voucher given a valid one-off or
+    * repeated voucher and the fields to be updated in editVoucher.
+    * @param    voucher         A valid VoucherInput object consists of id, eatingStyle, discount, quantity,
+                                    isRecurring, date, startMinute and endMinute.
+    * @param    oldVoucher      A one-time Voucher object updated to a with VoucherInput values.
+    * @param    existingVoucher A RepeatedVoucher to be converted to a one-time voucher and updated with VoucherInput values.
+    * @return   An appropriate error message or success message.
+    * @see      VoucherInput
+    * @see      #editVoucher(VoucherInput, String)
+    */
     public ResponseEntity<JSONObject> editVoucher(VoucherInput voucher, RepeatedVoucher oldVoucher, Voucher existingVoucher) {
         Voucher newVoucher = new Voucher();
         if (oldVoucher == null && existingVoucher != null) {
@@ -353,6 +415,13 @@ public class EateryService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher was edited successfully."));
     }
 
+    /**
+    * This method is used to delete a voucher given that the token is from an eatery, the voucher
+    * exists and belongs to the eatery.
+    * @param    voucherId   A valid id that uniquely identifies a voucher.
+    * @param    token       An authentication token that uniquely identifies an eatery.
+    * @return   An error message on failure or a success message when successful.
+    */
     public ResponseEntity<JSONObject> deleteVoucher(Long voucherId, String token) {
         String decodedToken = jwtUtils.decode(token);
 
@@ -368,17 +437,21 @@ public class EateryService {
         }
 
         if (!voucherRepository.existsById(voucherId) && !repeatVoucherRepository.existsById(voucherId)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Voucher does not exist"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse("Voucher does not exist"));
         }
 
         if (repeatVoucherRepository.existsById(voucherId)) {
             RepeatedVoucher repeatedVoucher = repeatVoucherRepository.getById(voucherId);
+            if (repeatedVoucher.getEateryId() != eateryInDb.getId())
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Voucher does not belong to eatery."));
             repeatedVoucher.setActive(false);
             repeatedVoucher.setQuantity(0);
             repeatedVoucher.setNextUpdate(null);
             repeatVoucherRepository.save(repeatedVoucher);
         } else if (voucherRepository.existsById(voucherId)) {
             Voucher voucher = voucherRepository.getById(voucherId);
+            if (voucher.getEateryId() != eateryInDb.getId())
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Voucher does not belong to eatery."));
             voucher.setActive(false);
             voucher.setQuantity(0);
             voucherRepository.save(voucher);
@@ -386,6 +459,14 @@ public class EateryService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Voucher successfully deleted."));
     }
 
+    /**
+    * This method is used to verify a voucher given a valid eatery token and code.
+    * The code must be unused.
+    * 
+    * @param    code    A five-digit alphanumeric code that is used to validate a booking.
+    * @param    token   An authentication token that uniquely identifies an eatery.
+    * @return   An error message on failure or a success response containing a message and booking details when successful.
+    */
     public ResponseEntity<JSONObject> verifyVoucher(String code, String token) {
         String decodedToken = jwtUtils.decode(token);
         if (decodedToken == null) {

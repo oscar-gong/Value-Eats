@@ -1,7 +1,6 @@
 /// <reference types="cypress" />
 
-// To run: yarn run cypress open
-context("Test ValueEats - Register new user", () => {
+context("Test happy path - update user profile, create eatery voucher, book this voucher", () => {
   beforeEach(() => {
     cy.viewport(1000, 600);
     cy.visit("localhost:3000");
@@ -10,6 +9,7 @@ context("Test ValueEats - Register new user", () => {
   // Could reset this to ensure that the number will be unique
   // I decided to go with a random large number as it will do the job for our case
   const testNumber = Math.floor((Math.random() * 1000000000) + 1);
+  // const testNumber = 841019049;
 
   it("Register as a new user and logout", () => {
     const email = "test_user_integration" + testNumber + "@gmail.com";
@@ -80,12 +80,45 @@ context("Test ValueEats - Register new user", () => {
     cy.get("button").click();
     // We should now be logged in - therefore sign up button should no longer be there
 
-    cy.wait(3000);
+    cy.wait(2000);
 
     cy.get("button").then(el => {
       expect(el.text()).to.equal("");
     });
 
+    cy.get("button").eq(2).click();
+
+    cy.get("li").eq(1).click();
+
+    cy.wait(2000);
+
+    // Go to the user profile page
+    cy.get("button").eq(2).then(el => {
+      expect(el.text()).to.contain("Edit Profile");
+    });
+
+    cy.get("button").eq(2).click();
+
+    cy.get("button").eq(6).then(el => {
+      expect(el.text()).to.contain("Save changes");
+    });
+
+    cy.get("input").eq(2)
+      .focus()
+      .clear()
+      .type("NEW NAME")
+      .blur();
+
+    cy.get("button").eq(6).click();
+
+    cy.wait(1500);
+
+    // Updated profile should now be saved
+    cy.get("button").eq(3).then(el => {
+      expect(el.text()).to.contain("Edit Profile");
+    });
+
+    // Now log out and create an eatery
     cy.get("button").eq(2).click();
 
     cy.get("li").eq(3).click();
@@ -95,35 +128,8 @@ context("Test ValueEats - Register new user", () => {
     cy.get("button").then(el => {
       expect(el.text()).to.contain("Log in");
     });
-  });
 
-  it("Login as that user that was registered", () => {
-    const email = "test_user_integration" + testNumber + "@gmail.com";
-    const password = "Password1";
-    cy.get("input")
-      .eq(0)
-      .focus()
-      .type(email);
-
-    cy.get("input")
-      .eq(1)
-      .focus()
-      .clear()
-      .type(password);
-
-    cy.get("button").eq(0).click();
-
-    cy.wait(2000);
-
-    // This should work this time
-    cy.get("button").then(el => {
-      expect(el.text()).to.contain("");
-    });
-  });
-
-  it("Register as a new eatery and logout", () => {
-    const email = "test_eatery_integration" + testNumber + "@gmail.com";
-    const password = "Password1";
+    const eateryEmail = "test_eatery_integration" + testNumber + "@gmail.com";
     const eateryName = "Test eatery";
 
     // Initial sign up
@@ -149,7 +155,7 @@ context("Test ValueEats - Register new user", () => {
     cy.get("input")
       .eq(1)
       .focus()
-      .type(email);
+      .type(eateryEmail);
 
     cy.get("input")
       .eq(2)
@@ -183,11 +189,6 @@ context("Test ValueEats - Register new user", () => {
       .eq(10)
       .click();
 
-    // Remove one of the svg options
-    cy.get("svg")
-      .eq(0)
-      .click();
-
     cy.get("button").then(el => {
       expect(el.text()).to.equal("Register");
     });
@@ -203,6 +204,63 @@ context("Test ValueEats - Register new user", () => {
       expect(el.text()).to.not.equal("Register");
     });
 
+    cy.wait(2000);
+
+    // We are now on the eatery landing page, create a new voucher
+    cy.get("button")
+      .eq(3)
+      .click();
+
+    cy.get("button").then(el => {
+      expect(el.text()).to.contain("Create voucher");
+    });
+
+    cy.get("input").eq(2)
+      .focus()
+      .type(15);
+
+    cy.get("input").eq(3)
+      .focus()
+      .type(10);
+
+    cy.get("input").eq(4)
+      .focus()
+      .type("2022-08-02T10:30");
+
+    cy.get("input").eq(5)
+      .focus()
+      .type("2022-08-03T10:30");
+
+    // Create the new voucher
+    cy.get("button")
+      .eq(7)
+      .click();
+
+    cy.wait(2000);
+
+    // Edit the voucher
+    cy.get("button")
+      .eq(3)
+      .click();
+
+    cy.get("button").eq(16).then(el => {
+      expect(el.text()).to.contain("Save changes");
+    });
+
+    // Change the dicsount amount
+    cy.get("input").eq(8)
+      .focus()
+      .clear()
+      .type(20);
+
+    // Save changes to the new voucher
+    cy.get("button")
+      .eq(15)
+      .click();
+
+    cy.wait(1000);
+    // logout and relogin as user
+
     cy.get("a")
       .eq(4)
       .click();
@@ -212,11 +270,7 @@ context("Test ValueEats - Register new user", () => {
     cy.get("button").then(el => {
       expect(el.text()).to.contain("Log in");
     });
-  });
 
-  it("Login as that eatery that was registered", () => {
-    const email = "test_eatery_integration" + testNumber + "@gmail.com";
-    const password = "Password1";
     cy.get("input")
       .eq(0)
       .focus()
@@ -225,34 +279,41 @@ context("Test ValueEats - Register new user", () => {
     cy.get("input")
       .eq(1)
       .focus()
-      .type(password + "invalid");
-
-    cy.get("button").then(el => {
-      expect(el.text()).to.contain("Log in");
-    });
-
-    // typing an invalid password and logging in, should not allow the user to login
-    cy.get("button").click();
-
-    cy.wait(2000);
-
-    cy.get("button").then(el => {
-      expect(el.text()).to.contain("Log in");
-    });
-
-    cy.get("button").eq(0).click();
-
-    cy.get("input")
-      .eq(1)
-      .focus()
       .clear()
       .type(password);
 
-    cy.get("button").eq(0).click();
+    cy.get("button").eq(1).click();
+
+    cy.wait(5000);
 
     // This should work this time
     cy.get("button").then(el => {
       expect(el.text()).to.contain("");
+    });
+
+    // Want to sort our list of eateries by new, so we can access the one we just made this happy path
+    cy.get(".MuiSelect-root").eq(0).click();
+    cy.get("li").eq(6).click();
+    cy.wait(2000);
+
+    cy.get(".MuiCardMedia-root").eq(0).click();
+
+    cy.wait(2000);
+
+    // Should now be on the test eatery profile
+    cy.get("button").then(el => {
+      expect(el.text()).to.contain("20%");
+    });
+
+    // Now try to book the voucher that we just made
+    cy.get("button").eq(3).click();
+    cy.get("button").eq(9).click();
+    // Voucher should have been booked, all that's left to do is view the voucher in "My Vouchers"
+    cy.wait(2000);
+    cy.get("button").eq(9).click();
+    cy.wait(2000);
+    cy.get(".MuiBox-root").eq(0).then(el => {
+      expect(el.text()).to.contain("My Vouchers");
     });
   });
 });
