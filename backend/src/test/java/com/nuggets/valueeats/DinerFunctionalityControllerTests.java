@@ -59,8 +59,8 @@ public class DinerFunctionalityControllerTests {
 
 		String result = this.mockMvc.perform(
 			post("/register/diner")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(diner)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(diner)))
     )
     .andReturn()
 		.getResponse()
@@ -77,8 +77,8 @@ public class DinerFunctionalityControllerTests {
 
     this.mockMvc.perform(
 			post("/register/eatery")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     );
 
     Map<String, String> review = new HashMap<>();
@@ -109,8 +109,8 @@ public class DinerFunctionalityControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/diner")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(diner)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(diner)))
     )
     .andReturn()
     .getResponse()
@@ -127,8 +127,8 @@ public class DinerFunctionalityControllerTests {
 
     this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     );
 
     Map<String, String> review = new HashMap<>();
@@ -159,8 +159,8 @@ public class DinerFunctionalityControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/diner")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(diner)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(diner)))
     )
     .andReturn()
     .getResponse()
@@ -177,8 +177,8 @@ public class DinerFunctionalityControllerTests {
 
     this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     );
 
     Map<String, String> review = new HashMap<>();
@@ -209,8 +209,8 @@ public class DinerFunctionalityControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/diner")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(diner)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(diner)))
     )
     .andReturn()
     .getResponse()
@@ -227,8 +227,8 @@ public class DinerFunctionalityControllerTests {
 
     this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     );
 
     Map<String, String> review = new HashMap<>();
@@ -307,9 +307,9 @@ public class DinerFunctionalityControllerTests {
     this.mockMvc.perform(
       MockMvcRequestBuilders
       .delete("/diner/removereview")
-        .contentType(MediaType.APPLICATION_JSON)
-        .header("Authorization", "InvalidToken")
-        .content(String.valueOf(new JSONObject(review)))
+      .contentType(MediaType.APPLICATION_JSON)
+      .header("Authorization", "InvalidToken")
+      .content(String.valueOf(new JSONObject(review)))
     )
     .andExpect(status().is4xxClientError());
   }
@@ -327,8 +327,8 @@ public class DinerFunctionalityControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/diner")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(diner)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(diner)))
     )
     .andReturn()
     .getResponse()
@@ -345,8 +345,8 @@ public class DinerFunctionalityControllerTests {
 
     this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     );
 
     Map<String, String> review = new HashMap<>();
@@ -386,8 +386,8 @@ public class DinerFunctionalityControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/diner")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(diner)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(diner)))
     )
     .andReturn()
     .getResponse()
@@ -404,8 +404,8 @@ public class DinerFunctionalityControllerTests {
 
     this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     );
 
     Map<String, String> review1 = new HashMap<>();
@@ -432,9 +432,9 @@ public class DinerFunctionalityControllerTests {
     this.mockMvc.perform(
       MockMvcRequestBuilders
       .post("/diner/editreview")
-        .contentType(MediaType.APPLICATION_JSON)
-        .header("Authorization", token)
-        .content(String.valueOf(new JSONObject(review2)))
+      .contentType(MediaType.APPLICATION_JSON)
+      .header("Authorization", token)
+      .content(String.valueOf(new JSONObject(review2)))
     )
     .andExpect(status().isOk());
   }
@@ -452,8 +452,8 @@ public class DinerFunctionalityControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/diner")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(diner)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(diner)))
     )
     .andReturn()
     .getResponse()
@@ -470,8 +470,8 @@ public class DinerFunctionalityControllerTests {
 
     this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     );
 
     Map<String, String> review1 = new HashMap<>();
@@ -483,9 +483,9 @@ public class DinerFunctionalityControllerTests {
 
     this.mockMvc.perform(
       post("/diner/createreview")
-        .contentType(MediaType.APPLICATION_JSON)
-        .header("Authorization", token)
-        .content(String.valueOf(new JSONObject(review1)))
+      .contentType(MediaType.APPLICATION_JSON)
+      .header("Authorization", token)
+      .content(String.valueOf(new JSONObject(review1)))
     );
 
     Map<String, String> review2 = new HashMap<>();
@@ -518,8 +518,8 @@ public class DinerFunctionalityControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/diner")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(diner)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(diner)))
     )
     .andReturn()
     .getResponse()
@@ -536,8 +536,8 @@ public class DinerFunctionalityControllerTests {
 
     this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     );
 
     Map<String, String> review1 = new HashMap<>();
@@ -564,9 +564,9 @@ public class DinerFunctionalityControllerTests {
     this.mockMvc.perform(
       MockMvcRequestBuilders
       .post("/diner/editreview")
-        .contentType(MediaType.APPLICATION_JSON)
-        .header("Authorization", token)
-        .content(String.valueOf(new JSONObject(review2)))
+      .contentType(MediaType.APPLICATION_JSON)
+      .header("Authorization", token)
+      .content(String.valueOf(new JSONObject(review2)))
     )
     .andExpect(status().is4xxClientError());
   }
@@ -584,8 +584,8 @@ public class DinerFunctionalityControllerTests {
 
     String result = this.mockMvc.perform(
       post("/register/diner")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(diner)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(diner)))
     )
     .andReturn()
     .getResponse()
@@ -602,8 +602,8 @@ public class DinerFunctionalityControllerTests {
 
     this.mockMvc.perform(
       post("/register/eatery")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(String.valueOf(new JSONObject(eatery)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(eatery)))
     );
 
     Map<String, String> review1 = new HashMap<>();
