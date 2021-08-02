@@ -414,11 +414,9 @@ export default function EateryProfile () {
               : "Discount Booked!"}
             message={!isConfirmed
               ? <div>
-                  <div>
-                    Purchase for <b>{voucherDetails.discount}% off</b> at{" "}
-                    <b>{eateryDetails.name}</b>
-                  </div>
-                  <br />
+                  <Box pb={2}display="flex" justifyContent="center">
+                    <b>Purchase for {voucherDetails.discount}% off at {eateryDetails.name}</b>:
+                  </Box>
                   <div>
                     Valid for use between {voucherDetails.startTime} -{" "}
                     {handleTimeNextDay(voucherDetails.endTime)} on{" "}
