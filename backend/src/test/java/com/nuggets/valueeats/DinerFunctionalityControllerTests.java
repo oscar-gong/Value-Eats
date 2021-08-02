@@ -763,11 +763,11 @@ public void testCreateReview_invalidEateryId() throws Exception {
 
   @Test
   public void testRemoveReview_invalidMessageId() throws Exception {
-        this.userRepository.deleteAll();
-        this.reviewRepository.deleteAll();
-        this.voucherRepository.deleteAll();
+    this.userRepository.deleteAll();
+    this.reviewRepository.deleteAll();
+    this.voucherRepository.deleteAll();
     this.repeatVoucherRepository.deleteAll();
-        this.bookingRecordRepository.deleteAll();
+    this.bookingRecordRepository.deleteAll();
       
       Map<String, String> diner = new HashMap<>();
       diner.put("alias", "diner1");
