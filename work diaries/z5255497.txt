@@ -214,3 +214,11 @@ Week9:
   What was planned for the period since the last work diary entry:
     - We planned to implement more tests and write them in JUint
     - We planned to finish the project report.
+
+  What was finished:
+    - We have finished up everything.
+    - We have finished the report
+    
+  What were the main technical and non-technical obstacles and how they were
+  overcome:
+    - The time management. We need to finish the report and our software. We split the tasks and completed them.
