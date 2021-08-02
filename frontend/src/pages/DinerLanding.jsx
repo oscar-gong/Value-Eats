@@ -18,15 +18,17 @@ import {
   InputLabel,
   Box,
   FormControl,
+  Divider
 } from "@material-ui/core";
 import Loading from "../components/Loading";
 import EateryDisplay from "../components/EateryDisplay";
 import RatingWithNum from "../components/RatingWithNum";
 import DinerLandingImage from "../assets/DinerLandingImage.png";
+import request from "../utils/request";
 
 const useStyles = makeStyles({
   card: {
-    color: "black",
+    color: "white",
     borderRadius: "0px",
     transition: "transform 0.15s ease-in-out",
     maxHeight: "250px",
@@ -78,6 +80,10 @@ const useStyles = makeStyles({
     letterSpacing: "0.1em",
     marginBottom: "1%",
   },
+  bannerBox: {
+    marginBottom: "40px",
+    position: "relative"
+  }
 });
 
 export default function DinerLanding ({ token }) {
@@ -112,20 +118,13 @@ export default function DinerLanding ({ token }) {
   useEffect(() => {
     const getEateryList = async () => {
       setLoading(true);
-      const response = await fetch(
-        sortBy === "Distance"
-          ? `http://localhost:8080/list/eateries?sort=${sortBy}&latitude=${location.latitude}&longitude=${location.longitude}`
-          : `http://localhost:8080/list/eateries?sort=${sortBy}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: auth,
-          },
-        }
-      );
-
+      let url;
+      if (sortBy === "Distance") {
+        url = `list/eateries?sort=${sortBy}&latitude=${location.latitude}&longitude=${location.longitude}`;
+      } else {
+        url = `list/eateries?sort=${sortBy}`;
+      }
+      const response = await request.get(url, auth);
       const responseData = await response.json();
       setLoading(false);
       if (response.status === 200) {
@@ -142,35 +141,18 @@ export default function DinerLanding ({ token }) {
   useEffect(() => {
     const getRecommendationList = async () => {
       setLoading(true);
-      const response = await fetch(
-        "http://localhost:8080/recommendation",
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: auth,
-          },
-        }
-      );
+      const response = await request.get("recommendation", auth);
       const responseData = await response.json();
       setLoading(false);
       if (response.status === 200) {
         console.log(responseData);
         setRecommendationList(
-          responseData.eateryList.filter(
-            (eatery) => eatery.discount !== "0%"
-          )
+          responseData.eateryList.filter((eatery) => eatery.discount !== "0%")
         );
       } else if (response.status === 401) {
         logUserOut(setAuth, setIsDiner);
       }
     };
-    // const getCuisineList = (cuisines) => {
-    //     if (cuisines.length < 3) return cuisines.join(", ");
-    //     let cuisineString = cuisines.slice(0, 2).join(", ") + "..";
-    //     return cuisineString;
-    // };
     getRecommendationList();
   }, [auth, setAuth, setIsDiner]);
 
@@ -178,10 +160,8 @@ export default function DinerLanding ({ token }) {
   if (isDiner === "false") return <Redirect to="/EateryLanding" />;
 
   const getCuisineList = (cuisines) => {
-    let cuisineString = cuisines.join(", ");
-    if (cuisineString.length > 25) {
-      cuisineString = cuisineString.substring(0, 24) + "...";
-    }
+    if (cuisines.length < 3) return cuisines.join(", ");
+    const cuisineString = cuisines.slice(0, 2).join(", ") + "..";
     return cuisineString;
   };
 
@@ -198,11 +178,11 @@ export default function DinerLanding ({ token }) {
     return splitEateryList.map((item, key) => {
       return (
         <Grid
-            container
-            justify="space-between"
-            alignItems="center"
-            direction="row"
-            key={key}
+          container
+          justify="space-between"
+          alignItems="center"
+          direction="row"
+          key={key}
         >
           {Array.from({ length: 3 }, (x, i) => {
             return (
@@ -216,39 +196,25 @@ export default function DinerLanding ({ token }) {
                       })
                     }
                   >
-                  <CardMedia
-                    className={classes.media}
-                    image={item[i].profilePic}
-                  />
-                  <CardContent
-                      className={classes.overlay}
-                  >
-                      <Grid container
+                    <CardMedia
+                      className={classes.media}
+                      image={item[i].profilePic}
+                    />
+                    <CardContent className={classes.overlay}>
+                      <Grid
+                        container
                         justify="space-between"
                         alignItems="flex-end"
                       >
                         <Grid item xs={6}>
-                            <div>
-                                {"UP TO " +
-                                    item[i].discount +
-                                    " OFF"}
-                            </div>
-                            <Typography variant="h5">
-                                {item[i].name}
-                            </Typography>
-                            <Typography variant="subtitle2">
-                                {getCuisineList(
-                                  item[i].cuisines
-                                )}
-                            </Typography>
+                          <div>{`UP TO ${item[i].discount} OFF`}</div>
+                          <Typography variant="h5">{item[i].name}</Typography>
+                          <Typography variant="subtitle2">
+                            {getCuisineList(item[i].cuisines)}
+                          </Typography>
                         </Grid>
-                        <Grid item
-                          xs={6}
-                          className={classes.stars}
-                        >
-                          <RatingWithNum
-                            rating={item[i].rating}
-                          />
+                        <Grid item xs={6} className={classes.stars}>
+                          <RatingWithNum rating={item[i].rating} />
                         </Grid>
                       </Grid>
                     </CardContent>
@@ -267,13 +233,13 @@ export default function DinerLanding ({ token }) {
     return eateryList.map((item, index) => {
       return (
         <EateryDisplay
-            name={item.name}
-            id={item.id}
-            key={index}
-            discount={item.discount}
-            cuisines={item.cuisines}
-            rating={item.rating}
-            image={item.profilePic}
+          name={item.name}
+          id={item.id}
+          key={index}
+          discount={item.discount}
+          cuisines={item.cuisines}
+          rating={item.rating}
+          image={item.profilePic}
         />
       );
     });
@@ -283,7 +249,7 @@ export default function DinerLanding ({ token }) {
       <NavBar isDiner={isDiner} />
       <MainContainer>
         <Box py={4}>
-          <Box style={{ marginBottom: "20px", position: "relative" }}>
+          <Box className={classes.bannerBox}>
             <img
               className={classes.dinerLandingImage}
               alt="welcome banner with diner's username"
@@ -291,7 +257,40 @@ export default function DinerLanding ({ token }) {
             />
             <div className={classes.dinerNameText}>{name}</div>
           </Box>
-          <Box textAlign="right">
+          <div className={classes.text}>
+            {recommendationList.length === 0
+              ? ""
+              : "Restaurants we think you would like"}
+          </div>
+
+          <Carousel
+            fullHeightHover={false}
+            navButtonsProps={{
+              style: {
+                opacity: "50%",
+              },
+            }}
+            navButtonsWrapperProps={{
+              style: {
+                bottom: "40%",
+                top: "unset",
+              },
+            }}
+          >
+            {getSlides()}
+          </Carousel>
+          <Box paddingTop="40px" paddingBottom="40px">
+          <Divider variant="middle" />
+        </Box>
+        <Grid container justifyContent="space-between" alignItems="flex-end" style={{ paddingBottom: "20px" }}>
+          <Grid item>
+          <div className={classes.text}>
+              {eateryList.length === 0
+                ? ""
+                : `Restaurants Sorted By ${sortBy}`}
+          </div>
+          </Grid>
+          <Grid item>
             <FormControl
                 variant="filled"
                 style={{ minWidth: "100px" }}
@@ -308,28 +307,8 @@ export default function DinerLanding ({ token }) {
                 <MenuItem value={"New"}>New</MenuItem>
               </Select>
             </FormControl>
-          </Box>
-
-          <div className={classes.text}>
-              {recommendationList.length === 0
-                ? ""
-                : "Restaurants we think you would like"}
-          </div>
-
-          <Carousel fullHeightHover={false}
-            navButtonsProps={{
-              style: {
-                opacity: "50%",
-              },
-            }}
-            navButtonsWrapperProps={{
-              style: {
-                bottom: "40%",
-                top: "unset",
-              },
-            }}>
-            {getSlides()}
-          </Carousel>
+            </Grid>
+          </Grid>
           {getEateries()}
         </Box>
         <Loading isLoading={loading} />

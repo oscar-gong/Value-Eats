@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Title } from "../styles/Title";
 import { AlignCenter } from "../styles/AlignCenter";
-import { Box, TextField, Button, Grid, makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, makeStyles } from "@material-ui/core";
+import { TextFieldStyled } from "../styles/TextFieldStyled";
 import SendIcon from "@material-ui/icons/Send";
-import { Link } from "react-router-dom";
 import { useHistory, Redirect } from "react-router";
 import { StoreContext } from "../utils/store";
+import { LinkStyled } from "../styles/LinkStyled";
 import loginImage from "../assets/loginImage.jpeg";
+import request from "../utils/request";
 
 const useStyles = makeStyles({
   root: {
@@ -34,8 +36,6 @@ const useStyles = makeStyles({
     backgroundColor: "white",
     borderRadius: "0% 4% 4% 0%",
     boxShadow: "6px 0 10px rgb(0 0 0 / 0.1)",
-
-    /* in order: x offset, y offset, blur size, spread size, color */
   },
   image: {
     objectFit: "cover",
@@ -44,11 +44,6 @@ const useStyles = makeStyles({
   },
   mainContainer: {
     color: "#ff855b",
-  },
-  link: {
-    textDecoation: "none",
-    color: "#96AE33",
-    background: "off-white",
   },
 });
 
@@ -63,22 +58,19 @@ export default function Login () {
 
   const classes = useStyles();
 
-  if (isDiner === "true" && auth !== null) { return <Redirect to="/DinerLanding" />; }
-  if (isDiner === "false" && auth !== null) { return <Redirect to="/EateryLanding" />; }
+  if (isDiner === "true" && auth !== null) {
+    return <Redirect to="/DinerLanding" />;
+  }
+  if (isDiner === "false" && auth !== null) {
+    return <Redirect to="/EateryLanding" />;
+  }
 
   const handleLogin = async () => {
-    const loginResponse = await fetch("http://localhost:8080/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-    // const ans = await loginResult.json();
+    const payload = {
+      email: email,
+      password: password,
+    };
+    const loginResponse = await request.post("login", payload);
     const loginData = await loginResponse.json();
     if (loginResponse.status === 200) {
       setAlertOptions({
@@ -108,6 +100,12 @@ export default function Login () {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <AlignCenter>
       <Grid container justify="center" className={classes.mainContainer}>
@@ -127,24 +125,26 @@ export default function Login () {
             </Box>
             {/* <p>Disrupting the intersection between discount and advertising through centralisation</p> */}
             <Box pt={1} width="60%">
-              <TextField
-                id="outlined-basic"
+              <TextFieldStyled
+                aria-label="outlined-basic"
                 label="Email address"
                 variant="outlined"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 fullWidth
+                onKeyPress={handleKeyPress}
               />
             </Box>
             <Box pt={2} width="60%">
-              <TextField
+              <TextFieldStyled
+                aria-label="outlined-basic"
                 type="password"
-                id="outlined-basic"
                 label="Password"
                 variant="outlined"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 fullWidth
+                onKeyPress={handleKeyPress}
               />
             </Box>
             <Box pt={4} pb="8%">
@@ -166,14 +166,12 @@ export default function Login () {
               alignItems="center"
             >
               <h3>New to ValueEats?</h3>
-              <Link to="/RegisterDiner" className={classes.link}>
-                Sign up here
-              </Link>
+              <LinkStyled to="/RegisterDiner">Sign up here</LinkStyled>
             </Box>
             <Box pb={4}>
-              <Link to="/RegisterEatery" className={classes.link}>
+              <LinkStyled to="/RegisterEatery">
                 Register as an eatery
-              </Link>
+              </LinkStyled>
             </Box>
           </div>
         </Grid>

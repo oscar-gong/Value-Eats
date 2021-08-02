@@ -1,9 +1,8 @@
 import React, { useState, useContext } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { NavbarStyled } from "../styles/NavbarStyled";
 import { useHistory } from "react-router";
 import { StoreContext } from "../utils/store";
@@ -12,48 +11,51 @@ import { Menu, MenuItem } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { IconButtonShowSmall } from "../styles/IconButtonShowSmall";
 import IconButton from "@material-ui/core/IconButton";
-// import logo from "../assets/logo.png";
+import logo from "../assets/valueEatsLogo.png";
+import request from "../utils/request";
 
-const useStyles = makeStyles((theme) => ({
-  searchContainer: {
-    // border: "1px solid #FF855B",
-    borderRadius: 10,
-    whiteSpace: "nowrap",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingLeft: 10,
-    color: "#FF855B",
-  },
-  logo: {
-    fontSize: "2em",
-    fontWeight: "bold",
-    color: "#FF855B",
-    maxWidth: "50%",
-    "&:hover": {
-      cursor: "pointer",
-      color: "#e06543",
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    searchContainer: {
+      // border: "1px solid #FF855B",
+      borderRadius: 10,
+      whiteSpace: "nowrap",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingLeft: 10,
+      color: "#FF855B",
     },
-  },
-  barSize: {
-    flex: 1,
-  },
-  searchBar: {
-    fontSize: "1em",
-    color: "#FF855B",
-    width: "25vw",
-    paddingRight: 10,
-    backgroundColor: "transparent",
-    borderBottom: "1px solid rgba(255, 132, 91, 0.5)",
-  },
-  menu: {
-    flex: 0,
-  },
-  singleLine: {
-    whiteSpace: "nowrap",
-    padding: "0px",
-  },
-}));
+    logo: {
+      maxWidth: "17%",
+      "&:hover": {
+        cursor: "pointer",
+        color: "#e06543",
+      },
+    },
+    barSize: {
+      flex: 1,
+    },
+    searchBar: {
+      fontSize: "1em",
+      color: "#FF855B",
+      width: "22vw",
+      paddingRight: 10,
+      backgroundColor: "transparent",
+      borderBottom: "1px solid rgba(255, 132, 91, 0.5)",
+      "&.Mui-focused": {
+        borderBottom: "2px solid #FF855B !important",
+      },
+    },
+    menu: {
+      flex: 0,
+    },
+    singleLine: {
+      whiteSpace: "nowrap",
+      padding: "0px",
+    },
+  })
+);
 
 export default function Navbar () {
   const classes = useStyles();
@@ -68,19 +70,13 @@ export default function Navbar () {
   const anchorElement = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(
+    localStorage.getItem("searchTerm") ? localStorage.getItem("searchTerm") : ""
+  );
 
   const handleLogout = async () => {
     console.log("You are getting logged out");
-    const logoutResponse = await fetch("http://localhost:8080/logout", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: auth,
-      },
-    });
-    // const ans = await logoutResult.json();
+    const logoutResponse = await request.post("logout", {}, auth);
     const logoutData = await logoutResponse.json();
     if (logoutResponse.status === 200) {
       setAlertOptions({
@@ -92,6 +88,7 @@ export default function Navbar () {
       setIsDiner(null);
       localStorage.removeItem("token");
       localStorage.removeItem("isDiner");
+      localStorage.setItem("searchTerm", "");
       history.push("/");
     } else {
       setAlertOptions({
@@ -104,6 +101,7 @@ export default function Navbar () {
 
   const handleLogoClick = () => {
     console.log(localStorage.getItem("token"));
+    clearSearch();
     if (auth === null) return history.push("/");
     // if token is manually deleted from localstorage on browser
     if (localStorage.getItem("token") === null) {
@@ -117,6 +115,7 @@ export default function Navbar () {
   const handleSearch = () => {
     // move to search page only if there is a search term
     if (search !== "") {
+      localStorage.setItem("searchTerm", search);
       history.push({
         pathname: "/SearchResults",
         search: `?query=${search}`,
@@ -131,12 +130,19 @@ export default function Navbar () {
     }
   };
 
+  const clearSearch = () => {
+    localStorage.setItem("searchTerm", "");
+  };
+
   return (
     <NavbarStyled isDiner={isDiner} elevation={0}>
       <Toolbar className={classes.singleLine}>
-        <Typography className={classes.logo} onClick={handleLogoClick}>
-          Value Eats
-        </Typography>
+        <img
+          src={logo}
+          alt="Value Eats logo"
+          className={classes.logo}
+          onClick={handleLogoClick}
+        />
         {isDiner === "true" && (
           <Toolbar className={classes.barSize}>
             <div className={classes.searchContainer}>
@@ -148,6 +154,7 @@ export default function Navbar () {
                   inputProps={{
                     "aria-label": "search",
                   }}
+                  value={search}
                   onKeyPress={handleKeyPress}
                 />
               </div>
@@ -155,6 +162,7 @@ export default function Navbar () {
                 type="submit"
                 aria-label="search"
                 onClick={handleSearch}
+                style={{ color: "#FF855B" }}
               >
                 <SearchIcon />
               </IconButton>
@@ -166,19 +174,26 @@ export default function Navbar () {
           isDiner === "false" && <div style={{ flex: 1 }}></div>
         }
         <NavLink
+          onClick={clearSearch}
           isDiner={isDiner}
           to={isDiner === "true" ? "/DinerLanding" : "/EateryLanding"}
         >
           HOME
         </NavLink>
+        {isDiner === "false" && (
+          <NavLink isDiner={isDiner} to="/RedeemVoucher">
+            REDEEM
+          </NavLink>
+        )}
         <NavLink
+          onClick={clearSearch}
           isDiner={isDiner}
           to={isDiner === "true" ? "/DinerProfile" : "/EateryProfile"}
         >
           PROFILE
         </NavLink>
         {isDiner === "true" && (
-          <NavLink isDiner={isDiner} to="/DinerVouchers">
+          <NavLink isDiner={isDiner} to="/DinerVouchers" onClick={clearSearch}>
             MY VOUCHERS
           </NavLink>
         )}
@@ -199,7 +214,7 @@ export default function Navbar () {
           }}
           color="inherit"
         >
-          <AccountCircle style={{ fontSize: "50px" }} />
+          <AccountCircle style={{ fontSize: "50px", color: "#FF855B" }} />
         </IconButtonShowSmall>
         <Menu
           className={classes.menu}

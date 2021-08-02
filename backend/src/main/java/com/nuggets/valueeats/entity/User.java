@@ -16,7 +16,7 @@ public class User {
     @Id
     private Long id;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;

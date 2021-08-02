@@ -9,36 +9,13 @@ import com.nuggets.valueeats.service.UserManagementService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
-/* Code for testing for convenience.
-{
-  "alias":"diner1",
-  "email":"diner1@gmail.com",
-  "password":"Abcd1234",
-  "address":"sydney"
-}
-
-{
-  "alias":"eatery1",
-  "email":"eatery1@gmail.com",
-  "password":"Abcd1234",
-  "address":"sydney"
-}
-*/
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = ControllerConstants.URL)
 @RestController
 public class UserManagementController {
     @Autowired
     private UserManagementService userManagementService;
-
     @Autowired
     private CuisineService cuisineService;
 
@@ -59,19 +36,21 @@ public class UserManagementController {
 
     @RequestMapping(value = "update/diner", method = RequestMethod.POST)
     @CheckUserToken
-    public ResponseEntity<JSONObject> updateDiner(@RequestHeader (name="Authorization") String token, @RequestBody final Diner diner) {
+    public ResponseEntity<JSONObject> updateDiner(
+            @RequestHeader(name = "Authorization") String token, @RequestBody final Diner diner) {
         return userManagementService.updateDiner(diner, token);
     }
 
     @RequestMapping(value = "update/eatery", method = RequestMethod.POST)
     @CheckUserToken
-    public ResponseEntity<JSONObject> updateEatery(@RequestHeader (name="Authorization") String token, @RequestBody final Eatery eatery) {
+    public ResponseEntity<JSONObject> updateEatery(
+            @RequestHeader(name = "Authorization") String token, @RequestBody final Eatery eatery) {
         return userManagementService.updateEatery(eatery, token);
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
     @CheckUserToken
-    public ResponseEntity<JSONObject> logout(@RequestHeader (name="Authorization") String token) {
+    public ResponseEntity<JSONObject> logout(@RequestHeader(name = "Authorization") String token) {
         return userManagementService.logout(token);
     }
 
@@ -82,13 +61,14 @@ public class UserManagementController {
 
     @RequestMapping(value = "eatery/profile/details", method = RequestMethod.GET)
     @CheckUserToken
-    public ResponseEntity<JSONObject> getEateryProfile(@RequestHeader (name="Authorization") String token, @RequestParam(required=false) Long id) {
+    public ResponseEntity<JSONObject> getEateryProfile(
+            @RequestHeader(name = "Authorization") String token, @RequestParam(required = false) Long id) {
         return userManagementService.getEateryProfile(id, token);
     }
 
     @RequestMapping(value = "diner/profile/details", method = RequestMethod.GET)
     @CheckUserToken
-    public ResponseEntity<JSONObject> getDinerProfile(@RequestHeader (name="Authorization") String token) {
+    public ResponseEntity<JSONObject> getDinerProfile(@RequestHeader(name = "Authorization") String token) {
         return userManagementService.getDinerProfile(token);
     }
 }

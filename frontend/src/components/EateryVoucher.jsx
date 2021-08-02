@@ -7,6 +7,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ConfirmModal from "./ConfirmModal";
 import EditCreateVoucher from "../components/EditCreateVoucher";
 import Countdown from "react-countdown";
+import request from "../utils/request";
 
 export default function EateryVoucher ({
   eateryId,
@@ -60,17 +61,7 @@ export default function EateryVoucher ({
   console.log(isDiner);
 
   const removeVoucher = async (id) => {
-    const response = await fetch(
-      "http://localhost:8080/eatery/voucher?id=" + voucherId,
-      {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: auth
-        }
-      }
-    );
+    const response = await request.delete(`eatery/voucher?id=${voucherId}`, {}, auth);
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });
@@ -82,8 +73,8 @@ export default function EateryVoucher ({
   };
 
   return (
-    <Box bgcolor="white" margin="20px" border="2px solid #FF845B" borderRadius="20px">
-      <Grid container direction="row" justifyContent="center" alignItems="center" border="3px solid #4F4846" bgcolor="#E8CEBF" margin="20px">
+    <Box bgcolor="#FFF9F7" margin="20px" border="1px dotted #FF845B" >
+      <Grid container direction="row" justifyContent="center" alignItems="center" border="3px solid #4F4846" margin="20px">
         <Grid item display="flex" flexDirection="column" xs={4}>
           <Box display="flex" justifyContent="center" alignItems="center">
             <h1>{discount}% off - {isDineIn ? "Dine in" : "Takeaway"}</h1>
@@ -92,8 +83,9 @@ export default function EateryVoucher ({
         <Grid item display="flex" justifyContent="center" xs={5}>
           <Box display="flex" flexDirection="column" pl={10}>
             {
-              !isOneOff &&
-              <h3 style={{ margin: "5px 0px" }}>Weekly deal</h3>
+              !isOneOff
+                ? <h3 style={{ margin: "5px 0px", color: "#96AE33", textDecoration: "underline" }}>Weekly deal</h3>
+                : <h3 style={{ margin: "5px 0px", color: "#96AE33", textDecoration: "underline" }}>One Off deal</h3>
             }
             {
               (isRedeemable || isActive) &&
@@ -121,12 +113,12 @@ export default function EateryVoucher ({
         </Grid>
         <Grid item display="flex" flexDirection="column" justifyContent="center" xs={3}>
           <Box display="flex" justifyContent="center">
-            <IconButton onClick={() => {}}>
+            <IconButton onClick={() => {}} style={{ color: "#FF855B" }}>
               <EditIcon fontSize="large"
                 onClick={() => setEditCreateModal(true)}
               />
             </IconButton>
-            <IconButton onClick={() => {}}>
+            <IconButton onClick={() => {}} style={{ color: "#FF855B" }}>
               <DeleteIcon fontSize="large"
                 onClick={() => setOpenDeleteModal(true)}
               />

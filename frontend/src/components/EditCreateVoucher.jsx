@@ -1,7 +1,11 @@
 import React, { useState, useContext } from "react";
-import { Dialog, DialogTitle, DialogContent, Box, TextField, DialogActions, Button, Tabs, Tab, Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
+import { Dialog, DialogContent, Box, DialogActions, Tabs, Tab, Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 import { StoreContext } from "../utils/store";
-import { validRequired } from "../utils/helpers";
+import { validRequired, Transition } from "../utils/helpers";
+import { ModalButton } from "../styles/ModalButton";
+import { DialogTitleStyled } from "../styles/DialogTitleStyled";
+import { TextFieldStyled } from "../styles/TextFieldStyled";
+import request from "../utils/request";
 
 export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen, initOneOff = 0, initDineIn = "true", initDiscount = "", initQuantity = "", initStartTime = "", initEndTime = "", isEdit, refreshList }) {
   const date = new Date();
@@ -61,16 +65,12 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
     if (isEdit) {
       body.id = voucherId;
     }
-    const response = await fetch("http://localhost:8080/eatery/voucher",
-      {
-        method: reqType,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: token
-        },
-        body: JSON.stringify(body)
-      });
+    let response;
+    if (reqType === "PUT") {
+      response = await request.put("eatery/voucher", body, token);
+    } else {
+      response = await request.post("eatery/voucher", body, token);
+    }
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({ showAlert: true, variant: "success", message: responseData.message });
@@ -103,10 +103,12 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
 
   return (
     <>
-      <Dialog aria-labelledby="customized-dialog-title" open={open}>
-        <DialogTitle>
+      <Dialog aria-labelledby="customized-dialog-title" open={open} onClose={() => setOpen(false)}
+        TransitionComponent={Transition}
+        keepMounted>
+        <DialogTitleStyled>
           {isEdit ? "Edit Voucher" : "Create Voucher"}
-        </DialogTitle>
+        </DialogTitleStyled>
         <DialogContent dividers>
           <Box>
             <Tabs value={isOneOff} aria-label="simple tabs example">
@@ -122,7 +124,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
               </RadioGroup>
             </Box>
             <Box py={2} width="270px">
-              <TextField
+              <TextFieldStyled aria-label="outlined-basic"
                 label="Discount (%)"
                 type="number"
                 onChange={(e) => e.target.value > 0 && e.target.value <= 100
@@ -151,7 +153,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
               />
             </Box>
             <Box py={2} width="270px">
-              <TextField
+              <TextFieldStyled aria-label="outlined-basic"
                 label="Quantity"
                 type="number"
                 onChange={(e) => e.target.value > 0
@@ -179,7 +181,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
             </Box>
             <Box py={2}>
               {/* Making use of datetime local type does not work well for all browsers */}
-              <TextField
+              <TextFieldStyled aria-label="outlined-basic"
                 label="Start at:"
                 type="datetime-local"
                 onChange={(e) => {
@@ -203,7 +205,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
               />
             </Box>
             <Box py={2}>
-              <TextField
+              <TextFieldStyled aria-label="outlined-basic"
                 label="End at:"
                 type="datetime-local"
                 onChange={(e) => {
@@ -230,12 +232,12 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
         </DialogContent>
         <DialogActions>
           {/* Set the things below back to their default states here */}
-          <Button autoFocus onClick={() => { setOpen(false); }} color="primary">
+          <ModalButton autoFocus onClick={() => { setOpen(false); }} color="primary">
             Cancel
-          </Button>
-          <Button autoFocus onClick={() => handleEditCreateVoucher(isEdit)} color="primary">
+          </ModalButton>
+          <ModalButton autoFocus onClick={() => handleEditCreateVoucher(isEdit)} color="primary">
             {isEdit ? "Save changes" : "Create voucher"}
-          </Button>
+          </ModalButton>
         </DialogActions>
       </Dialog>
     </>

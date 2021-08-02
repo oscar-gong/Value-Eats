@@ -5,11 +5,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DinerRepository extends UserRepository<Diner> {
+    Diner findById(int id);
 
-  Diner findById(int id);
+    boolean existsById(Long id);
 
-  boolean existsById(Long id);
-
-
-  Diner findByToken(String token);
+    Diner findByToken(String token);
 }

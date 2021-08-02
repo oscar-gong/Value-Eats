@@ -5,29 +5,26 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Long> {
+    boolean existsById(Long id);
 
-  ArrayList<Voucher> findByEateryId (Long eateryId);
+    Optional<Voucher> findById(Long id);
 
-  boolean existsById(Long id);
+    @Query("select max(id) from Voucher")
+    Long findMaxId();
 
-  Optional<Voucher> findById(Long id);
+    void deleteById(Long id);
 
-  @Query("select max(id) from Voucher")
-  Long findMaxId();
+    @Query(value = "select * from voucher where eatery_id = ?1 and is_active = true", nativeQuery = true)
+    ArrayList<Voucher> findActiveByEateryId(Long eateryId);
 
-  void deleteById(Long id);
-  
-  @Query(value = "select * from voucher where eatery_id = ?1 and is_active = true", nativeQuery = true)
-  ArrayList<Voucher> findActiveByEateryId (Long eateryId);
+    @Query(value = "select * from voucher where is_active = true", nativeQuery = true)
+    ArrayList<Voucher> findAllActive();
 
-  @Query(value = "select * from voucher where is_active = true", nativeQuery = true)
-  ArrayList<Voucher> findAllActive ();
-
-  @Query(value = "select max(discount) from voucher where eatery_id = ?1 and is_active = true", nativeQuery = true)
-  Long findMaxDiscountFromEatery (Long eateryId);
+    @Query(value = "select max(discount) from voucher where eatery_id = ?1 and is_active = true", nativeQuery = true)
+    Long findMaxDiscountFromEatery(Long eateryId);
 }

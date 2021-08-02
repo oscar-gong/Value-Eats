@@ -1,3 +1,6 @@
+import React from "react";
+import { Slide } from "@material-ui/core";
+
 export const checkValidEmail = (email) => {
   const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   console.log(email);
@@ -5,7 +8,7 @@ export const checkValidEmail = (email) => {
 };
 
 export const validRequired = (state, setState) => {
-  if (state.value === "") {
+  if (state.value === "" || state.value.length > 12) {
     setState({ value: "", valid: false });
   }
 };
@@ -68,3 +71,7 @@ export const handleImage = (data, setTmpProfilePic) => {
     });
   });
 };
+
+export const Transition = React.forwardRef(function Transition (props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});

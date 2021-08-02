@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../components/Navbar";
-import { MainContent } from "../styles/MainContent";
-import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
+import { Box, Tabs, Tab } from "@material-ui/core";
 import { Redirect } from "react-router";
 import DinerVoucher from "../components/DinerVoucher";
 import { VoucherContainer } from "../styles/VoucherContainer";
@@ -11,29 +10,21 @@ import { logUserOut } from "../utils/logoutHelper";
 import { ButtonStyled } from "../styles/ButtonStyle";
 import { useHistory } from "react-router-dom";
 import Loading from "../components/Loading";
+import { MainContainer } from "../styles/MainContainer";
+import { PageTitle } from "../styles/PageTitle";
+import request from "../utils/request";
 
 export default function DinerVouchers () {
   const context = useContext(StoreContext);
   const [token, setAuth] = context.auth;
   const setIsDiner = context.isDiner[1];
-  const [showHistory, setShowHistory] = useState(false);
+  const [showHistory, setShowHistory] = useState(0);
   const [vouchers, setVouchers] = useState(null);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-
   const getVouchers = async () => {
     setLoading(true);
-    const response = await fetch(
-      "http://localhost:8080/diner/voucher",
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      }
-    );
+    const response = await request.get("diner/voucher", token);
     const responseData = await response.json();
     if (response.status === 200) {
       console.log(responseData.vouchers);
@@ -53,42 +44,52 @@ export default function DinerVouchers () {
   if (token === null) return <Redirect to="/" />;
 
   // when show historical checkbox is clicked
-  const handleHistory = (event) => {
-    setShowHistory(event.target.checked);
-  };
+  // const handleHistory = (event) => {
+  //   setShowHistory(event.target.checked);
+  // };
 
   const getCurrentVouchers = () => {
     if (!vouchers) return;
     if (vouchers.length === 0) {
       return (
-        <Box display="flex"
+        <Box
+          display="flex"
           flexDirection="column"
           marginTop="10%"
           alignItems="center"
           height="70vh"
           pt={2}
         >
-          <Subtitle style={{ color: "black" }}>No Vouchers Purchased Yet..</Subtitle>
-          <ButtonStyled widthPercentage={40}
+          <Subtitle style={{ color: "black" }}>
+            No Vouchers Purchased Yet..
+          </Subtitle>
+          <ButtonStyled
+            widthPercentage={40}
             onClick={() => history.push("/DinerLanding")}
           >
             Find restaurants
           </ButtonStyled>
-        </Box>);
+        </Box>
+      );
     }
     if (vouchers.reduce((total, voucher) => {
       return total + (voucher.isActive ? 1 : 0);
-    }, 0) === 0 && !showHistory) {
+    }, 0) === 0 && showHistory === 0) {
       return (
-        <Box display="flex"
+        <Box
+          display="flex"
           flexDirection="column"
           marginTop="10%"
           alignItems="center"
           height="70vh"
           pt={2}
         >
-          <Subtitle style={{ color: "black" }}>No Currently Active Vouchers</Subtitle>
-          <Subtitle style={{ color: "black" }}>Click &quot;Show Historical&quot; to see your redeemed vouchers</Subtitle>
+          <Subtitle style={{ color: "black" }}>
+            No Currently Active Vouchers
+          </Subtitle>
+          <Subtitle style={{ color: "black" }}>
+            Click &quot;Show Historical&quot; to see your redeemed vouchers
+          </Subtitle>
         </Box>
       );
     }
@@ -123,18 +124,18 @@ export default function DinerVouchers () {
       return (
         (item.used || !item.isActive) && (
           <DinerVoucher
-              code={item.code}
-              date={item.date}
-              discount={item.discount}
-              eateryID={item.eateryId}
-              eatingStyle={item.eatingStyle}
-              endTime={item.endTime}
-              isActive={item.isActive}
-              isRedeemable={item.isRedeemable}
-              startTime={item.startTime}
-              eateryName={item.eateryName}
-              used={item.used}
-              key={key}
+            code={item.code}
+            date={item.date}
+            discount={item.discount}
+            eateryID={item.eateryId}
+            eatingStyle={item.eatingStyle}
+            endTime={item.endTime}
+            isActive={item.isActive}
+            isRedeemable={item.isRedeemable}
+            startTime={item.startTime}
+            eateryName={item.eateryName}
+            used={item.used}
+            key={key}
           />
         )
       );
@@ -144,30 +145,27 @@ export default function DinerVouchers () {
   return (
     <>
       <NavBar isDiner={true} />
-      <MainContent>
+      <MainContainer>
         <Box
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
         >
-          <Subtitle>My Vouchers</Subtitle>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={showHistory}
-                onChange={handleHistory}
-              />
-            }
-            label="Show Historical"
-          />
+          <PageTitle>My Vouchers</PageTitle>
+          <Box>
+            <Tabs value={showHistory} aria-label="simple tabs example">
+              <Tab label="Active" onClick={() => setShowHistory(0)} />
+              <Tab label="Historical" onClick={() => setShowHistory(1)} />
+            </Tabs>
+          </Box>
           <VoucherContainer>
-            {getCurrentVouchers()}
-            {showHistory && getPastVouchers()}
+            {showHistory === 0 && getCurrentVouchers()}
+            {showHistory === 1 && getPastVouchers()}
             <Loading isLoading={loading} />
           </VoucherContainer>
         </Box>
-      </MainContent>
+      </MainContainer>
     </>
   );
 }

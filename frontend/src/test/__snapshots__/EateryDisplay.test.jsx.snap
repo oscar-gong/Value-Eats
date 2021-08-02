@@ -6,23 +6,10 @@ exports[`EateryDisplay renders basic component 1`] = `
   onClick={[Function]}
 >
   <div
-    className="MuiCardHeader-root"
-  >
-    <div
-      className="MuiCardHeader-content"
-    >
-      <span
-        className="MuiTypography-root MuiCardHeader-title MuiTypography-h5 MuiTypography-displayBlock"
-      >
-        UP TO 50% OFF
-      </span>
-    </div>
-  </div>
-  <div
     className="MuiCardMedia-root"
     style={
       Object {
-        "height": "150px",
+        "height": "200px",
       }
     }
   />
@@ -33,8 +20,11 @@ exports[`EateryDisplay renders basic component 1`] = `
       className="MuiGrid-root MuiGrid-container MuiGrid-align-items-xs-flex-end MuiGrid-justify-content-xs-space-between"
     >
       <div
-        className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8"
+        className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-10"
       >
+        <div>
+          UP TO  50% OFF
+        </div>
         <h5
           className="MuiTypography-root MuiTypography-h5"
         >
@@ -45,9 +35,12 @@ exports[`EateryDisplay renders basic component 1`] = `
         >
           Chinese, Japanese
         </h6>
+        <h6
+          className="MuiTypography-root MuiTypography-subtitle2"
+        />
       </div>
       <div
-        className="MuiGrid-root MuiGrid-item"
+        className="MuiGrid-root none MuiGrid-item"
       >
         <div
           className="MuiGrid-root MuiGrid-container MuiGrid-item"

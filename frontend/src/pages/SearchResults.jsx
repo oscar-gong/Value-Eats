@@ -7,6 +7,7 @@ import { logUserOut } from "../utils/logoutHelper";
 import EateryDisplay from "../components/EateryDisplay";
 import { MainContainer } from "../styles/MainContainer";
 import { Box } from "@material-ui/core";
+import request from "../utils/request";
 
 export default function SearchResults () {
   const context = useContext(StoreContext);
@@ -15,21 +16,16 @@ export default function SearchResults () {
   const [loading, setLoading] = useState(false);
   const [eateryList, setEateryList] = useState([]);
   const location = useLocation();
-  const search = location.state.search;
+  const search = location.state ? location.state.search : "";
 
   useEffect(() => {
     const getResultEateries = async () => {
       setLoading(true);
       console.log(`this is being searched ${search}`);
-      const response = await fetch(`http://localhost:8080/recommendation/eatery/fuzzy_search/${search}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: auth,
-          },
-        }
+      const searchFiltered = search.replace("%", "");
+      const response = await request.get(
+        `recommendation/eatery/fuzzy_search/${searchFiltered}`,
+        auth
       );
       const responseData = await response.json();
       if (response.status === 200) {
@@ -67,10 +63,10 @@ export default function SearchResults () {
       <NavBar isDiner={isDiner} />
       <MainContainer>
         <Box py={4}>
-            <h4>{`Found ${eateryList.length} Result${
-                eateryList.length === 1 ? "" : "s"
-            } for "${search}"`}</h4>
-            {displayEateryList()}
+          <h4>{`Found ${eateryList.length} Result${
+            eateryList.length === 1 ? "" : "s"
+          } for "${search}"`}</h4>
+          {!loading && displayEateryList()}
         </Box>
         <Loading isLoading={loading} />
       </MainContainer>

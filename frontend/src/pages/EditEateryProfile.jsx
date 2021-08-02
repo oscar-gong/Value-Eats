@@ -5,6 +5,7 @@ import EateryForm from "../components/EateryForm";
 import { useHistory, Redirect } from "react-router";
 import { logUserOut } from "../utils/logoutHelper";
 import { MainContainer } from "../styles/MainContainer";
+import request from "../utils/request";
 
 export default function EditEateryLanding () {
   const defaultState = { value: "", valid: true };
@@ -26,22 +27,12 @@ export default function EditEateryLanding () {
   const setAlertOptions = context.alert[1];
 
   // set to true for real demos
-  const useGoogleAPI = false;
+  const useGoogleAPI = true;
 
   useEffect(() => {
     // on page init, load the users details
     const getEatery = async () => {
-      const response = await fetch(
-        "http://localhost:8080/eatery/profile/details",
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: auth,
-          },
-        }
-      );
+      const response = await request.get("eatery/profile/details", auth);
       const responseData = await response.json();
       if (response.status === 200) {
         console.log(responseData);
@@ -87,7 +78,7 @@ export default function EditEateryLanding () {
       return;
     }
     console.log(images.length);
-    const updateBody = {
+    const payload = {
       alias: eateryName.value,
       email: email.value,
       address: useGoogleAPI ? address.value : "Sydney",
@@ -97,19 +88,9 @@ export default function EditEateryLanding () {
 
     };
     if (password.value.length > 0) {
-      updateBody.password = password.value;
+      payload.password = password.value;
     }
-
-    const response = await fetch("http://localhost:8080/update/eatery", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: auth,
-      },
-      body: JSON.stringify(updateBody),
-    });
-    console.log(response);
+    const response = await request.post("update/eatery", payload, auth);
     const responseData = await response.json();
     if (response.status === 200) {
       setAlertOptions({
@@ -133,6 +114,7 @@ export default function EditEateryLanding () {
     <>
       <NavBar isDiner={isDiner} />
       {console.log(eateryName)}
+      <div style={{ backgroundColor: "#F7FCF5" }}>
       <MainContainer>
         <EateryForm
           email={email}
@@ -157,6 +139,7 @@ export default function EditEateryLanding () {
           setTmpProfilePic={setTmpProfilePic}
         />
       </MainContainer>
+      </div>
     </>
   );
 }

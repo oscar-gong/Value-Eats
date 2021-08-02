@@ -1,20 +1,8 @@
 package com.nuggets.valueeats;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import com.nuggets.valueeats.controller.*;
-import com.nuggets.valueeats.entity.*;
-import com.nuggets.valueeats.service.*;
-import com.nuggets.valueeats.repository.*;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.json.JSONString;
+import com.nuggets.valueeats.entity.User;
+import com.nuggets.valueeats.repository.ReviewRepository;
+import com.nuggets.valueeats.repository.UserRepository;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +10,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class DinerFunctionalityControllerTests {
+
   @Autowired
   private UserRepository userRepository;
 
@@ -792,5 +777,4 @@ public class DinerFunctionalityControllerTests {
     )
     .andExpect(status().isOk());
   }
-
 }
