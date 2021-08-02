@@ -102,7 +102,7 @@ export default function DinerVoucher ({
             flexDirection="column"
             justifyContent="center"
           >
-            {!used && isRedeemable && (
+            {!used && isActive && (
               <Box display="flex"
               justifyContent="center"
               border="2px solid #FF845B"
