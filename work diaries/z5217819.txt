@@ -1,86 +1,207 @@
 Week 1
-- In week 1, we formed our groups and set-up our JIRA and GitHub accounts.
-- We have also created a Google Docs where we have written up the background of our project proposal.
-- We have made significant progress on the storyboards using Balsamiq, mapping out what we'd like the user interface to look like, taking in consideration of design principles for better user experience.
-- We had a team meeting on Sunday night to talk about our current progress, and also improved on our existing work together.
-- We plan to polish up the storyboards next week as well as start on the following sections of the proposal (user stories, etc.).
+- What was finished:
+    - In week 1, we formed our groups and set-up our JIRA and GitHub accounts.
+    - We have also created a Google Docs where we have written up the background of our project proposal.
+    - We have made significant progress on the storyboards using Balsamiq, mapping out what we'd like the user interface to look like, taking in consideration of design principles for better user experience.
+    - We had a team meeting on Sunday night to talk about our current progress, and also improved on our existing work together.
+
+- What were the main technical and non-technical obstacles and how they were overcome:
+    - The main obstacle was to ensure that our storyboard conforms with UI/UX principles, as well as considering of heuristics and usability goals. 
+
+- What was not finished, why this happened, how this affects the overall project progress
+    and what adjustments (if any) are needed so the success of the project is not endangered:
+    -   We have finished everything that we planned to achieve.
+- What is planned for the next period
+    -   We plan to polish up the storyboards next week as well as start on the following sections of the proposal (user stories, etc.).
 
 Week 2
-- This week, we mostly finished with our user stories.
-- During our lab in week 2, we've made significant progress, writing up acceptance criterias for each user stories.
-- Initially, I had written up some user stories, which we then later categorised into epics in our week 2 lab, and have also added them into our JIRA. We added story points to each user story in JIRA.
-- We have also decided on using Spring Boot, React and SQLite3 for this project.
-- We have finalised our storyboard, made some minor touches on areas where we have missed as we were writing user stories.
-- We made a start to the system architecture diagram which we would finish by the end of week 3.
-- Overall, there weren't many issues - all issues were able to be resolved easily.
-- In week 3, I plan to polish up our entire proposal and have it ready before our next meeting.
+-  What was planned for the period since the last work diary entry:
+    - We planned to begin working on the user story section of our proposal and polish our storyboard.
+
+- What was finished:
+    - This week, we mostly finished with our user stories.
+    - During our lab in week 2, we've made significant progress, writing up acceptance criterias for each user stories.
+    - Initially, I had written up some user stories, which we then later categorised into epics in our week 2 lab, and have also added them into our JIRA.
+    - We added story points to each user story in JIRA.
+    - We have also decided on using Spring Boot, React and SQLite3 for this project.
+    - We have finalised our storyboard, made some minor touches on areas where we have missed as we were writing user stories.
+    - We made a start to the system architecture diagram which we would finish by the end of week 3.
+
+- What were the main technical and non-technical obstacles and how they were overcome:
+    - We did not experience any obstacles.
+
+- What was not finished, why this happened, how this affects the overall project progress
+    and what adjustments (if any) are needed so the success of the project is not endangered:
+    -   We have finished everything that we planned to achieve.
+
+- What is planned for the next period:
+    - In week 3, I plan to polish up our entire proposal and have it ready before our next meeting.
 
 Week 3
-- This week we have got every section required into our proposal.
-- I added a table which demonstrated how our user stories had covered each project objective.
-- We have written up the novel functionalities our system will provide.
-- As determining if each user story is covered in our storyboards may be quite challenging, we have decided to create a table that states the relevant user stories in each storyboard frame.
-- We have finalised the system architecture diagrams and storyboards that we worked on last week.
-- We have also decided to write up the system architecture descriptions as we believed that it would make things clearer.
-- I have assisted in finalising the proposal ensuring that every section meets the criteria.
-- In week 4, we plan to begin our first sprint for our project. We plan to implement the authentication features of our system.
+-  What was planned for the period since the last work diary entry:
+    - We planned to polish and finish up our entire proposal.
+
+- What was finished:
+    - This week we have got every section required into our proposal.
+    - I added a table which demonstrated how our user stories had covered each project objective.
+    - We have written up the novel functionalities our system will provide.
+    - As determining if each user story is covered in our storyboards may be quite challenging, we have decided to create a table that states the relevant user stories in each storyboard frame.
+    - We have finalised the system architecture diagrams and storyboards that we worked on last week.
+    - We have also decided to write up the system architecture descriptions as we believed that it would make things clearer.
+    - I have assisted in finalising the proposal ensuring that every section meets the criteria.
+
+- What were the main technical and non-technical obstacles and how they were overcome:
+    - We did not experience any obstacles.
+
+- What was not finished, why this happened, how this affects the overall project progress:
+    - Everything was completed on time.
+
+- What is planned for the next period:
+    - In week 4, we plan to begin our first sprint for our project. We plan to implement the authentication features of our system.
 
 Week 4
-- This week, we have mostly implemented the authentication features of our system.
-- Initially, I experimented working with frontend, creating the design for our navigation bar.
-- Later, I then set-up our backend and had it connected to an SQLite3 database so that my team can begin working on implementing features.
-- I have implemented the initial structure of our system including setting up the classes for our entity, controllers, repositories and services.
-- I then worked on getting register diner and eatery functional so that my team can have an idea how things would be implemented.
-- Some of the obstacles we've faced included:
+-  What was planned for the period since the last work diary entry:
+    We had planned to begin our first sprint for our project. Sprint 1 involves implementing the authentication features of our system
+
+- What was finished:
+    - This week, we have mostly implemented the authentication features of our system.
+    - Initially, I experimented working with frontend, creating the design for our navigation bar.
+    - Later, I then set-up our backend and had it connected to an SQLite3 database so that my team can begin working on implementing features.
+    - I have implemented the initial structure of our system including setting up the classes for our entity, controllers, repositories and services.
+    - I then worked on getting register diner and eatery functional so that my team can have an idea how things would be implemented.
+
+- What were the main technical and non-technical obstacles and how they were overcome:
     - Lack of consistency in design when implementing a feature.
     - Conflicting views when deciding on the structure.
     - Branches were made before backend was properly set up leading to a lot of issues in terms of git management.
-- We plan to improve the design of our code by Monday to ensure that future features can be implemented with ease.
-- We also plan to begin our next sprint which includes working on profile related features.
+    - We seek to improve on communicating our ideas in the following weeks.
+
+- What was not finished, why this happened, how this affects the overall project progress:
+    - We have managed to implement Sprint 1 features for backend on time. Localstorage is yet to be implemented frontend.
+
+- What is planned for the next period:
+    - We plan to improve the design of our code by Monday to ensure that future features can be implemented with ease.
+    - We also plan to begin our next sprint which includes working on profile related features.
 
 Week 5
-- This week, I have improved the structure of our database backend so that cuisines and reviews will have a table.
-- I came up with an API table so that team members working in backend or frontend will know what to expect from HTTP routes.
-- This week, I have worked on the features surrounding creating/editing/removing reviews, as well as implementing a return structure for eatery profile details.
-- I have made minor adjustments to the expected response data so that it will work well when used in frontend.
-- We did not experience many, if not any, obstacles in backend as we communicated what we plan to do quite well to avoid any conflicts. The frontend workload seemed like a lot more so to overcome this,
-  I worked closely with frontend to ensure that any issues were resolved as soon as possible.
-- All backend features were completed on time. However, update eatery profile in frontend was not completed so that it will be moved to the next sprint.
-- We plan to implement mostly the features surrounding eatery voucher distribution in the following sprint.
+-  What was planned for the period since the last work diary entry:
+    - We planned to improve the design of our code by Monday to ensure that future features can be implemented with ease.
+    - We had also planned to begin sprint 2 which includes working on profile related features.
+
+- What was finished:
+    - This week, I have improved the structure of our database backend so that cuisines and reviews will have a table.
+    - I came up with an API table so that team members working in backend or frontend will know what to expect from HTTP routes.
+    - This week, I have worked on the features surrounding creating/editing/removing reviews, as well as implementing a return structure for eatery profile details.
+    - I have made minor adjustments to the expected response data so that it will work well when used in frontend.
+
+- What were the main technical and non-technical obstacles and how they were overcome:
+    - We did not experience many obstacles in backend as we communicated what we plan to do quite well to avoid any conflicts.
+    However, initially, we had trouble converting and parsing JSONobject as data that we could work with as we were used to using
+    the databind library which mapped JSON to POJO. This was resolved promptly using an object mapper.
+    The frontend workload seemed like a lot more so to overcome this, I worked closely with frontend to ensure that any issues were resolved as soon as possible.
+
+- What was not finished, why this happened, how this affects the overall project progress:
+    - All backend features were completed on time. However, update eatery profile in frontend was not completed so that it will be moved to the next sprint.
+
+- What is planned for the next period:
+    - We plan to implement mostly the features surrounding eatery voucher distribution in the following sprint.
 
 Week 6
-- Last week, we have planned to implement mostly the features surrounding eatery voucher distribution in the Sprint 3.
-- We have managed to implement all these features including a couple extra features that were included in Sprint 4.
-- The features implemented in backend included: create, edit, delete, verify, book and list diner vouchers. The eatery profile list of vouchers was also updated to include actual vouchers rather than placeholder values.
-- Some of the obstacles we've faced included:
-    - The project objective having a lot of edge cases that weren't considered carefully initially which required a lot of structural adjustments as we implemented each new feature. However, we have managed to overcome this
-    and getting the structure working.
-    - The JAVA date API isn't designed very well leading to issues with timezones (Date doesn't deal with timezones). To overcome this, I have decided to offset the times so that times are compared in the same timezone.
-- Everything that we had planned to finish in this sprint were finished on time.
-- Next week we plan to begin sprint 5. However, before we start doing this, I plan to improve our code design in backend to remove a lot of repetitive code.
+-  What was planned for the period since the last work diary entry:
+    - Last week, we have planned to implement mostly the features surrounding eatery voucher distribution in the Sprint 3.
+
+- What was finished:
+    - We have managed to implement all the planned features including a couple extra features that were included in Sprint 4.
+    - The features implemented in backend included: create, edit, delete, verify, book and list diner vouchers.
+    The eatery profile list of vouchers was also updated to include actual vouchers rather than placeholder values.
+
+- What were the main technical and non-technical obstacles and how they were overcome:
+    - The project objective having a lot of edge cases that weren't considered carefully initially which required a lot of structural adjustments as we implemented each new feature.
+    However, we have managed to overcome this and getting the structure working.
+    - The JAVA date API isn't designed very well leading to issues with timezones (Date doesn't deal with timezones).
+    To overcome this, I have decided to offset the times so that times are compared in the same timezone.
+
+- What was not finished, why this happened, how this affects the overall project progress:
+    - Everything that we had planned to finish in this sprint were finished on time.
+
+- What is planned for the next period:
+    - Next week we plan to begin sprint 5. However, before we start doing this, I plan to improve our code design in backend to remove a lot of repetitive code.
 
 Week 7
-- Last week, I have planned to improve code design in the backend to remove repetitive code. We have also planned to begin sprint 5 which involves search and recommendation.
-- This week, I managed to clean up a lot of the repetitive code early in the week, making functions for repetitive code and putting them into their respective utils class.
-- I have also made some plans surrounding how recommendation will be implemented later in the week, however, this is not final and most likely subject to change in the future.
-- As we have finished implementing the features in Sprint 4 ahead of time, we spent this week mostly polishing things up and also slowly worked on Sprint 5.
-- Kevin had made a good start on implementing search.
-- We did not face any obstacles this week as it mostly involved code cleaning around already functional features.
-- Everything that we had planned to finish was essentially completed on time.
-- Next week, we plan to finalise recommendation and search features and also create some unit tests.
+-  What was planned for the period since the last work diary entry:
+    - Last week, I have planned to improve code design in the backend to remove repetitive code. We have also planned to begin sprint 5 which involves search and recommendation.
+
+- What was finished:
+    - This week, I managed to clean up a lot of the repetitive code early in the week, making functions for repetitive code and putting them into their respective utils class.
+    - I have also made some plans surrounding how recommendation will be implemented later in the week, however, this is not final and most likely subject to change in the future.
+    -   As we have finished implementing the features in Sprint 4 ahead of time, we spent this week mostly polishing things up and also slowly worked on Sprint 5.
+    - Kevin had made a good start on implementing search which I have reviewed.
+    
+- What were the main technical and non-technical obstacles and how they were overcome:
+    - We did not face any obstacles this week as it mostly involved code cleaning around already functional features,
+    however, testing our software manually seemed to take a while so we plan to work on creating tests to automate this.
+
+- What was not finished, why this happened, how this affects the overall project progress:
+    - Everything that we had planned to finish was essentially completed on time.
+
+- What is planned for the next period:
+    - Next week, we plan to finalise recommendation and search features and also create some unit tests.
 
 Week 8
-- Last week, we have planned to implement and finalise both recommendation and search features in Sprint 5. We have also planned to create some unit tests using JUnit5.
-- This week, I have managed to implement a recommendation system.
-- I have also touched up on the response data returned for both search and eatery details so that required data is given for the view.
-- Create review was updated so that it better match what is required in the project objectives i.e. diners cannot create reviews until they have a discount voucher.
-- I have implemented sorting of eateries by new, rating and distance.
-- William had created some unit tests for our backend features.
-- Some of the obstacles we've faced included:
+-  What was planned for the period since the last work diary entry:
+    - Last week, we have planned to implement and finalise both recommendation and search features in Sprint 5. We have also planned to create some unit tests using JUnit5.
+
+- What was finished:
+    - This week, I have managed to implement a recommendation system.
+    - I have also touched up on the response data returned for both search and eatery details so that required data is given for the view.
+    - Create review was updated so that it better match what is required in the project objectives i.e. diners cannot create reviews until they have a discount voucher.
+    - I have implemented sorting of eateries by new, rating and distance.
+    - William had created some unit tests for our backend features.
+
+- What were the main technical and non-technical obstacles and how they were overcome:
 	- Object mapper/gson seemed to not work when mapping the JSON response to a JAVA model class. Kept having NPE. As a substitute, I used a JSON parser to process
 	the response.
 	- Slow response speed for distance sorting. As I was sending a new API request for each eatery, this made it extremely slow as each request would normally take
 	400ms for this API. After realising the speed, I sought ways to perhaps make it faster such as using parallel HTTP connections or some sort of caching system.
 	Soon later, I found out that I could pass multiple addresses in a single request. This had improved the response speed greatly.
-- We had completed everything we planned to do in Sprint 5 on time.
-- Next week, we plan to work on our final report and prepare for our presentation.
+
+- What was not finished, why this happened, how this affects the overall project progress:
+    - We had completed everything we planned to do in Sprint 5 on time.
+
+- What is planned for the next period:
+    - Next week, we plan to:
+        - work on our final report,
+        - add more tests,
+        - improve on code design both frontend and backend,
+        - and improve on the UI of our application.
+
+Week 9
+-  What was planned for the period since the last work diary entry:
+    - We had also planned to improve on our backend/frontend code design and the UI of our application.
+    - We had planned to add more backend tests.
+    - We had planned to work on our final report this week.
+
+- What was finished:
+    - I was able to improve on our backend code design by using the VSCode linter.
+    - I have renamed some functions so that they better describe what they're doing.
+    - I have renamed some files so that features can be located with greater ease.
+    - I have also noticed that search was always returning results based on best match, even when none of the results were close matches.
+    I have fixed this by adding a threshold to search.
+    - I have also written up the javadocs for each controller, utility, and service methods so that future users working with our code can better
+    understand what each function does and returns.
+    - William had further written some additional tests for backend which I have reviewed.
+    - Ash and Ben had worked closely improving on frontend code and our application's UI design.
+    - We have got what we've wanted in the final report and hope to polish it before 10pm on Monday.
+
+- What were the main technical and non-technical obstacles and how they were overcome:
+    - The main obstacle we've faced this week was finalising our application - which proved to be quite a challenging task as there is an
+    unending list of things that could be improved. During our Wednesday meeting, we discussed this - setting a day to finalise our application by (Saturday) to leave time for us to
+    work on and complete our final report. Our obstacles mostly stemmed from time management, so we've worked harder and managed complete what we had planned to do.
+
+- What was not finished, why this happened, how this affects the overall project progress:
+    - We had completed everything we planned to do on time.
+
+- What is planned for the next period:
+    - Finalise and submit our report + code before Monday 10pm.
+    - Prepare for our final presentation.
+    - Complete peer assessment.
