@@ -63,10 +63,10 @@ public class DistanceUtils {
                     if (elementStatus.equals("OK")) {
                         JSONObject distanceObj = (JSONObject) elements.get("distance");
                         Integer distance = Integer.parseInt(distanceObj.get("value").toString());
-                        System.out.println("Distance between you and " + addresses.get(i) + " is " + distance + "m.");
+
                         addressDistanceFromDiner.put(addresses.get(i), distance);
                     } else {
-                        System.out.println("Distance not found for:" + addresses.get(i));
+
                         addressDistanceFromDiner.put(addresses.get(i), Integer.MAX_VALUE);
                     }
                 }
@@ -74,7 +74,7 @@ public class DistanceUtils {
                 return null;
             }
         } catch (Exception e) {
-            System.out.println("Distance retrieval failed due to: " + e);
+
             return null;
         }
 

@@ -208,7 +208,6 @@ public class EateryService {
         }
 
         if (voucherInDb.isPresent()) {
-            System.out.println(voucherInDb.get());
             Voucher voucherDb = voucherInDb.get();
             // Convert it to recurring and delete old voucher
             if (voucher.getIsRecurring() != null && voucher.getIsRecurring()) {

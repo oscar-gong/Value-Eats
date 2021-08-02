@@ -71,8 +71,7 @@ public class VoucherUtils {
         time = Date.from(date.toInstant().plus(Duration.ofMinutes(minutes)));
         Date timeNow = new Date(System.currentTimeMillis());
         timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
-        System.out.println(time);
-        System.out.println(timeNow);
+
         return (time.compareTo(timeNow) > 0);
     }
 

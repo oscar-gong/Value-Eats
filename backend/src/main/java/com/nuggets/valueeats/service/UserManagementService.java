@@ -66,7 +66,7 @@ public class UserManagementService {
     */
     @Transactional
     public ResponseEntity<JSONObject> registerDiner(Diner diner) {
-        System.out.println(diner.getEmail());
+
         ResponseEntity<JSONObject> result = register(diner);
         if (result.getStatusCode().is2xxSuccessful()) {
             dinerRepository.save(diner);
@@ -105,9 +105,6 @@ public class UserManagementService {
         Map<String, String> dataMedium = new HashMap<>();
         dataMedium.put("token", userToken);
         JSONObject data = new JSONObject(dataMedium);
-
-        System.out.println(data);
-
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Welcome to ValueEats, " + user.getAlias(), data));
     }
 
@@ -124,7 +121,7 @@ public class UserManagementService {
             user.setEmail(user.getEmail().toLowerCase());
             userDb = userRepository.findByEmail(user.getEmail());
         } catch (PersistenceException e) {
-            System.out.println("error");
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseUtils.createResponse(e.toString()));
         }
 
@@ -134,7 +131,7 @@ public class UserManagementService {
 
         String token = jwtUtils.encode(String.valueOf(userDb.getId()));
         userDb.setToken(token);
-        System.out.println(userDb.getToken());
+
         userRepository.save(userDb);
 
         Map<String, String> dataMedium = new HashMap<>();
@@ -231,7 +228,7 @@ public class UserManagementService {
         try {
             userDb = userRepository.findByToken(token);
         } catch (PersistenceException e) {
-            System.out.println("error");
+
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse(e.toString()));
         }
 

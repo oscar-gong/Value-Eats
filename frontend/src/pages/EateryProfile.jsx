@@ -148,7 +148,7 @@ export default function EateryProfile () {
   const getReviews = () => {
     if (!eateryDetails.reviews) return;
     if (eateryDetails.reviews.length === 0) {
-      return <div>There are no reviews currently</div>;
+      return <div>No reviews have been made.</div>;
     }
     console.log(eateryDetails.reviews);
     return eateryDetails.reviews.map((item, key) => {
@@ -206,9 +206,8 @@ export default function EateryProfile () {
   const getNumberOfImages = () => {
     if (!eateryDetails.menuPhotos) return;
     if (eateryDetails.menuPhotos.length === 0) {
-      return <div>0 images</div>;
+      return <Box pt={1} pb={2}>No menu photos are currently available.</Box>;
     }
-    return <div>{`${eateryDetails.menuPhotos.length} images`}</div>;
   };
 
   const handleBooking = async () => {
@@ -257,7 +256,7 @@ export default function EateryProfile () {
   const getVouchers = () => {
     if (!eateryDetails.vouchers) return;
     if (eateryDetails.vouchers.length === 0) {
-      return <div> There are no vouchers available </div>;
+      return <div> There are no vouchers currently available. </div>;
     }
     return eateryDetails.vouchers.map((item, key) => {
       return (
@@ -313,11 +312,6 @@ export default function EateryProfile () {
       );
     });
   };
-
-  // const getCuisines = () => {
-  //   if (!eateryDetails.cuisines) return;
-  //   return eateryDetails.cuisines.join(", ");
-  // };
 
   return (
     <>
