@@ -129,7 +129,7 @@ export default function EateryVoucher ({
       <ConfirmModal open={openDeleteModal}
         handleClose={() => setOpenDeleteModal(false)}
         title={"Delete voucher?"}
-        message={`Customers will no longer be able to use the ${vouchersLeft} vouchers remaining, are you sure you want to delete?`}
+        message={`Customers will no longer be able to book the ${vouchersLeft} vouchers remaining, are you sure you want to delete?`}
         handleConfirm={() => removeVoucher(voucherId)}>
       </ConfirmModal>
       <EditCreateVoucher eateryId={eateryId} voucherId={voucherId}
