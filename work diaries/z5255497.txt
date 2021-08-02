@@ -209,3 +209,8 @@ Week8:
     
   What is planned for the next period:
     - I will implement more tests and write them in JUint. I will test the booking functionality, listing functionality and recommendation system.
+
+Week9:
+  What was planned for the period since the last work diary entry:
+    - We planned to implement more tests and write them in JUint
+    - We planned to finish the project report.
