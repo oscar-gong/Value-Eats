@@ -260,8 +260,8 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/login")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(String.valueOf(new JSONObject(body)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(String.valueOf(new JSONObject(body)))
 			)
 			.andExpect(status().is4xxClientError());
 	}
@@ -498,8 +498,8 @@ void eateryRegisterTest2() throws Exception {
 
 		this.mockMvc.perform(
 			post("/logout")
-							.contentType(MediaType.APPLICATION_JSON)
-							.header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", token)
 			)
 			.andExpect(status().isOk());
 	}
