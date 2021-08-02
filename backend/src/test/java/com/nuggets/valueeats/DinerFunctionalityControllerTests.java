@@ -685,7 +685,8 @@ public class DinerFunctionalityControllerTests {
     );
 
     this.mockMvc.perform(
-        get("/health/list/reviews")
+        MockMvcRequestBuilders
+        .get("/health/list/reviews")
         .contentType(MediaType.APPLICATION_JSON)
         .header("Authorization", token)
         .content(String.valueOf(new JSONObject(review2)))
@@ -770,7 +771,8 @@ public class DinerFunctionalityControllerTests {
     );
 
     this.mockMvc.perform(
-        get("/health/list/reviews")
+      MockMvcRequestBuilders
+      .get("/health/list/reviews")
         .contentType(MediaType.APPLICATION_JSON)
         .header("Authorization", token)
         .content(String.valueOf(new JSONObject(review2)))

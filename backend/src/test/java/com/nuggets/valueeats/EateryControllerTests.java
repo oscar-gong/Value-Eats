@@ -427,7 +427,8 @@ public class EateryControllerTests {
     );
 
     this.mockMvc.perform(
-      get("/health/list/repeatVoucher")
+      MockMvcRequestBuilders
+      .get("/health/list/repearVoucher")
         .contentType(MediaType.APPLICATION_JSON)
     )
     .andExpect(status().isOk());
@@ -493,7 +494,8 @@ public class EateryControllerTests {
     );
 
     this.mockMvc.perform(
-      get("/health/list/voucher")
+      MockMvcRequestBuilders
+      .get("/health/list/voucher")
         .contentType(MediaType.APPLICATION_JSON)
     )
     .andExpect(status().isOk());

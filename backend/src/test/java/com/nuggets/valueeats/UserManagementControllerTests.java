@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -610,7 +611,8 @@ class UserManagementControllerTests {
 		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
-			get("/health/list/eateries")
+      MockMvcRequestBuilders
+      .get("/health/list/diners")
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(status().isOk());
@@ -649,7 +651,8 @@ class UserManagementControllerTests {
 		System.out.println(new JSONObject(body));
 
 		this.mockMvc.perform(
-			get("/health/list/eateries")
+      MockMvcRequestBuilders
+      .get("/health/list/eateries")
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(status().isOk());
@@ -701,7 +704,8 @@ class UserManagementControllerTests {
 		System.out.println(new JSONObject(body2));
 
 		this.mockMvc.perform(
-			get("/health/list/users")
+      MockMvcRequestBuilders
+      .get("/health/list/users")
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(status().isOk());
