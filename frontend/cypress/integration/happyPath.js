@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-context("Test ValueEats - Happy path", () => {
+context("Test happy path - update user profile, create eatery voucher, book this voucher", () => {
   beforeEach(() => {
     cy.viewport(1000, 600);
     cy.visit("localhost:3000");
