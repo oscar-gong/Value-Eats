@@ -58,7 +58,7 @@ export default function DinerVouchers () {
         height="70vh"
         pt={2}
       >
-        <Subtitle style={{ color: "black" }}>
+        <Subtitle style={{ color: "#96ae33" }}>
           No Vouchers Purchased Yet..
         </Subtitle>
         <ButtonStyled
