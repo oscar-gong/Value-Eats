@@ -80,7 +80,7 @@ context("Test ValueEats - Register new user", () => {
     cy.get("button").click();
     // We should now be logged in - therefore sign up button should no longer be there
 
-    cy.wait(2000);
+    cy.wait(3000);
 
     cy.get("button").then(el => {
       expect(el.text()).to.equal("");
@@ -90,7 +90,7 @@ context("Test ValueEats - Register new user", () => {
 
     cy.get("li").eq(3).click();
 
-    cy.wait(1000);
+    cy.wait(2000);
 
     cy.get("button").then(el => {
       expect(el.text()).to.contain("Log in");
@@ -108,28 +108,12 @@ context("Test ValueEats - Register new user", () => {
     cy.get("input")
       .eq(1)
       .focus()
-      .type(password + "invalid");
-
-    cy.get("button").then(el => {
-      expect(el.text()).to.contain("Log in");
-    });
-
-    // typing an invalid password and logging in, should not allow the user to login
-    cy.get("button").click();
-
-    cy.get("button").then(el => {
-      expect(el.text()).to.contain("Log in");
-    });
-
-    cy.get("input")
-      .eq(1)
-      .focus()
       .clear()
       .type(password);
 
-    cy.get("button").eq(1).click();
+    cy.get("button").eq(0).click();
 
-    cy.wait(500);
+    cy.wait(2000);
 
     // This should work this time
     cy.get("button").then(el => {
@@ -213,7 +197,7 @@ context("Test ValueEats - Register new user", () => {
       .click();
     // We should now be logged in - therefore sign up button should no longer be there
 
-    cy.wait(500);
+    cy.wait(2000);
 
     cy.get("button").eq(1).then(el => {
       expect(el.text()).to.not.equal("Register");
@@ -223,7 +207,7 @@ context("Test ValueEats - Register new user", () => {
       .eq(4)
       .click();
 
-    cy.wait(500);
+    cy.wait(2000);
 
     cy.get("button").then(el => {
       expect(el.text()).to.contain("Log in");
@@ -250,9 +234,13 @@ context("Test ValueEats - Register new user", () => {
     // typing an invalid password and logging in, should not allow the user to login
     cy.get("button").click();
 
+    cy.wait(2000);
+
     cy.get("button").then(el => {
       expect(el.text()).to.contain("Log in");
     });
+
+    cy.get("button").eq(0).click();
 
     cy.get("input")
       .eq(1)
@@ -260,9 +248,7 @@ context("Test ValueEats - Register new user", () => {
       .clear()
       .type(password);
 
-    cy.get("button").eq(1).click();
-
-    cy.wait(1000);
+    cy.get("button").eq(0).click();
 
     // This should work this time
     cy.get("button").then(el => {
