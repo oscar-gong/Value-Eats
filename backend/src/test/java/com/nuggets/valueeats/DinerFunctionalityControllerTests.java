@@ -858,11 +858,11 @@ public void testCreateReview_invalidEateryId() throws Exception {
 
   @Test
   public void testEditReview_validInput() throws Exception {
-        this.userRepository.deleteAll();
-        this.reviewRepository.deleteAll();
-        this.voucherRepository.deleteAll();
+    this.userRepository.deleteAll();
+    this.reviewRepository.deleteAll();
+    this.voucherRepository.deleteAll();
     this.repeatVoucherRepository.deleteAll();
-        this.bookingRecordRepository.deleteAll();
+    this.bookingRecordRepository.deleteAll();
 
       Map<String, String> diner = new HashMap<>();
       diner.put("alias", "diner1");
@@ -959,11 +959,11 @@ public void testCreateReview_invalidEateryId() throws Exception {
 
   @Test
   public void testEditReview_invalidToken() throws Exception {
-        this.userRepository.deleteAll();
-        this.reviewRepository.deleteAll();
-        this.voucherRepository.deleteAll();
+    this.userRepository.deleteAll();
+    this.reviewRepository.deleteAll();
+    this.voucherRepository.deleteAll();
     this.repeatVoucherRepository.deleteAll();
-        this.bookingRecordRepository.deleteAll();
+    this.bookingRecordRepository.deleteAll();
       
       Map<String, String> diner = new HashMap<>();
       diner.put("alias", "diner1");
@@ -1061,11 +1061,11 @@ public void testCreateReview_invalidEateryId() throws Exception {
 
   @Test
   public void testEditReview_invalidEateryId() throws Exception {
-        this.userRepository.deleteAll();
-        this.reviewRepository.deleteAll();
-        this.voucherRepository.deleteAll();
-    this.repeatVoucherRepository.deleteAll();
-        this.bookingRecordRepository.deleteAll();
+  this.userRepository.deleteAll();
+  this.reviewRepository.deleteAll();
+  this.voucherRepository.deleteAll();
+  this.repeatVoucherRepository.deleteAll();
+  this.bookingRecordRepository.deleteAll();
       
       Map<String, String> diner = new HashMap<>();
       diner.put("alias", "diner1");
@@ -1163,11 +1163,11 @@ public void testCreateReview_invalidEateryId() throws Exception {
 
   @Test
   public void testEditReview_invalidRating() throws Exception {
-        this.userRepository.deleteAll();
-        this.reviewRepository.deleteAll();
-        this.voucherRepository.deleteAll();
+    this.userRepository.deleteAll();
+    this.reviewRepository.deleteAll();
+    this.voucherRepository.deleteAll();
     this.repeatVoucherRepository.deleteAll();
-        this.bookingRecordRepository.deleteAll();
+    this.bookingRecordRepository.deleteAll();
       
       Map<String, String> diner = new HashMap<>();
       diner.put("alias", "diner1");
@@ -1265,11 +1265,11 @@ public void testCreateReview_invalidEateryId() throws Exception {
 
   @Test
   void listReviewsTest1() throws Exception {
-        this.userRepository.deleteAll();
-        this.reviewRepository.deleteAll();
-        this.voucherRepository.deleteAll();
+    this.userRepository.deleteAll();
+    this.reviewRepository.deleteAll();
+    this.voucherRepository.deleteAll();
     this.repeatVoucherRepository.deleteAll();
-        this.bookingRecordRepository.deleteAll();
+    this.bookingRecordRepository.deleteAll();
 
         Map<String, String> diner = new HashMap<>();
         diner.put("alias", "diner1");
