@@ -35,6 +35,12 @@ public class RecommendationService {
     @Autowired
     private BookingRecordRepository bookingRecordRepository;
 
+    /**
+    * This method is used to provide a list of eateries that closely matches with a search string.
+    * The search is based on an eatery's alias, cuisines served and address.
+    *
+    * @param    search   A valid string to be used for search matching.
+    */
     public ResponseEntity<JSONObject> fuzzySearch(final String search) {
         final PriorityQueue<AbstractMap.SimpleImmutableEntry<Integer, Eatery>> pq = eateryRepository.findAll().stream()
                 .map(a -> new AbstractMap.SimpleImmutableEntry<>(FuzzySearch.weightedRatio(search, a.getCuisines().toString() + "|" + a.getAlias() + "|" + a.getAddress()), a))
@@ -57,6 +63,12 @@ public class RecommendationService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 
+    /**
+    * This method is used to provide a list of recommended eateries based on criteria weightings.
+    * 
+    * @param    token   An authentication token that uniquely identifies a diner.
+    * @see      #getWeight(Diner, Eatery, List)
+    */
     public ResponseEntity<JSONObject> recommendation(String token) {
         // - Eateries that are currently offering discount vouchers:
         //     - Diner has not previously booked for
@@ -93,6 +105,15 @@ public class RecommendationService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 
+    /**
+    * This method is invoked by recommendation to provide the weighting of a particular eatery for a user. The higher
+    * the weighting, the more the eatery should be recommended.
+    * 
+    * @param    diner                   A Diner object that contains diner details.
+    * @param    eatery                  An Eatery object that contains eatery details.
+    * @param    eateriesDinerBeenTo     A list of eateryIds that the diner has been to.
+    * @see      #recommendation(String)
+    */
     private Integer getWeight(Diner diner, Eatery eatery, List<Long> eateriesDinerBeenTo) {
         int weight = 0;
 

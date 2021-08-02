@@ -13,6 +13,12 @@ import java.util.Map;
 
 @Service
 public class CuisineService {
+
+    /**
+    * This method is used to obtain the predefined list of cuisines
+    *
+    * @return   The list of cuisines
+    */
     public ResponseEntity<JSONObject> listCuisines() {
         List<String> list = Arrays.asList(
                 (

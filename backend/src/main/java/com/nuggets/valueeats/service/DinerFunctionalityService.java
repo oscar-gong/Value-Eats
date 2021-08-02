@@ -45,6 +45,13 @@ public class DinerFunctionalityService {
     @Autowired
     private JwtUtils jwtUtils;
 
+    /**
+    * This method is used for creating a diner review for an eatery using the Review details.
+    * 
+    * @param    review  A Review object that must contain a rating, eateryId and optional message and reviewPhotos.
+    * @param    token  An authentication token that is unique to a diner.
+    * @return   An error message on failure or a success message when successful.
+    */
     public ResponseEntity<JSONObject> createReview(Review review, String token) {
         try {
             // Check if token is valid
@@ -105,6 +112,13 @@ public class DinerFunctionalityService {
         }
     }
 
+    /**
+    * This method is used for removing a diner review for an eatery given the Review details.
+    * 
+    * @param    review  A Review object that must contain a id and eateryId.
+    * @param    token  An authentication token that is unique to a diner.
+    * @return   An error message on failure or a success message when successful.
+    */
     public ResponseEntity<JSONObject> removeReview(Review review, String token) {
         try {
             // Check if token is valid
@@ -136,6 +150,16 @@ public class DinerFunctionalityService {
         }
     }
 
+    /**
+    * This method is used for acquiring a list of eateries sorted in a specific order.
+    * If no sorting option or invalid sorting option is given, eateries are sorted by ID.
+    * 
+    * @param    token  An authentication token that is unique to a diner.
+    * @param    sort  A string which is either "Distance", "New", or "Rating" to determine eatery sorting.
+    * @param    latitude  The latitude of the diner's location if using distance sorting.
+    * @param    longitude  The longitude of the diner's location if using distance sorting.
+    * @return   An error response with error message or a success response with list of eateries.
+    */
     public ResponseEntity<JSONObject> listEateries(String token, String sort, Double latitude, Double longitude) {
         if (!dinerRepository.existsByToken(token) || token.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseUtils.createResponse("Invalid token"));
@@ -200,6 +224,13 @@ public class DinerFunctionalityService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 
+    /**
+    * This method is used for editing a diner review using the new Review details.
+    * 
+    * @param    review  A Review object that must contain the id, eateryId and rating, and optional message and reviewPhotos.
+    * @param    token   An authentication token that is unique to a diner.
+    * @return   An error message on failure or success message when successful.
+    */
     public ResponseEntity<JSONObject> editReview(Review review, String token) {
         try {
             // Check if token is valid
@@ -269,6 +300,12 @@ public class DinerFunctionalityService {
         }
     }
 
+    /**
+    * This method is used for listing the vouchers of a diner given a valid diner token.
+    * 
+    * @param    token   An authentication token that is unique to a diner.
+    * @return   An error message on failure or success response containing the diner's voucher details.
+    */
     public ResponseEntity<JSONObject> dinerListVouchers(String token) {
         String id = jwtUtils.decode(token);
 
@@ -319,6 +356,13 @@ public class DinerFunctionalityService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse(data));
     }
 
+    /**
+    * This method is used for booking an eatery voucher given a valid diner token and voucherId.
+    * 
+    * @param    voucherId   An id that is unique to a voucher.
+    * @param    token       An authentication token that is unique to a diner.
+    * @return   An error message on failure or success response containing the diner's booking details.
+    */
     public ResponseEntity<JSONObject> bookVoucher(Long voucherId, String token) {
         String decodedToken = jwtUtils.decode(token);
         if (decodedToken == null) {

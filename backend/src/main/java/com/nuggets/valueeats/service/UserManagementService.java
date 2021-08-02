@@ -39,6 +39,14 @@ public class UserManagementService {
     @Autowired
     private JwtUtils jwtUtils;
 
+    /**
+    * This method is used to register an eatery given a valid Eatery object with the required fields.
+    * 
+    * @param    eatery  An Eatery object that contains eatery details.
+    *                   Must contain alias, email and password. Can contain profilePic, address, cuisines
+                        and menuPhotos.
+    * @return   An error message on failure or a success message when successful.
+    */
     @Transactional
     public ResponseEntity<JSONObject> registerEatery(Eatery eatery) {
         ResponseEntity<JSONObject> result = register(eatery);
@@ -49,6 +57,13 @@ public class UserManagementService {
         return result;
     }
 
+    /**
+    * This method is used to register an diner given a valid Diner object with the required fields.
+    * 
+    * @param    diner  A Diner object that contains eatery details.
+    *                   Must contain alias, email and password. Can contain profilePic and address.
+    * @return   An error message on failure or a success message when successful.
+    */
     @Transactional
     public ResponseEntity<JSONObject> registerDiner(Diner diner) {
         System.out.println(diner.getEmail());
@@ -60,6 +75,12 @@ public class UserManagementService {
         return result;
     }
 
+    /**
+    * This method is invoked by {@linkplain #registerDiner(Diner)} or {@linkplain #registerEatery(Eatery)}.
+    * 
+    * @param    user  A User object that contains User details. Must contain alias, email and password.
+    * @return   An error message on failure or a success message when successful.
+    */
     @Transactional
     public ResponseEntity<JSONObject> register(User user) {
         if (user.getEmail() == null || user.getPassword() == null || user.getAlias() == null) {
@@ -90,6 +111,12 @@ public class UserManagementService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Welcome to ValueEats, " + user.getAlias(), data));
     }
 
+    /**
+    * This method is used for logging in a user given valid User details.
+    * 
+    * @param    user  A User object that contains User details. Must contain email and password.
+    * @return   An error message on failure or a success message when successful.
+    */
     @Transactional
     public ResponseEntity<JSONObject> login(User user) {
         User userDb;
@@ -118,6 +145,12 @@ public class UserManagementService {
                 dinerRepository.existsByEmail(userDb.getEmail()), dataMedium);
     }
 
+    /**
+    * This method is used for logging out a user given a token.
+    * 
+    * @param    token  An authentication token that identifies a user.
+    * @return   An error message on failure or a success message when successful.
+    */
     @Transactional
     public ResponseEntity<JSONObject> logout(String token) {
         if (!userRepository.existsByToken(token) || token.isEmpty()) {
@@ -136,6 +169,13 @@ public class UserManagementService {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseUtils.createResponse("Logout was successful"));
     }
 
+    /**
+    * This method is used for updating a diner's detail given a token and Diner details.
+    * 
+    * @param    token  An authentication token that identifies a diner.
+    * @param    diner  A Diner object that contains the Diner details to be updated.
+    * @return   An error message on failure or a success message when successful.
+    */
     @Transactional
     public ResponseEntity<JSONObject> updateDiner(Diner diner, String token) {
         ResponseEntity<JSONObject> result = update(diner, token);
@@ -147,6 +187,14 @@ public class UserManagementService {
         return result;
     }
 
+    
+    /**
+    * This method is used for updating a eatery's detail given a token and Eatery details.
+    * 
+    * @param    token  An authentication token that identifies a eatery.
+    * @param    eatery  A Eatery object that contains the Eatery details to be updated.
+    * @return   An error message on failure or a success message when successful.
+    */
     @Transactional
     public ResponseEntity<JSONObject> updateEatery(Eatery eatery, String token) {
         ResponseEntity<JSONObject> result = update(eatery, token);
@@ -167,6 +215,16 @@ public class UserManagementService {
         return result;
     }
 
+    /**
+    * This method is invoked by {@linkplain #updateDiner(Diner, String)} or {@linkplain #updateEatery(Eatery, String)} 
+    * to update a user's detail given a token and User details to be updated.
+    * 
+    * @param    token  An authentication token that identifies a user.
+    * @param    user  A User object that contains the User details to be updated.
+    * @see #updateDiner(Diner, String)
+    * @see #updateEatery(Eatery, String)
+    * @return   An error message on failure or a success message when successful.
+    */
     @Transactional
     public ResponseEntity<JSONObject> update(User user, String token) {
         User userDb;
@@ -190,6 +248,12 @@ public class UserManagementService {
                 + user.getAlias()));
     }
 
+    /**
+    * This method is used for validating email and password.
+    * 
+    * @param    user  A User object that contains an email and password.
+    * @return   An error message on failure or a success message when successful.
+    */
     public String validInputChecker(final User user) {
         if (!ValidationUtils.isValidEmail(user.getEmail())) {
             return "Invalid Email Format.";
@@ -200,6 +264,13 @@ public class UserManagementService {
         return null;
     }
 
+    /**
+    * This method is used for updating a user profile with new details.
+    * 
+    * @param    newProfile  A User object that contains the new profile information.
+    * @param    oldProfile  A User object that contains the old profile information.
+    * @return   An error message on failure or a success message when successful.
+    */
     public String processNewProfile(User newProfile, User oldProfile) {
 
         newProfile.setId(oldProfile.getId());
@@ -248,6 +319,12 @@ public class UserManagementService {
         return null;
     }
 
+    /**
+    * This method is used for obtaining the details of a diner.
+    * 
+    * @param    token  An authentication token that is unique to a diner.
+    * @return   An error message on failure or a success message when successful.
+    */
     public ResponseEntity<JSONObject> getDinerProfile(String token) {
         String decodedToken = jwtUtils.decode(token);
 
@@ -287,6 +364,12 @@ public class UserManagementService {
         return ResponseEntity.status(HttpStatus.OK).body(new JSONObject(result));
     }
 
+    /**
+    * This method is used for obtaining the details of a eatery.
+    * 
+    * @param    token  An authentication token that is unique to a user.
+    * @return   An error message on failure or a success message when successful.
+    */
     public ResponseEntity<JSONObject> getEateryProfile(Long id, String token) {
         String decodedToken = jwtUtils.decode(token);
         if (decodedToken == null) {
