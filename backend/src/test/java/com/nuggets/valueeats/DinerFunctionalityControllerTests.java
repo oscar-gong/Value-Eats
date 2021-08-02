@@ -357,13 +357,13 @@ public void testCreateReview_invalidEateryId() throws Exception {
       diner.put("password", "12rwqeDsad@");
 
        String result = this.mockMvc.perform(
-              post("/register/diner")
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .content(String.valueOf(new JSONObject(diner)))
+                post("/register/diner")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.valueOf(new JSONObject(diner)))
       )
-              .andReturn()
-              .getResponse()
-              .getContentAsString();
+        .andReturn()
+        .getResponse()
+        .getContentAsString();
 
        JSONObject data = new JSONObject(result);
       String token = data.getJSONObject("data").getString("token");
@@ -402,13 +402,13 @@ public void testCreateReview_invalidEateryId() throws Exception {
       review2.put("rating", "2");
 
        this.mockMvc.perform(
-              MockMvcRequestBuilders
-                      .post("/diner/editreview")
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .header("Authorization", token)
-                      .content(String.valueOf(new JSONObject(review2)))
+        MockMvcRequestBuilders
+        .post("/diner/editreview")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token)
+        .content(String.valueOf(new JSONObject(review2)))
       )
-              .andExpect(status().isOk());
+        .andExpect(status().isOk());
   }
 
   @Test
