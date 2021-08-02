@@ -216,8 +216,9 @@ Week9:
     - We planned to finish the project report.
 
   What was finished:
-    - We have finished up everything.
-    - We have finished the report
+    - We have finished up everything in the system.
+    - We have finished most part of the report.
+    - I have implemented tests for list functionality, and fixed some errors in the previous tests.
     
   What were the main technical and non-technical obstacles and how they were
   overcome:
