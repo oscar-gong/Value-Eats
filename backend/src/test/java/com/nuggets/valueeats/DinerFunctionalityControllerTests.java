@@ -208,6 +208,7 @@ public void testCreateReview_invalidEateryId() throws Exception {
                        .contentType(MediaType.APPLICATION_JSON)
                        .content(String.valueOf(new JSONObject(eatery)))
        );
+       
        Map<String, String> review = new HashMap<>();
        review.put("id", "0");
        review.put("dinerId", "0");
@@ -357,41 +358,72 @@ public void testCreateReview_invalidEateryId() throws Exception {
       diner.put("password", "12rwqeDsad@");
 
        String result = this.mockMvc.perform(
-                post("/register/diner")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(String.valueOf(new JSONObject(diner)))
+        post("/register/diner")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(String.valueOf(new JSONObject(diner)))
       )
         .andReturn()
         .getResponse()
         .getContentAsString();
 
-       JSONObject data = new JSONObject(result);
-      String token = data.getJSONObject("data").getString("token");
+      JSONObject data = new JSONObject(result);
+      String token_diner = data.getJSONObject("data").getString("token");
 
-       Map<String, String> eatery = new HashMap<>();
+      Map<String, String> eatery = new HashMap<>();
       eatery.put("alias", "eatery1");
       eatery.put("email", "eatery1@gmail.com");
       eatery.put("address", "Sydney");
       eatery.put("password", "12rwqeDsad@");
 
-       this.mockMvc.perform(
-              post("/register/eatery")
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .content(String.valueOf(new JSONObject(eatery)))
-      );
+       result = this.mockMvc.perform(
+        post("/register/eatery")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.valueOf(new JSONObject(eatery)))
+      )
+      .andReturn()
+      .getResponse()
+      .getContentAsString();
 
+        data = new JSONObject(result);
+      String token_eatery = data.getJSONObject("data").getString("token");
+      
+      Map<String,String> voucher1 = new HashMap<>();
+      voucher1.put("eateryId","0");
+      voucher1.put("eatingStyle","DineIn");
+      voucher1.put("discount","0.8");
+      voucher1.put("quantity","15");
+      voucher1.put("isRecurring","false");
+      long currenttime = System.currentTimeMillis() + Long.valueOf(36000000);
+      voucher1.put("date", Long.toString(currenttime));
+      voucher1.put("startMinute","10");
+      voucher1.put("endMinute","50");
+  
+      this.mockMvc.perform(
+        post("/eatery/voucher")
+          .contentType(MediaType.APPLICATION_JSON)
+          .header("Authorization", token_eatery)
+          .content(String.valueOf(new JSONObject(voucher1)))
+      )
+      .andExpect(status().isOk());
+
+      this.mockMvc.perform(
+        post("/diner/book")
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("Authorization", token_diner)
+        .param("id", "0")
+      );
+      
        Map<String, String> review1 = new HashMap<>();
-      review1.put("id", "0");
       review1.put("dinerId", "0");
       review1.put("eateryId", "1");
       review1.put("message", "hello");
       review1.put("rating", "4");
 
        this.mockMvc.perform(
-              post("/diner/createreview")
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .header("Authorization", token)
-                      .content(String.valueOf(new JSONObject(review1)))
+        post("/diner/createreview")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", token_diner)
+                .content(String.valueOf(new JSONObject(review1)))
       );
 
        Map<String, String> review2 = new HashMap<>();
@@ -405,7 +437,7 @@ public void testCreateReview_invalidEateryId() throws Exception {
         MockMvcRequestBuilders
         .post("/diner/editreview")
         .contentType(MediaType.APPLICATION_JSON)
-        .header("Authorization", token)
+        .header("Authorization", token_diner)
         .content(String.valueOf(new JSONObject(review2)))
       )
         .andExpect(status().isOk());
