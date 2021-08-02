@@ -209,3 +209,26 @@ Week8:
     
   What is planned for the next period:
     - I will implement more tests and write them in JUint. I will test the booking functionality, listing functionality and recommendation system.
+
+Week9:
+  What was planned for the period since the last work diary entry:
+    - We planned to implement more tests and write them in JUint
+    - We planned to finish the project report.
+
+  What was finished:
+    - We have finished up everything in the system.
+    - We have finished most part of the report.
+    - I have implemented tests for list functionality, and fixed some errors in the previous tests.
+    
+  What were the main technical and non-technical obstacles and how they were
+  overcome:
+    - The time management. We need to finish the report and our software. We split the tasks and completed them.
+
+What was not finished, why this happened, how this affects the overall project
+  progress and what adjustments (if any) are needed so the success of the project is
+    not endangered:
+    
+    - Everything is finished. The software works good and the report is finished.
+    
+  What is planned for the next period:
+    - We are going to submit our software and report.

@@ -156,3 +156,26 @@ Everything we planned to finish was able to be finished.
 - What is planned for next sprint
 From here, we plan to further refine our frontend as well as our backend design and potentially add more testing. Then once that is done, our application will be complete. 
 We will then focus on writing up our final report and prepare our structure for final demonstration.
+
+Week 9
+-What was planned for the period since the last work diary
+We planned to further refine our frontend as well as our backend design and potentially add more testing. Then once that is done, our application will be complete. 
+We will then aimed to write up our final report and prepare our structure for final demonstration.
+
+-What was finished
+We were able to complete everything that we planned on completing. We heavily improved our frontend interface immensely with almost all pages being redesigned to be easier to use
+and more aesthetically pleasing. Furthmore, the backend was refactored to be more efficient and javadocs were added to all of the methods, with particular emphasis being placed on 
+the methods in controllers that were publicly available. I focused primarily on frontend improvements and also wrote up a cypress happy path test once the UI was finalised. This was not
+done eariler as it was likely I would have written a lot of redundant code, as the UI would drastically change and my integration tests would no longer selected the right elemenets.
+
+- What were the main technical and non-technical obstacles and how they were overcome.
+The main challenges this week were time management. There was a lot to do with finalising the project and writing up documentation so it was difficult to get the volume of work completed.
+Furthermore, it required alot of communication and teamwork as with so much work, overlapping could cause major issues as it wastes time. This is because likely either one person's work
+will be taken, meaning the other person did all their work for nothing, or they will try to compramise, which is a time consuming process and time that could be better spent working on
+the workfload that needs to be done.
+
+-What was not finished
+Everything we planned to finish was able to be finished. 
+
+- What is planned for next sprint
+Submit and complete our final presentation!!

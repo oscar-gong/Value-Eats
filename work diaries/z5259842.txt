@@ -161,3 +161,24 @@ Week 8
 - What is planned for the next period:
     - As the project will be due rather soon, we will need to finalise everything in terms of code quality, visual design, testing etc.
     - We also will need to begin our final report and hopefully get it finalised by the end of the week 
+
+Week 9
+- What was planned for the period since the last work diary entry:
+    - The plan was to completely finish our project, including the report and documentation, as well as testing. 
+    - Clean up our code and make improvements where possible
+
+- What we finished:
+    - We were able to successfully finish our project with all the functionalities that we intended to implement completed
+    - I worked on redesigning the frontend as it was initally very plain, added in some visual design
+    - I also worked on making fixes to various elements such as defaulting the time of vouchers when selecting to the be current time to make it more usable for users
+
+- Obstacles that we faced:
+    - The main obstacle that we faced in this sprint was time. 
+    - As it is coming towards the end of the term, everyone tends to become busier and are more pressed for time with deadlines from other courses as well
+    - However, despite this, we were able to resolve this by working on it whenever we had the free time as well as helping each other out if one person was more available
+
+- What was not finished:
+    - Everything was completed including the report and the project
+
+- What is planned for the next period:
+    - Prepare for the demonstration 
