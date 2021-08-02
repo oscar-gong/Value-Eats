@@ -428,7 +428,7 @@ public class EateryControllerTests {
 
     this.mockMvc.perform(
       MockMvcRequestBuilders
-      .get("/health/list/repearVoucher")
+      .get("/health/list/repeatVoucher")
         .contentType(MediaType.APPLICATION_JSON)
     )
     .andExpect(status().isOk());
