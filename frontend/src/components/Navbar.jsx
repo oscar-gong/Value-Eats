@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export default function Navbar () {
+export default function Navbar() {
   const classes = useStyles();
   const history = useHistory();
 
@@ -88,6 +88,7 @@ export default function Navbar () {
       setIsDiner(null);
       localStorage.removeItem("token");
       localStorage.removeItem("isDiner");
+      localStorage.setItem("searchTerm", "");
       history.push("/");
     } else {
       setAlertOptions({
@@ -100,6 +101,7 @@ export default function Navbar () {
 
   const handleLogoClick = () => {
     console.log(localStorage.getItem("token"));
+    clearSearch();
     if (auth === null) return history.push("/");
     // if token is manually deleted from localstorage on browser
     if (localStorage.getItem("token") === null) {
@@ -128,10 +130,19 @@ export default function Navbar () {
     }
   };
 
+  const clearSearch = () => {
+    localStorage.setItem("searchTerm", "");
+  };
+
   return (
     <NavbarStyled isDiner={isDiner} elevation={0}>
       <Toolbar className={classes.singleLine}>
-        <img src={logo} alt="Value Eats logo" className={classes.logo} onClick={handleLogoClick} />
+        <img
+          src={logo}
+          alt="Value Eats logo"
+          className={classes.logo}
+          onClick={handleLogoClick}
+        />
         {isDiner === "true" && (
           <Toolbar className={classes.barSize}>
             <div className={classes.searchContainer}>
@@ -143,6 +154,7 @@ export default function Navbar () {
                   inputProps={{
                     "aria-label": "search",
                   }}
+                  value={search}
                   onKeyPress={handleKeyPress}
                 />
               </div>
@@ -162,6 +174,7 @@ export default function Navbar () {
           isDiner === "false" && <div style={{ flex: 1 }}></div>
         }
         <NavLink
+          onClick={clearSearch}
           isDiner={isDiner}
           to={isDiner === "true" ? "/DinerLanding" : "/EateryLanding"}
         >
@@ -173,13 +186,14 @@ export default function Navbar () {
           </NavLink>
         )}
         <NavLink
+          onClick={clearSearch}
           isDiner={isDiner}
           to={isDiner === "true" ? "/DinerProfile" : "/EateryProfile"}
         >
           PROFILE
         </NavLink>
         {isDiner === "true" && (
-          <NavLink isDiner={isDiner} to="/DinerVouchers">
+          <NavLink isDiner={isDiner} to="/DinerVouchers" onClick={clearSearch}>
             MY VOUCHERS
           </NavLink>
         )}
