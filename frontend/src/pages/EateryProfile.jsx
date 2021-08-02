@@ -57,6 +57,13 @@ const useStyles = makeStyles({
     fontSize: "2em",
     padding: "10px 0px",
   },
+  codeText: {
+    fontWeight: "bold",
+    fontSize: "20pt",
+    backgroundColor: "#FFA500",
+    color: "white",
+    padding: "1%",
+  },
 });
 
 export default function EateryProfile () {
@@ -402,21 +409,42 @@ export default function EateryProfile () {
             open={openConfirmModal}
             handleClose={handleCloseModal}
             // eateryId={eateryId}
-            title={!isConfirmed ? "Confirmation" : "Discount Booked!"}
-            message={
-              !isConfirmed
-                ? `Purchase for ${eateryDetails.name}, valid for use between ${
-                    voucherDetails.startTime
-                  } - ${handleTimeNextDay(voucherDetails.endTime)} on ${
-                    voucherDetails.date
-                  }`
-                : `${voucherDetails.discount}% off at ${
-                    eateryDetails.name
-                  }, CODE: ${code}, Valid between ${
-                    voucherDetails.startTime
-                  } - ${handleTimeNextDay(voucherDetails.endTime)} on ${
-                    voucherDetails.date
-                  }.`
+            title={!isConfirmed
+              ? "Confirmation"
+              : "Discount Booked!"}
+            message={!isConfirmed
+              ? <div>
+                  <Box pb={2}display="flex" justifyContent="center">
+                    <b>Purchase for {voucherDetails.discount}% off at {eateryDetails.name}</b>:
+                  </Box>
+                  <div>
+                    Valid for use between {voucherDetails.startTime} -{" "}
+                    {handleTimeNextDay(voucherDetails.endTime)} on{" "}
+                    {voucherDetails.date}
+                  </div>
+                </div>
+              : <div>
+                <Box pb={2}display="flex" justifyContent="center">
+                  Thank you for purchasing a {voucherDetails.discount}% off
+                  voucher at {eateryDetails.name}!
+                </Box>
+                <Box
+                  pb={2}
+                  display="flex"
+                  justifyContent="center"
+                  style={{ fontWeight: "bold" }}
+                >
+                  Present this code at the restaurant to redeem:
+                </Box>
+                <Box pb={2} display="flex" justifyContent="center">
+                  <div className={classes.codeText}>{code}</div>
+                </Box>
+                <Box display="flex" justifyContent="center">
+                  Valid for use between {voucherDetails.startTime} -{" "}
+                  {handleTimeNextDay(voucherDetails.endTime)} on{" "}
+                  {voucherDetails.date}
+                </Box>
+              </div>
             }
             denyText={isConfirmed ? "View Vouchers" : "Cancel"}
             handleDeny={

@@ -12,6 +12,16 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class BookingUtils {
+
+    /**
+    * This utility method is used for setting voucher details to a booking record.
+    * 
+    * @param    bookingRecord   A BookingRecord object.
+    * @param    voucher         A Voucher object that consists of eatingStyle, discount, date, start
+    *                               and end.
+    * @return   A bookingRecord with set values.
+    * @see      Voucher
+    */
     public static BookingRecord setVoucherDetails(BookingRecord bookingRecord, Voucher voucher) {
         bookingRecord.setEatingStyle(voucher.getEatingStyle());
         bookingRecord.setDiscount(voucher.getDiscount());
@@ -21,6 +31,15 @@ public class BookingUtils {
         return bookingRecord;
     }
 
+    /**
+    * This utility method is used for setting Repeated Voucher details to a booking record.
+    * 
+    * @param    bookingRecord   A BookingRecord object.
+    * @param    voucher         A RepeatedVoucher object that consists of eatingStyle, discount, date, start
+    *                               and end.
+    * @return   A bookingRecord with set values.
+    * @see      RepeatedVoucher
+    */
     public static BookingRecord setVoucherDetails(BookingRecord bookingRecord, RepeatedVoucher repeatedVoucher) {
         bookingRecord.setEatingStyle(repeatedVoucher.getEatingStyle());
         bookingRecord.setDiscount(repeatedVoucher.getDiscount());
@@ -30,6 +49,12 @@ public class BookingUtils {
         return bookingRecord;
     }
 
+    /**
+    * This utility method is used for generating a unique 5 digit alphanumeric code.
+    * 
+    * @param    bookingRecordRepository   BookingRecordRepository containing booking records.
+    * @return   A string containing a unique 5 digit alphanumeric code.
+    */
     public static String generateRandomCode(BookingRecordRepository bookingRecordRepository) {
         String uuid = UUID.randomUUID().toString().substring(0, 5);
         while (bookingRecordRepository.existsByCode(uuid)) {
@@ -38,6 +63,22 @@ public class BookingUtils {
         return uuid;
     }
 
+    /**
+    * This utility method is used for creating a HashMap containing booking details.
+    * 
+    * @param    id          An id that uniquely identifies a booking.
+    * @param    code        A unique code that is used for verifying a booking.
+    * @param    date        A date that defines the voucher active date
+    * @param    start       An integer that defines the start minute.
+    * @param    end         An integer that defines the end minute.
+    * @param    eatingStyle A VoucherEatingStyle that defines an eating style.
+    * @param    discount    A double that defines the voucher discount.
+    * @param    eateryId    An id that uniquely identifies the eatery.
+    * @param    isRedeemed  A boolean that defines whether or not the voucher has been redeemed.
+    * @param    alias       A string that defines the eatery name.
+    * @return   A HashMap of the booking details.
+    * @see      VoucherEatingStyle
+    */
     public static HashMap<String, Object> createBooking(Long id, String code, Date date, Integer start, Integer end, VoucherEatingStyle eatingStyle, Double discount, Long eateryId, boolean isRedeemed, String alias) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
         String strDate = formatter.format(date);

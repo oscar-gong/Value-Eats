@@ -17,14 +17,21 @@ public final class JwtUtils {
     @Value("${security.encryption.token_secret}")
     private String SECRET;
 
-    public String encode(String username) {
+    
+    /**
+    * This utility method is used for creating a unique JSON web token.
+    * 
+    * @param    userId      An id that uniquely identifies a user
+    * @return   A JSON web token.
+    */
+    public String encode(String userId) {
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList("ROLE_USER");
 
         return Jwts
                 .builder()
                 .setId("softtekJWT")
-                .setSubject(username)
+                .setSubject(userId)
                 .claim("authorities",
                         grantedAuthorities.stream()
                                 .map(GrantedAuthority::getAuthority)
@@ -35,6 +42,12 @@ public final class JwtUtils {
                 .compact();
     }
 
+    /**
+    * This utility method is used for decoding a unique JSON web token.
+    * 
+    * @param    jwtToken      A JWT that uniquely identifies a user
+    * @return   A user ID.
+    */
     public String decode(String jwtToken) {
         try {
             return Jwts.parser()
