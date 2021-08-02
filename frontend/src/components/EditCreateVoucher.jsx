@@ -21,7 +21,7 @@ export default function EditCreateVoucher ({ eateryId, voucherId, open, setOpen,
   const [isDineIn, setisDineIn] = useState(defaultState(initDineIn));
   const [discount, setDiscount] = useState(defaultState(initDiscount));
   const [quantity, setQuantity] = useState(defaultState(initQuantity));
-  let dateLater = new Date();
+  const dateLater = new Date();
   dateLater.setMinutes(dateLater.getMinutes() + 30);
   const [startDateTime, setStartDateTime] = useState(defaultState(initStartTime === ""
     ? date.toISOString().split("T")[0] + `T${date.getHours()}:${date.getMinutes()}`
