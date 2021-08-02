@@ -76,9 +76,12 @@ export default function DinerVouchers () {
     if (vouchers.length === 0) {
       return noVouchersMessage();
     }
-    if (vouchers.reduce((total, voucher) => {
-      return total + (voucher.isActive ? 1 : 0);
-    }, 0) === 0 && showHistory === 0) {
+    if (
+      vouchers.reduce((total, voucher) => {
+        return total + (!voucher.used && voucher.isActive ? 1 : 0);
+      }, 0) === 0 &&
+      showHistory === 0
+    ) {
       return (
         <Box
           display="flex"
@@ -88,12 +91,15 @@ export default function DinerVouchers () {
           height="70vh"
           pt={2}
         >
-          <Subtitle style={{ color: "black" }}>
+          <Subtitle style={{ color: "#96ae33" }}>
             No Currently Active Vouchers
           </Subtitle>
-          <Subtitle style={{ color: "black" }}>
-            Click &quot;Show Historical&quot; to see your redeemed vouchers
-          </Subtitle>
+          <ButtonStyled
+            widthPercentage={40}
+            onClick={() => history.push("/DinerLanding")}
+          >
+            Find restaurants
+          </ButtonStyled>
         </Box>
       );
     }
@@ -127,9 +133,12 @@ export default function DinerVouchers () {
     if (vouchers.length === 0) {
       return noVouchersMessage();
     }
-    if (vouchers.reduce((total, voucher) => {
-      return total + ((voucher.used || !voucher.isActive) ? 1 : 0);
-    }, 0) === 0 && showHistory === 1) {
+    if (
+      vouchers.reduce((total, voucher) => {
+        return total + (voucher.used || !voucher.isActive ? 1 : 0);
+      }, 0) === 0 &&
+      showHistory === 1
+    ) {
       return (
         <Box
           display="flex"
@@ -139,9 +148,13 @@ export default function DinerVouchers () {
           height="70vh"
           pt={2}
         >
-          <Subtitle style={{ color: "black" }}>
-            No Past Vouchers
-          </Subtitle>
+          <Subtitle style={{ color: "#96ae33" }}>No Past Vouchers</Subtitle>
+          <ButtonStyled
+            widthPercentage={40}
+            onClick={() => history.push("/DinerLanding")}
+          >
+            Find restaurants
+          </ButtonStyled>
         </Box>
       );
     }
