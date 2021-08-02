@@ -48,29 +48,33 @@ export default function DinerVouchers () {
   //   setShowHistory(event.target.checked);
   // };
 
+  const noVouchersMessage = () => {
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        marginTop="10%"
+        alignItems="center"
+        height="70vh"
+        pt={2}
+      >
+        <Subtitle style={{ color: "black" }}>
+          No Vouchers Purchased Yet..
+        </Subtitle>
+        <ButtonStyled
+          widthPercentage={40}
+          onClick={() => history.push("/DinerLanding")}
+        >
+          Find restaurants
+        </ButtonStyled>
+      </Box>
+    );
+  };
+
   const getCurrentVouchers = () => {
     if (!vouchers) return;
     if (vouchers.length === 0) {
-      return (
-        <Box
-          display="flex"
-          flexDirection="column"
-          marginTop="10%"
-          alignItems="center"
-          height="70vh"
-          pt={2}
-        >
-          <Subtitle style={{ color: "black" }}>
-            No Vouchers Purchased Yet..
-          </Subtitle>
-          <ButtonStyled
-            widthPercentage={40}
-            onClick={() => history.push("/DinerLanding")}
-          >
-            Find restaurants
-          </ButtonStyled>
-        </Box>
-      );
+      return noVouchersMessage();
     }
     if (vouchers.reduce((total, voucher) => {
       return total + (voucher.isActive ? 1 : 0);
@@ -120,6 +124,27 @@ export default function DinerVouchers () {
 
   const getPastVouchers = () => {
     if (!vouchers) return;
+    if (vouchers.length === 0) {
+      return noVouchersMessage();
+    }
+    if (vouchers.reduce((total, voucher) => {
+      return total + ((voucher.used || !voucher.isActive) ? 1 : 0);
+    }, 0) === 0 && showHistory === 1) {
+      return (
+        <Box
+          display="flex"
+          flexDirection="column"
+          marginTop="10%"
+          alignItems="center"
+          height="70vh"
+          pt={2}
+        >
+          <Subtitle style={{ color: "black" }}>
+            No Past Vouchers
+          </Subtitle>
+        </Box>
+      );
+    }
     return vouchers.map((item, key) => {
       return (
         (item.used || !item.isActive) && (
