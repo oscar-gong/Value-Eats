@@ -57,17 +57,19 @@ export default function EateryDisplay ({
 }) {
   const classes = useStyles();
   const history = useHistory();
+
+  const handleClick = () => {
+    localStorage.setItem("searchTerm", "");
+    if (!onProfile) {
+      history.push({
+        pathname: `/EateryProfile/${name}/${id}`,
+      });
+    }
+  };
   return (
     <Card
       className={onProfile ? classes.profile : classes.wideCard}
-      onClick={
-        !onProfile
-          ? (e) =>
-              history.push({
-                pathname: `/EateryProfile/${name}/${id}`,
-              })
-          : "undefined"
-      }
+      onClick={() => handleClick()}
     >
       <CardMedia
         style={{
