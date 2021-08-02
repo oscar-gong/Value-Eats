@@ -361,7 +361,7 @@ export default function DinerProfile () {
                 }
                 onBlur={() => validRequired(username, setUsername)}
                 error={!username.valid}
-                helperText={username.valid ? "" : "Please enter a username"}
+                helperText={username.valid ? "" : "Please enter a username with at most 12 characters"}
                 value={username.value}
                 variant="outlined"
                 fullWidth

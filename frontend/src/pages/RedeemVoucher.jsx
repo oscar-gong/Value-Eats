@@ -21,6 +21,7 @@ export default function RedeemVoucher () {
   const history = useHistory();
   const [code, setCode] = useState({ value: "", valid: true });
   const [openRedeemed, setOpenRedeemed] = useState(false);
+  const [discount, setDiscount] = useState("");
   console.log(auth);
   console.log(isDiner);
 
@@ -56,6 +57,7 @@ export default function RedeemVoucher () {
     );
     const responseData = await response.json();
     if (response.status === 200) {
+      setDiscount(responseData.data.data.discount);
       setAlertOptions({
         showAlert: true,
         variant: "success",
@@ -133,7 +135,7 @@ export default function RedeemVoucher () {
         open={openRedeemed}
         handleClose={() => setOpenRedeemed(false)}
         title={"Voucher Redeemed!!!"}
-        message={"Would you like to redeem another?"}
+        message={`${discount}% OFF! Would you like to redeem another?`}
         confirmText={"Redeem again"}
         handleConfirm={() => setOpenRedeemed(false)}
         denyText={"Back to Vouchers"}
