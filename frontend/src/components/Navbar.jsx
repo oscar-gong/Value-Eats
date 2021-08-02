@@ -150,7 +150,7 @@ export default function Navbar () {
                 <InputBase
                   onChange={(e) => setSearch(e.target.value)}
                   className={classes.searchBar}
-                  placeholder="Restaurants, dishes, postcode, keywords..."
+                  placeholder="Restaurants, postcode, cuisines..."
                   inputProps={{
                     "aria-label": "search",
                   }}
