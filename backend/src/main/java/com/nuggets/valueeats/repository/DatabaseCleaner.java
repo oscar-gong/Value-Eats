@@ -25,12 +25,12 @@ public class DatabaseCleaner {
     public void updateRepeatedVoucher() {
         List<RepeatedVoucher> repeatedVouchers = repeatVoucherRepository.findAll();
 
-        Date timeNow = new Date(System.currentTimeMillis());
-        timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
-
         if (repeatedVouchers != null) {
             for (RepeatedVoucher repeatedVoucher : repeatedVouchers) {
-                if (repeatedVoucher.getNextUpdate() != null && repeatedVoucher.getNextUpdate().compareTo(timeNow) < 0) {
+                // System.out.println(repeatedVoucher.getNextUpdate().toInstant().toEpochMilli());
+                // System.out.println();
+                if (repeatedVoucher.getNextUpdate() != null &&
+                    repeatedVoucher.getNextUpdate().toInstant().toEpochMilli() >= timeNow.toInstant().toEpochMilli()) {
 
                     repeatedVoucher.setQuantity(repeatedVoucher.getRestockTo());
                     repeatedVoucher.setActive(true);
@@ -47,14 +47,13 @@ public class DatabaseCleaner {
         List<RepeatedVoucher> repeatedVouchers = repeatVoucherRepository.findAllActive();
         List<Voucher> vouchers = voucherRepository.findAllActive();
 
-        Date timeNow = new Date(System.currentTimeMillis());
-        timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
+        Long timeNow = new Date(System.currentTimeMillis()).toInstant().toEpochMilli();
 
         if (repeatedVouchers != null) {
             for (RepeatedVoucher repeatedVoucher : repeatedVouchers) {
-                Date endTime = Date.from(repeatedVoucher.getDate().toInstant().plus(Duration.ofMinutes(repeatedVoucher.getEnd())));
+                Long endTime = repeatedVoucher.getDate().toInstant().plus(Duration.ofMinutes(repeatedVoucher.getEnd())).toEpochMilli();
 
-                if (endTime.compareTo(timeNow) < 0) {
+                if (endTime-timeNow < 0) {
 
                     repeatedVoucher.setActive(false);
                     repeatVoucherRepository.save(repeatedVoucher);
@@ -63,9 +62,9 @@ public class DatabaseCleaner {
         }
         if (vouchers != null) {
             for (Voucher voucher : vouchers) {
-                Date endTime = Date.from(voucher.getDate().toInstant().plus(Duration.ofMinutes(voucher.getEnd())));
+                Long endTime = voucher.getDate().toInstant().plus(Duration.ofMinutes(voucher.getEnd())).toEpochMilli();
 
-                if (endTime.compareTo(timeNow) < 0) {
+                if (endTime-timeNow < 0) {
 
                     voucher.setActive(false);
                     voucherRepository.save(voucher);

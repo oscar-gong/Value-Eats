@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -120,12 +121,13 @@ public class EateryService {
     */
     private ResponseEntity<JSONObject> handleRecurringCreateVoucher(VoucherInput voucherInput, Long eateryId) {
         RepeatedVoucher repeatedVoucher = new RepeatedVoucher();
+        int timezoneOffset  = ZonedDateTime.now().getOffset().getTotalSeconds();
         repeatedVoucher.setId(VoucherUtils.getNextVoucherId(repeatVoucherRepository, voucherRepository));
         repeatedVoucher.setEateryId(eateryId);
         repeatedVoucher.setEatingStyle(voucherInput.getEatingStyle());
         repeatedVoucher.setDiscount(voucherInput.getDiscount());
         repeatedVoucher.setQuantity(voucherInput.getQuantity());
-        repeatedVoucher.setDate(voucherInput.getDate());
+        repeatedVoucher.setDate(Date.from(voucherInput.getDate().toInstant().minus(Duration.ofSeconds(timezoneOffset))));
         repeatedVoucher.setStart(voucherInput.getStartMinute());
         repeatedVoucher.setEnd(voucherInput.getEndMinute());
 
@@ -151,12 +153,13 @@ public class EateryService {
     */
     private ResponseEntity<JSONObject> handleOneOffCreateVoucher(VoucherInput voucherInput, Long eateryId) {
         Voucher newVoucher = new Voucher();
+        int timezoneOffset  = ZonedDateTime.now().getOffset().getTotalSeconds();
         newVoucher.setId(VoucherUtils.getNextVoucherId(repeatVoucherRepository, voucherRepository));
         newVoucher.setEateryId(eateryId);
         newVoucher.setEatingStyle(voucherInput.getEatingStyle());
         newVoucher.setDiscount(voucherInput.getDiscount());
         newVoucher.setQuantity(voucherInput.getQuantity());
-        newVoucher.setDate(voucherInput.getDate());
+        newVoucher.setDate(Date.from(voucherInput.getDate().toInstant().minus(Duration.ofSeconds(timezoneOffset))));
         newVoucher.setStart(voucherInput.getStartMinute());
         newVoucher.setEnd(voucherInput.getEndMinute());
         newVoucher.setActive(true);

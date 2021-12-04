@@ -21,11 +21,10 @@ public class VoucherUtils {
     * @return   A long value of the duration between now and a given time.
     */
     public static Long getDuration(Date date, Integer end) {
-        Date endTime = Date.from(date.toInstant().plus(Duration.ofMinutes(end)));
-        Date timeNow = new Date(System.currentTimeMillis());
-        timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
+        Long endTime = date.toInstant().plus(Duration.ofMinutes(end)).toEpochMilli();
+        Long timeNow = new Date(System.currentTimeMillis()).toInstant().toEpochMilli();
 
-        return Duration.between(timeNow.toInstant(), endTime.toInstant()).toMillis();
+        return endTime - timeNow;
     }
 
     /**
@@ -36,10 +35,9 @@ public class VoucherUtils {
     * @return   A boolean of whether a voucher is active.
     */
     public static boolean checkActive(Date date, Integer end) {
-        Date timeNow = new Date(System.currentTimeMillis());
-        timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
-        Date endTime = Date.from(date.toInstant().plus(Duration.ofMinutes(end)));
-        return (endTime.compareTo(timeNow) > 0);
+        Long timeNow = new Date(System.currentTimeMillis()).toInstant().toEpochMilli();
+        Long endTime = date.toInstant().plus(Duration.ofMinutes(end)).toEpochMilli();
+        return endTime - timeNow > 0;
     }
 
     /**
@@ -51,12 +49,14 @@ public class VoucherUtils {
     * @return   A boolean of whether a voucher is redeemable.
     */
     public static boolean isInTimeRange(Date date, Integer start, Integer end) {
-        Date timeNow = new Date(System.currentTimeMillis());
-        timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
-        Date startTime = Date.from(date.toInstant().plus(Duration.ofMinutes(start)));
-        Date endTime = Date.from(date.toInstant().plus(Duration.ofMinutes(end)));
+        Long timeNow = new Date(System.currentTimeMillis()).toInstant().toEpochMilli();
+        Long startTime = date.toInstant().plus(Duration.ofMinutes(start)).toEpochMilli();
+        Long endTime = date.toInstant().plus(Duration.ofMinutes(end)).toEpochMilli();
+        System.out.println("timenow: "+timeNow);
+        System.out.println("startTime: "+startTime);
+        System.out.println("endtime: "+endTime);
         // Check if start time before timeNow, endTime after timeNow
-        return startTime.compareTo(timeNow) <= 0 && endTime.compareTo(timeNow) > 0;
+        return startTime-timeNow <= 0 && endTime-timeNow > 0;
     }
 
     /**
@@ -67,12 +67,10 @@ public class VoucherUtils {
     * @return   A boolean of whether a time is in the future.
     */
     public static boolean isValidTime(Date date, Integer minutes) {
-        Date time = new Date();
-        time = Date.from(date.toInstant().plus(Duration.ofMinutes(minutes)));
-        Date timeNow = new Date(System.currentTimeMillis());
-        timeNow = Date.from(timeNow.toInstant().plus(Duration.ofHours(10)));
+        Long time = date.toInstant().plus(Duration.ofMinutes(minutes)).toEpochMilli();
+        Long timeNow = new Date(System.currentTimeMillis()).toInstant().toEpochMilli();
 
-        return (time.compareTo(timeNow) > 0);
+        return (time - timeNow) >= 0;
     }
 
     /**
