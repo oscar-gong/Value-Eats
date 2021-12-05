@@ -71,9 +71,20 @@ public class RecommendationService {
     * @return   An integer of the weight ratio of the query and eatery.
     */
     private Integer getWeightRatio(String query, Eatery eatery) {
+
         int aliasWeightRatio = FuzzySearch.weightedRatio(query, eatery.getAlias());
         int cuisineWeightRatio = FuzzySearch.weightedRatio(query, eatery.getCuisines().toString());
         int addressWeightRatio = FuzzySearch.weightedRatio(query, eatery.getAddress());
+
+        String[] addressComponents = eatery.getAddress().split(",");
+        for (String component:addressComponents) {
+            addressWeightRatio = Math.max(addressWeightRatio, FuzzySearch.weightedRatio(query, component));
+        }
+
+        String[] cuisines = eatery.getCuisines().toString().split(",");
+        for (String component:cuisines) {
+            cuisineWeightRatio = Math.max(cuisineWeightRatio, FuzzySearch.weightedRatio(query, component));
+        }
 
         return Math.max(aliasWeightRatio, Math.max(cuisineWeightRatio, addressWeightRatio));
     }
